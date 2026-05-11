@@ -58,6 +58,28 @@ DEFAULT_STALE = {
     "canonical_docs": True,
     "index": False,
 }
+VALID_GATE_STATES = {
+    "pending",
+    "drafted",
+    "approved",
+    "delegated",
+    "blocked",
+    "reopened",
+    "stale",
+    "complete",
+}
+FEATURE_REQUIRED_HEADINGS = (
+    "## Intent",
+    "## Motivation",
+    "## Actors",
+    "## Goals",
+    "## Non-Goals",
+    "## Functional Requirements",
+    "## Non-Functional Requirements",
+    "## Acceptance Criteria",
+    "## Assumptions",
+    "## Open Questions",
+)
 
 
 class FeatureCtlError(RuntimeError):
@@ -84,6 +106,14 @@ def main(argv: list[str] | None = None) -> int:
     status_parser = subparsers.add_parser("status", help="print workspace status")
     status_parser.add_argument("--workspace")
     status_parser.set_defaults(func=cmd_status)
+
+    validate_parser = subparsers.add_parser("validate", help="validate pipeline workspace")
+    validate_parser.add_argument("--workspace", required=True)
+    validate_parser.add_argument("--readiness", action="store_true")
+    validate_parser.add_argument("--implementation", action="store_true")
+    validate_parser.add_argument("--evidence", action="store_true")
+    validate_parser.add_argument("--review", action="store_true")
+    validate_parser.set_defaults(func=cmd_validate)
 
     try:
         args = parser.parse_args(argv)
@@ -204,6 +234,25 @@ def cmd_status(args: argparse.Namespace) -> None:
     else:
         print("  none")
     print(f"next_step: {next_skill_for_step(state.get('current_step'))}")
+
+
+def cmd_validate(args: argparse.Namespace) -> None:
+    root = repo_root()
+    workspace = resolve_workspace(root, args.workspace)
+    blockers = validate_workspace(
+        root,
+        workspace,
+        readiness=args.readiness,
+        implementation=args.implementation,
+        evidence=args.evidence,
+        review=args.review,
+    )
+    if blockers:
+        print("validation: fail")
+        for blocker in blockers:
+            print(f"- {blocker}")
+        raise FeatureCtlError("workspace validation failed")
+    print("validation: pass")
 
 
 def ensure_init_tree(root: Path) -> None:
@@ -412,6 +461,124 @@ def status_blockers(root: Path, workspace: Path, feature: dict[str, Any], state:
                     blockers.append(f"worktree branch mismatch: expected {branch_value}, got {actual_branch}")
     else:
         blockers.append("state.yaml missing worktree.path")
+    return blockers
+
+
+def validate_workspace(
+    root: Path,
+    workspace: Path,
+    *,
+    readiness: bool = False,
+    implementation: bool = False,
+    evidence: bool = False,
+    review: bool = False,
+) -> list[str]:
+    blockers: list[str] = []
+    try:
+        feature = read_yaml(workspace / "feature.yaml")
+        state = read_yaml(workspace / "state.yaml")
+    except FeatureCtlError as exc:
+        return [str(exc)]
+
+    blockers.extend(status_blockers(root, workspace, feature, state))
+    blockers.extend(forbidden_file_blockers(workspace))
+    blockers.extend(validate_state_shape(state))
+    blockers.extend(validate_feature_contract_if_started(workspace, state))
+
+    if readiness:
+        blockers.extend(validate_readiness_minimum(workspace, state))
+    if implementation:
+        blockers.extend(validate_implementation_minimum(state))
+    if evidence:
+        blockers.extend(validate_evidence_minimum(workspace))
+    if review:
+        blockers.extend(validate_review_minimum(workspace))
+    return blockers
+
+
+def forbidden_file_blockers(workspace: Path) -> list[str]:
+    blockers = []
+    for forbidden in ("approvals.yaml", "handoff.md"):
+        matches = [path for path in workspace.rglob(forbidden) if path.is_file()]
+        for match in matches:
+            blockers.append(f"forbidden file exists: {match.relative_to(workspace)}")
+    return blockers
+
+
+def validate_state_shape(state: dict[str, Any]) -> list[str]:
+    blockers: list[str] = []
+    if state.get("artifact_contract_version") != CONTRACT_VERSION:
+        blockers.append("state.yaml artifact_contract_version mismatch")
+    if "next_skill" in state:
+        blockers.append("state.yaml must not contain next_skill")
+    gates = state.get("gates")
+    if not isinstance(gates, dict):
+        blockers.append("state.yaml gates must be a mapping")
+    else:
+        for gate in DEFAULT_GATES:
+            if gate not in gates:
+                blockers.append(f"state.yaml missing gate: {gate}")
+            elif gates[gate] not in VALID_GATE_STATES:
+                blockers.append(f"invalid gate status for {gate}: {gates[gate]}")
+    stale = state.get("stale")
+    if not isinstance(stale, dict):
+        blockers.append("state.yaml stale must be a mapping")
+    return blockers
+
+
+def validate_feature_contract_if_started(workspace: Path, state: dict[str, Any]) -> list[str]:
+    gate = (state.get("gates") or {}).get("feature_contract")
+    if gate not in {"drafted", "approved", "delegated", "complete"}:
+        return []
+    feature_path = workspace / "feature.md"
+    if not feature_path.exists():
+        return ["feature_contract gate requires feature.md"]
+    content = feature_path.read_text(encoding="utf-8")
+    blockers = [f"feature.md missing heading: {heading}" for heading in FEATURE_REQUIRED_HEADINGS if heading not in content]
+    if "FR-" not in content:
+        blockers.append("feature.md must include functional requirement IDs")
+    if "AC-" not in content:
+        blockers.append("feature.md must include acceptance criteria IDs")
+    return blockers
+
+
+def validate_readiness_minimum(workspace: Path, state: dict[str, Any]) -> list[str]:
+    blockers: list[str] = []
+    for artifact in ("feature.md", "architecture.md", "tech-design.md", "slices.yaml"):
+        if not (workspace / artifact).exists():
+            blockers.append(f"readiness requires {artifact}")
+    gates = state.get("gates") or {}
+    for gate in ("feature_contract", "architecture", "tech_design", "slicing_readiness"):
+        if gates.get(gate) not in {"approved", "delegated"}:
+            blockers.append(f"readiness requires {gate} gate approved or delegated")
+    for artifact in ("feature", "architecture", "tech_design", "slices"):
+        if (state.get("stale") or {}).get(artifact):
+            blockers.append(f"readiness blocked by stale {artifact}")
+    return blockers
+
+
+def validate_implementation_minimum(state: dict[str, Any]) -> list[str]:
+    blockers: list[str] = []
+    gates = state.get("gates") or {}
+    for gate in ("feature_contract", "architecture", "tech_design", "slicing_readiness"):
+        if gates.get(gate) not in {"approved", "delegated"}:
+            blockers.append(f"implementation requires {gate} gate approved or delegated")
+    return blockers
+
+
+def validate_evidence_minimum(workspace: Path) -> list[str]:
+    manifest = workspace / "evidence/manifest.yaml"
+    if not manifest.exists():
+        return ["evidence validation requires evidence/manifest.yaml"]
+    return []
+
+
+def validate_review_minimum(workspace: Path) -> list[str]:
+    blockers: list[str] = []
+    for review_file in workspace.glob("reviews/*.yaml"):
+        review = read_yaml(review_file)
+        if review.get("blocking") is True and review.get("severity") == "critical":
+            blockers.append(f"critical review finding blocks verification: {review_file.relative_to(workspace)}")
     return blockers
 
 

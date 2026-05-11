@@ -17,3 +17,40 @@ Responsibilities:
 - validate the workspace before stopping or handing off
 
 Do not draft architecture or implementation details in this step.
+
+Required `feature.md` sections:
+
+```markdown
+# Feature: <Title>
+
+## Intent
+## Motivation
+## Actors
+## Problem
+## Goals
+## Non-Goals
+## Related Existing Features
+## Functional Requirements
+## Non-Functional Requirements
+## Acceptance Criteria
+## Product Risks
+## Assumptions
+## Open Questions
+```
+
+Use local IDs such as `FR-001`, `NFR-001`, and `AC-001`. Acceptance criteria
+must be testable.
+
+Clarification policy:
+
+- ask grouped blocking questions only
+- do not continue on security-critical or business-critical ambiguity
+- record non-blocking assumptions explicitly
+
+One-artifact stop behavior:
+
+- create or update `feature.md`
+- set `feature_contract` to `drafted` once the draft exists
+- keep architecture, technical design, slicing, and implementation untouched
+- record the stop point and next step in `execution.md`
+- run `featurectl.py validate --workspace <workspace>`

@@ -17,3 +17,26 @@ Responsibilities:
 - record docs consulted and context findings in `execution.md`
 
 Do not invent architecture when repository knowledge is missing.
+
+Minimum searches:
+
+```text
+find .ai/knowledge -type f
+find .ai/features -type f
+find docs -type f
+rg "<domain>"
+rg "<feature term>"
+rg "ADR"
+```
+
+When knowledge is missing, create provisional knowledge files with:
+
+```text
+Status: provisional
+Confidence: low | medium
+Needs human review: yes
+Sources inspected: ...
+```
+
+End by updating `execution.md` with a `Docs Consulted: Context` entry and
+running `featurectl.py validate --workspace <workspace>`.

@@ -6,7 +6,7 @@ The repository follows the Native Feature Pipeline for substantial feature work.
 
 ## Verification Commands
 
-- `python -m unittest discover -s tests`
+- `python -m unittest discover -s tests/feature_pipeline`
 
 ## Safety Rules
 
