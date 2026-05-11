@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Native Feature Pipeline feature index",
+  "type": "object",
+  "required": ["artifact_contract_version", "features"],
+  "properties": {
+    "artifact_contract_version": { "const": "0.1.0" },
+    "features": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["feature_key", "title", "status", "path", "run_id"],
+        "properties": {
+          "feature_key": { "type": "string" },
+          "title": { "type": "string" },
+          "status": { "type": "string" },
+          "path": { "type": "string" },
+          "run_id": { "type": "string" }
+        }
+      }
+    }
+  }
+}

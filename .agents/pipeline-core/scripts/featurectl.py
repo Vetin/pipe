@@ -171,6 +171,11 @@ def main(argv: list[str] | None = None) -> int:
     worktree_status_parser.add_argument("--workspace")
     worktree_status_parser.set_defaults(func=cmd_worktree_status)
 
+    promote_parser = subparsers.add_parser("promote", help="promote feature workspace to canonical memory")
+    promote_parser.add_argument("--workspace", required=True)
+    promote_parser.add_argument("--conflict", choices=["abort", "archive-as-variant"], default="abort")
+    promote_parser.set_defaults(func=cmd_promote)
+
     try:
         args = parser.parse_args(argv)
         args.func(args)
@@ -465,6 +470,59 @@ def cmd_worktree_status(args: argparse.Namespace) -> None:
     print("  none")
 
 
+def cmd_promote(args: argparse.Namespace) -> None:
+    root = repo_root()
+    workspace = resolve_workspace(root, args.workspace)
+    blockers = validate_finish_state(workspace)
+    if blockers:
+        print("promotion: fail")
+        for blocker in blockers:
+            print(f"- {blocker}")
+        raise FeatureCtlError("feature is not ready for promotion")
+
+    feature = read_yaml(workspace / "feature.yaml")
+    state = read_yaml(workspace / "state.yaml")
+    canonical = root / feature["canonical_path"]
+    archive = root / ".ai/features-archive" / feature["domain"] / feature["slug"] / feature["run_id"]
+
+    if canonical.exists():
+        if args.conflict == "abort":
+            raise FeatureCtlError(f"canonical feature already exists: {feature['canonical_path']}")
+        if archive.exists():
+            raise FeatureCtlError(f"archive variant already exists: {archive}")
+        archive.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copytree(workspace, archive)
+        append_execution_event(archive, "Summary", f"- {utc_now()} archived incoming variant for {feature['canonical_path']}")
+        regenerate_feature_index(root)
+        print("promotion: archived-variant")
+        print(f"archive_path: {archive.relative_to(root).as_posix()}")
+        return
+
+    canonical.parent.mkdir(parents=True, exist_ok=True)
+    if canonical.exists():
+        shutil.rmtree(canonical)
+    shutil.copytree(workspace, canonical)
+
+    promoted_feature_path = canonical / "feature.yaml"
+    promoted_feature = read_yaml(promoted_feature_path)
+    promoted_feature["status"] = "complete"
+    promoted_feature["canonical_path"] = feature["canonical_path"]
+    write_yaml(promoted_feature_path, promoted_feature)
+
+    promoted_state_path = canonical / "state.yaml"
+    promoted_state = read_yaml(promoted_state_path)
+    promoted_state["current_step"] = "promote"
+    promoted_state.setdefault("gates", {})["finish"] = "complete"
+    promoted_state.setdefault("stale", {})["canonical_docs"] = False
+    promoted_state.setdefault("stale", {})["index"] = False
+    write_yaml(promoted_state_path, promoted_state)
+
+    regenerate_feature_index(root)
+    append_execution_event(canonical, "Summary", f"- {utc_now()} promoted feature memory to {feature['canonical_path']}")
+    print("promotion: complete")
+    print(f"canonical_path: {feature['canonical_path']}")
+
+
 def ensure_init_tree(root: Path) -> None:
     dirs = [
         ".ai/feature-workspaces",
@@ -711,6 +769,8 @@ def validate_workspace(
         blockers.extend(validate_review_minimum(workspace))
     if state.get("current_step") in {"verification", "finish", "promote"}:
         blockers.extend(validate_verification_if_started(workspace, state))
+    if state.get("current_step") in {"finish", "promote"} or (state.get("gates") or {}).get("finish") in {"drafted", "approved", "delegated", "complete"}:
+        blockers.extend(validate_finish_if_started(workspace, state))
     return blockers
 
 
@@ -984,6 +1044,57 @@ def validate_verification_if_started(workspace: Path, state: dict[str, Any]) -> 
     if not final_output.exists():
         blockers.append("verification gate requires evidence/final-verification-output.log")
     blockers.extend(validate_review_minimum(workspace))
+    return blockers
+
+
+def validate_finish_if_started(workspace: Path, state: dict[str, Any]) -> list[str]:
+    gate = (state.get("gates") or {}).get("finish")
+    if gate not in {"drafted", "approved", "delegated", "complete"} and state.get("current_step") not in {"finish", "promote"}:
+        return []
+    blockers = []
+    if not (workspace / "feature-card.md").exists():
+        blockers.append("finish requires feature-card.md")
+    stale = state.get("stale") or {}
+    if stale.get("feature_card"):
+        blockers.append("finish blocked by stale feature_card")
+    if stale.get("canonical_docs"):
+        blockers.append("finish blocked by stale canonical_docs")
+    if (state.get("gates") or {}).get("verification") != "complete":
+        blockers.append("finish requires verification gate complete")
+    blockers.extend(validate_all_slices_complete(workspace))
+    blockers.extend(validate_evidence_minimum(workspace))
+    blockers.extend(validate_review_minimum(workspace))
+    verification_review = workspace / "reviews/verification-review.md"
+    if not verification_review.exists():
+        blockers.append("finish requires reviews/verification-review.md")
+    return blockers
+
+
+def validate_all_slices_complete(workspace: Path) -> list[str]:
+    slices_path = workspace / "slices.yaml"
+    if not slices_path.exists():
+        return ["finish requires slices.yaml"]
+    data = read_yaml(slices_path)
+    slices = data.get("slices") or []
+    if isinstance(slices, dict):
+        items = slices.values()
+    else:
+        items = slices
+    blockers = []
+    for item in items:
+        if not isinstance(item, dict):
+            continue
+        if item.get("status") != "complete":
+            blockers.append(f"finish requires slice complete: {item.get('id')}")
+    return blockers
+
+
+def validate_finish_state(workspace: Path) -> list[str]:
+    blockers: list[str] = []
+    state = read_yaml(workspace / "state.yaml")
+    blockers.extend(validate_finish_if_started(workspace, state))
+    if (state.get("gates") or {}).get("finish") != "complete":
+        blockers.append("promotion requires finish gate complete")
     return blockers
 
 
@@ -1400,6 +1511,30 @@ def resolve_configured_worktree_path(root: Path, worktree_value: str) -> Path:
     if configured.is_absolute():
         return configured.resolve()
     return (root / configured).resolve()
+
+
+def regenerate_feature_index(root: Path) -> None:
+    features: list[dict[str, Any]] = []
+    features_root = root / ".ai/features"
+    for feature_yaml in sorted(features_root.glob("*/*/feature.yaml")):
+        feature = read_yaml(feature_yaml)
+        rel_path = feature_yaml.parent.relative_to(root).as_posix()
+        features.append(
+            {
+                "feature_key": feature.get("feature_key"),
+                "title": feature.get("title"),
+                "status": feature.get("status"),
+                "path": rel_path,
+                "run_id": feature.get("run_id"),
+            }
+        )
+    write_yaml(
+        root / ".ai/features/index.yaml",
+        {
+            "artifact_contract_version": CONTRACT_VERSION,
+            "features": features,
+        },
+    )
 
 
 if __name__ == "__main__":

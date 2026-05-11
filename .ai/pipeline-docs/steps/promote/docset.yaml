@@ -1,0 +1,17 @@
+artifact_contract_version: '0.1.0'
+step: promote
+required_docs:
+  - .ai/constitution.md
+  - .ai/pipeline-docs/steps/promote/overview.md
+  - .ai/pipeline-docs/steps/promote/checklist.md
+optional_docs:
+  - .agents/pipeline-core/references/gate-policy.md
+selected_alternatives: []
+suggested_related_files:
+  - .ai/features/
+  - .ai/features-archive/
+budget:
+  max_related_features: 5
+  max_doc_chars: 60000
+  required_docs_first: true
+  summarize_large_docs: true
