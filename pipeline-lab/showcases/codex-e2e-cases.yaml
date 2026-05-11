@@ -1,0 +1,109 @@
+artifact_contract_version: '0.1.0'
+description: Stable in-place Codex E2E reproduction cases for Native Feature Pipeline implementation runs.
+defaults:
+  require_clean_git: true
+  pipeline_steps:
+    - nfp-00-intake
+    - nfp-01-context
+    - nfp-02-feature-contract
+    - nfp-03-architecture
+    - nfp-04-tech-design
+    - nfp-05-slicing
+    - nfp-06-readiness
+    - nfp-07-worktree
+    - nfp-08-tdd-implementation
+    - nfp-09-review
+    - nfp-10-verification
+    - nfp-11-finish
+    - nfp-12-promote
+cases:
+  docmost-page-approval:
+    title: Docmost Page Review Approval Workflow
+    domain: pages
+    original_codebase:
+      repo_path: pipeline-lab/showcases/repos/docmost
+      base_ref: origin/main
+    target_branch: nfp/docmost-page-approval
+    feature_request: Add draft, review, and approved states for sensitive pages with reviewer comments and approval history.
+    expected_result: Architecture and implementation should cover RBAC, notifications, state transitions, audit trail, and feature-card generation.
+  formbricks-signed-webhooks:
+    title: Formbricks Signed Survey Response Webhooks
+    domain: webhooks
+    original_codebase:
+      repo_path: pipeline-lab/showcases/repos/formbricks
+      base_ref: origin/main
+    target_branch: nfp/formbricks-signed-webhooks
+    feature_request: Let users configure signed survey response webhook endpoints, sign payloads, retry failed deliveries, and inspect delivery logs.
+    expected_result: Include OpenAPI or event contract, signing ADR, retry and delivery log design, TDD slices, and replay protection review.
+  actual-import-rule-preview-undo:
+    title: Actual Rule Preview And Undo
+    domain: imports
+    original_codebase:
+      repo_path: pipeline-lab/showcases/repos/actual
+      base_ref: origin/master
+    target_branch: nfp/actual-import-rule-preview-undo
+    feature_request: Before applying import rules, show predicted transaction changes and allow rollback.
+    expected_result: Explain local-first data flow, sync risks, preview/apply/rollback contracts, and non-destructive undo evidence.
+  plane-triage-automation:
+    title: Plane Triage Automation Rules
+    domain: triage
+    original_codebase:
+      repo_path: pipeline-lab/showcases/repos/plane
+      base_ref: origin/preview
+    target_branch: nfp/plane-triage-automation
+    feature_request: Automatically assign labels, priority, or assignees based on issue title, body, and project.
+    expected_result: Separate rule authoring from execution, record rule evaluation flow, audit logs, and conflict behavior.
+  nocodb-schema-audit-log:
+    title: NocoDB Schema Change Audit Log
+    domain: schema
+    original_codebase:
+      repo_path: pipeline-lab/showcases/repos/nocodb
+      base_ref: origin/develop
+    target_branch: nfp/nocodb-schema-audit-log
+    feature_request: Record table, column, and view changes with actor, timestamp, old value, new value, and rollback hints.
+    expected_result: Include audit event shape ADR, persistence design, create/update/delete slices, and module communication docs.
+  appsmith-version-restore-diff:
+    title: Appsmith App Version Restore Diff Preview
+    domain: applications
+    original_codebase:
+      repo_path: pipeline-lab/showcases/repos/appsmith
+      base_ref: origin/release
+    target_branch: nfp/appsmith-version-restore-diff
+    feature_request: Show differences between saved app versions and restore a selected version safely.
+    expected_result: Cover version storage, restore flow, diff model, permission checks, and failure rollback tests.
+  listmonk-double-opt-in-segment:
+    title: listmonk Double Opt In Segment Onboarding
+    domain: subscribers
+    original_codebase:
+      repo_path: pipeline-lab/showcases/repos/listmonk
+      base_ref: origin/master
+    target_branch: nfp/listmonk-double-opt-in-segment
+    feature_request: Import subscribers into a pending segment, send confirmation, and move confirmed users to the active segment.
+    expected_result: Capture consent rules, email and segment transitions, confirmation token expiry, and audit evidence.
+  medusa-first-order-promo-caps:
+    title: Medusa First Order Promotion Usage Caps
+    domain: promotions
+    original_codebase:
+      repo_path: pipeline-lab/showcases/repos/medusa
+      base_ref: origin/develop
+    target_branch: nfp/medusa-first-order-promo-caps
+    feature_request: Create a promotion rule that applies only to a customer's first completed order and respects global and customer caps.
+    expected_result: Define business rules, promotion evaluation interfaces, first-order detection, cap enforcement, and edge cases.
+  excalidraw-layer-lock-history:
+    title: Excalidraw Layer Lock History Safe Editing
+    domain: excalidraw
+    original_codebase:
+      repo_path: pipeline-lab/showcases/repos/excalidraw
+      base_ref: origin/master
+    target_branch: nfp/excalidraw-layer-lock-history
+    feature_request: Allow users to lock objects or layers so they cannot be accidentally edited while preserving undo and redo behavior.
+    expected_result: Cover UX, scene state, history behavior, collaboration handling, locked-object prevention, and undo/redo tests.
+  twenty-company-merge:
+    title: Twenty Duplicate Company Merge Audit Trail
+    domain: company
+    original_codebase:
+      repo_path: pipeline-lab/showcases/repos/twenty
+      base_ref: origin/main
+    target_branch: nfp/twenty-company-merge
+    feature_request: Detect duplicate companies, preview merge effects, merge records, and keep reversible audit history.
+    expected_result: Document entity relationships, conflict resolution, duplicate detection, preview, merge, audit log, and rollback-safe behavior.

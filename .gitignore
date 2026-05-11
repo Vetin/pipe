@@ -1,5 +1,6 @@
 pipeline-lab/runs/
 pipeline-lab/showcases/repos/
+pipeline-lab/showcases/codex-e2e-runs/
 pipeline-lab/showcases/real-runs/*/workspace.txt
 pipeline-lab/showcases/real-runs/*/.venv/
 .ai/logs/

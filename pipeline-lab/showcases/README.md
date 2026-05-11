@@ -39,6 +39,23 @@ The command writes:
 `tests/feature_pipeline/test_showcases.py` also validates that `featurectl.py new`
 can initialize a worktree and feature workspace for all 10 scenarios.
 
+## Codex E2E Reproduction Cases
+
+`codex-e2e-cases.yaml` contains stable real-repo cases with an original codebase
+path, base ref, target branch, feature request, and expected result. The E2E
+runner turns one case into a local `codex exec` session and records the prompt,
+command, output, final response, manifest, and report:
+
+```bash
+python pipeline-lab/showcases/scripts/run_codex_e2e_case.py \
+  --case formbricks-signed-webhooks \
+  --run-id local-formbricks-001
+```
+
+The runner works in the current repository checkout and tells Codex not to
+create a git worktree. It requires a clean target repo by default; use
+`--dry-run` to review the generated prompt and command without invoking Codex.
+
 ## Improvement Loop
 
 Initial showcase scoring exposed `nfp-08-tdd-implementation` as the weakest step
