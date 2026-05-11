@@ -1,5 +1,5 @@
 artifact_contract_version: 0.1.0
-created_at: '2026-05-11T15:28:01Z'
+created_at: deterministic-showcase
 iterations: 10
 scenario_count: 10
 step_scores:

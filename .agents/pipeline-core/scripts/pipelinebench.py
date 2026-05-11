@@ -182,7 +182,7 @@ def cmd_run_showcases(args: argparse.Namespace) -> None:
 
     summary = {
         "artifact_contract_version": CONTRACT_VERSION,
-        "created_at": utc_now(),
+        "created_at": "deterministic-showcase",
         "iterations": args.iterations,
         "scenario_count": len(scenarios),
         "step_scores": step_scores,
