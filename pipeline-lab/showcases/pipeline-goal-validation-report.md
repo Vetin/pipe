@@ -2,7 +2,7 @@
 
 - Native run: `/Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-native-debug`
 - Repeated passes: `3`
-- Generated at: `2026-05-11T22:33:32.927169+00:00`
+- Generated at: `2026-05-11T22:42:43.126935+00:00`
 
 ## Pass Summary
 
@@ -56,8 +56,8 @@
 - `pass` `twenty-enterprise-duplicate-merge-with-preview-conflict-rules-and-rollback_round3_artifacts`: round 3 artifacts exist
 - `pass` `init_project_index_exists`: project-index.yaml exists
 - `pass` `init_project_snapshot_exists`: project-snapshot.md exists
-- `pass` `init_source_count`: source files: 12
-- `pass` `init_test_count`: test files: 30
+- `pass` `init_source_count`: source files: 13
+- `pass` `init_test_count`: test files: 31
 - `pass` `init_feature_signals`: feature signals extracted
 - `pass` `context_skill_uses_profile`: context skill invokes project profiling when knowledge is sparse
 - `pass` `skill_count`: found 13 nfp skills
@@ -109,8 +109,8 @@
 - `pass` `twenty-enterprise-duplicate-merge-with-preview-conflict-rules-and-rollback_round3_artifacts`: round 3 artifacts exist
 - `pass` `init_project_index_exists`: project-index.yaml exists
 - `pass` `init_project_snapshot_exists`: project-snapshot.md exists
-- `pass` `init_source_count`: source files: 12
-- `pass` `init_test_count`: test files: 30
+- `pass` `init_source_count`: source files: 13
+- `pass` `init_test_count`: test files: 31
 - `pass` `init_feature_signals`: feature signals extracted
 - `pass` `context_skill_uses_profile`: context skill invokes project profiling when knowledge is sparse
 - `pass` `skill_count`: found 13 nfp skills
@@ -162,8 +162,8 @@
 - `pass` `twenty-enterprise-duplicate-merge-with-preview-conflict-rules-and-rollback_round3_artifacts`: round 3 artifacts exist
 - `pass` `init_project_index_exists`: project-index.yaml exists
 - `pass` `init_project_snapshot_exists`: project-snapshot.md exists
-- `pass` `init_source_count`: source files: 12
-- `pass` `init_test_count`: test files: 30
+- `pass` `init_source_count`: source files: 13
+- `pass` `init_test_count`: test files: 31
 - `pass` `init_feature_signals`: feature signals extracted
 - `pass` `context_skill_uses_profile`: context skill invokes project profiling when knowledge is sparse
 - `pass` `skill_count`: found 13 nfp skills

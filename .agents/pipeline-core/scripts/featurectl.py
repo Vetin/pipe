@@ -198,6 +198,7 @@ def cmd_init(args: argparse.Namespace) -> None:
         print(f"source_files: {profile['counts']['source_files']}")
         print(f"test_files: {profile['counts']['test_files']}")
         print(f"detected_feature_signals: {len(profile['feature_signals'])}")
+        print(f"detected_feature_catalog_items: {len(profile['feature_catalog'])}")
     print("initialized Native Feature Pipeline directories")
 
 
@@ -584,6 +585,7 @@ def build_project_profile(root: Path) -> dict[str, Any]:
     scripts = collect_project_scripts(root, package_files[:20])
     feature_signals = collect_feature_signals(root, visible_files, doc_files)
     canonical_features = collect_canonical_features(root)
+    feature_catalog = build_feature_catalog(canonical_features, feature_signals)
 
     return {
         "artifact_contract_version": CONTRACT_VERSION,
@@ -615,6 +617,7 @@ def build_project_profile(root: Path) -> dict[str, Any]:
         "integration_examples": integration_files[:30],
         "canonical_features": canonical_features,
         "feature_signals": feature_signals[:40],
+        "feature_catalog": feature_catalog,
     }
 
 
@@ -762,6 +765,8 @@ def collect_feature_signals(root: Path, files: list[str], doc_files: list[str]) 
     for path in files:
         if not feature_signal_candidate_path(path):
             continue
+        if test_path(path):
+            continue
         lowered = path.lower()
         if any(token in lowered for token in ("feature", "route", "controller", "service", "workflow", "integration")):
             signals.append({"source": path, "signal": Path(path).stem.replace("-", " ").replace("_", " ")})
@@ -776,6 +781,8 @@ def feature_signal_candidate_path(path: str) -> bool:
         ".ai/pipeline-docs/",
         ".agents/pipeline-core/references/generated-templates/",
         "pipeline-lab/showcases/native-emulation-runs/",
+        "pipeline-lab/showcases/native-implementation-runs/",
+        "pipeline-lab/showcases/init-profile-runs/",
     )
     return not any(path.startswith(prefix) for prefix in blocked_prefixes)
 
@@ -798,6 +805,110 @@ def dedupe_signal_list(signals: list[dict[str, str]]) -> list[dict[str, str]]:
         seen.add(key)
         deduped.append(signal)
     return deduped
+
+
+def build_feature_catalog(canonical_features: list[dict[str, str]], signals: list[dict[str, str]]) -> list[dict[str, Any]]:
+    catalog: list[dict[str, Any]] = []
+    seen_names: set[str] = set()
+
+    for feature in canonical_features:
+        name = feature.get("feature_key", "").strip()
+        if not name:
+            continue
+        seen_names.add(name.lower())
+        catalog.append(
+            {
+                "name": name,
+                "kind": "canonical",
+                "confidence": "high",
+                "description": "Promoted feature memory recorded by the Native Feature Pipeline.",
+                "source_count": 1,
+                "sources": [feature.get("path", "")],
+            }
+        )
+
+    grouped: dict[str, dict[str, Any]] = {}
+    for signal in signals:
+        name = normalize_feature_catalog_name(signal.get("signal", ""))
+        if not name or name.lower() in seen_names:
+            continue
+        source = signal.get("source", "")
+        entry = grouped.setdefault(name.lower(), {"name": name, "sources": [], "doc_sources": 0, "source_sources": 0})
+        if source and source not in entry["sources"]:
+            entry["sources"].append(source)
+            if doc_path(source):
+                entry["doc_sources"] += 1
+            elif source_path(source):
+                entry["source_sources"] += 1
+
+    for entry in sorted(grouped.values(), key=lambda item: (-len(item["sources"]), item["name"].lower())):
+        source_count = len(entry["sources"])
+        confidence = feature_catalog_confidence(source_count, entry["doc_sources"], entry["source_sources"])
+        catalog.append(
+            {
+                "name": entry["name"],
+                "kind": "detected",
+                "confidence": confidence,
+                "description": feature_catalog_description(entry["name"], source_count, entry["doc_sources"], entry["source_sources"]),
+                "source_count": source_count,
+                "sources": entry["sources"][:6],
+            }
+        )
+        if len(catalog) >= 30:
+            break
+    return catalog
+
+
+def normalize_feature_catalog_name(text: str) -> str:
+    value = re.sub(r"\s+", " ", text or "").strip(" #-:._")
+    value = re.sub(r"^(feature|workflow|service|controller|route|api|module)\s*[:/-]\s*", "", value, flags=re.IGNORECASE)
+    value = re.sub(r"^(test|tests?)\s+", "", value, flags=re.IGNORECASE)
+    value = value.strip(" #-:._")
+    if not value:
+        return ""
+    lowered = value.lower()
+    generic = {
+        "index",
+        "overview",
+        "readme",
+        "skill",
+        "openai",
+        "configuration",
+        "config",
+        "setup",
+        "install",
+        "usage",
+        "api",
+        "service",
+        "controller",
+        "route",
+    }
+    if lowered in generic or lowered.endswith(".schema"):
+        return ""
+    words = [word for word in re.split(r"[^A-Za-z0-9]+", value) if word]
+    if len(words) == 1 and len(words[0]) < 4:
+        return ""
+    return " ".join(word if word.isupper() else word[:1].upper() + word[1:] for word in words)
+
+
+def feature_catalog_confidence(source_count: int, doc_sources: int, source_sources: int) -> str:
+    if source_count >= 3 and doc_sources:
+        return "high"
+    if source_count >= 2 or doc_sources or source_sources >= 2:
+        return "medium"
+    return "low"
+
+
+def feature_catalog_description(name: str, source_count: int, doc_sources: int, source_sources: int) -> str:
+    sources = []
+    if doc_sources:
+        sources.append(f"{doc_sources} documentation signal{'s' if doc_sources != 1 else ''}")
+    if source_sources:
+        sources.append(f"{source_sources} source signal{'s' if source_sources != 1 else ''}")
+    if not sources:
+        sources.append(f"{source_count} repository signal{'s' if source_count != 1 else ''}")
+    source_summary = " and ".join(sources)
+    return f"{name} appears in {source_summary}; inspect the listed files before relying on this as architecture truth."
 
 
 def collect_canonical_features(root: Path) -> list[dict[str, str]]:
@@ -895,6 +1006,7 @@ claims.
 def render_project_overview(profile: dict[str, Any]) -> str:
     project = profile["project"]
     package_lines = bullet_list(profile["package_manifests"], empty="No package manifests detected.")
+    catalog_lines = feature_catalog_lines(profile.get("feature_catalog", [])[:10], empty="No current feature catalog entries detected.")
     feature_lines = signal_lines(profile["feature_signals"][:12], empty="No feature-like signals detected from docs or paths.")
     return f"""# Project Overview
 
@@ -908,6 +1020,10 @@ This repository appears to be `{project['name']}`.
 ## Package And Tooling Signals
 
 {package_lines}
+
+## Current Feature Picture
+
+{catalog_lines}
 
 ## Detected Feature Signals
 
@@ -925,6 +1041,7 @@ This repository appears to be `{project['name']}`.
 def render_features_overview(profile: dict[str, Any]) -> str:
     canonical = profile["canonical_features"]
     canonical_lines = "\n".join(f"- `{item['feature_key']}` from `{item['path']}`" for item in canonical) or "No canonical features have been promoted yet."
+    catalog_lines = feature_catalog_lines(profile.get("feature_catalog", []), empty="No current feature catalog entries detected.")
     signal_text = signal_lines(profile["feature_signals"][:30], empty="No feature-like signals detected from docs or paths.")
     return f"""# Features Overview
 
@@ -936,6 +1053,13 @@ Generated by featurectl project profile: {profile['generated_at']}
 ## Canonical Feature Memory
 
 {canonical_lines}
+
+## Current Feature Picture
+
+These entries are a source-backed project map for feature discovery. They are
+not final product claims until the cited files are inspected.
+
+{catalog_lines}
 
 ## Detected Feature Signals
 
@@ -1040,6 +1164,20 @@ def bullet_list(items: list[str], *, empty: str) -> str:
 
 def signal_lines(items: list[dict[str, str]], *, empty: str) -> str:
     return "\n".join(f"- `{item['source']}`: {item['signal']}" for item in items) if items else empty
+
+
+def feature_catalog_lines(items: list[dict[str, Any]], *, empty: str) -> str:
+    if not items:
+        return empty
+    lines = []
+    for item in items:
+        sources = ", ".join(f"`{source}`" for source in item.get("sources", [])[:3] if source) or "`unknown`"
+        lines.append(
+            f"- {item.get('name', 'unknown')} ({item.get('kind', 'detected')}, "
+            f"{item.get('confidence', 'low')} confidence, {item.get('source_count', 0)} sources): "
+            f"{item.get('description', 'Inspect cited sources before using this feature signal.')} Sources: {sources}"
+        )
+    return "\n".join(lines)
 
 
 def safe_git(root: Path, *args: str) -> str | None:

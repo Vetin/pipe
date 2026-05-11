@@ -19,6 +19,19 @@ class ContextSkillContractTests(unittest.TestCase):
         self.assertIn("Do not invent architecture", content)
         self.assertIn("featurectl.py validate", content)
 
+    def test_project_init_skill_profiles_features_for_brownfield_context(self):
+        content = (ROOT / ".agents/skills/project-init/SKILL.md").read_text(encoding="utf-8")
+
+        self.assertIn("name: project-init", content)
+        self.assertIn("featurectl.py init --profile-project", content)
+        self.assertIn(".ai/knowledge/project-index.yaml", content)
+        self.assertIn("feature_catalog", content)
+        self.assertIn("Current Feature Picture", content)
+        self.assertIn("raw ideas", content)
+        self.assertIn("executive research", content)
+        self.assertIn("business analysis", content)
+        self.assertIn("No implementation code is changed", content)
+
 
 if __name__ == "__main__":
     unittest.main()

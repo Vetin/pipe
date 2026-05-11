@@ -2,6 +2,10 @@
 
 Use the Native Feature Pipeline for substantial feature work.
 
+Use the `project-init` skill or
+`.agents/pipeline-core/scripts/featurectl.py init --profile-project` when
+onboarding a repository or refreshing `.ai/knowledge` before feature planning.
+
 Use the pipeline for:
 
 - new product features
