@@ -167,6 +167,10 @@ def main(argv: list[str] | None = None) -> int:
     complete_slice_parser.add_argument("--diff-hash")
     complete_slice_parser.set_defaults(func=cmd_complete_slice)
 
+    worktree_status_parser = subparsers.add_parser("worktree-status", help="verify feature worktree readiness")
+    worktree_status_parser.add_argument("--workspace")
+    worktree_status_parser.set_defaults(func=cmd_worktree_status)
+
     try:
         args = parser.parse_args(argv)
         args.func(args)
@@ -432,6 +436,35 @@ def cmd_complete_slice(args: argparse.Namespace) -> None:
     print(f"slice_complete: {args.slice_id}")
 
 
+def cmd_worktree_status(args: argparse.Namespace) -> None:
+    root = repo_root()
+    workspace = resolve_workspace(root, args.workspace)
+    feature = read_yaml(workspace / "feature.yaml")
+    state = read_yaml(workspace / "state.yaml")
+    worktree_path = infer_worktree_path(workspace)
+    blockers = []
+    blockers.extend(status_blockers(root, workspace, feature, state))
+    blockers.extend(validate_implementation_minimum(state))
+    blockers.extend(validate_current_directory_is_worktree(workspace))
+
+    print("worktree_status: " + ("fail" if blockers else "pass"))
+    print(f"feature_key: {feature.get('feature_key')}")
+    print(f"worktree: {worktree_path}")
+    print(f"current_checkout: {repo_root()}")
+    try:
+        print(f"branch: {run_git(worktree_path, 'rev-parse', '--abbrev-ref', 'HEAD').strip()}")
+    except FeatureCtlError as exc:
+        blockers.append(str(exc))
+        print("branch: unknown")
+    print("implementation_ready: " + ("true" if not blockers else "false"))
+    print("blocking_issues:")
+    if blockers:
+        for blocker in blockers:
+            print(f"  - {blocker}")
+        raise FeatureCtlError("worktree status failed")
+    print("  none")
+
+
 def ensure_init_tree(root: Path) -> None:
     dirs = [
         ".ai/feature-workspaces",
@@ -621,21 +654,23 @@ def status_blockers(root: Path, workspace: Path, feature: dict[str, Any], state:
     worktree_value = worktree_info.get("path")
     branch_value = worktree_info.get("branch")
     if worktree_value:
-        worktree_path = (root / worktree_value).resolve()
-        if not worktree_path.exists():
+        worktree_path = infer_worktree_path(workspace)
+        configured_worktree_path = resolve_configured_worktree_path(root, worktree_value)
+        if configured_worktree_path.exists() and configured_worktree_path != worktree_path:
+            blockers.append(f"state.yaml worktree.path mismatch: expected {worktree_value}, actual {worktree_path}")
+        elif not configured_worktree_path.exists() and configured_worktree_path.name != worktree_path.name:
             blockers.append(f"worktree path does not exist: {worktree_value}")
+        try:
+            workspace.relative_to(worktree_path)
+        except ValueError:
+            blockers.append("workspace is not inside configured worktree")
+        try:
+            actual_branch = run_git(worktree_path, "rev-parse", "--abbrev-ref", "HEAD").strip()
+        except FeatureCtlError as exc:
+            blockers.append(str(exc))
         else:
-            try:
-                workspace.relative_to(worktree_path)
-            except ValueError:
-                blockers.append("workspace is not inside configured worktree")
-            try:
-                actual_branch = run_git(worktree_path, "rev-parse", "--abbrev-ref", "HEAD").strip()
-            except FeatureCtlError as exc:
-                blockers.append(str(exc))
-            else:
-                if branch_value and actual_branch != branch_value:
-                    blockers.append(f"worktree branch mismatch: expected {branch_value}, got {actual_branch}")
+            if branch_value and actual_branch != branch_value:
+                blockers.append(f"worktree branch mismatch: expected {branch_value}, got {actual_branch}")
     else:
         blockers.append("state.yaml missing worktree.path")
     return blockers
@@ -669,6 +704,7 @@ def validate_workspace(
         blockers.extend(validate_readiness_minimum(workspace, state))
     if implementation:
         blockers.extend(validate_implementation_minimum(state))
+        blockers.extend(validate_current_directory_is_worktree(workspace))
     if evidence:
         blockers.extend(validate_evidence_minimum(workspace))
     if review:
@@ -887,6 +923,14 @@ def validate_implementation_minimum(state: dict[str, Any]) -> list[str]:
         if gates.get(gate) not in {"approved", "delegated"}:
             blockers.append(f"implementation requires {gate} gate approved or delegated")
     return blockers
+
+
+def validate_current_directory_is_worktree(workspace: Path) -> list[str]:
+    worktree_path = infer_worktree_path(workspace)
+    current_checkout = repo_root()
+    if current_checkout != worktree_path:
+        return [f"current checkout is not configured feature worktree: {worktree_path}"]
+    return []
 
 
 def validate_evidence_minimum(workspace: Path) -> list[str]:
@@ -1302,6 +1346,22 @@ def evidence_path_blocker(workspace: Path, rel: str) -> bool:
     except ValueError:
         return True
     return False
+
+
+def infer_worktree_path(workspace: Path) -> Path:
+    resolved = workspace.resolve()
+    parts = resolved.parts
+    for index in range(len(parts) - 1, -1, -1):
+        if parts[index] == ".ai":
+            return Path(*parts[:index]).resolve()
+    raise FeatureCtlError(f"workspace is not inside a .ai directory: {workspace}")
+
+
+def resolve_configured_worktree_path(root: Path, worktree_value: str) -> Path:
+    configured = Path(worktree_value)
+    if configured.is_absolute():
+        return configured.resolve()
+    return (root / configured).resolve()
 
 
 if __name__ == "__main__":

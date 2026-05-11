@@ -14,3 +14,18 @@ Responsibilities:
 - verify current directory, branch, workspace path, and gate readiness
 - block implementation when required planning gates are not approved or delegated
 - run `featurectl.py worktree-status`
+
+Workflow:
+
+1. Change into the feature worktree root from `state.yaml.worktree.path`.
+2. Read `apex.md`, `feature.yaml`, `state.yaml`, `execution.md`, and
+   `slices.yaml`.
+3. Run:
+
+   ```bash
+   python .agents/pipeline-core/scripts/featurectl.py worktree-status --workspace <workspace>
+   ```
+
+4. Stop immediately if it fails. Do not run tests, write implementation code, or
+   record evidence until the command passes.
+5. If it passes, hand off to `nfp-08-tdd-implementation`.
