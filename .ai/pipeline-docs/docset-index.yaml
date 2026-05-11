@@ -1,0 +1,15 @@
+artifact_contract_version: '0.1.0'
+steps:
+  intake: steps/intake/docset.yaml
+  context: steps/context/docset.yaml
+  feature-contract: steps/feature-contract/docset.yaml
+  architecture: steps/architecture/docset.yaml
+  tech-design: steps/tech-design/docset.yaml
+  slicing: steps/slicing/docset.yaml
+  readiness: steps/readiness/docset.yaml
+  worktree: steps/worktree/docset.yaml
+  tdd-implementation: steps/tdd-implementation/docset.yaml
+  review: steps/review/docset.yaml
+  verification: steps/verification/docset.yaml
+  finish: steps/finish/docset.yaml
+  promote: steps/promote/docset.yaml

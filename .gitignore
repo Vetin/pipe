@@ -1,0 +1,5 @@
+pipeline-lab/runs/
+.ai/logs/
+*.tmp
+__pycache__/
+.pytest_cache/
