@@ -13,6 +13,18 @@ FEATURECTL = ROOT / ".agents/pipeline-core/scripts/featurectl.py"
 BENCH = ROOT / ".agents/pipeline-core/scripts/pipelinebench.py"
 
 
+def ignore_generated_pipeline_lab(_src, names):
+    ignored = {
+        "runs",
+        "repos",
+        "real-runs",
+        "implementation-runs",
+        "materialized-runs",
+        "nfp-real-runs",
+    }
+    return [name for name in names if name in ignored]
+
+
 def run(cmd, cwd, check=True):
     return subprocess.run(cmd, cwd=cwd, check=check, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
@@ -21,7 +33,12 @@ class ShowcaseTests(unittest.TestCase):
     def setUp(self):
         self.tempdir = Path(tempfile.mkdtemp(prefix="showcase-test-"))
         self.repo = self.make_repo()
-        shutil.copytree(ROOT / "pipeline-lab", self.repo / "pipeline-lab", dirs_exist_ok=True)
+        shutil.copytree(
+            ROOT / "pipeline-lab",
+            self.repo / "pipeline-lab",
+            dirs_exist_ok=True,
+            ignore=ignore_generated_pipeline_lab,
+        )
         shutil.copytree(ROOT / ".agents", self.repo / ".agents", dirs_exist_ok=True)
         shutil.copytree(ROOT / ".ai", self.repo / ".ai", dirs_exist_ok=True)
         run(["git", "add", "."], self.repo)
