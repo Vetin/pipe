@@ -1,0 +1,4 @@
+artifact_contract_version: '0.1.0'
+scorecard: safety-and-gates
+hard_checks_required: true
+soft_scores: placeholder

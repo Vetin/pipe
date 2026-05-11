@@ -1,0 +1,4 @@
+artifact_contract_version: '0.1.0'
+scorecard: artifact-quality
+hard_checks_required: true
+soft_scores: placeholder

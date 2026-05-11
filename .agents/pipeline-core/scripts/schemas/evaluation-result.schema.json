@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Native Feature Pipeline benchmark result",
+  "type": "object",
+  "required": ["artifact_contract_version", "scenario", "workspace", "hard_passed", "hard_score", "hard_total", "hard_results", "soft_scores"],
+  "properties": {
+    "artifact_contract_version": { "const": "0.1.0" },
+    "scenario": { "type": "string" },
+    "workspace": { "type": "string" },
+    "hard_passed": { "type": "boolean" },
+    "hard_score": { "type": "integer" },
+    "hard_total": { "type": "integer" },
+    "hard_results": { "type": "array" },
+    "soft_scores": { "type": "object" }
+  }
+}

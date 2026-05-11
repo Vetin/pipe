@@ -1,0 +1,22 @@
+artifact_contract_version: '0.1.0'
+scenario: frontend-settings
+mode: offline
+required_files:
+  - feature.md
+  - architecture.md
+  - tech-design.md
+  - slices.yaml
+  - state.yaml
+  - execution.md
+hard_checks:
+  - core_artifacts
+  - no_forbidden_files
+  - slices_have_tdd
+  - state_has_no_next_skill
+soft_score_placeholders:
+  - requirement_quality
+  - architecture_clarity
+  - module_communication_quality
+  - adr_usefulness
+  - reuse_quality
+  - review_quality

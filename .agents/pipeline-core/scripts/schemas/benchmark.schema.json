@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Native Feature Pipeline benchmark scenario",
+  "type": "object",
+  "required": ["artifact_contract_version", "scenario", "mode", "required_files", "hard_checks"],
+  "properties": {
+    "artifact_contract_version": { "const": "0.1.0" },
+    "scenario": { "type": "string" },
+    "mode": { "enum": ["offline", "interactive", "harness"] },
+    "required_files": { "type": "array", "items": { "type": "string" } },
+    "hard_checks": { "type": "array", "items": { "type": "string" } },
+    "soft_score_placeholders": { "type": "array", "items": { "type": "string" } }
+  }
+}
