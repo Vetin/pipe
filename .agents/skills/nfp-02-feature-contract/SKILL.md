@@ -12,6 +12,9 @@ Methodology:
 
 - Read `.agents/pipeline-core/references/native-skill-protocol.md`.
 - Apply `methodology/extracted/upstream-pattern-map.md` as the behavioral synthesis of cloned upstream methodologies; cite patterns in `Docs Consulted:` when they influence a decision.
+- Apply `.agents/pipeline-core/references/methodology-lenses.md` for ambiguity
+  taxonomy, clarification limits, elicitation lenses, source-backed claims, and
+  adaptive rigor.
 - Confirm the current directory is the feature worktree.
 - Read `apex.md`, `feature.yaml`, `state.yaml`, and `execution.md`.
 - Load the feature-contract docset with
@@ -24,8 +27,12 @@ Methodology:
 Responsibilities:
 
 - ask grouped blocking questions when behavior is unsafe or unclear
+- score ambiguity before drafting and after vague answers
 - draft intent, motivation, actors, goals, non-goals, requirements, acceptance
   criteria, assumptions, related features, and product risks
+- separate source-backed facts from assumptions and open questions
+- document related existing features or explicitly state that no relevant
+  existing behavior was found during context discovery
 - update the feature contract gate to `drafted`
 - validate the workspace before stopping or handing off
   through `featurectl.py validate`
@@ -57,9 +64,30 @@ must be testable.
 
 Clarification policy:
 
-- ask grouped blocking questions only
-- do not continue on security-critical or business-critical ambiguity
+- score ambiguity with the taxonomy in `methodology-lenses.md`
+- ask at most five high-impact blocking questions before drafting
+- ask one question at a time when the answer changes domain model, API,
+  permission, destructive behavior, or acceptance criteria
+- do not continue on security-critical, data-loss, compliance,
+  public-contract, migration, or business-critical ambiguity
+- record each unclear item as answered, assumed, deferred, or blocking
 - record non-blocking assumptions explicitly
+- when direction is genuinely open, present two or three approaches with
+  tradeoffs and identify which one the draft assumes
+
+Contract quality gates:
+
+- every functional requirement is measurable and maps to one or more
+  acceptance criteria
+- every actor with mutation, review, approval, retry, rollback, export, or
+  admin capability has an explicit permission rule or open question
+- every destructive or irreversible flow has preview, audit, rollback, and
+  verification expectations
+- every external contract or integration mentions idempotency, replay/stale
+  data, authentication, and observable failure behavior when applicable
+- product risks include at least one pre-mortem or inversion finding for
+  standard and comprehensive rigor
+- if no existing feature can be reused, explain which sources were inspected
 
 One-artifact stop behavior:
 

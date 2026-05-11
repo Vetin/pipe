@@ -24,6 +24,9 @@ Methodology:
   clear output and final checks.
 - Use `methodology/extracted/upstream-pattern-map.md` for brownfield bootstrap
   rules and context-grounded phase behavior.
+- Use `.agents/pipeline-core/references/methodology-lenses.md` for brownfield
+  research, existing-solution scan, claim provenance, and eval-style profile
+  validation.
 - Use `methodology/extracted/web-best-practices-20260512.md` for repository
   indexing, living specs, and validation-loop expectations.
 - Treat generated repository indexes as maps to inspect, not as final product
@@ -44,16 +47,24 @@ Workflow:
 4. Read `.ai/knowledge/features-overview.md`, `.ai/knowledge/module-map.md`,
    `.ai/knowledge/testing-overview.md`, `.ai/knowledge/contracts-overview.md`,
    and `.ai/knowledge/integration-map.md`.
-5. Recheck the top feature catalog entries by opening at least three cited
-   source paths when the repository has enough files.
-6. Produce a concise project briefing for the user:
+5. Build a reuse map before feature work:
+   - current feature catalog entries that look related to the user request
+   - existing modules, jobs, routes, contracts, schemas, migrations, tests, and
+     ADRs that should be reused or extended
+   - explicit "not found" notes for expected surfaces that are absent
+6. Recheck the top feature catalog entries by opening at least three cited
+   source paths when the repository has enough files. Do not present generated
+   feature catalog entries as truth until at least one cited source path has
+   been inspected.
+7. Produce a concise project briefing for the user:
    - project identity, branch, and source counts
    - current feature picture
+   - existing-solution/reuse map
    - likely module boundaries
    - test and contract surfaces
    - integration/deployment surfaces
    - source confidence and follow-up risks
-7. When this init is used before a feature request, append the relevant
+8. When this init is used before a feature request, append the relevant
    knowledge paths to that feature workspace `execution.md` under
    `Docs Consulted: Context`.
 
@@ -63,6 +74,9 @@ Quality checks:
   counts for a non-empty repository.
 - `.ai/knowledge/project-index.yaml` contains `feature_catalog`.
 - `.ai/knowledge/features-overview.md` contains `Current Feature Picture`.
+- The briefing separates source-backed facts from generated hypotheses.
+- The briefing includes at least one reuse opportunity or an explicit
+  no-existing-solution finding.
 - Every summary claim references generated knowledge or a cited repository
   source.
 - No implementation code is changed by this skill.

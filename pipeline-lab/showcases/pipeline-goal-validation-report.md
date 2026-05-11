@@ -3,7 +3,7 @@
 - Native run: `/Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-native-debug`
 - Init profile run: `/Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/init-profile-runs/20260512-init-profile`
 - Repeated passes: `3`
-- Generated at: `2026-05-11T22:52:38.592075+00:00`
+- Generated at: `2026-05-11T23:06:21.006049+00:00`
 
 ## Pass Summary
 

@@ -356,6 +356,9 @@ def write_artifacts(run_dir: Path, case: FeatureCase, round_number: int, repo_hi
     risks_md = "\n".join(f"- {risk}" for risk in risks)
     modules_md = "\n".join(f"- {module}" for module in modules)
     hints_md = "\n".join(f"- `{hint}`" if "/" in hint else f"- {hint}" for hint in repo_hints)
+    reuse_md = "\n".join(f"- Inspect and prefer `{hint}` before adding a parallel implementation." for hint in repo_hints[:4])
+    ambiguity_score = "0.18" if round_number >= 3 else "0.32" if round_number == 2 else "0.46"
+    ambiguity_status = "safe to proceed with recorded assumptions" if round_number >= 3 else "requires risk closure before implementation"
 
     write_text(
         artifacts / "feature.md",
@@ -380,11 +383,35 @@ Implement {case.feature} in {case.source} with production-grade contracts, tests
 - Do not silently mutate irreversible data.
 - Do not promote artifacts without verification evidence.
 
+## Related Existing Features
+Round {round_number} requires source-backed reuse before new code is accepted.
+The live implementation must inspect the repository context and either reuse the
+closest existing module or record a no-existing-solution finding.
+
 ## Acceptance Criteria
 {ac_md}
 
+## Non-Functional Requirements
+- `NFR-001` Mutating operations are auditable, observable, and rollback-aware.
+- `NFR-002` External or asynchronous paths are idempotent and reject stale or replayed input.
+- `NFR-003` Verification evidence must include exact commands, outputs, and artifact paths.
+
 ## Product Risks
 {risks_md}
+
+## Ambiguity Score
+- Score: `{ambiguity_score}`
+- Status: {ambiguity_status}
+- Blocking dimensions: functional scope, permissions, rollback, stale/replay behavior, and completion signals.
+
+## Clarification Ledger
+- Answered: core actor, target workflow, and audit requirement are known from the feature request.
+- Assumed: exact repository module names are resolved during context inspection.
+- Deferred: visual/UI copy and migration mechanics are decided after source inspection.
+- Blocking: none remain in round {round_number} once repository context is inspected.
+
+## Source-Backed Reuse Map
+{reuse_md or "- No local checkout hints were available; live implementation must clone or inspect the repository before planning."}
 
 ## Open Questions
 - Confirm exact repository module names during live implementation.
@@ -398,6 +425,18 @@ Implement {case.feature} in {case.source} with production-grade contracts, tests
 
 ## Candidate Files And Modules
 {hints_md}
+
+## Existing-Solution Reuse Map
+{reuse_md or "- No existing solution can be claimed until source files are inspected."}
+
+## Source-Backed Facts
+- Candidate paths come from `git ls-files` in the local checkout when present.
+- Generated context is a source map only; final claims require opening cited files.
+
+## Hypotheses To Verify
+- The requested feature should extend an existing domain service before adding a new subsystem.
+- Audit/event persistence should reuse the nearest existing event or activity model when available.
+- Tests should be placed beside the module that owns the domain invariant.
 
 ## Context Rule
 Round {round_number} requires live Codex implementation to inspect these paths before final architecture, code, or tests are accepted.
@@ -520,6 +559,15 @@ Review feature contract, repository context, architecture, technical design, sli
                     {"name": "contract-lint", "status": "planned", "scope": "feature.md"},
                     {"name": "slice-red-green", "status": "planned", "scope": "slices.yaml"},
                     {"name": "review-replay", "status": "planned", "scope": "reviews/review.md"},
+                ],
+                "judge_dimensions": [
+                    "native_prompt_integrity",
+                    "artifact_completeness",
+                    "contract_clarity",
+                    "repo_context_research",
+                    "architecture_design",
+                    "slicing_tdd",
+                    "review_evidence",
                 ],
                 "native_prompt": "no direct internal skill invocation",
             },

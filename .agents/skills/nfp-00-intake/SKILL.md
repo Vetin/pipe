@@ -12,6 +12,8 @@ Methodology:
 
 - Read `.agents/pipeline-core/references/native-skill-protocol.md`.
 - Apply `methodology/extracted/upstream-pattern-map.md` as the behavioral synthesis of cloned upstream methodologies; cite patterns in `Docs Consulted:` when they influence a decision.
+- Apply `.agents/pipeline-core/references/methodology-lenses.md` for adaptive
+  rigor, ambiguity scoring, bounded clarification, and eval-style state.
 - Load the intake docset with `featurectl.py load-docset --step intake` after
   the workspace exists.
 - Use `methodology/extracted/methodology-summary.md`,
@@ -24,6 +26,11 @@ Responsibilities:
 
 - parse the user feature request
 - infer or ask for the semantic feature key
+- classify rigor as minimal, standard, or comprehensive
+- estimate ambiguity across functional scope, data model, UX, integrations,
+  security/RBAC, edge cases, non-functional constraints, and completion signals
+- ask at most five blocking clarification questions before creating downstream
+  planning commitments
 - run `featurectl.py new`
 - confirm the feature worktree and workspace exist
 - record the run plan and non-delegable checkpoints in `execution.md`
@@ -34,25 +41,36 @@ Responsibilities:
 Workflow:
 
 1. Extract `domain`, `title`, and optional aliases from the request.
-2. Ask only if `domain` or feature intent cannot be inferred safely.
-3. Run:
+2. Classify rigor:
+   - minimal for local low-risk changes with obvious tests
+   - standard for normal cross-module product features
+   - comprehensive for security, data loss, public API, compliance, billing,
+     auth, migrations, irreversible changes, or unclear business rules
+3. Estimate ambiguity from `methodology-lenses.md`. Stop and ask if ambiguity is
+   above `0.40`, or if any security, destructive, public-contract, compliance,
+   or data-ownership question is unresolved.
+4. Ask only if `domain` or feature intent cannot be inferred safely. Keep
+   clarification to the highest-impact blocking questions and record unanswered
+   items as assumptions or blockers.
+5. Run:
 
    ```bash
    python .agents/pipeline-core/scripts/featurectl.py new --domain <domain> --title "<title>"
    ```
 
-4. Change into the created feature worktree for all later feature work.
-5. Read the workspace `apex.md`, `feature.yaml`, `state.yaml`, and
+6. Change into the created feature worktree for all later feature work.
+7. Read the workspace `apex.md`, `feature.yaml`, `state.yaml`, and
    `execution.md`.
-6. Load the intake docset:
+8. Load the intake docset:
 
    ```bash
    python .agents/pipeline-core/scripts/featurectl.py load-docset --workspace <workspace> --step intake
    ```
 
-7. Append docs consulted, checkpoints, assumptions, and the next step to
+9. Append docs consulted, rigor level, ambiguity score, clarification ledger,
+   checkpoints, assumptions, stop condition, and the next step to
    `execution.md`.
-8. Run:
+10. Run:
 
    ```bash
    python .agents/pipeline-core/scripts/featurectl.py validate --workspace <workspace>

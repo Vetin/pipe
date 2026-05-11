@@ -1,18 +1,18 @@
 artifact_contract_version: 0.1.0
 generated_by: featurectl.py init --profile-project
-generated_at: '2026-05-11T22:52:26Z'
+generated_at: '2026-05-11T23:06:11Z'
 project:
   name: harness-pipeline
   root: /Users/egormasnankin/work/harness-pipeline
   branch: main
-  head: 3aee2c5
+  head: 4ccced3
   remote: none
 counts:
-  tracked_files: 394
-  profiled_files: 224
+  tracked_files: 397
+  profiled_files: 227
   source_files: 14
   test_files: 32
-  doc_files: 102
+  doc_files: 104
   contract_files: 20
   integration_files: 5
 package_manifests: []
@@ -23,11 +23,11 @@ module_dirs:
 - path: .ai
   tracked_files: 58
 - path: pipeline-lab
-  tracked_files: 50
+  tracked_files: 52
 - path: tests
   tracked_files: 32
 - path: methodology
-  tracked_files: 12
+  tracked_files: 13
 source_examples:
 - .agents/pipeline-core/scripts/featurectl.py
 - .agents/pipeline-core/scripts/pipelinebench.py
@@ -136,6 +136,8 @@ canonical_features: []
 feature_signals:
 - source: features.md
   signal: Best three showcase features
+- source: methodology/extracted/upstream-skill-adjustment-plan-20260512.md
+  signal: 'Batch 1: Intake, Init, Context, Feature Contract'
 - source: methodology/extracted/workflow-and-gates.md
   signal: Workflow And Gates
 - source: pipeline-lab/README.md
@@ -172,6 +174,14 @@ feature_catalog:
   source_count: 1
   sources:
   - pipeline-lab/showcases/scenarios/02-webhook-integration.yaml
+- name: Batch 1 Intake Init Context Feature Contract
+  kind: detected
+  confidence: medium
+  description: Batch 1 Intake Init Context Feature Contract appears in 1 documentation
+    signal; inspect the listed files before relying on this as architecture truth.
+  source_count: 1
+  sources:
+  - methodology/extracted/upstream-skill-adjustment-plan-20260512.md
 - name: Best Three Showcase Features
   kind: detected
   confidence: medium

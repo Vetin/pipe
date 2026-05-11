@@ -1,0 +1,27 @@
+case: medusa-b2b-quote-to-order-approval-workflow
+source: Medusa
+feature: B2B quote-to-order approval workflow
+round: 1
+profile: baseline-native
+overall: 0.771
+high_quality: false
+weakest_dimension: review_security
+prompt_improvement: Baseline establishes whether native pipeline discovery works without
+  naming internal steps.
+dimensions:
+  native_prompt: 1.0
+  artifact_contract: 0.78
+  repo_context: 0.72
+  architecture_design: 0.76
+  slicing_tdd: 0.73
+  review_security: 0.7
+  evidence_validation: 0.71
+artifacts:
+  feature: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-methodology-batch1/round-01/medusa-b2b-quote-to-order-approval-workflow/artifacts/feature.md
+  repo_context: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-methodology-batch1/round-01/medusa-b2b-quote-to-order-approval-workflow/artifacts/repo-context.md
+  architecture: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-methodology-batch1/round-01/medusa-b2b-quote-to-order-approval-workflow/artifacts/architecture.md
+  tech_design: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-methodology-batch1/round-01/medusa-b2b-quote-to-order-approval-workflow/artifacts/tech-design.md
+  slices: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-methodology-batch1/round-01/medusa-b2b-quote-to-order-approval-workflow/artifacts/slices.yaml
+  review: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-methodology-batch1/round-01/medusa-b2b-quote-to-order-approval-workflow/artifacts/reviews/review.md
+  evidence: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-methodology-batch1/round-01/medusa-b2b-quote-to-order-approval-workflow/artifacts/evidence/manifest.yaml
+  feature_card: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-methodology-batch1/round-01/medusa-b2b-quote-to-order-approval-workflow/artifacts/feature-card.md
