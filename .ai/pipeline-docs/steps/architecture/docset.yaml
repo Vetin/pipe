@@ -1,0 +1,27 @@
+artifact_contract_version: '0.1.0'
+step: architecture
+required_docs:
+  - .ai/constitution.md
+  - .ai/knowledge/architecture-overview.md
+  - .ai/knowledge/module-map.md
+  - .ai/knowledge/adr-index.md
+  - .ai/pipeline-docs/global/architecture-standards.md
+  - .ai/pipeline-docs/global/security-standards.md
+  - .ai/pipeline-docs/steps/architecture/overview.md
+  - .ai/pipeline-docs/steps/architecture/checklist.md
+optional_docs:
+  - .ai/features/index.yaml
+  - .ai/knowledge/integration-map.md
+  - .ai/knowledge/contracts-overview.md
+related_feature_patterns:
+  - .ai/features/*/*/architecture.md
+selected_alternatives: []
+suggested_related_files:
+  - docs/
+  - src/
+  - tests/
+budget:
+  max_related_features: 5
+  max_doc_chars: 60000
+  required_docs_first: true
+  summarize_large_docs: true

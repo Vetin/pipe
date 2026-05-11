@@ -38,5 +38,21 @@ Needs human review: yes
 Sources inspected: ...
 ```
 
+Minimum provisional files:
+
+- `.ai/knowledge/project-overview.md`
+- `.ai/knowledge/module-map.md`
+- `.ai/knowledge/architecture-overview.md`
+
+The provisional files must reference real inspected paths and must not claim
+specific architecture facts without a source.
+
 End by updating `execution.md` with a `Docs Consulted: Context` entry and
 running `featurectl.py validate --workspace <workspace>`.
+
+If automatic handoff does not happen, print:
+
+```text
+Next skill: nfp-02-feature-contract.
+Continue with that skill.
+```

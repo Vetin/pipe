@@ -115,6 +115,11 @@ def main(argv: list[str] | None = None) -> int:
     validate_parser.add_argument("--review", action="store_true")
     validate_parser.set_defaults(func=cmd_validate)
 
+    load_docset_parser = subparsers.add_parser("load-docset", help="list docs for a pipeline step")
+    load_docset_parser.add_argument("--workspace", required=True)
+    load_docset_parser.add_argument("--step", required=True)
+    load_docset_parser.set_defaults(func=cmd_load_docset)
+
     try:
         args = parser.parse_args(argv)
         args.func(args)
@@ -253,6 +258,27 @@ def cmd_validate(args: argparse.Namespace) -> None:
             print(f"- {blocker}")
         raise FeatureCtlError("workspace validation failed")
     print("validation: pass")
+
+
+def cmd_load_docset(args: argparse.Namespace) -> None:
+    root = repo_root()
+    workspace = resolve_workspace(root, args.workspace)
+    if not workspace.exists():
+        raise FeatureCtlError(f"workspace does not exist: {workspace}")
+    step = normalize_step_name(args.step)
+    docset = load_docset(root, step)
+    print(f"step: {step}")
+    print_docs("required_docs", root, docset.get("required_docs", []))
+    print_docs("optional_docs", root, docset.get("optional_docs", []))
+    print_docs("missing_docs", root, missing_docs(root, docset))
+    print("selected_alternatives:")
+    alternatives = docset.get("selected_alternatives") or []
+    if alternatives:
+        for item in alternatives:
+            print(f"  - {item}")
+    else:
+        print("  none")
+    print_docs("suggested_related_files", root, docset.get("suggested_related_files", []), check_exists=False)
 
 
 def ensure_init_tree(root: Path) -> None:
@@ -484,6 +510,7 @@ def validate_workspace(
     blockers.extend(forbidden_file_blockers(workspace))
     blockers.extend(validate_state_shape(state))
     blockers.extend(validate_feature_contract_if_started(workspace, state))
+    blockers.extend(validate_architecture_if_started(workspace, state))
 
     if readiness:
         blockers.extend(validate_readiness_minimum(workspace, state))
@@ -539,6 +566,31 @@ def validate_feature_contract_if_started(workspace: Path, state: dict[str, Any])
         blockers.append("feature.md must include functional requirement IDs")
     if "AC-" not in content:
         blockers.append("feature.md must include acceptance criteria IDs")
+    return blockers
+
+
+def validate_architecture_if_started(workspace: Path, state: dict[str, Any]) -> list[str]:
+    gate = (state.get("gates") or {}).get("architecture")
+    if gate not in {"drafted", "approved", "delegated", "complete"}:
+        return []
+    architecture_path = workspace / "architecture.md"
+    if not architecture_path.exists():
+        return ["architecture gate requires architecture.md"]
+    content = architecture_path.read_text(encoding="utf-8")
+    required_headings = (
+        "## System Context",
+        "## Component Interactions",
+        "## Security Model",
+        "## Failure Modes",
+        "## Observability",
+        "## Rollback Strategy",
+        "## Architecture Risks",
+        "## ADRs",
+    )
+    blockers = [f"architecture.md missing heading: {heading}" for heading in required_headings if heading not in content]
+    execution = (workspace / "execution.md").read_text(encoding="utf-8") if (workspace / "execution.md").exists() else ""
+    if "Docs Consulted: Architecture" not in execution:
+        blockers.append("execution.md missing Docs Consulted: Architecture")
     return blockers
 
 
@@ -598,6 +650,66 @@ def next_skill_for_step(step: str | None) -> str:
         "promote": "nfp-12-promote",
     }
     return mapping.get(step or "", "unknown")
+
+
+def normalize_step_name(step: str) -> str:
+    normalized = step.strip().lower().replace("_", "-")
+    valid_steps = {
+        "intake",
+        "context",
+        "feature-contract",
+        "architecture",
+        "tech-design",
+        "slicing",
+        "readiness",
+        "worktree",
+        "tdd-implementation",
+        "review",
+        "verification",
+        "finish",
+        "promote",
+    }
+    if normalized not in valid_steps:
+        raise FeatureCtlError(f"unknown docset step: {step}")
+    return normalized
+
+
+def load_docset(root: Path, step: str) -> dict[str, Any]:
+    index_path = root / ".ai/pipeline-docs/docset-index.yaml"
+    if not index_path.exists():
+        raise FeatureCtlError("missing .ai/pipeline-docs/docset-index.yaml")
+    index = read_yaml(index_path)
+    rel = (index.get("steps") or {}).get(step)
+    if not rel:
+        raise FeatureCtlError(f"docset index has no entry for step: {step}")
+    docset_path = root / ".ai/pipeline-docs" / rel
+    docset = read_yaml(docset_path)
+    if docset.get("artifact_contract_version") != CONTRACT_VERSION:
+        raise FeatureCtlError(f"docset artifact_contract_version mismatch in {docset_path}")
+    if docset.get("step") != step:
+        raise FeatureCtlError(f"docset step mismatch in {docset_path}")
+    return docset
+
+
+def missing_docs(root: Path, docset: dict[str, Any]) -> list[str]:
+    missing: list[str] = []
+    for key in ("required_docs", "optional_docs"):
+        for rel in docset.get(key, []) or []:
+            if not (root / rel).exists():
+                missing.append(rel)
+    return missing
+
+
+def print_docs(label: str, root: Path, docs: list[str], *, check_exists: bool = True) -> None:
+    print(f"{label}:")
+    if not docs:
+        print("  none")
+        return
+    for rel in docs:
+        suffix = ""
+        if check_exists and not (root / rel).exists():
+            suffix = " (missing)"
+        print(f"  - {rel}{suffix}")
 
 
 def normalize_domain(domain: str) -> str:
