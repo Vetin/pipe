@@ -84,7 +84,8 @@ out.write_text("branch: nfp/toy-feature\\ncommit: fake123\\n")
 print(json.dumps({
     "repo": repo,
     "has_feature": "stable greeting feature" in prompt,
-    "has_pipeline": "nfp-00-intake" in prompt and "nfp-12-promote" in prompt,
+    "has_native_pipeline": "normal user feature request" in prompt and "Progress through these outcomes" in prompt,
+    "no_direct_skill_invocations": "nfp-00-intake" not in prompt and "nfp-12-promote" not in prompt,
     "in_place": "Do not create a git worktree" in prompt,
 }))
 """,
@@ -135,9 +136,13 @@ print(json.dumps({
         self.assertIn(str(self.fake_codex), command[0])
         self.assertIn("--dangerously-bypass-approvals-and-sandbox", command)
         self.assertIn('"has_feature": true', output)
-        self.assertIn('"has_pipeline": true', output)
+        self.assertIn('"has_native_pipeline": true', output)
+        self.assertIn('"no_direct_skill_invocations": true', output)
         self.assertIn("branch: nfp/toy-feature", report)
         self.assertIn("Do not create a git worktree", prompt)
+        self.assertNotIn("Read and follow every NFP skill doc in order", prompt)
+        self.assertNotIn("nfp-00-intake", prompt)
+        self.assertNotIn("nfp-12-promote", prompt)
         self.assertTrue((self.output_dir / "summary-stable-test.yaml").exists())
         self.assertTrue((self.output_dir / "commands-stable-test.sh").exists())
 

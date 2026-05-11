@@ -11,6 +11,7 @@ Use this skill to start a new Native Feature Pipeline run.
 Methodology:
 
 - Read `.agents/pipeline-core/references/native-skill-protocol.md`.
+- Apply `methodology/extracted/upstream-pattern-map.md` as the behavioral synthesis of cloned upstream methodologies; cite patterns in `Docs Consulted:` when they influence a decision.
 - Load the intake docset with `featurectl.py load-docset --step intake` after
   the workspace exists.
 - Use `methodology/extracted/methodology-summary.md`,

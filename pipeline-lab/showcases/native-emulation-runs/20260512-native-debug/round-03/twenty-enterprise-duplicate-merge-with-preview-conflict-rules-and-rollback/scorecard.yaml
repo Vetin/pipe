@@ -1,0 +1,27 @@
+case: twenty-enterprise-duplicate-merge-with-preview-conflict-rules-and-rollback
+source: Twenty
+feature: Enterprise duplicate merge with preview, conflict rules, and rollback
+round: 3
+profile: production-grade
+overall: 0.964
+high_quality: true
+weakest_dimension: repo_context
+prompt_improvement: Final prompt asks for production-grade behavior and rejects chat-only
+  state or unverified promotion.
+dimensions:
+  native_prompt: 1.0
+  artifact_contract: 0.97
+  repo_context: 0.94
+  architecture_design: 0.96
+  slicing_tdd: 0.95
+  review_security: 0.97
+  evidence_validation: 0.96
+artifacts:
+  feature: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-native-debug/round-03/twenty-enterprise-duplicate-merge-with-preview-conflict-rules-and-rollback/artifacts/feature.md
+  repo_context: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-native-debug/round-03/twenty-enterprise-duplicate-merge-with-preview-conflict-rules-and-rollback/artifacts/repo-context.md
+  architecture: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-native-debug/round-03/twenty-enterprise-duplicate-merge-with-preview-conflict-rules-and-rollback/artifacts/architecture.md
+  tech_design: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-native-debug/round-03/twenty-enterprise-duplicate-merge-with-preview-conflict-rules-and-rollback/artifacts/tech-design.md
+  slices: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-native-debug/round-03/twenty-enterprise-duplicate-merge-with-preview-conflict-rules-and-rollback/artifacts/slices.yaml
+  review: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-native-debug/round-03/twenty-enterprise-duplicate-merge-with-preview-conflict-rules-and-rollback/artifacts/reviews/review.md
+  evidence: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-native-debug/round-03/twenty-enterprise-duplicate-merge-with-preview-conflict-rules-and-rollback/artifacts/evidence/manifest.yaml
+  feature_card: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-native-debug/round-03/twenty-enterprise-duplicate-merge-with-preview-conflict-rules-and-rollback/artifacts/feature-card.md

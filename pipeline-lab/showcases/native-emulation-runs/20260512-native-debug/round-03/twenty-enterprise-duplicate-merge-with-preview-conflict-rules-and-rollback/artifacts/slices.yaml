@@ -1,0 +1,68 @@
+slices:
+- id: S-001
+  requirement_ids:
+  - FR-001
+  title: Detect likely duplicate companies from normalized name, domain, and configurable
+  status: evidence-ready
+  owned_surfaces: Company duplicate candidate service and normalized matching query
+  red_command: test twenty-enterprise-duplicate-merge-with-preview-conflict-rules-and-rollback
+    S-001 red
+  green_command: test twenty-enterprise-duplicate-merge-with-preview-conflict-rules-and-rollback
+    S-001 green
+  rollback: Record before/after state and validate compensation path.
+  review_focus:
+  - permissions
+  - auditability
+  - rollback
+  - failure modes
+- id: S-002
+  requirement_ids:
+  - FR-002
+  title: Show a merge preview
+  status: evidence-ready
+  owned_surfaces: Merge preview API with conflict policy and related-record impact
+    model
+  red_command: test twenty-enterprise-duplicate-merge-with-preview-conflict-rules-and-rollback
+    S-002 red
+  green_command: test twenty-enterprise-duplicate-merge-with-preview-conflict-rules-and-rollback
+    S-002 green
+  rollback: Record before/after state and validate compensation path.
+  review_focus:
+  - permissions
+  - auditability
+  - rollback
+  - failure modes
+- id: S-003
+  requirement_ids:
+  - FR-003
+  title: Apply a guarded merge that preserves a reversible audit record and blocks
+    automa
+  status: evidence-ready
+  owned_surfaces: Transactional merge command with audit event and rollback payload
+  red_command: test twenty-enterprise-duplicate-merge-with-preview-conflict-rules-and-rollback
+    S-003 red
+  green_command: test twenty-enterprise-duplicate-merge-with-preview-conflict-rules-and-rollback
+    S-003 green
+  rollback: Record before/after state and validate compensation path.
+  review_focus:
+  - permissions
+  - auditability
+  - rollback
+  - failure modes
+- id: S-004
+  requirement_ids:
+  - FR-004
+  title: Support rollback planning for copied fields, reparented relations, and audit
+    rep
+  status: evidence-ready
+  owned_surfaces: CRM UI preview, confirmation, and audit-history surface
+  red_command: test twenty-enterprise-duplicate-merge-with-preview-conflict-rules-and-rollback
+    S-004 red
+  green_command: test twenty-enterprise-duplicate-merge-with-preview-conflict-rules-and-rollback
+    S-004 green
+  rollback: Record before/after state and validate compensation path.
+  review_focus:
+  - permissions
+  - auditability
+  - rollback
+  - failure modes

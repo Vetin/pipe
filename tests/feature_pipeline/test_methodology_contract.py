@@ -12,12 +12,27 @@ SCRIPT = ROOT / ".agents/pipeline-core/scripts/featurectl.py"
 
 METHODOLOGY_FILES = [
     "methodology/extracted/methodology-summary.md",
+    "methodology/extracted/upstream-pattern-map.md",
     "methodology/extracted/artifact-model.md",
     "methodology/extracted/workflow-and-gates.md",
     "methodology/extracted/context-and-doc-loading.md",
     "methodology/extracted/review-and-verification.md",
     "methodology/extracted/evaluation-patterns.md",
 ]
+
+UPSTREAM_REPOS = {
+    "bmad-method": "https://github.com/bmad-code-org/BMAD-METHOD.git",
+    "spec-kit": "https://github.com/github/spec-kit.git",
+    "openspec": "https://github.com/Fission-AI/OpenSpec.git",
+    "superpowers": "https://github.com/obra/superpowers.git",
+    "aidlc-workflows": "https://github.com/awslabs/aidlc-workflows.git",
+    "specs-md": "https://github.com/fabriqaai/specs.md.git",
+    "shotgun": "https://github.com/shotgun-sh/shotgun.git",
+    "get-shit-done": "https://github.com/glittercowboy/get-shit-done.git",
+    "ccpm": "https://github.com/automazeio/ccpm.git",
+    "claude-task-master": "https://github.com/eyaltoledano/claude-task-master.git",
+    "roo-code": "https://github.com/RooCodeInc/Roo-Code.git",
+}
 
 REFERENCE_FILES = [
     ".agents/pipeline-core/references/feature-identity-policy.md",
@@ -77,6 +92,21 @@ class MethodologyContractTests(unittest.TestCase):
                 path = ROOT / rel
                 self.assertTrue(path.exists(), rel)
                 self.assertGreater(len(path.read_text(encoding="utf-8").strip()), 20)
+
+    def test_upstream_lock_records_cloned_methodologies_without_vendoring(self):
+        lock = (ROOT / "methodology/UPSTREAM_LOCK.md").read_text(encoding="utf-8")
+        license_review = (ROOT / "methodology/LICENSE_REVIEW.md").read_text(encoding="utf-8")
+        gitignore = (ROOT / ".gitignore").read_text(encoding="utf-8")
+
+        self.assertIn("methodology/upstream/*", gitignore)
+        self.assertIn("!methodology/upstream/.gitkeep", gitignore)
+        for name, url in UPSTREAM_REPOS.items():
+            with self.subTest(name=name):
+                self.assertIn(f"methodology/upstream/{name}", lock)
+                self.assertIn(url, lock)
+                self.assertRegex(lock, rf"{name}.*`[0-9a-f]{{40}}`")
+                self.assertIn(f"`{name}`", license_review)
+                self.assertIn("No", license_review)
 
     def test_docset_index_loads_every_step_without_missing_docs(self):
         index_path = ROOT / ".ai/pipeline-docs/docset-index.yaml"
@@ -153,6 +183,7 @@ class MethodologyContractTests(unittest.TestCase):
                 self.assertIn("pipeline_contract_version: '0.1.0'", content)
                 self.assertIn("Methodology:", content)
                 self.assertIn(".agents/pipeline-core/references/native-skill-protocol.md", content)
+                self.assertIn("methodology/extracted/upstream-pattern-map.md", content)
                 self.assertIn("featurectl.py load-docset", content)
                 self.assertIn("Docs Consulted:", content)
                 self.assertIn("methodology/extracted/", content)

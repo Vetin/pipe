@@ -2,20 +2,17 @@ artifact_contract_version: '0.1.0'
 description: Stable in-place Codex E2E reproduction cases for Native Feature Pipeline implementation runs.
 defaults:
   require_clean_git: true
-  pipeline_steps:
-    - nfp-00-intake
-    - nfp-01-context
-    - nfp-02-feature-contract
-    - nfp-03-architecture
-    - nfp-04-tech-design
-    - nfp-05-slicing
-    - nfp-06-readiness
-    - nfp-07-worktree
-    - nfp-08-tdd-implementation
-    - nfp-09-review
-    - nfp-10-verification
-    - nfp-11-finish
-    - nfp-12-promote
+  prompt_style: native
+  workflow_phases:
+    - intake and repository context discovery
+    - feature contract with measurable requirements and acceptance criteria
+    - architecture grounded in inspected modules and system boundaries
+    - technical design covering contracts, data, errors, flags, and tests
+    - dependency-aware implementation slices
+    - readiness gates for destructive, security, data, and public API risks
+    - test-first implementation with red/green evidence
+    - adversarial review and fix verification
+    - final verification, feature memory, promotion, and commit
 cases:
   docmost-page-approval:
     title: Docmost Page Review Approval Workflow

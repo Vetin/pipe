@@ -11,6 +11,7 @@ Use this skill to create `architecture.md`, significant ADRs, and diagrams.
 Methodology:
 
 - Read `.agents/pipeline-core/references/native-skill-protocol.md`.
+- Apply `methodology/extracted/upstream-pattern-map.md` as the behavioral synthesis of cloned upstream methodologies; cite patterns in `Docs Consulted:` when they influence a decision.
 - Confirm the current directory is the feature worktree.
 - Read `apex.md`, `feature.yaml`, `state.yaml`, `execution.md`, and
   `feature.md`.

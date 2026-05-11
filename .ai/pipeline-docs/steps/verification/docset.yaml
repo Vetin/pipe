@@ -2,6 +2,7 @@ artifact_contract_version: '0.1.0'
 step: verification
 required_docs:
   - .agents/pipeline-core/references/native-skill-protocol.md
+  - methodology/extracted/upstream-pattern-map.md
   - methodology/extracted/review-and-verification.md
   - .agents/pipeline-core/references/gate-policy.md
   - .agents/pipeline-core/references/quality-rubric.md

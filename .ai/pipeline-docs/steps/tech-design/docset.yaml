@@ -2,6 +2,7 @@ artifact_contract_version: '0.1.0'
 step: tech-design
 required_docs:
   - .agents/pipeline-core/references/native-skill-protocol.md
+  - methodology/extracted/upstream-pattern-map.md
   - methodology/extracted/artifact-model.md
   - .agents/pipeline-core/references/generated-templates/tech-design-template.md
   - .agents/pipeline-core/references/generated-templates/adr-template.md

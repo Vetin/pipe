@@ -56,6 +56,23 @@ The runner works in the current repository checkout and tells Codex not to
 create a git worktree. It requires a clean target repo by default; use
 `--dry-run` to review the generated prompt and command without invoking Codex.
 
+## Native Feature Emulation
+
+`features.md` drives a second, native-style test harness. It selects the best
+showcase features, repeats them through three prompt-improvement rounds, and
+writes prompt files, generated artifacts, scorecards, and a side-by-side report.
+These prompts ask for the feature outcome like a real user would; they do not
+enumerate the internal skill sequence as the control path.
+
+```bash
+python pipeline-lab/showcases/scripts/run_native_feature_emulation.py \
+  --features-md features.md \
+  --rounds 3 \
+  --top 3 \
+  --run-id 20260512-native-debug \
+  --clean
+```
+
 ## Improvement Loop
 
 Initial showcase scoring exposed `nfp-08-tdd-implementation` as the weakest step

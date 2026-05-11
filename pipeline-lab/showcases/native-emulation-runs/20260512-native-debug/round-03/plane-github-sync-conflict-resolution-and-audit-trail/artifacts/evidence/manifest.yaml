@@ -1,0 +1,13 @@
+case: plane-github-sync-conflict-resolution-and-audit-trail
+round: 3
+commands:
+- name: contract-lint
+  status: planned
+  scope: feature.md
+- name: slice-red-green
+  status: planned
+  scope: slices.yaml
+- name: review-replay
+  status: planned
+  scope: reviews/review.md
+native_prompt: no direct internal skill invocation

@@ -19,20 +19,16 @@ import yaml
 ROOT = Path(__file__).resolve().parents[3]
 DEFAULT_CONFIG = ROOT / "pipeline-lab/showcases/codex-e2e-cases.yaml"
 DEFAULT_OUTPUT_DIR = ROOT / "pipeline-lab/showcases/codex-e2e-runs"
-NFP_STEPS = [
-    "nfp-00-intake",
-    "nfp-01-context",
-    "nfp-02-feature-contract",
-    "nfp-03-architecture",
-    "nfp-04-tech-design",
-    "nfp-05-slicing",
-    "nfp-06-readiness",
-    "nfp-07-worktree",
-    "nfp-08-tdd-implementation",
-    "nfp-09-review",
-    "nfp-10-verification",
-    "nfp-11-finish",
-    "nfp-12-promote",
+NATIVE_PHASES = [
+    "intake and repository context discovery",
+    "feature contract with measurable requirements and acceptance criteria",
+    "architecture grounded in inspected modules and system boundaries",
+    "technical design covering contracts, data, errors, flags, and tests",
+    "dependency-aware implementation slices",
+    "readiness gates for destructive, security, data, and public API risks",
+    "test-first implementation with red/green evidence",
+    "adversarial review and fix verification",
+    "final verification, feature memory, promotion, and commit",
 ]
 
 
@@ -111,8 +107,8 @@ def reset_to_base(repo: Path, base_ref: str | None) -> None:
 
 
 def build_prompt(case_id: str, case: dict[str, Any], repo: Path, config_path: Path) -> str:
-    steps = case.get("pipeline_steps") or NFP_STEPS
-    step_list = "\n".join(f"  - {step}" for step in steps)
+    phases = case.get("workflow_phases") or NATIVE_PHASES
+    phase_list = "\n".join(f"  - {phase}" for phase in phases)
     codebase = case.get("original_codebase") or {}
     base_ref = case_base_ref(case) or "current HEAD"
     expected_result = case.get("expected_result", "Implement the requested feature with artifacts, tests, verification, and a final summary.")
@@ -141,10 +137,11 @@ Case:
 - Expected result: {expected_result}
 
 Native Feature Pipeline:
-- If `.agents/pipeline-core` or `.agents/skills/nfp-*` are missing, copy/install them from {ROOT / '.agents'} into this repository before continuing.
-- Read and follow every NFP skill doc in order:
-{step_list}
-- Use `.agents/pipeline-core/scripts/featurectl.py` for scaffolding, validation, gate state, evidence, review, finish, and promote operations wherever available.
+- If `.agents/pipeline-core`, `.agents/skills`, or `.ai/pipeline-docs` are missing, copy/install them from {ROOT / '.agents'} and {ROOT / '.ai' / 'pipeline-docs'} into this repository before continuing.
+- Treat this as a normal user feature request. Discover the repository's native pipeline instructions from `.agents`, `.ai/pipeline-docs`, and local docs; do not ask the user to invoke individual internal skills by name.
+- Progress through these outcomes in order:
+{phase_list}
+- Use local helper commands where the discovered pipeline docs point you, especially for scaffolding, validation, gate state, evidence, review, finish, and promotion.
 - Use `apex.md`, `feature.yaml`, `state.yaml`, and `execution.md` to navigate and record work.
 - Do not create `approvals.yaml` or `handoff.md`; approval history belongs in `execution.md`, machine gate state belongs in `state.yaml`.
 
