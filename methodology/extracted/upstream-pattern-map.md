@@ -24,6 +24,9 @@ artifacts.
   gaps, and require pass/fail acceptance criteria.
 - From Roo/agent packaging: keep native skills discoverable by user intent and
   tool context instead of depending on a user to name every internal step.
+- From current web best-practice review: repository indexing, context-grounded
+  phase hooks, red-team review, verify-tasks checks, and brownfield bootstrap
+  must be explicit validation surfaces, not informal reminders.
 
 ## What To Reject
 
@@ -52,11 +55,16 @@ artifacts.
   scope changes, evidence, review, and handoff state.
 - `reviews/`, `evidence/`, and `feature-card.md` provide the adversarial QA,
   verification, and promotion memory expected by production-grade delivery.
+- `.ai/knowledge/project-index.yaml` and `project-snapshot.md` provide the
+  `/init` source map that lets raw ideas, executive research, and detailed
+  analyst requirements enter the same grounded pipeline.
 
 ## Native Skill Influence
 
 - `nfp-00-intake` and `nfp-01-context` must behave like intent clarification
   and established-project discovery, not code generation.
+- `nfp-01-context` must consume `/init` project profiling when knowledge is
+  missing or generic, then verify generated claims against source files.
 - `nfp-02-feature-contract` must include ambiguity scoring and stop on
   unresolved business/security risk.
 - `nfp-03-architecture` and `nfp-04-tech-design` must separate domain design

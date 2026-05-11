@@ -18,6 +18,7 @@ METHODOLOGY_FILES = [
     "methodology/extracted/context-and-doc-loading.md",
     "methodology/extracted/review-and-verification.md",
     "methodology/extracted/evaluation-patterns.md",
+    "methodology/extracted/web-best-practices-20260512.md",
 ]
 
 UPSTREAM_REPOS = {
