@@ -1,18 +1,18 @@
 artifact_contract_version: 0.1.0
 generated_by: featurectl.py init --profile-project
-generated_at: '2026-05-11T22:49:49Z'
+generated_at: '2026-05-11T22:52:26Z'
 project:
   name: harness-pipeline
   root: /Users/egormasnankin/work/harness-pipeline
   branch: main
-  head: dc4c6b1
+  head: 3aee2c5
   remote: none
 counts:
-  tracked_files: 389
-  profiled_files: 219
-  source_files: 13
-  test_files: 31
-  doc_files: 100
+  tracked_files: 394
+  profiled_files: 224
+  source_files: 14
+  test_files: 32
+  doc_files: 102
   contract_files: 20
   integration_files: 5
 package_manifests: []
@@ -23,9 +23,9 @@ module_dirs:
 - path: .ai
   tracked_files: 58
 - path: pipeline-lab
-  tracked_files: 46
+  tracked_files: 50
 - path: tests
-  tracked_files: 31
+  tracked_files: 32
 - path: methodology
   tracked_files: 12
 source_examples:
@@ -38,6 +38,7 @@ source_examples:
 - pipeline-lab/showcases/scripts/implement_real_showcase.py
 - pipeline-lab/showcases/scripts/materialize_implementation_runs.py
 - pipeline-lab/showcases/scripts/run_codex_e2e_case.py
+- pipeline-lab/showcases/scripts/run_init_profile_showcases.py
 - pipeline-lab/showcases/scripts/run_native_feature_emulation.py
 - pipeline-lab/showcases/scripts/run_real_showcase.py
 - pipeline-lab/showcases/scripts/validate_native_feature_outputs.py
@@ -55,6 +56,7 @@ test_examples:
 - tests/feature_pipeline/test_finish_promote.py
 - tests/feature_pipeline/test_gate_status.py
 - tests/feature_pipeline/test_gates_and_evidence.py
+- tests/feature_pipeline/test_init_profile_showcases.py
 - tests/feature_pipeline/test_methodology_contract.py
 - tests/feature_pipeline/test_native_feature_emulation.py
 - tests/feature_pipeline/test_native_feature_validation.py
@@ -72,7 +74,6 @@ test_examples:
 - tests/feature_pipeline/test_staleness.py
 - tests/feature_pipeline/test_state_machine.py
 - tests/feature_pipeline/test_workspace_creation.py
-- tests/feature_pipeline/test_worktree_rules.py
 doc_examples:
 - .agents/pipeline-core/references/README.md
 - .agents/pipeline-core/references/artifact-requirements.md
@@ -143,6 +144,8 @@ feature_signals:
   signal: Native Feature Pipeline Validation
 - source: pipeline-lab/showcases/README.md
   signal: Native Feature Emulation
+- source: pipeline-lab/showcases/init-profile-report.md
+  signal: Reuse In Feature Pipeline
 - source: pipeline-lab/showcases/native-emulation-report.md
   signal: Native Feature Emulation Report
 - source: pipeline-lab/showcases/native-emulation-validation-report.md
@@ -225,6 +228,14 @@ feature_catalog:
   source_count: 1
   sources:
   - pipeline-lab/README.md
+- name: Reuse In Feature Pipeline
+  kind: detected
+  confidence: medium
+  description: Reuse In Feature Pipeline appears in 1 documentation signal; inspect
+    the listed files before relying on this as architecture truth.
+  source_count: 1
+  sources:
+  - pipeline-lab/showcases/init-profile-report.md
 - name: Silver Bullet Native Feature Pipeline Implementation Specification For Codex
   kind: detected
   confidence: medium

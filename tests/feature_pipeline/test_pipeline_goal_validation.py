@@ -40,7 +40,10 @@ class PipelineGoalValidationTests(unittest.TestCase):
         self.assertIn("Pipeline Goal Validation", content)
         self.assertIn("Skill Side By Side", content)
         self.assertIn("| `nfp-01-context` | pass |", content)
+        self.assertIn("| `project-init` | pass |", content)
         self.assertIn("vision_native_workflow", content)
+        self.assertIn("init_showcase_three_passes", content)
+        self.assertIn("init_showcase_feature_catalogs", content)
         self.assertIn("web_best_practices_doc", content)
 
 

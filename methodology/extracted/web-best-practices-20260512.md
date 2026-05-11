@@ -15,6 +15,9 @@ the Native Feature Pipeline. It is synthesis only.
 - OpenSpec guidance: describe a change as proposal, technical design,
   implementation tasks, and spec deltas before writing code; review and refine
   the plan before implementation to catch misalignment early.
+- OpenSpec brownfield guidance: existing codebases need lightweight context
+  discovery and specs that live in the repository rather than one-off chat
+  plans.
 - Context-grounded SDD research: add read-only repository probing hooks and
   validation hooks at each phase to reduce hallucinated APIs and architecture
   drift.
@@ -59,6 +62,30 @@ the Native Feature Pipeline. It is synthesis only.
 - `nfp-09-review` and `nfp-10-verification` should include red-team,
   security/replay/data-loss checks, exact commands, and blocked-validation
   residual risk.
+
+## Init Bootstrap Influence
+
+- `project-init` is the brownfield bootstrap skill. It runs before feature
+  planning when knowledge is missing, stale, generic, or imported from a raw
+  idea, executive research packet, or business-analysis document.
+- The skill must produce a feature catalog and a `Current Feature Picture`
+  section, but those entries are source maps rather than final truth.
+- The context phase must verify at least the relevant cited files before
+  converting init findings into feature, architecture, or technical design
+  claims.
+- Pipeline implementation artifacts, evidence directories, generated memory,
+  and agent scaffolding should not pollute the product feature catalog.
+
+## Three-Pass Init Validation
+
+- Run project init across the real showcase repositories three times and compare
+  source, test, documentation, contract, integration, feature-signal, and
+  feature-catalog counts side by side.
+- Fail the goal validator if any configured showcase repository cannot produce
+  `.ai/knowledge/project-index.yaml`, `features-overview.md`, or a non-empty
+  feature catalog.
+- Treat stable repeated metrics as the minimum reproducibility bar before using
+  init output in downstream feature-pipeline emulation.
 
 ## Validation Rule Implied
 
