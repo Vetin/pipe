@@ -642,6 +642,10 @@ def generated_or_vendor_path(path: str) -> bool:
         "coverage",
         ".pytest_cache",
         "__pycache__",
+        ".ai/feature-workspaces",
+        ".ai/features",
+        ".ai/features-archive",
+        ".ai/logs",
         "methodology/upstream",
         "pipeline-lab/showcases/native-emulation-runs",
         "pipeline-lab/showcases/codex-e2e-runs",
@@ -726,7 +730,10 @@ def collect_project_scripts(root: Path, package_files: list[str]) -> list[dict[s
             for name, command in sorted((package.get("scripts") or {}).items()):
                 scripts.append({"source": path, "name": str(name), "command": str(command)})
         elif file_name == "Makefile":
-            for line in (root / path).read_text(encoding="utf-8", errors="ignore").splitlines():
+            content = read_repo_file(root, path)
+            if content is None:
+                continue
+            for line in content.splitlines():
                 if re.match(r"^[A-Za-z0-9_.-]+:", line) and not line.startswith("."):
                     scripts.append({"source": path, "name": line.split(":", 1)[0], "command": "make target"})
     return scripts[:40]
@@ -753,7 +760,9 @@ def collect_feature_signals(root: Path, files: list[str], doc_files: list[str]) 
     heading_re = re.compile(r"^#{1,3}\s+(.+)")
     signal_doc_files = [path for path in doc_files if feature_signal_candidate_path(path)]
     for path in signal_doc_files[:80]:
-        content = (root / path).read_text(encoding="utf-8", errors="ignore")
+        content = read_repo_file(root, path)
+        if content is None:
+            continue
         for line in content.splitlines()[:300]:
             match = heading_re.match(line.strip())
             if not match:
@@ -767,19 +776,30 @@ def collect_feature_signals(root: Path, files: list[str], doc_files: list[str]) 
             continue
         if test_path(path):
             continue
-        lowered = path.lower()
-        if any(token in lowered for token in ("feature", "route", "controller", "service", "workflow", "integration")):
-            signals.append({"source": path, "signal": Path(path).stem.replace("-", " ").replace("_", " ")})
+        path_signal = feature_signal_from_source_path(path)
+        if path_signal:
+            signals.append({"source": path, "signal": path_signal})
         if len(signals) >= 60:
             break
     return dedupe_signal_list(signals)
 
 
 def feature_signal_candidate_path(path: str) -> bool:
+    if Path(path).name in {"AGENTS.md"}:
+        return False
     blocked_prefixes = (
         ".ai/knowledge/",
+        ".ai/feature-workspaces/",
+        ".ai/features/",
+        ".ai/features-archive/",
+        ".ai/logs/",
+        ".ai/",
         ".ai/pipeline-docs/",
+        ".agents/skills/",
+        ".agents/pipeline-core/references/",
         ".agents/pipeline-core/references/generated-templates/",
+        ".github/",
+        ".gitlab/",
         "pipeline-lab/showcases/native-emulation-runs/",
         "pipeline-lab/showcases/native-implementation-runs/",
         "pipeline-lab/showcases/init-profile-runs/",
@@ -789,10 +809,72 @@ def feature_signal_candidate_path(path: str) -> bool:
 
 def feature_signal_text(text: str) -> bool:
     lowered = text.lower()
-    ignored = {"license", "contributing", "installation", "usage", "table of contents"}
+    ignored = {
+        "license",
+        "contributing",
+        "installation",
+        "usage",
+        "table of contents",
+        "build",
+        "check",
+        "quality checks",
+        "integration tests command",
+        "development workflow",
+        "release notes",
+        "changelog",
+    }
     if lowered in ignored:
         return False
     return any(token in lowered for token in ("feature", "workflow", "api", "integration", "architecture", "module", "service", "pipeline", "dashboard"))
+
+
+def feature_signal_from_source_path(path: str) -> str:
+    parts = Path(path).parts
+    lower_parts = [part.lower() for part in parts]
+    blocked_parts = {
+        "components",
+        "component",
+        "ui",
+        "icons",
+        "icon",
+        "styles",
+        "assets",
+        "fixtures",
+        "mocks",
+        "mock",
+        "tests",
+        "test",
+        "__tests__",
+        "scripts",
+        "generated",
+    }
+    for marker in ("features", "feature", "domains", "domain", "modules", "module"):
+        if marker in lower_parts:
+            index = lower_parts.index(marker)
+            for candidate in parts[index + 1 : index + 4]:
+                candidate_name = path_part_signal(candidate)
+                if candidate.lower() not in blocked_parts and normalize_feature_catalog_name(candidate_name):
+                    return candidate_name
+    for marker in ("routes", "controllers", "services", "workflows", "integrations"):
+        if marker in lower_parts:
+            index = lower_parts.index(marker)
+            if index + 1 < len(parts):
+                candidate_name = path_part_signal(parts[index + 1])
+                if normalize_feature_catalog_name(candidate_name):
+                    return candidate_name
+    lowered = path.lower()
+    if any(token in lowered for token in ("controller", "service", "workflow", "integration")):
+        stem = Path(path).stem.replace("-", " ").replace("_", " ")
+        if normalize_feature_catalog_name(stem):
+            return stem
+    return ""
+
+
+def path_part_signal(part: str) -> str:
+    value = part
+    while Path(value).suffix:
+        value = Path(value).stem
+    return value.replace("-", " ").replace("_", " ").replace(".", " ")
 
 
 def dedupe_signal_list(signals: list[dict[str, str]]) -> list[dict[str, str]]:
@@ -805,6 +887,13 @@ def dedupe_signal_list(signals: list[dict[str, str]]) -> list[dict[str, str]]:
         seen.add(key)
         deduped.append(signal)
     return deduped
+
+
+def read_repo_file(root: Path, path: str) -> str | None:
+    try:
+        return (root / path).read_text(encoding="utf-8", errors="ignore")
+    except OSError:
+        return None
 
 
 def build_feature_catalog(canonical_features: list[dict[str, str]], signals: list[dict[str, str]]) -> list[dict[str, Any]]:
@@ -863,6 +952,7 @@ def normalize_feature_catalog_name(text: str) -> str:
     value = re.sub(r"\s+", " ", text or "").strip(" #-:._")
     value = re.sub(r"^(feature|workflow|service|controller|route|api|module)\s*[:/-]\s*", "", value, flags=re.IGNORECASE)
     value = re.sub(r"^(test|tests?)\s+", "", value, flags=re.IGNORECASE)
+    value = re.sub(r"\b(ts|tsx|js|jsx|py|go|vue|yml|yaml|md|mdx)\b$", "", value, flags=re.IGNORECASE).strip()
     value = value.strip(" #-:._")
     if not value:
         return ""
@@ -882,8 +972,46 @@ def normalize_feature_catalog_name(text: str) -> str:
         "service",
         "controller",
         "route",
+        "routes",
+        "page",
+        "header",
+        "wrapper",
+        "action",
+        "actions",
+        "build",
+        "check",
+        "quality checks",
+        "integration tests command",
+        "development workflow",
+        "gitignore",
+        "agent docs",
+        "features",
+        "changed files",
+        "release notes",
+        "changelog",
+        "autofix",
+        "feature requests",
+        "package",
+        "breaking",
+        "fixtures",
+        "globalsetup",
+        "globalteardown",
+        "global setup",
+        "global teardown",
+        "integration tests",
+        "admin seeder",
+        "admin seeder js",
+        "batch job seeder",
+        "batch job seeder js",
+        "bootstrap app",
+        "architecture package structure",
+        "architecture notes",
+        "run the services in the background",
+        "call helpers",
+        "cart seeder",
+        "claim seeder",
     }
-    if lowered in generic or lowered.endswith(".schema"):
+    if lowered in generic or lowered.endswith((".schema", " seeder", " helpers")):
         return ""
     words = [word for word in re.split(r"[^A-Za-z0-9]+", value) if word]
     if len(words) == 1 and len(words[0]) < 4:

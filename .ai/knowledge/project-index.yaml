@@ -1,14 +1,14 @@
 artifact_contract_version: 0.1.0
 generated_by: featurectl.py init --profile-project
-generated_at: '2026-05-11T22:42:33Z'
+generated_at: '2026-05-11T22:49:49Z'
 project:
   name: harness-pipeline
   root: /Users/egormasnankin/work/harness-pipeline
   branch: main
-  head: 0ecd374
+  head: dc4c6b1
   remote: none
 counts:
-  tracked_files: 387
+  tracked_files: 389
   profiled_files: 219
   source_files: 13
   test_files: 31
@@ -19,9 +19,9 @@ package_manifests: []
 scripts: []
 module_dirs:
 - path: .agents
-  tracked_files: 65
+  tracked_files: 67
 - path: .ai
-  tracked_files: 60
+  tracked_files: 58
 - path: pipeline-lab
   tracked_files: 46
 - path: tests
@@ -133,22 +133,6 @@ integration_examples:
 - pipeline-lab/showcases/scenarios/02-webhook-integration.yaml
 canonical_features: []
 feature_signals:
-- source: .agents/pipeline-core/references/README.md
-  signal: Pipeline Core References
-- source: .agents/pipeline-core/references/feature-identity-policy.md
-  signal: Feature Identity Policy
-- source: .agents/pipeline-core/references/workflow-state-machine.md
-  signal: Workflow State Machine
-- source: .agents/skills/nfp-02-feature-contract/SKILL.md
-  signal: NFP 02 Feature Contract
-- source: .agents/skills/nfp-03-architecture/SKILL.md
-  signal: NFP 03 Architecture
-- source: .agents/skills/nfp-04-tech-design/SKILL.md
-  signal: Modules And Responsibilities
-- source: .ai/constitution.md
-  signal: Pipeline Constitution
-- source: .ai/features/overview.md
-  signal: Feature Overview
 - source: features.md
   signal: Best three showcase features
 - source: methodology/extracted/workflow-and-gates.md
@@ -170,34 +154,12 @@ feature_signals:
     \ for Codex"
 - source: vision.md
   signal: "Step 1 \u2014 User describes feature"
-- source: .agents/pipeline-core/references/feature-identity-policy.md
-  signal: feature identity policy
-- source: .agents/pipeline-core/references/workflow-state-machine.md
-  signal: workflow state machine
-- source: .agents/pipeline-core/scripts/featurectl.py
-  signal: featurectl
-- source: .agents/pipeline-core/scripts/schemas/feature.schema.json
-  signal: feature.schema
-- source: .agents/skills/nfp-02-feature-contract/SKILL.md
-  signal: SKILL
-- source: .agents/skills/nfp-02-feature-contract/agents/openai.yaml
-  signal: openai
-- source: .ai/features/index.yaml
-  signal: index
-- source: .ai/features/overview.md
-  signal: overview
-- source: features.md
-  signal: features
 - source: methodology/extracted/workflow-and-gates.md
   signal: workflow and gates
 - source: pipeline-lab/benchmarks/scenarios/webhook-integration.yaml
   signal: webhook integration
 - source: pipeline-lab/showcases/scenarios/02-webhook-integration.yaml
   signal: 02 webhook integration
-- source: pipeline-lab/showcases/scripts/run_native_feature_emulation.py
-  signal: run native feature emulation
-- source: pipeline-lab/showcases/scripts/validate_native_feature_outputs.py
-  signal: validate native feature outputs
 feature_catalog:
 - name: 02 Webhook Integration
   kind: detected
@@ -215,46 +177,6 @@ feature_catalog:
   source_count: 1
   sources:
   - features.md
-- name: Feature Identity Policy
-  kind: detected
-  confidence: medium
-  description: Feature Identity Policy appears in 1 documentation signal; inspect
-    the listed files before relying on this as architecture truth.
-  source_count: 1
-  sources:
-  - .agents/pipeline-core/references/feature-identity-policy.md
-- name: Feature Overview
-  kind: detected
-  confidence: medium
-  description: Feature Overview appears in 1 documentation signal; inspect the listed
-    files before relying on this as architecture truth.
-  source_count: 1
-  sources:
-  - .ai/features/overview.md
-- name: Featurectl
-  kind: detected
-  confidence: low
-  description: Featurectl appears in 1 source signal; inspect the listed files before
-    relying on this as architecture truth.
-  source_count: 1
-  sources:
-  - .agents/pipeline-core/scripts/featurectl.py
-- name: Features
-  kind: detected
-  confidence: medium
-  description: Features appears in 1 documentation signal; inspect the listed files
-    before relying on this as architecture truth.
-  source_count: 1
-  sources:
-  - features.md
-- name: Modules And Responsibilities
-  kind: detected
-  confidence: medium
-  description: Modules And Responsibilities appears in 1 documentation signal; inspect
-    the listed files before relying on this as architecture truth.
-  source_count: 1
-  sources:
-  - .agents/skills/nfp-04-tech-design/SKILL.md
 - name: Native Feature Emulation
   kind: detected
   confidence: medium
@@ -287,38 +209,6 @@ feature_catalog:
   source_count: 1
   sources:
   - pipeline-lab/VALIDATION.md
-- name: NFP 02 Feature Contract
-  kind: detected
-  confidence: medium
-  description: NFP 02 Feature Contract appears in 1 documentation signal; inspect
-    the listed files before relying on this as architecture truth.
-  source_count: 1
-  sources:
-  - .agents/skills/nfp-02-feature-contract/SKILL.md
-- name: NFP 03 Architecture
-  kind: detected
-  confidence: medium
-  description: NFP 03 Architecture appears in 1 documentation signal; inspect the
-    listed files before relying on this as architecture truth.
-  source_count: 1
-  sources:
-  - .agents/skills/nfp-03-architecture/SKILL.md
-- name: Pipeline Constitution
-  kind: detected
-  confidence: medium
-  description: Pipeline Constitution appears in 1 documentation signal; inspect the
-    listed files before relying on this as architecture truth.
-  source_count: 1
-  sources:
-  - .ai/constitution.md
-- name: Pipeline Core References
-  kind: detected
-  confidence: medium
-  description: Pipeline Core References appears in 1 documentation signal; inspect
-    the listed files before relying on this as architecture truth.
-  source_count: 1
-  sources:
-  - .agents/pipeline-core/references/README.md
 - name: Pipeline Goal Validation
   kind: detected
   confidence: medium
@@ -335,14 +225,6 @@ feature_catalog:
   source_count: 1
   sources:
   - pipeline-lab/README.md
-- name: Run Native Feature Emulation
-  kind: detected
-  confidence: low
-  description: Run Native Feature Emulation appears in 1 source signal; inspect the
-    listed files before relying on this as architecture truth.
-  source_count: 1
-  sources:
-  - pipeline-lab/showcases/scripts/run_native_feature_emulation.py
 - name: Silver Bullet Native Feature Pipeline Implementation Specification For Codex
   kind: detected
   confidence: medium
@@ -360,14 +242,6 @@ feature_catalog:
   source_count: 1
   sources:
   - vision.md
-- name: Validate Native Feature Outputs
-  kind: detected
-  confidence: low
-  description: Validate Native Feature Outputs appears in 1 source signal; inspect
-    the listed files before relying on this as architecture truth.
-  source_count: 1
-  sources:
-  - pipeline-lab/showcases/scripts/validate_native_feature_outputs.py
 - name: Webhook Integration
   kind: detected
   confidence: low
@@ -384,11 +258,3 @@ feature_catalog:
   source_count: 1
   sources:
   - methodology/extracted/workflow-and-gates.md
-- name: Workflow State Machine
-  kind: detected
-  confidence: medium
-  description: Workflow State Machine appears in 1 documentation signal; inspect the
-    listed files before relying on this as architecture truth.
-  source_count: 1
-  sources:
-  - .agents/pipeline-core/references/workflow-state-machine.md
