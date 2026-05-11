@@ -1,0 +1,9 @@
+artifact_contract_version: '0.1.0'
+id: 06-audit-log-export
+codebase: superset/superset-style analytics app
+source: open-source inspired
+domain: compliance
+title: Audit Log Export
+feature_goal: Add filtered asynchronous audit log export with retention and privacy constraints.
+expected_focus: [nfp-02-feature-contract, nfp-03-architecture, nfp-04-tech-design, nfp-11-finish]
+risks: [privacy leakage, large export performance, retention policy]

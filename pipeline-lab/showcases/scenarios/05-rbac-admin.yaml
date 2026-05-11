@@ -1,0 +1,9 @@
+artifact_contract_version: '0.1.0'
+id: 05-rbac-admin
+codebase: fastapi/full-stack-fastapi-template style API
+source: open-source inspired
+domain: access
+title: Role Based Access Control
+feature_goal: Add roles, permissions, policy checks, and admin assignment APIs.
+expected_focus: [nfp-01-context, nfp-03-architecture, nfp-04-tech-design, nfp-09-review]
+risks: [privilege escalation, migration safety, policy drift]

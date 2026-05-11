@@ -1,0 +1,9 @@
+artifact_contract_version: '0.1.0'
+id: 09-notification-preferences
+codebase: mastodon/mastodon-style social platform
+source: open-source inspired
+domain: notifications
+title: Notification Preferences
+feature_goal: Add channel preferences, quiet hours, defaults, and unsubscribe semantics.
+expected_focus: [nfp-02-feature-contract, nfp-04-tech-design, nfp-05-slicing, nfp-12-promote]
+risks: [unsubscribe compliance, defaults, event schema drift]

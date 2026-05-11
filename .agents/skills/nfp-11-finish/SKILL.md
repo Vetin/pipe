@@ -29,3 +29,13 @@ Workflow:
 8. Run `featurectl.py validate --workspace <workspace>`.
 
 Do not promote canonical memory in this step; hand off to `nfp-12-promote`.
+
+Feature memory must include:
+
+- iteration count
+- failed attempts and their failure classes
+- stale or replanned artifacts
+- accepted residual risks
+- commands that prove final state
+- plan drift notes explaining what changed from `feature.md`,
+  `architecture.md`, `tech-design.md`, and `slices.yaml`

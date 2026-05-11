@@ -1,0 +1,9 @@
+artifact_contract_version: '0.1.0'
+id: 10-job-retry-dashboard
+codebase: sidekiq/sidekiq-style job system
+source: open-source inspired
+domain: operations
+title: Job Retry Dashboard
+feature_goal: Add queue visibility with retry and cancel actions, permission checks, and observability.
+expected_focus: [nfp-03-architecture, nfp-04-tech-design, nfp-07-worktree, nfp-10-verification]
+risks: [unsafe admin action, stale queue state, observability gaps]

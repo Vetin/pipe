@@ -29,3 +29,14 @@ Workflow:
 5. Store raw final output in `evidence/final-verification-output.log`.
 6. Write `reviews/verification-review.md`.
 7. Set the verification gate to `complete` only when verification passes.
+
+Loop-aware verification:
+
+- Record each verification attempt in `execution.md` or
+  `verification-attempts.md` with command, result, failure class, decision, and
+  next action.
+- Classify failures as `implementation_bug`, `test_bug`, `design_gap`,
+  `scope_change`, `environment_failure`, or `flaky`.
+- Final verification must prove all completed slices still pass together, not
+  only the last touched slice.
+- Final verification must run after the last implementation or review iteration.

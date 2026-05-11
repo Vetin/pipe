@@ -1,0 +1,9 @@
+artifact_contract_version: '0.1.0'
+id: 07-search-ranking
+codebase: meilisearch/meilisearch-style search service
+source: open-source inspired
+domain: search
+title: Ranking Relevance Tuning
+feature_goal: Add configurable ranking weights with regression fixtures and measurable relevance criteria.
+expected_focus: [nfp-01-context, nfp-02-feature-contract, nfp-05-slicing, nfp-10-verification]
+risks: [ranking regression, unclear acceptance metrics, performance]

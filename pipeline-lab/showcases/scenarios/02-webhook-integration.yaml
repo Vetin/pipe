@@ -1,0 +1,9 @@
+artifact_contract_version: '0.1.0'
+id: 02-webhook-integration
+codebase: expressjs/express-style API
+source: open-source inspired
+domain: integrations
+title: Payment Webhook Intake
+feature_goal: Add signed inbound payment webhooks with idempotency and retry-safe processing.
+expected_focus: [nfp-03-architecture, nfp-04-tech-design, nfp-05-slicing, nfp-10-verification]
+risks: [signature verification, replay, duplicate delivery]

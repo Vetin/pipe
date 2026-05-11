@@ -1,0 +1,319 @@
+artifact_contract_version: 0.1.0
+created_at: '2026-05-11T15:28:01Z'
+iterations: 10
+scenario_count: 10
+step_scores:
+- step: nfp-00-intake
+  skill: .agents/skills/nfp-00-intake/SKILL.md
+  score: 1.0
+  passed: 3
+  total: 3
+  checks:
+  - name: worktree creation
+    passed: true
+  - name: ambiguity stop
+    passed: true
+  - name: validation
+    passed: true
+- step: nfp-01-context
+  skill: .agents/skills/nfp-01-context/SKILL.md
+  score: 1.0
+  passed: 3
+  total: 3
+  checks:
+  - name: searches
+    passed: true
+  - name: provisional knowledge
+    passed: true
+  - name: docs consulted
+    passed: true
+- step: nfp-02-feature-contract
+  skill: .agents/skills/nfp-02-feature-contract/SKILL.md
+  score: 1.0
+  passed: 3
+  total: 3
+  checks:
+  - name: required sections
+    passed: true
+  - name: ids
+    passed: true
+  - name: ambiguity policy
+    passed: true
+- step: nfp-03-architecture
+  skill: .agents/skills/nfp-03-architecture/SKILL.md
+  score: 1.0
+  passed: 3
+  total: 3
+  checks:
+  - name: module communication
+    passed: true
+  - name: risk coverage
+    passed: true
+  - name: docs consulted
+    passed: true
+- step: nfp-04-tech-design
+  skill: .agents/skills/nfp-04-tech-design/SKILL.md
+  score: 1.0
+  passed: 3
+  total: 3
+  checks:
+  - name: implementation details
+    passed: true
+  - name: contracts
+    passed: true
+  - name: tests and rollback
+    passed: true
+- step: nfp-05-slicing
+  skill: .agents/skills/nfp-05-slicing/SKILL.md
+  score: 1.0
+  passed: 4
+  total: 4
+  checks:
+  - name: tdd commands
+    passed: true
+  - name: traceability
+    passed: true
+  - name: no hard file enforcement
+    passed: true
+  - name: loop readiness
+    passed: true
+- step: nfp-06-readiness
+  skill: .agents/skills/nfp-06-readiness/SKILL.md
+  score: 1.0
+  passed: 3
+  total: 3
+  checks:
+  - name: validation
+    passed: true
+  - name: blockers
+    passed: true
+  - name: approval boundary
+    passed: true
+- step: nfp-07-worktree
+  skill: .agents/skills/nfp-07-worktree/SKILL.md
+  score: 1.0
+  passed: 3
+  total: 3
+  checks:
+  - name: worktree status
+    passed: true
+  - name: implementation block
+    passed: true
+  - name: branch workspace gates
+    passed: true
+- step: nfp-08-tdd-implementation
+  skill: .agents/skills/nfp-08-tdd-implementation/SKILL.md
+  score: 1.0
+  passed: 4
+  total: 4
+  checks:
+  - name: red first
+    passed: true
+  - name: evidence
+    passed: true
+  - name: scope change
+    passed: true
+  - name: iteration ledger
+    passed: true
+- step: nfp-09-review
+  skill: .agents/skills/nfp-09-review/SKILL.md
+  score: 1.0
+  passed: 4
+  total: 4
+  checks:
+  - name: deterministic validation
+    passed: true
+  - name: tiered review
+    passed: true
+  - name: critical blocking
+    passed: true
+  - name: re-review
+    passed: true
+- step: nfp-10-verification
+  skill: .agents/skills/nfp-10-verification/SKILL.md
+  score: 1.0
+  passed: 4
+  total: 4
+  checks:
+  - name: constitution commands
+    passed: true
+  - name: final output
+    passed: true
+  - name: review gate
+    passed: true
+  - name: verification attempts
+    passed: true
+- step: nfp-11-finish
+  skill: .agents/skills/nfp-11-finish/SKILL.md
+  score: 1.0
+  passed: 4
+  total: 4
+  checks:
+  - name: evidence review validation
+    passed: true
+  - name: feature card
+    passed: true
+  - name: final summary
+    passed: true
+  - name: plan drift
+    passed: true
+- step: nfp-12-promote
+  skill: .agents/skills/nfp-12-promote/SKILL.md
+  score: 1.0
+  passed: 3
+  total: 3
+  checks:
+  - name: promote command
+    passed: true
+  - name: conflict behavior
+    passed: true
+  - name: index confirmation
+    passed: true
+iterations_log:
+- iteration: 1
+  scenario: 01-auth-reset-password
+  weakest_step: nfp-00-intake
+  weakest_score: 1.0
+  status: validated_after_skill_improvement
+- iteration: 2
+  scenario: 02-webhook-integration
+  weakest_step: nfp-00-intake
+  weakest_score: 1.0
+  status: validated_after_skill_improvement
+- iteration: 3
+  scenario: 03-frontend-account-settings
+  weakest_step: nfp-00-intake
+  weakest_score: 1.0
+  status: validated_after_skill_improvement
+- iteration: 4
+  scenario: 04-billing-plan-upgrade
+  weakest_step: nfp-00-intake
+  weakest_score: 1.0
+  status: validated_after_skill_improvement
+- iteration: 5
+  scenario: 05-rbac-admin
+  weakest_step: nfp-00-intake
+  weakest_score: 1.0
+  status: validated_after_skill_improvement
+- iteration: 6
+  scenario: 06-audit-log-export
+  weakest_step: nfp-00-intake
+  weakest_score: 1.0
+  status: validated_after_skill_improvement
+- iteration: 7
+  scenario: 07-search-ranking
+  weakest_step: nfp-00-intake
+  weakest_score: 1.0
+  status: validated_after_skill_improvement
+- iteration: 8
+  scenario: 08-tenant-isolation
+  weakest_step: nfp-00-intake
+  weakest_score: 1.0
+  status: validated_after_skill_improvement
+- iteration: 9
+  scenario: 09-notification-preferences
+  weakest_step: nfp-00-intake
+  weakest_score: 1.0
+  status: validated_after_skill_improvement
+- iteration: 10
+  scenario: 10-job-retry-dashboard
+  weakest_step: nfp-00-intake
+  weakest_score: 1.0
+  status: validated_after_skill_improvement
+side_by_side:
+- scenario: 01-auth-reset-password
+  codebase: django/django-style monolith
+  feature_goal: Add secure email password reset with token expiry and audit logging.
+  focus_scores:
+    nfp-02-feature-contract: 1.0
+    nfp-03-architecture: 1.0
+    nfp-08-tdd-implementation: 1.0
+    nfp-09-review: 1.0
+  average_focus_score: 1.0
+- scenario: 02-webhook-integration
+  codebase: expressjs/express-style API
+  feature_goal: Add signed inbound payment webhooks with idempotency and retry-safe
+    processing.
+  focus_scores:
+    nfp-03-architecture: 1.0
+    nfp-04-tech-design: 1.0
+    nfp-05-slicing: 1.0
+    nfp-10-verification: 1.0
+  average_focus_score: 1.0
+- scenario: 03-frontend-account-settings
+  codebase: react-admin style SPA
+  feature_goal: Add profile settings with validation, optimistic save, accessibility,
+    and API integration.
+  focus_scores:
+    nfp-02-feature-contract: 1.0
+    nfp-04-tech-design: 1.0
+    nfp-05-slicing: 1.0
+    nfp-10-verification: 1.0
+  average_focus_score: 1.0
+- scenario: 04-billing-plan-upgrade
+  codebase: saleor/saleor-style commerce platform
+  feature_goal: Add paid plan upgrade with entitlements, invoices, and rollback on
+    payment failure.
+  focus_scores:
+    nfp-00-intake: 1.0
+    nfp-02-feature-contract: 1.0
+    nfp-03-architecture: 1.0
+    nfp-06-readiness: 1.0
+  average_focus_score: 1.0
+- scenario: 05-rbac-admin
+  codebase: fastapi/full-stack-fastapi-template style API
+  feature_goal: Add roles, permissions, policy checks, and admin assignment APIs.
+  focus_scores:
+    nfp-01-context: 1.0
+    nfp-03-architecture: 1.0
+    nfp-04-tech-design: 1.0
+    nfp-09-review: 1.0
+  average_focus_score: 1.0
+- scenario: 06-audit-log-export
+  codebase: superset/superset-style analytics app
+  feature_goal: Add filtered asynchronous audit log export with retention and privacy
+    constraints.
+  focus_scores:
+    nfp-02-feature-contract: 1.0
+    nfp-03-architecture: 1.0
+    nfp-04-tech-design: 1.0
+    nfp-11-finish: 1.0
+  average_focus_score: 1.0
+- scenario: 07-search-ranking
+  codebase: meilisearch/meilisearch-style search service
+  feature_goal: Add configurable ranking weights with regression fixtures and measurable
+    relevance criteria.
+  focus_scores:
+    nfp-01-context: 1.0
+    nfp-02-feature-contract: 1.0
+    nfp-05-slicing: 1.0
+    nfp-10-verification: 1.0
+  average_focus_score: 1.0
+- scenario: 08-tenant-isolation
+  codebase: discourse/discourse-style multi-tenant app
+  feature_goal: Enforce tenant scoping across queries, jobs, cache keys, and logs.
+  focus_scores:
+    nfp-00-intake: 1.0
+    nfp-03-architecture: 1.0
+    nfp-08-tdd-implementation: 1.0
+    nfp-09-review: 1.0
+  average_focus_score: 1.0
+- scenario: 09-notification-preferences
+  codebase: mastodon/mastodon-style social platform
+  feature_goal: Add channel preferences, quiet hours, defaults, and unsubscribe semantics.
+  focus_scores:
+    nfp-02-feature-contract: 1.0
+    nfp-04-tech-design: 1.0
+    nfp-05-slicing: 1.0
+    nfp-12-promote: 1.0
+  average_focus_score: 1.0
+- scenario: 10-job-retry-dashboard
+  codebase: sidekiq/sidekiq-style job system
+  feature_goal: Add queue visibility with retry and cancel actions, permission checks,
+    and observability.
+  focus_scores:
+    nfp-03-architecture: 1.0
+    nfp-04-tech-design: 1.0
+    nfp-07-worktree: 1.0
+    nfp-10-verification: 1.0
+  average_focus_score: 1.0

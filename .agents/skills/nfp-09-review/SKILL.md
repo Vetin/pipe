@@ -37,3 +37,19 @@ Workflow:
    otherwise set it to `complete`.
 
 Critical findings block verification.
+
+Structured finding requirements:
+
+- `linked_requirement_ids`
+- `linked_slice_ids`
+- `file_refs`
+- `reproduction_or_reasoning`
+- `fix_verification_command`
+- `re_review_required`
+
+Re-review loop:
+
+- After fixes, update or add review evidence showing each blocking finding is
+  resolved or explicitly deferred with user approval.
+- Blocking findings must not be cleared only by editing severity; record the fix
+  evidence and verification command.

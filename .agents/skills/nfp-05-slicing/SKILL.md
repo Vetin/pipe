@@ -36,7 +36,19 @@ Workflow:
    Slice IDs must be unique `S-###` values. Dependencies must reference existing
    slice IDs. Requirement and acceptance-criteria links must reference IDs that
    appear in `feature.md`.
+   For loop-ready execution, also include `iteration_budget`,
+   `rollback_point`, `independent_verification`, and `failure_triage_notes`.
 6. Set `slicing_readiness` to `drafted`.
 7. Run `featurectl.py validate --workspace <workspace>`.
 
 Do not use `allowed_files` or `forbidden_files` in v1.
+
+10-loop readiness:
+
+- Keep slices independently reviewable and small enough for repeated
+  red/green/review/fix iterations.
+- No slice may depend on hidden state from a later slice.
+- Cross-module behavior must include at least one integration or regression
+  slice.
+- High-risk slices should appear early enough that design gaps surface before
+  broad implementation.

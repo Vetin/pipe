@@ -1,0 +1,137 @@
+artifact_contract_version: '0.1.0'
+scale:
+  min: 0
+  max: 3
+  meaning:
+    '0': missing or violates step boundary
+    '1': present but generic or incomplete
+    '2': mostly solid with minor gaps
+    '3': repo-grounded, testable, and follows the skill contract
+steps:
+  - step: nfp-00-intake
+    skill_path: .agents/skills/nfp-00-intake/SKILL.md
+    criteria:
+      - name: worktree creation
+        terms: [featurectl.py new, worktree, workspace]
+      - name: ambiguity stop
+        terms: [domain, ambiguous, delegation boundaries]
+      - name: validation
+        terms: [validate --workspace]
+  - step: nfp-01-context
+    skill_path: .agents/skills/nfp-01-context/SKILL.md
+    criteria:
+      - name: searches
+        terms: [find .ai/knowledge, rg]
+      - name: provisional knowledge
+        terms: ['Status: provisional', Sources inspected]
+      - name: docs consulted
+        terms: ['Docs Consulted: Context']
+  - step: nfp-02-feature-contract
+    skill_path: .agents/skills/nfp-02-feature-contract/SKILL.md
+    criteria:
+      - name: required sections
+        terms: [Functional Requirements, Non-Functional Requirements, Acceptance Criteria]
+      - name: ids
+        terms: [FR-001, AC-001]
+      - name: ambiguity policy
+        terms: [security-critical, business-critical, grouped blocking questions]
+  - step: nfp-03-architecture
+    skill_path: .agents/skills/nfp-03-architecture/SKILL.md
+    criteria:
+      - name: module communication
+        terms: [Component Interactions, module communication]
+      - name: risk coverage
+        terms: [Security Model, Failure Modes, Observability, Rollback Strategy]
+      - name: docs consulted
+        terms: ['Docs Consulted: Architecture']
+  - step: nfp-04-tech-design
+    skill_path: .agents/skills/nfp-04-tech-design/SKILL.md
+    criteria:
+      - name: implementation details
+        terms: [Modules And Responsibilities, Data Model, Error Handling]
+      - name: contracts
+        terms: [Contracts, API/Event/Schema Details]
+      - name: tests and rollback
+        terms: [Test Strategy, Migration Plan, Rollback Plan]
+  - step: nfp-05-slicing
+    skill_path: .agents/skills/nfp-05-slicing/SKILL.md
+    criteria:
+      - name: tdd commands
+        terms: [red_command, expected_failure, green_command]
+      - name: traceability
+        terms: [linked requirements, linked acceptance]
+      - name: no hard file enforcement
+        terms: [allowed_files, forbidden_files, expected touchpoints]
+      - name: loop readiness
+        terms: [iteration_budget, rollback_point, independent_verification, failure_triage_notes]
+  - step: nfp-06-readiness
+    skill_path: .agents/skills/nfp-06-readiness/SKILL.md
+    criteria:
+      - name: validation
+        terms: [validate --readiness]
+      - name: blockers
+        terms: [blockers, stale artifacts, missing gates]
+      - name: approval boundary
+        terms: [implementation approval, delegated]
+  - step: nfp-07-worktree
+    skill_path: .agents/skills/nfp-07-worktree/SKILL.md
+    criteria:
+      - name: worktree status
+        terms: [worktree-status]
+      - name: implementation block
+        terms: [Stop immediately, implementation]
+      - name: branch workspace gates
+        terms: [branch, workspace, gate]
+  - step: nfp-08-tdd-implementation
+    skill_path: .agents/skills/nfp-08-tdd-implementation/SKILL.md
+    criteria:
+      - name: red first
+        terms: [Write the failing test first, red]
+      - name: evidence
+        terms: [record-evidence, raw green output, raw verification output]
+      - name: scope change
+        terms: [scope-change.md, mark affected artifacts stale]
+      - name: iteration ledger
+        terms: [iteration_id, failure class, resume checkpoint, I-010]
+  - step: nfp-09-review
+    skill_path: .agents/skills/nfp-09-review/SKILL.md
+    criteria:
+      - name: deterministic validation
+        terms: [validate --workspace, --review]
+      - name: tiered review
+        terms: [basic_review, strict_review, enterprise_review]
+      - name: critical blocking
+        terms: [Critical findings block verification]
+      - name: re-review
+        terms: [linked_requirement_ids, fix_verification_command, re_review_required]
+  - step: nfp-10-verification
+    skill_path: .agents/skills/nfp-10-verification/SKILL.md
+    criteria:
+      - name: constitution commands
+        terms: [.ai/constitution.md]
+      - name: final output
+        terms: [final-verification-output.log]
+      - name: review gate
+        terms: [critical review findings block]
+      - name: verification attempts
+        terms: [verification-attempts.md, failure class, completed slices]
+  - step: nfp-11-finish
+    skill_path: .agents/skills/nfp-11-finish/SKILL.md
+    criteria:
+      - name: evidence review validation
+        terms: [--evidence, --review]
+      - name: feature card
+        terms: [feature-card.md, future modification]
+      - name: final summary
+        terms: [PR summary, final summary]
+      - name: plan drift
+        terms: [iteration count, failed attempts, plan drift]
+  - step: nfp-12-promote
+    skill_path: .agents/skills/nfp-12-promote/SKILL.md
+    criteria:
+      - name: promote command
+        terms: [featurectl.py promote]
+      - name: conflict behavior
+        terms: [abort, archive-as-variant]
+      - name: index confirmation
+        terms: [.ai/features/index.yaml]

@@ -1,0 +1,9 @@
+artifact_contract_version: '0.1.0'
+id: 03-frontend-account-settings
+codebase: react-admin style SPA
+source: open-source inspired
+domain: account
+title: Account Settings
+feature_goal: Add profile settings with validation, optimistic save, accessibility, and API integration.
+expected_focus: [nfp-02-feature-contract, nfp-04-tech-design, nfp-05-slicing, nfp-10-verification]
+risks: [accessibility gaps, stale optimistic state, validation drift]
