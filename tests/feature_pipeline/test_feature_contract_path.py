@@ -51,6 +51,7 @@ class FeatureContractPathTests(unittest.TestCase):
     def test_one_artifact_feature_contract_scenario_validates(self):
         workspace = self.create_workspace()
         self.write_feature_contract(workspace)
+        self.append_docs_consulted(workspace)
         self.set_feature_contract_drafted(workspace)
 
         result = run([sys.executable, str(SCRIPT), "validate", "--workspace", str(workspace)], self.repo)
@@ -140,6 +141,17 @@ Users who forget passwords cannot regain access without support.
         state["current_step"] = "architecture"
         state["gates"]["feature_contract"] = "drafted"
         state_path.write_text(yaml.safe_dump(state, sort_keys=False), encoding="utf-8")
+
+    def append_docs_consulted(self, workspace):
+        with (workspace / "execution.md").open("a", encoding="utf-8") as handle:
+            handle.write(
+                """
+
+## Docs Consulted: Feature Contract
+
+- `.agents/pipeline-core/references/generated-templates/feature-template.md`: used required sections.
+"""
+            )
 
 
 if __name__ == "__main__":

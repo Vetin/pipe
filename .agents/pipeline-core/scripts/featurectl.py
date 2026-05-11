@@ -531,11 +531,15 @@ def ensure_init_tree(root: Path) -> None:
         ".ai/knowledge",
         ".ai/pipeline-docs/global",
         ".agents/pipeline-core/references",
+        ".agents/pipeline-core/references/generated-templates",
         ".agents/pipeline-core/scripts/schemas",
         ".agents/skills",
         ".agents/skill-lab/quarantine",
         ".agents/skill-lab/accepted",
         ".agents/skill-lab/rejected",
+        "methodology/upstream",
+        "methodology/docs-snapshots",
+        "methodology/extracted",
         "pipeline-lab/benchmarks/scenarios",
         "pipeline-lab/benchmarks/suites",
         "pipeline-lab/envs/toy-monolith",
@@ -817,6 +821,7 @@ def validate_feature_contract_if_started(workspace: Path, state: dict[str, Any])
         blockers.append("feature.md must include functional requirement IDs")
     if "AC-" not in content:
         blockers.append("feature.md must include acceptance criteria IDs")
+    blockers.extend(validate_docs_consulted(workspace, "Feature Contract"))
     return blockers
 
 
@@ -839,9 +844,7 @@ def validate_architecture_if_started(workspace: Path, state: dict[str, Any]) -> 
         "## ADRs",
     )
     blockers = [f"architecture.md missing heading: {heading}" for heading in required_headings if heading not in content]
-    execution = (workspace / "execution.md").read_text(encoding="utf-8") if (workspace / "execution.md").exists() else ""
-    if "Docs Consulted: Architecture" not in execution:
-        blockers.append("execution.md missing Docs Consulted: Architecture")
+    blockers.extend(validate_docs_consulted(workspace, "Architecture"))
     return blockers
 
 
@@ -854,9 +857,7 @@ def validate_tech_design_if_started(workspace: Path, state: dict[str, Any]) -> l
         return ["tech_design gate requires tech-design.md"]
     content = tech_design_path.read_text(encoding="utf-8")
     blockers = [f"tech-design.md missing heading: {heading}" for heading in TECH_DESIGN_REQUIRED_HEADINGS if heading not in content]
-    execution = (workspace / "execution.md").read_text(encoding="utf-8") if (workspace / "execution.md").exists() else ""
-    if "Docs Consulted: Technical Design" not in execution:
-        blockers.append("execution.md missing Docs Consulted: Technical Design")
+    blockers.extend(validate_docs_consulted(workspace, "Technical Design"))
     return blockers
 
 
@@ -867,7 +868,18 @@ def validate_slices_if_started(workspace: Path, state: dict[str, Any]) -> list[s
     slices_path = workspace / "slices.yaml"
     if not slices_path.exists():
         return ["slicing_readiness gate requires slices.yaml"]
-    return validate_slices_file(slices_path, workspace=workspace)
+    blockers = validate_slices_file(slices_path, workspace=workspace)
+    blockers.extend(validate_docs_consulted(workspace, "Slicing"))
+    return blockers
+
+
+def validate_docs_consulted(workspace: Path, step_label: str) -> list[str]:
+    execution_path = workspace / "execution.md"
+    execution = execution_path.read_text(encoding="utf-8") if execution_path.exists() else ""
+    marker = f"Docs Consulted: {step_label}"
+    if marker not in execution:
+        return [f"execution.md missing {marker}"]
+    return []
 
 
 def validate_slices_file(path: Path, workspace: Path | None = None) -> list[str]:
@@ -1017,7 +1029,23 @@ def validate_review_minimum(workspace: Path) -> list[str]:
 
 def validate_review_file(path: Path, review: dict[str, Any], workspace: Path) -> list[str]:
     blockers = []
-    required = ("artifact_contract_version", "review_id", "tier", "severity", "finding", "artifact", "evidence", "recommendation", "blocking")
+    required = (
+        "artifact_contract_version",
+        "review_id",
+        "tier",
+        "severity",
+        "finding",
+        "artifact",
+        "evidence",
+        "recommendation",
+        "blocking",
+        "linked_requirement_ids",
+        "linked_slice_ids",
+        "file_refs",
+        "reproduction_or_reasoning",
+        "fix_verification_command",
+        "re_review_required",
+    )
     for field in required:
         if field not in review:
             blockers.append(f"{path.relative_to(workspace)} missing {field}")
@@ -1029,6 +1057,14 @@ def validate_review_file(path: Path, review: dict[str, Any], workspace: Path) ->
         blockers.append(f"{path.relative_to(workspace)} blocking must be boolean")
     if review.get("severity") == "critical" and review.get("blocking") is not True:
         blockers.append(f"{path.relative_to(workspace)} critical severity must be blocking")
+    for field in ("linked_requirement_ids", "linked_slice_ids", "file_refs"):
+        if field in review and not isinstance(review.get(field), list):
+            blockers.append(f"{path.relative_to(workspace)} {field} must be a list")
+    for field in ("reproduction_or_reasoning", "fix_verification_command"):
+        if field in review and not str(review.get(field) or "").strip():
+            blockers.append(f"{path.relative_to(workspace)} {field} must not be empty")
+    if "re_review_required" in review and not isinstance(review.get("re_review_required"), bool):
+        blockers.append(f"{path.relative_to(workspace)} re_review_required must be boolean")
     return blockers
 
 

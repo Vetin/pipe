@@ -8,6 +8,19 @@ pipeline_contract_version: '0.1.0'
 
 Use this skill to create `architecture.md`, significant ADRs, and diagrams.
 
+Methodology:
+
+- Read `.agents/pipeline-core/references/native-skill-protocol.md`.
+- Confirm the current directory is the feature worktree.
+- Read `apex.md`, `feature.yaml`, `state.yaml`, `execution.md`, and
+  `feature.md`.
+- Load the architecture docset with `featurectl.py load-docset --step architecture`.
+- Use `methodology/extracted/artifact-model.md`,
+  `methodology/extracted/context-and-doc-loading.md`, and
+  `.agents/pipeline-core/references/generated-templates/architecture-template.md`.
+- Write architecture from inspected repository context, not generic invention.
+- Record `Docs Consulted: Architecture` in `execution.md`.
+
 Responsibilities:
 
 - load the architecture docset
@@ -35,13 +48,21 @@ Workflow:
    # Architecture: <Title>
 
    ## System Context
+
    ## Component Interactions
+
    ## Diagrams
+
    ## Security Model
+
    ## Failure Modes
+
    ## Observability
+
    ## Rollback Strategy
+
    ## Architecture Risks
+
    ## ADRs
    ```
 
@@ -52,9 +73,15 @@ Workflow:
 9. Set the architecture gate to `drafted` once the artifact exists.
 10. Run:
 
-   ```bash
-   python .agents/pipeline-core/scripts/featurectl.py validate --workspace <workspace>
-   ```
+    ```bash
+    python .agents/pipeline-core/scripts/featurectl.py validate --workspace <workspace>
+    ```
 
-Do not write technical design details, implementation slices, or code in this
-step.
+Do not write technical design details, implementation slices, or code in this step.
+
+If automatic handoff does not happen, print:
+
+```text
+Next skill: nfp-04-tech-design.
+Continue with that skill.
+```

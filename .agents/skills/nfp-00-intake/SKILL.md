@@ -8,6 +8,17 @@ pipeline_contract_version: '0.1.0'
 
 Use this skill to start a new Native Feature Pipeline run.
 
+Methodology:
+
+- Read `.agents/pipeline-core/references/native-skill-protocol.md`.
+- Load the intake docset with `featurectl.py load-docset --step intake` after
+  the workspace exists.
+- Use `methodology/extracted/methodology-summary.md`,
+  `methodology/extracted/workflow-and-gates.md`, and
+  `.agents/pipeline-core/references/feature-identity-policy.md` to decide
+  whether the request is safe to start.
+- Record `Docs Consulted: Intake` in `execution.md`.
+
 Responsibilities:
 
 - parse the user feature request
@@ -32,10 +43,24 @@ Workflow:
 4. Change into the created feature worktree for all later feature work.
 5. Read the workspace `apex.md`, `feature.yaml`, `state.yaml`, and
    `execution.md`.
-6. Run:
+6. Load the intake docset:
+
+   ```bash
+   python .agents/pipeline-core/scripts/featurectl.py load-docset --workspace <workspace> --step intake
+   ```
+
+7. Append docs consulted, checkpoints, assumptions, and the next step to
+   `execution.md`.
+8. Run:
 
    ```bash
    python .agents/pipeline-core/scripts/featurectl.py validate --workspace <workspace>
    ```
 
-Do not write implementation code in this step.
+Do not write feature prose, architecture, technical design, slices, or
+implementation code in this step. If automatic handoff does not happen, print:
+
+```text
+Next skill: nfp-01-context.
+Continue with that skill.
+```

@@ -8,6 +8,18 @@ pipeline_contract_version: '0.1.0'
 
 Use this skill to create `feature.md`.
 
+Methodology:
+
+- Read `.agents/pipeline-core/references/native-skill-protocol.md`.
+- Confirm the current directory is the feature worktree.
+- Read `apex.md`, `feature.yaml`, `state.yaml`, and `execution.md`.
+- Load the feature-contract docset with
+  `featurectl.py load-docset --step feature-contract`.
+- Use `methodology/extracted/artifact-model.md`,
+  `.agents/pipeline-core/references/feature-identity-policy.md`, and
+  `.agents/pipeline-core/references/generated-templates/feature-template.md`.
+- Record `Docs Consulted: Feature Contract` in `execution.md`.
+
 Responsibilities:
 
 - ask grouped blocking questions when behavior is unsafe or unclear
@@ -15,6 +27,7 @@ Responsibilities:
   criteria, assumptions, related features, and product risks
 - update the feature contract gate to `drafted`
 - validate the workspace before stopping or handing off
+  through `featurectl.py validate`
 
 Do not draft architecture or implementation details in this step.
 
@@ -54,3 +67,10 @@ One-artifact stop behavior:
 - keep architecture, technical design, slicing, and implementation untouched
 - record the stop point and next step in `execution.md`
 - run `featurectl.py validate --workspace <workspace>`
+
+If automatic handoff does not happen, print:
+
+```text
+Next skill: nfp-03-architecture.
+Continue with that skill.
+```

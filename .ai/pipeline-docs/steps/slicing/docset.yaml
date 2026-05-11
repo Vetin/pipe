@@ -1,11 +1,15 @@
 artifact_contract_version: '0.1.0'
 step: slicing
 required_docs:
+  - .agents/pipeline-core/references/native-skill-protocol.md
+  - methodology/extracted/workflow-and-gates.md
+  - .agents/pipeline-core/references/generated-templates/slice-template.yaml
   - .ai/constitution.md
   - .ai/pipeline-docs/global/testing-standards.md
   - .ai/pipeline-docs/steps/slicing/overview.md
   - .ai/pipeline-docs/steps/slicing/checklist.md
 optional_docs:
+  - methodology/extracted/evaluation-patterns.md
   - .ai/knowledge/testing-overview.md
 selected_alternatives: []
 suggested_related_files:

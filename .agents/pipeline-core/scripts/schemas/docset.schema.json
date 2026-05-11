@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Native Feature Pipeline docset",
+  "type": "object",
+  "required": ["artifact_contract_version", "step", "required_docs", "optional_docs", "budget"],
+  "properties": {
+    "artifact_contract_version": { "const": "0.1.0" },
+    "step": { "type": "string", "minLength": 1 },
+    "required_docs": { "type": "array", "items": { "type": "string" } },
+    "optional_docs": { "type": "array", "items": { "type": "string" } },
+    "related_feature_patterns": { "type": "array", "items": { "type": "string" } },
+    "selected_alternatives": { "type": "array", "items": { "type": "string" } },
+    "suggested_related_files": { "type": "array", "items": { "type": "string" } },
+    "budget": {
+      "type": "object",
+      "required": ["max_related_features", "max_doc_chars", "required_docs_first", "summarize_large_docs"],
+      "properties": {
+        "max_related_features": { "type": "integer", "minimum": 0 },
+        "max_doc_chars": { "type": "integer", "minimum": 1 },
+        "required_docs_first": { "type": "boolean" },
+        "summarize_large_docs": { "type": "boolean" }
+      }
+    }
+  }
+}

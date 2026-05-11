@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Native Feature Pipeline state",
+  "type": "object",
+  "required": ["artifact_contract_version", "feature_key", "run_id", "current_step", "worktree", "gates", "stale"],
+  "properties": {
+    "artifact_contract_version": { "const": "0.1.0" },
+    "feature_key": { "type": "string", "pattern": "^[a-z0-9-]+/[a-z0-9-]+$" },
+    "run_id": { "type": "string", "minLength": 1 },
+    "current_step": {
+      "enum": [
+        "intake",
+        "context",
+        "feature_contract",
+        "architecture",
+        "tech_design",
+        "slicing",
+        "readiness",
+        "worktree",
+        "tdd_implementation",
+        "review",
+        "verification",
+        "finish",
+        "promote"
+      ]
+    },
+    "worktree": {
+      "type": "object",
+      "required": ["branch", "path"],
+      "properties": {
+        "branch": { "type": "string" },
+        "path": { "type": "string" }
+      }
+    },
+    "gates": { "type": "object" },
+    "stale": { "type": "object" },
+    "active_slice": { "type": ["string", "null"] },
+    "locks": { "type": "object" }
+  },
+  "not": { "required": ["next_skill"] }
+}

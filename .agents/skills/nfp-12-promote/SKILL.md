@@ -8,6 +8,18 @@ pipeline_contract_version: '0.1.0'
 
 Use this skill to promote a completed workspace into canonical feature memory.
 
+Methodology:
+
+- Read `.agents/pipeline-core/references/native-skill-protocol.md`.
+- Confirm the current directory is the feature worktree.
+- Read `apex.md`, `feature.yaml`, `state.yaml`, `execution.md`, and
+  `feature-card.md`.
+- Load the promote docset with `featurectl.py load-docset --step promote`.
+- Use `methodology/extracted/artifact-model.md`,
+  `.agents/pipeline-core/references/context-reuse-policy.md`, and
+  `.agents/pipeline-core/references/feature-identity-policy.md`.
+- Record `Docs Consulted: Promote` in `execution.md`.
+
 Responsibilities:
 
 - validate finish state
@@ -21,12 +33,25 @@ Workflow:
 1. Run:
 
    ```bash
+   python .agents/pipeline-core/scripts/featurectl.py load-docset --workspace <workspace> --step promote
+   ```
+
+2. Append `Docs Consulted: Promote` to `execution.md`.
+3. Run:
+
+   ```bash
+   python .agents/pipeline-core/scripts/featurectl.py validate --workspace <workspace>
+   ```
+
+4. Run:
+
+   ```bash
    python .agents/pipeline-core/scripts/featurectl.py promote --workspace <workspace> --conflict abort
    ```
 
-2. If a canonical feature already exists, stop by default.
-3. Use `--conflict archive-as-variant` only when the user explicitly approves
+5. If a canonical feature already exists, stop by default.
+6. Use `--conflict archive-as-variant` only when the user explicitly approves
    archiving the existing canonical feature as a variant.
-4. Confirm `.ai/features/index.yaml` contains the promoted feature key.
+7. Confirm `.ai/features/index.yaml` contains the promoted feature key.
 
 Do not implement merge or replace conflict behavior in v1.

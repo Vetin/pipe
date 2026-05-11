@@ -8,6 +8,17 @@ pipeline_contract_version: '0.1.0'
 
 Use this skill to create `tech-design.md` and feature contracts.
 
+Methodology:
+
+- Read `.agents/pipeline-core/references/native-skill-protocol.md`.
+- Confirm the current directory is the feature worktree.
+- Read `apex.md`, `feature.yaml`, `state.yaml`, `execution.md`,
+  `feature.md`, and `architecture.md`.
+- Load the tech-design docset with `featurectl.py load-docset --step tech-design`.
+- Use `methodology/extracted/artifact-model.md` and generated technical design,
+  ADR, and contract templates as shape references.
+- Record `Docs Consulted: Technical Design` in `execution.md`.
+
 Responsibilities:
 
 - describe implementation modules and responsibilities
@@ -52,3 +63,10 @@ Workflow:
 8. Run `featurectl.py validate --workspace <workspace>`.
 
 Do not create implementation slices or code in this step.
+
+If automatic handoff does not happen, print:
+
+```text
+Next skill: nfp-05-slicing.
+Continue with that skill.
+```

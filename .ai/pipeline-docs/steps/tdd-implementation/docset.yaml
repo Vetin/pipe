@@ -1,6 +1,12 @@
 artifact_contract_version: '0.1.0'
 step: tdd-implementation
 required_docs:
+  - .agents/pipeline-core/references/native-skill-protocol.md
+  - methodology/extracted/workflow-and-gates.md
+  - methodology/extracted/review-and-verification.md
+  - methodology/extracted/evaluation-patterns.md
+  - .agents/pipeline-core/references/gate-policy.md
+  - .agents/pipeline-core/references/skill-power-validation-policy.md
   - .ai/constitution.md
   - .ai/pipeline-docs/global/testing-standards.md
   - .ai/pipeline-docs/steps/tdd-implementation/overview.md

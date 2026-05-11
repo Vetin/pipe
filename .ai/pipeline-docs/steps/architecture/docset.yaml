@@ -1,6 +1,11 @@
 artifact_contract_version: '0.1.0'
 step: architecture
 required_docs:
+  - .agents/pipeline-core/references/native-skill-protocol.md
+  - methodology/extracted/artifact-model.md
+  - methodology/extracted/context-and-doc-loading.md
+  - .agents/pipeline-core/references/quality-rubric.md
+  - .agents/pipeline-core/references/generated-templates/architecture-template.md
   - .ai/constitution.md
   - .ai/knowledge/architecture-overview.md
   - .ai/knowledge/module-map.md
@@ -10,6 +15,7 @@ required_docs:
   - .ai/pipeline-docs/steps/architecture/overview.md
   - .ai/pipeline-docs/steps/architecture/checklist.md
 optional_docs:
+  - methodology/extracted/workflow-and-gates.md
   - .ai/features/index.yaml
   - .ai/knowledge/integration-map.md
   - .ai/knowledge/contracts-overview.md

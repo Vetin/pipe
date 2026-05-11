@@ -1,6 +1,10 @@
 artifact_contract_version: '0.1.0'
 step: promote
 required_docs:
+  - .agents/pipeline-core/references/native-skill-protocol.md
+  - methodology/extracted/artifact-model.md
+  - .agents/pipeline-core/references/context-reuse-policy.md
+  - .agents/pipeline-core/references/feature-identity-policy.md
   - .ai/constitution.md
   - .ai/pipeline-docs/steps/promote/overview.md
   - .ai/pipeline-docs/steps/promote/checklist.md

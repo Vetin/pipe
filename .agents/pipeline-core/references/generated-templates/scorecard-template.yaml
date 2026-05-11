@@ -1,0 +1,6 @@
+artifact_contract_version: '0.1.0'
+scorecard: <name>
+criteria:
+  - name: <criterion>
+    scale: 0..1
+    prompt: <question>

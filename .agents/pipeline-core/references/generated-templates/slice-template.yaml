@@ -1,0 +1,22 @@
+artifact_contract_version: '0.1.0'
+feature_key: <domain>/<slug>
+slices:
+  - id: S-001
+    title: <slice title>
+    linked_requirements: [FR-001]
+    linked_acceptance_criteria: [AC-001]
+    linked_adrs: []
+    linked_contracts: []
+    dependencies: []
+    priority: 1
+    expected_touchpoints: []
+    scope_confidence: medium
+    tdd:
+      failing_test_file: <path>
+      red_command: <command>
+      expected_failure: <expected failure>
+      green_command: <command>
+    verification_commands: []
+    review_focus: []
+    evidence_status: pending
+    status: pending

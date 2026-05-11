@@ -8,6 +8,17 @@ pipeline_contract_version: '0.1.0'
 
 Use this skill to create `slices.yaml`.
 
+Methodology:
+
+- Read `.agents/pipeline-core/references/native-skill-protocol.md`.
+- Confirm the current directory is the feature worktree.
+- Read `apex.md`, `feature.yaml`, `state.yaml`, `execution.md`,
+  `feature.md`, `architecture.md`, and `tech-design.md`.
+- Load the slicing docset with `featurectl.py load-docset --step slicing`.
+- Use `methodology/extracted/workflow-and-gates.md` and
+  `.agents/pipeline-core/references/generated-templates/slice-template.yaml`.
+- Record `Docs Consulted: Slicing` in `execution.md`.
+
 Responsibilities:
 
 - create TDD slices linked to requirements and acceptance criteria
@@ -52,3 +63,10 @@ Do not use `allowed_files` or `forbidden_files` in v1.
   slice.
 - High-risk slices should appear early enough that design gaps surface before
   broad implementation.
+
+If automatic handoff does not happen, print:
+
+```text
+Next skill: nfp-06-readiness.
+Continue with that skill.
+```

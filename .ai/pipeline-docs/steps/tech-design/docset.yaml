@@ -1,6 +1,10 @@
 artifact_contract_version: '0.1.0'
 step: tech-design
 required_docs:
+  - .agents/pipeline-core/references/native-skill-protocol.md
+  - methodology/extracted/artifact-model.md
+  - .agents/pipeline-core/references/generated-templates/tech-design-template.md
+  - .agents/pipeline-core/references/generated-templates/adr-template.md
   - .ai/constitution.md
   - .ai/knowledge/tech-design-overview.md
   - .ai/knowledge/contracts-overview.md
@@ -9,6 +13,7 @@ required_docs:
   - .ai/pipeline-docs/steps/tech-design/overview.md
   - .ai/pipeline-docs/steps/tech-design/checklist.md
 optional_docs:
+  - methodology/extracted/workflow-and-gates.md
   - .ai/knowledge/module-map.md
   - .ai/knowledge/integration-map.md
 selected_alternatives: []

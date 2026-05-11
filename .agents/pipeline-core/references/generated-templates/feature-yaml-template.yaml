@@ -1,0 +1,13 @@
+artifact_contract_version: '0.1.0'
+feature_key: <domain>/<slug>
+domain: <domain>
+slug: <slug>
+title: <title>
+status: draft
+run_id: <run-id>
+branch: <branch>
+worktree: <worktree>
+canonical_path: .ai/features/<domain>/<slug>
+workspace_path: .ai/feature-workspaces/<domain>/<slug>--<run-id>
+aliases: []
+keywords: []

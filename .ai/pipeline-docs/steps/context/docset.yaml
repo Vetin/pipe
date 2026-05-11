@@ -1,6 +1,9 @@
 artifact_contract_version: '0.1.0'
 step: context
 required_docs:
+  - .agents/pipeline-core/references/native-skill-protocol.md
+  - methodology/extracted/context-and-doc-loading.md
+  - .agents/pipeline-core/references/context-reuse-policy.md
   - .ai/constitution.md
   - .ai/knowledge/project-overview.md
   - .ai/knowledge/features-overview.md
@@ -8,6 +11,7 @@ required_docs:
   - .ai/pipeline-docs/steps/context/overview.md
   - .ai/pipeline-docs/steps/context/checklist.md
 optional_docs:
+  - methodology/extracted/methodology-summary.md
   - .ai/knowledge/module-map.md
   - .ai/knowledge/architecture-overview.md
   - .ai/knowledge/adr-index.md

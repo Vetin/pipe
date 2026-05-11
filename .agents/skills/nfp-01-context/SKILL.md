@@ -8,6 +8,15 @@ pipeline_contract_version: '0.1.0'
 
 Use this skill to discover repository context before drafting feature behavior.
 
+Methodology:
+
+- Read `.agents/pipeline-core/references/native-skill-protocol.md`.
+- Load the context docset with `featurectl.py load-docset --step context`.
+- Use `methodology/extracted/context-and-doc-loading.md` and
+  `.agents/pipeline-core/references/context-reuse-policy.md` to prefer real
+  repository evidence over invented architecture.
+- Record `Docs Consulted: Context` in `execution.md`.
+
 Responsibilities:
 
 - read `apex.md`, `feature.yaml`, `state.yaml`, and `execution.md`

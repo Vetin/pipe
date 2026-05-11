@@ -279,9 +279,17 @@ Email service required.
 
 - `.ai/knowledge/architecture-overview.md`: reused known boundary.
 
+## Docs Consulted: Feature Contract
+
+- `.agents/pipeline-core/references/generated-templates/feature-template.md`: used required contract sections.
+
 ## Docs Consulted: Technical Design
 
 - `.ai/knowledge/tech-design-overview.md`: reused implementation artifact rules.
+
+## Docs Consulted: Slicing
+
+- `.agents/pipeline-core/references/generated-templates/slice-template.yaml`: used required TDD slice fields.
 """
         )
 

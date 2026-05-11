@@ -1,0 +1,6 @@
+artifact_contract_version: '0.1.0'
+scenario: <scenario>
+mode: offline
+required_files: []
+hard_checks: []
+soft_score_placeholders: []

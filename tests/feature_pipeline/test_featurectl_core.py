@@ -42,7 +42,9 @@ class FeatureCtlCoreTests(unittest.TestCase):
         self.assertIn("initialized", second.stdout)
         self.assertTrue((self.repo / ".ai/features/index.yaml").exists())
         self.assertTrue((self.repo / ".agents/pipeline-core/scripts/schemas").is_dir())
+        self.assertTrue((self.repo / ".agents/pipeline-core/references/generated-templates").is_dir())
         self.assertTrue((self.repo / ".agents/skills").is_dir())
+        self.assertTrue((self.repo / "methodology/extracted").is_dir())
         self.assertFalse(list(self.repo.rglob("approvals.yaml")))
         self.assertFalse(list(self.repo.rglob("handoff.md")))
 

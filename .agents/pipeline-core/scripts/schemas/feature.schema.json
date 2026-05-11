@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Native Feature Pipeline feature identity",
+  "type": "object",
+  "required": [
+    "artifact_contract_version",
+    "feature_key",
+    "domain",
+    "slug",
+    "title",
+    "status",
+    "run_id",
+    "branch",
+    "worktree",
+    "canonical_path",
+    "workspace_path"
+  ],
+  "properties": {
+    "artifact_contract_version": { "const": "0.1.0" },
+    "feature_key": { "type": "string", "pattern": "^[a-z0-9-]+/[a-z0-9-]+$" },
+    "domain": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+    "slug": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+    "title": { "type": "string", "minLength": 1 },
+    "status": { "enum": ["draft", "in_progress", "complete", "archived"] },
+    "run_id": { "type": "string", "minLength": 1 },
+    "branch": { "type": "string", "minLength": 1 },
+    "worktree": { "type": "string", "minLength": 1 },
+    "canonical_path": { "type": "string", "minLength": 1 },
+    "workspace_path": { "type": "string", "minLength": 1 },
+    "aliases": { "type": "array", "items": { "type": "string" } },
+    "keywords": { "type": "array", "items": { "type": "string" } }
+  }
+}

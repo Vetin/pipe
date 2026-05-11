@@ -8,6 +8,19 @@ pipeline_contract_version: '0.1.0'
 
 Use this skill to implement slices with red-green-refactor evidence.
 
+Methodology:
+
+- Read `.agents/pipeline-core/references/native-skill-protocol.md`.
+- Confirm the current directory is the feature worktree.
+- Read `apex.md`, `feature.yaml`, `state.yaml`, `execution.md`, and
+  `slices.yaml`.
+- Load the TDD implementation docset with
+  `featurectl.py load-docset --step tdd-implementation`.
+- Use `methodology/extracted/review-and-verification.md`,
+  `methodology/extracted/evaluation-patterns.md`, and
+  `.agents/pipeline-core/references/skill-power-validation-policy.md`.
+- Record `Docs Consulted: TDD Implementation` in `execution.md`.
+
 Responsibilities:
 
 - record pre-red git state
@@ -23,10 +36,17 @@ Before implementation:
 2. Run:
 
    ```bash
+   python .agents/pipeline-core/scripts/featurectl.py load-docset --workspace <workspace> --step tdd-implementation
+   ```
+
+3. Append `Docs Consulted: TDD Implementation` to `execution.md`.
+4. Run:
+
+   ```bash
    python .agents/pipeline-core/scripts/featurectl.py worktree-status --workspace <workspace>
    ```
 
-3. Stop immediately if it fails. Do not write tests, implementation code, or
+5. Stop immediately if it fails. Do not write tests, implementation code, or
    evidence until it passes.
 
 Per slice:
@@ -43,6 +63,7 @@ Per slice:
 10. Run review and store review evidence.
 11. Commit the slice or compute a diff hash.
 12. Run `featurectl.py complete-slice`.
+13. Run `featurectl.py validate --workspace <workspace> --implementation`.
 
 If implementation reveals the plan is wrong, stop, write `scope-change.md`, mark
 affected artifacts stale, and return to the correct earlier skill.
@@ -65,3 +86,5 @@ Iteration Loop Protocol:
 - If an iteration changes behavior, architecture, technical design, or slice
   boundaries, stop implementation and use the scope-change mechanism before
   continuing.
+
+When all planned slices are complete, hand off to `nfp-09-review`.

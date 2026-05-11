@@ -1,0 +1,26 @@
+artifact_contract_version: '0.1.0'
+step: intake
+required_docs:
+  - .agents/pipeline-core/references/native-skill-protocol.md
+  - methodology/extracted/methodology-summary.md
+  - methodology/extracted/workflow-and-gates.md
+  - .agents/pipeline-core/references/feature-identity-policy.md
+  - .agents/pipeline-core/references/workflow-state-machine.md
+  - .agents/pipeline-core/references/gate-policy.md
+  - .ai/pipeline-docs/steps/intake/overview.md
+  - .ai/pipeline-docs/steps/intake/checklist.md
+optional_docs:
+  - .agents/pipeline-core/references/generated-templates/apex-template.md
+  - .agents/pipeline-core/references/generated-templates/feature-yaml-template.yaml
+  - .agents/pipeline-core/references/generated-templates/execution-template.md
+related_feature_patterns: []
+selected_alternatives: []
+suggested_related_files:
+  - README.md
+  - docs/
+  - package.json
+budget:
+  max_related_features: 0
+  max_doc_chars: 40000
+  required_docs_first: true
+  summarize_large_docs: true

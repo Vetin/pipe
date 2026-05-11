@@ -1,0 +1,15 @@
+artifact_contract_version: '0.1.0'
+review_id: REV-001
+tier: strict_review
+severity: note
+finding: <finding>
+artifact: <artifact>
+evidence: <evidence>
+recommendation: <recommendation>
+blocking: false
+linked_requirement_ids: []
+linked_slice_ids: []
+file_refs: []
+reproduction_or_reasoning: <reasoning>
+fix_verification_command: <command>
+re_review_required: false

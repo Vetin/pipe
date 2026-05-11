@@ -1,6 +1,12 @@
 artifact_contract_version: '0.1.0'
 step: review
 required_docs:
+  - .agents/pipeline-core/references/native-skill-protocol.md
+  - methodology/extracted/review-and-verification.md
+  - methodology/extracted/evaluation-patterns.md
+  - .agents/pipeline-core/references/subagent-review-policy.md
+  - .agents/pipeline-core/references/quality-rubric.md
+  - .agents/pipeline-core/references/generated-templates/review-template.md
   - .ai/constitution.md
   - .ai/pipeline-docs/global/review-standards.md
   - .ai/pipeline-docs/steps/review/overview.md

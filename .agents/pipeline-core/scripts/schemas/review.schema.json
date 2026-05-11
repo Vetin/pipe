@@ -11,7 +11,13 @@
     "artifact",
     "evidence",
     "recommendation",
-    "blocking"
+    "blocking",
+    "linked_requirement_ids",
+    "linked_slice_ids",
+    "file_refs",
+    "reproduction_or_reasoning",
+    "fix_verification_command",
+    "re_review_required"
   ],
   "properties": {
     "artifact_contract_version": { "const": "0.1.0" },
@@ -22,6 +28,12 @@
     "artifact": { "type": "string", "minLength": 1 },
     "evidence": { "type": "string", "minLength": 1 },
     "recommendation": { "type": "string", "minLength": 1 },
-    "blocking": { "type": "boolean" }
+    "blocking": { "type": "boolean" },
+    "linked_requirement_ids": { "type": "array", "items": { "type": "string" } },
+    "linked_slice_ids": { "type": "array", "items": { "type": "string" } },
+    "file_refs": { "type": "array", "items": { "type": "string" } },
+    "reproduction_or_reasoning": { "type": "string", "minLength": 1 },
+    "fix_verification_command": { "type": "string", "minLength": 1 },
+    "re_review_required": { "type": "boolean" }
   }
 }

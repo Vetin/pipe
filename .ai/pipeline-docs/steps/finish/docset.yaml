@@ -1,6 +1,11 @@
 artifact_contract_version: '0.1.0'
 step: finish
 required_docs:
+  - .agents/pipeline-core/references/native-skill-protocol.md
+  - methodology/extracted/artifact-model.md
+  - methodology/extracted/review-and-verification.md
+  - methodology/extracted/evaluation-patterns.md
+  - .agents/pipeline-core/references/generated-templates/feature-card-template.md
   - .ai/constitution.md
   - .ai/pipeline-docs/steps/finish/overview.md
   - .ai/pipeline-docs/steps/finish/checklist.md
