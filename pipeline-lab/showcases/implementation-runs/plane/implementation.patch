@@ -1,6 +1,6 @@
 diff --git a/showcase/triage-automation-rules/feature.js b/showcase/triage-automation-rules/feature.js
 new file mode 100644
-index 0000000..04b5cd6
+index 0000000..e4e9e28
 --- /dev/null
 +++ b/showcase/triage-automation-rules/feature.js
 @@ -0,0 +1,77 @@
@@ -23,12 +23,12 @@ index 0000000..04b5cd6
 +    id: input.id || entity.id || `${FEATURE.key}-entity`,
 +    featureKey: FEATURE.key,
 +    scenario: FEATURE.scenario,
-+    state: 'untriaged',
++    state: "untriaged",
 +    entity,
 +    history: [
 +      {
 +        type: 'created',
-+        state: 'untriaged',
++        state: "untriaged",
 +        actor: 'system',
 +        note: FEATURE.name,
 +      },
@@ -38,8 +38,8 @@ index 0000000..04b5cd6
 +
 +
 +const TRANSITIONS = {
-+  'evaluate_rules': 'matched',
-+  'apply_assignments': 'triaged',
++  "evaluate_rules": "matched",
++  "apply_assignments": "triaged",
 +};
 +
 +function executeWorkflow(model, action, actor = {}, meta = {}) {
@@ -72,18 +72,18 @@ index 0000000..04b5cd6
 +  const transitions = events.filter((event) => event.type === 'transition');
 +  return {
 +    featureKey: FEATURE.key,
-+    auditLabel: 'rule execution audit',
++    auditLabel: "rule execution audit",
 +    eventCount: events.length,
 +    latestState: model.state,
 +    transitions,
-+    rollbackHint: 'remove generated labels and restore previous assignee priority tuple',
++    rollbackHint: "remove generated labels and restore previous assignee priority tuple",
 +  };
 +}
 +
 +module.exports = { FEATURE, createModel, executeWorkflow, inspectHistory };
 diff --git a/showcase/triage-automation-rules/feature.s-001.test.js b/showcase/triage-automation-rules/feature.s-001.test.js
 new file mode 100644
-index 0000000..766c4f0
+index 0000000..7edcf4e
 --- /dev/null
 +++ b/showcase/triage-automation-rules/feature.s-001.test.js
 @@ -0,0 +1,10 @@
@@ -92,14 +92,14 @@ index 0000000..766c4f0
 +const assert = require('assert/strict');
 +const { FEATURE, createModel } = require('./feature');
 +
-+const model = createModel({ id: 'triage-automation-rules-001', entity: { title: 'Triage Automation Rules' } });
-+assert.equal(FEATURE.key, 'triage-automation-rules');
-+assert.equal(model.state, 'untriaged');
++const model = createModel({ id: "triage-automation-rules-001", entity: { title: "Triage Automation Rules" } });
++assert.equal(FEATURE.key, "triage-automation-rules");
++assert.equal(model.state, "untriaged");
 +assert.equal(model.history[0].type, 'created');
-+assert.equal(model.entity.title, 'Triage Automation Rules');
++assert.equal(model.entity.title, "Triage Automation Rules");
 diff --git a/showcase/triage-automation-rules/feature.s-002.test.js b/showcase/triage-automation-rules/feature.s-002.test.js
 new file mode 100644
-index 0000000..6c47198
+index 0000000..edab292
 --- /dev/null
 +++ b/showcase/triage-automation-rules/feature.s-002.test.js
 @@ -0,0 +1,19 @@
@@ -108,23 +108,23 @@ index 0000000..6c47198
 +const assert = require('assert/strict');
 +const { createModel, executeWorkflow } = require('./feature');
 +
-+const model = createModel({ id: 'triage-automation-rules-002' });
++const model = createModel({ id: "triage-automation-rules-002" });
 +const reviewed = executeWorkflow(
 +  model,
-+  'evaluate_rules',
++  "evaluate_rules",
 +  { id: 'reviewer-1' },
-+  { reason: 'issue triage automation rules' }
++  { reason: "issue triage automation rules" }
 +);
-+assert.equal(reviewed.state, 'matched');
-+assert.equal(reviewed.history.at(-1).previousState, 'untriaged');
++assert.equal(reviewed.state, "matched");
++assert.equal(reviewed.history.at(-1).previousState, "untriaged");
 +assert.equal(reviewed.history.at(-1).actor, 'reviewer-1');
 +
-+const finalized = executeWorkflow(reviewed, 'apply_assignments', { id: 'approver-1' });
-+assert.equal(finalized.state, 'triaged');
++const finalized = executeWorkflow(reviewed, "apply_assignments", { id: 'approver-1' });
++assert.equal(finalized.state, "triaged");
 +assert.equal(finalized.history.length, 3);
 diff --git a/showcase/triage-automation-rules/feature.s-003.test.js b/showcase/triage-automation-rules/feature.s-003.test.js
 new file mode 100644
-index 0000000..0b0bf85
+index 0000000..d628e77
 --- /dev/null
 +++ b/showcase/triage-automation-rules/feature.s-003.test.js
 @@ -0,0 +1,14 @@
@@ -133,12 +133,12 @@ index 0000000..0b0bf85
 +const assert = require('assert/strict');
 +const { createModel, executeWorkflow, inspectHistory } = require('./feature');
 +
-+let model = createModel({ id: 'triage-automation-rules-003' });
-+model = executeWorkflow(model, 'evaluate_rules', { id: 'actor-1' });
-+model = executeWorkflow(model, 'apply_assignments', { id: 'actor-2' }, { evidence: true });
++let model = createModel({ id: "triage-automation-rules-003" });
++model = executeWorkflow(model, "evaluate_rules", { id: 'actor-1' });
++model = executeWorkflow(model, "apply_assignments", { id: 'actor-2' }, { evidence: true });
 +const audit = inspectHistory(model);
 +
-+assert.equal(audit.auditLabel, 'rule execution audit');
-+assert.equal(audit.latestState, 'triaged');
++assert.equal(audit.auditLabel, "rule execution audit");
++assert.equal(audit.latestState, "triaged");
 +assert.equal(audit.transitions.length, 2);
 +assert.match(audit.rollbackHint, /remove/i);

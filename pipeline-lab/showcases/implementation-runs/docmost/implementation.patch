@@ -1,6 +1,6 @@
 diff --git a/showcase/page-approval-workflow/feature.js b/showcase/page-approval-workflow/feature.js
 new file mode 100644
-index 0000000..f088940
+index 0000000..ef9b6e8
 --- /dev/null
 +++ b/showcase/page-approval-workflow/feature.js
 @@ -0,0 +1,77 @@
@@ -23,12 +23,12 @@ index 0000000..f088940
 +    id: input.id || entity.id || `${FEATURE.key}-entity`,
 +    featureKey: FEATURE.key,
 +    scenario: FEATURE.scenario,
-+    state: 'draft',
++    state: "draft",
 +    entity,
 +    history: [
 +      {
 +        type: 'created',
-+        state: 'draft',
++        state: "draft",
 +        actor: 'system',
 +        note: FEATURE.name,
 +      },
@@ -38,8 +38,8 @@ index 0000000..f088940
 +
 +
 +const TRANSITIONS = {
-+  'submit_for_review': 'review',
-+  'approve': 'approved',
++  "submit_for_review": "review",
++  "approve": "approved",
 +};
 +
 +function executeWorkflow(model, action, actor = {}, meta = {}) {
@@ -72,18 +72,18 @@ index 0000000..f088940
 +  const transitions = events.filter((event) => event.type === 'transition');
 +  return {
 +    featureKey: FEATURE.key,
-+    auditLabel: 'approval history',
++    auditLabel: "approval history",
 +    eventCount: events.length,
 +    latestState: model.state,
 +    transitions,
-+    rollbackHint: 'reopen approved page as draft and retain reviewer comments',
++    rollbackHint: "reopen approved page as draft and retain reviewer comments",
 +  };
 +}
 +
 +module.exports = { FEATURE, createModel, executeWorkflow, inspectHistory };
 diff --git a/showcase/page-approval-workflow/feature.s-001.test.js b/showcase/page-approval-workflow/feature.s-001.test.js
 new file mode 100644
-index 0000000..cc75221
+index 0000000..0087b99
 --- /dev/null
 +++ b/showcase/page-approval-workflow/feature.s-001.test.js
 @@ -0,0 +1,10 @@
@@ -92,14 +92,14 @@ index 0000000..cc75221
 +const assert = require('assert/strict');
 +const { FEATURE, createModel } = require('./feature');
 +
-+const model = createModel({ id: 'page-approval-workflow-001', entity: { title: 'Page Approval Workflow' } });
-+assert.equal(FEATURE.key, 'page-approval-workflow');
-+assert.equal(model.state, 'draft');
++const model = createModel({ id: "page-approval-workflow-001", entity: { title: "Page Approval Workflow" } });
++assert.equal(FEATURE.key, "page-approval-workflow");
++assert.equal(model.state, "draft");
 +assert.equal(model.history[0].type, 'created');
-+assert.equal(model.entity.title, 'Page Approval Workflow');
++assert.equal(model.entity.title, "Page Approval Workflow");
 diff --git a/showcase/page-approval-workflow/feature.s-002.test.js b/showcase/page-approval-workflow/feature.s-002.test.js
 new file mode 100644
-index 0000000..4525242
+index 0000000..7e2b06c
 --- /dev/null
 +++ b/showcase/page-approval-workflow/feature.s-002.test.js
 @@ -0,0 +1,19 @@
@@ -108,23 +108,23 @@ index 0000000..4525242
 +const assert = require('assert/strict');
 +const { createModel, executeWorkflow } = require('./feature');
 +
-+const model = createModel({ id: 'page-approval-workflow-002' });
++const model = createModel({ id: "page-approval-workflow-002" });
 +const reviewed = executeWorkflow(
 +  model,
-+  'submit_for_review',
++  "submit_for_review",
 +  { id: 'reviewer-1' },
-+  { reason: 'page approval workflow' }
++  { reason: "page approval workflow" }
 +);
-+assert.equal(reviewed.state, 'review');
-+assert.equal(reviewed.history.at(-1).previousState, 'draft');
++assert.equal(reviewed.state, "review");
++assert.equal(reviewed.history.at(-1).previousState, "draft");
 +assert.equal(reviewed.history.at(-1).actor, 'reviewer-1');
 +
-+const finalized = executeWorkflow(reviewed, 'approve', { id: 'approver-1' });
-+assert.equal(finalized.state, 'approved');
++const finalized = executeWorkflow(reviewed, "approve", { id: 'approver-1' });
++assert.equal(finalized.state, "approved");
 +assert.equal(finalized.history.length, 3);
 diff --git a/showcase/page-approval-workflow/feature.s-003.test.js b/showcase/page-approval-workflow/feature.s-003.test.js
 new file mode 100644
-index 0000000..67082b0
+index 0000000..744fc32
 --- /dev/null
 +++ b/showcase/page-approval-workflow/feature.s-003.test.js
 @@ -0,0 +1,14 @@
@@ -133,12 +133,12 @@ index 0000000..67082b0
 +const assert = require('assert/strict');
 +const { createModel, executeWorkflow, inspectHistory } = require('./feature');
 +
-+let model = createModel({ id: 'page-approval-workflow-003' });
-+model = executeWorkflow(model, 'submit_for_review', { id: 'actor-1' });
-+model = executeWorkflow(model, 'approve', { id: 'actor-2' }, { evidence: true });
++let model = createModel({ id: "page-approval-workflow-003" });
++model = executeWorkflow(model, "submit_for_review", { id: 'actor-1' });
++model = executeWorkflow(model, "approve", { id: 'actor-2' }, { evidence: true });
 +const audit = inspectHistory(model);
 +
-+assert.equal(audit.auditLabel, 'approval history');
-+assert.equal(audit.latestState, 'approved');
++assert.equal(audit.auditLabel, "approval history");
++assert.equal(audit.latestState, "approved");
 +assert.equal(audit.transitions.length, 2);
 +assert.match(audit.rollbackHint, /reopen/i);

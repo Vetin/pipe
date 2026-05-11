@@ -1,6 +1,6 @@
 diff --git a/showcase/app-version-restore-diff-preview/feature.js b/showcase/app-version-restore-diff-preview/feature.js
 new file mode 100644
-index 0000000..225f258
+index 0000000..36551db
 --- /dev/null
 +++ b/showcase/app-version-restore-diff-preview/feature.js
 @@ -0,0 +1,77 @@
@@ -23,12 +23,12 @@ index 0000000..225f258
 +    id: input.id || entity.id || `${FEATURE.key}-entity`,
 +    featureKey: FEATURE.key,
 +    scenario: FEATURE.scenario,
-+    state: 'current',
++    state: "current",
 +    entity,
 +    history: [
 +      {
 +        type: 'created',
-+        state: 'current',
++        state: "current",
 +        actor: 'system',
 +        note: FEATURE.name,
 +      },
@@ -38,8 +38,8 @@ index 0000000..225f258
 +
 +
 +const TRANSITIONS = {
-+  'preview_diff': 'diffed',
-+  'restore_version': 'restored',
++  "preview_diff": "diffed",
++  "restore_version": "restored",
 +};
 +
 +function executeWorkflow(model, action, actor = {}, meta = {}) {
@@ -72,18 +72,18 @@ index 0000000..225f258
 +  const transitions = events.filter((event) => event.type === 'transition');
 +  return {
 +    featureKey: FEATURE.key,
-+    auditLabel: 'restore audit',
++    auditLabel: "restore audit",
 +    eventCount: events.length,
 +    latestState: model.state,
 +    transitions,
-+    rollbackHint: 'restore previous version snapshot if publish fails',
++    rollbackHint: "restore previous version snapshot if publish fails",
 +  };
 +}
 +
 +module.exports = { FEATURE, createModel, executeWorkflow, inspectHistory };
 diff --git a/showcase/app-version-restore-diff-preview/feature.s-001.test.js b/showcase/app-version-restore-diff-preview/feature.s-001.test.js
 new file mode 100644
-index 0000000..2b59107
+index 0000000..384982a
 --- /dev/null
 +++ b/showcase/app-version-restore-diff-preview/feature.s-001.test.js
 @@ -0,0 +1,10 @@
@@ -92,14 +92,14 @@ index 0000000..2b59107
 +const assert = require('assert/strict');
 +const { FEATURE, createModel } = require('./feature');
 +
-+const model = createModel({ id: 'app-version-restore-diff-preview-001', entity: { title: 'App Version Restore Diff Preview' } });
-+assert.equal(FEATURE.key, 'app-version-restore-diff-preview');
-+assert.equal(model.state, 'current');
++const model = createModel({ id: "app-version-restore-diff-preview-001", entity: { title: "App Version Restore Diff Preview" } });
++assert.equal(FEATURE.key, "app-version-restore-diff-preview");
++assert.equal(model.state, "current");
 +assert.equal(model.history[0].type, 'created');
-+assert.equal(model.entity.title, 'App Version Restore Diff Preview');
++assert.equal(model.entity.title, "App Version Restore Diff Preview");
 diff --git a/showcase/app-version-restore-diff-preview/feature.s-002.test.js b/showcase/app-version-restore-diff-preview/feature.s-002.test.js
 new file mode 100644
-index 0000000..f161fbb
+index 0000000..792c65f
 --- /dev/null
 +++ b/showcase/app-version-restore-diff-preview/feature.s-002.test.js
 @@ -0,0 +1,19 @@
@@ -108,23 +108,23 @@ index 0000000..f161fbb
 +const assert = require('assert/strict');
 +const { createModel, executeWorkflow } = require('./feature');
 +
-+const model = createModel({ id: 'app-version-restore-diff-preview-002' });
++const model = createModel({ id: "app-version-restore-diff-preview-002" });
 +const reviewed = executeWorkflow(
 +  model,
-+  'preview_diff',
++  "preview_diff",
 +  { id: 'reviewer-1' },
-+  { reason: 'app version restore with diff preview' }
++  { reason: "app version restore with diff preview" }
 +);
-+assert.equal(reviewed.state, 'diffed');
-+assert.equal(reviewed.history.at(-1).previousState, 'current');
++assert.equal(reviewed.state, "diffed");
++assert.equal(reviewed.history.at(-1).previousState, "current");
 +assert.equal(reviewed.history.at(-1).actor, 'reviewer-1');
 +
-+const finalized = executeWorkflow(reviewed, 'restore_version', { id: 'approver-1' });
-+assert.equal(finalized.state, 'restored');
++const finalized = executeWorkflow(reviewed, "restore_version", { id: 'approver-1' });
++assert.equal(finalized.state, "restored");
 +assert.equal(finalized.history.length, 3);
 diff --git a/showcase/app-version-restore-diff-preview/feature.s-003.test.js b/showcase/app-version-restore-diff-preview/feature.s-003.test.js
 new file mode 100644
-index 0000000..9995ab7
+index 0000000..14061ec
 --- /dev/null
 +++ b/showcase/app-version-restore-diff-preview/feature.s-003.test.js
 @@ -0,0 +1,14 @@
@@ -133,12 +133,12 @@ index 0000000..9995ab7
 +const assert = require('assert/strict');
 +const { createModel, executeWorkflow, inspectHistory } = require('./feature');
 +
-+let model = createModel({ id: 'app-version-restore-diff-preview-003' });
-+model = executeWorkflow(model, 'preview_diff', { id: 'actor-1' });
-+model = executeWorkflow(model, 'restore_version', { id: 'actor-2' }, { evidence: true });
++let model = createModel({ id: "app-version-restore-diff-preview-003" });
++model = executeWorkflow(model, "preview_diff", { id: 'actor-1' });
++model = executeWorkflow(model, "restore_version", { id: 'actor-2' }, { evidence: true });
 +const audit = inspectHistory(model);
 +
-+assert.equal(audit.auditLabel, 'restore audit');
-+assert.equal(audit.latestState, 'restored');
++assert.equal(audit.auditLabel, "restore audit");
++assert.equal(audit.latestState, "restored");
 +assert.equal(audit.transitions.length, 2);
 +assert.match(audit.rollbackHint, /restore/i);

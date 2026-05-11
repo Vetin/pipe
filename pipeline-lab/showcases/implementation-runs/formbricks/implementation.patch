@@ -1,6 +1,6 @@
 diff --git a/showcase/signed-survey-response-webhooks/feature.js b/showcase/signed-survey-response-webhooks/feature.js
 new file mode 100644
-index 0000000..f60d1cb
+index 0000000..287753e
 --- /dev/null
 +++ b/showcase/signed-survey-response-webhooks/feature.js
 @@ -0,0 +1,77 @@
@@ -23,12 +23,12 @@ index 0000000..f60d1cb
 +    id: input.id || entity.id || `${FEATURE.key}-entity`,
 +    featureKey: FEATURE.key,
 +    scenario: FEATURE.scenario,
-+    state: 'configured',
++    state: "configured",
 +    entity,
 +    history: [
 +      {
 +        type: 'created',
-+        state: 'configured',
++        state: "configured",
 +        actor: 'system',
 +        note: FEATURE.name,
 +      },
@@ -38,8 +38,8 @@ index 0000000..f60d1cb
 +
 +
 +const TRANSITIONS = {
-+  'deliver_signed_payload': 'delivered',
-+  'retry_failed_delivery': 'retry_scheduled',
++  "deliver_signed_payload": "delivered",
++  "retry_failed_delivery": "retry_scheduled",
 +};
 +
 +function executeWorkflow(model, action, actor = {}, meta = {}) {
@@ -72,18 +72,18 @@ index 0000000..f60d1cb
 +  const transitions = events.filter((event) => event.type === 'transition');
 +  return {
 +    featureKey: FEATURE.key,
-+    auditLabel: 'delivery log',
++    auditLabel: "delivery log",
 +    eventCount: events.length,
 +    latestState: model.state,
 +    transitions,
-+    rollbackHint: 'disable endpoint and replay only idempotent deliveries',
++    rollbackHint: "disable endpoint and replay only idempotent deliveries",
 +  };
 +}
 +
 +module.exports = { FEATURE, createModel, executeWorkflow, inspectHistory };
 diff --git a/showcase/signed-survey-response-webhooks/feature.s-001.test.js b/showcase/signed-survey-response-webhooks/feature.s-001.test.js
 new file mode 100644
-index 0000000..bc49035
+index 0000000..fda3a24
 --- /dev/null
 +++ b/showcase/signed-survey-response-webhooks/feature.s-001.test.js
 @@ -0,0 +1,10 @@
@@ -92,14 +92,14 @@ index 0000000..bc49035
 +const assert = require('assert/strict');
 +const { FEATURE, createModel } = require('./feature');
 +
-+const model = createModel({ id: 'signed-survey-response-webhooks-001', entity: { title: 'Signed Survey Response Webhooks' } });
-+assert.equal(FEATURE.key, 'signed-survey-response-webhooks');
-+assert.equal(model.state, 'configured');
++const model = createModel({ id: "signed-survey-response-webhooks-001", entity: { title: "Signed Survey Response Webhooks" } });
++assert.equal(FEATURE.key, "signed-survey-response-webhooks");
++assert.equal(model.state, "configured");
 +assert.equal(model.history[0].type, 'created');
-+assert.equal(model.entity.title, 'Signed Survey Response Webhooks');
++assert.equal(model.entity.title, "Signed Survey Response Webhooks");
 diff --git a/showcase/signed-survey-response-webhooks/feature.s-002.test.js b/showcase/signed-survey-response-webhooks/feature.s-002.test.js
 new file mode 100644
-index 0000000..6b8aa4e
+index 0000000..3ab8581
 --- /dev/null
 +++ b/showcase/signed-survey-response-webhooks/feature.s-002.test.js
 @@ -0,0 +1,19 @@
@@ -108,23 +108,23 @@ index 0000000..6b8aa4e
 +const assert = require('assert/strict');
 +const { createModel, executeWorkflow } = require('./feature');
 +
-+const model = createModel({ id: 'signed-survey-response-webhooks-002' });
++const model = createModel({ id: "signed-survey-response-webhooks-002" });
 +const reviewed = executeWorkflow(
 +  model,
-+  'deliver_signed_payload',
++  "deliver_signed_payload",
 +  { id: 'reviewer-1' },
-+  { reason: 'signed survey-response webhook delivery' }
++  { reason: "signed survey-response webhook delivery" }
 +);
-+assert.equal(reviewed.state, 'delivered');
-+assert.equal(reviewed.history.at(-1).previousState, 'configured');
++assert.equal(reviewed.state, "delivered");
++assert.equal(reviewed.history.at(-1).previousState, "configured");
 +assert.equal(reviewed.history.at(-1).actor, 'reviewer-1');
 +
-+const finalized = executeWorkflow(reviewed, 'retry_failed_delivery', { id: 'approver-1' });
-+assert.equal(finalized.state, 'retry_scheduled');
++const finalized = executeWorkflow(reviewed, "retry_failed_delivery", { id: 'approver-1' });
++assert.equal(finalized.state, "retry_scheduled");
 +assert.equal(finalized.history.length, 3);
 diff --git a/showcase/signed-survey-response-webhooks/feature.s-003.test.js b/showcase/signed-survey-response-webhooks/feature.s-003.test.js
 new file mode 100644
-index 0000000..8689fc0
+index 0000000..8aab0a9
 --- /dev/null
 +++ b/showcase/signed-survey-response-webhooks/feature.s-003.test.js
 @@ -0,0 +1,14 @@
@@ -133,12 +133,12 @@ index 0000000..8689fc0
 +const assert = require('assert/strict');
 +const { createModel, executeWorkflow, inspectHistory } = require('./feature');
 +
-+let model = createModel({ id: 'signed-survey-response-webhooks-003' });
-+model = executeWorkflow(model, 'deliver_signed_payload', { id: 'actor-1' });
-+model = executeWorkflow(model, 'retry_failed_delivery', { id: 'actor-2' }, { evidence: true });
++let model = createModel({ id: "signed-survey-response-webhooks-003" });
++model = executeWorkflow(model, "deliver_signed_payload", { id: 'actor-1' });
++model = executeWorkflow(model, "retry_failed_delivery", { id: 'actor-2' }, { evidence: true });
 +const audit = inspectHistory(model);
 +
-+assert.equal(audit.auditLabel, 'delivery log');
-+assert.equal(audit.latestState, 'retry_scheduled');
++assert.equal(audit.auditLabel, "delivery log");
++assert.equal(audit.latestState, "retry_scheduled");
 +assert.equal(audit.transitions.length, 2);
 +assert.match(audit.rollbackHint, /disable/i);

@@ -13,8 +13,8 @@ import argparse
 import datetime as dt
 import hashlib
 import json
-import os
 import re
+import shlex
 import shutil
 import subprocess
 import sys
@@ -198,10 +198,6 @@ def run_shell(command: str, *, cwd: Path, check: bool = False) -> subprocess.Com
     )
 
 
-def slugify(value: str) -> str:
-    return re.sub(r"[^a-z0-9]+", "-", value.lower()).strip("-")
-
-
 def load_specs() -> list[CaseSpec]:
     config = yaml.safe_load(CONFIG_PATH.read_text()) or {}
     specs: list[CaseSpec] = []
@@ -320,12 +316,12 @@ function createModel(input = {{}}) {{
     id: input.id || entity.id || `${{FEATURE.key}}-entity`,
     featureKey: FEATURE.key,
     scenario: FEATURE.scenario,
-    state: '{spec.initial_state}',
+    state: {json.dumps(spec.initial_state)},
     entity,
     history: [
       {{
         type: 'created',
-        state: '{spec.initial_state}',
+        state: {json.dumps(spec.initial_state)},
         actor: 'system',
         note: FEATURE.name,
       }},
@@ -337,8 +333,8 @@ function createModel(input = {{}}) {{
         body += f"""
 
 const TRANSITIONS = {{
-  '{spec.primary_action}': '{spec.review_state}',
-  '{spec.final_action}': '{spec.final_state}',
+  {json.dumps(spec.primary_action)}: {json.dumps(spec.review_state)},
+  {json.dumps(spec.final_action)}: {json.dumps(spec.final_state)},
 }};
 
 function executeWorkflow(model, action, actor = {{}}, meta = {{}}) {{
@@ -373,11 +369,11 @@ function inspectHistory(model) {{
   const transitions = events.filter((event) => event.type === 'transition');
   return {{
     featureKey: FEATURE.key,
-    auditLabel: '{spec.audit_label}',
+    auditLabel: {json.dumps(spec.audit_label)},
     eventCount: events.length,
     latestState: model.state,
     transitions,
-    rollbackHint: '{spec.rollback_hint}',
+    rollbackHint: {json.dumps(spec.rollback_hint)},
   }};
 }}
 """
@@ -398,11 +394,11 @@ def js_test(spec: CaseSpec, slice_id: str) -> str:
 const assert = require('assert/strict');
 const {{ FEATURE, createModel }} = require('./feature');
 
-const model = createModel({{ id: '{spec.slug}-001', entity: {{ title: '{spec.feature}' }} }});
-assert.equal(FEATURE.key, '{spec.slug}');
-assert.equal(model.state, '{spec.initial_state}');
+const model = createModel({{ id: {json.dumps(f"{spec.slug}-001")}, entity: {{ title: {json.dumps(spec.feature)} }} }});
+assert.equal(FEATURE.key, {json.dumps(spec.slug)});
+assert.equal(model.state, {json.dumps(spec.initial_state)});
 assert.equal(model.history[0].type, 'created');
-assert.equal(model.entity.title, '{spec.feature}');
+assert.equal(model.entity.title, {json.dumps(spec.feature)});
 """
     if slice_id == "S-002":
         return f"""\
@@ -411,19 +407,19 @@ assert.equal(model.entity.title, '{spec.feature}');
 const assert = require('assert/strict');
 const {{ createModel, executeWorkflow }} = require('./feature');
 
-const model = createModel({{ id: '{spec.slug}-002' }});
+const model = createModel({{ id: {json.dumps(f"{spec.slug}-002")} }});
 const reviewed = executeWorkflow(
   model,
-  '{spec.primary_action}',
+  {json.dumps(spec.primary_action)},
   {{ id: 'reviewer-1' }},
-  {{ reason: '{spec.scenario}' }}
+  {{ reason: {json.dumps(spec.scenario)} }}
 );
-assert.equal(reviewed.state, '{spec.review_state}');
-assert.equal(reviewed.history.at(-1).previousState, '{spec.initial_state}');
+assert.equal(reviewed.state, {json.dumps(spec.review_state)});
+assert.equal(reviewed.history.at(-1).previousState, {json.dumps(spec.initial_state)});
 assert.equal(reviewed.history.at(-1).actor, 'reviewer-1');
 
-const finalized = executeWorkflow(reviewed, '{spec.final_action}', {{ id: 'approver-1' }});
-assert.equal(finalized.state, '{spec.final_state}');
+const finalized = executeWorkflow(reviewed, {json.dumps(spec.final_action)}, {{ id: 'approver-1' }});
+assert.equal(finalized.state, {json.dumps(spec.final_state)});
 assert.equal(finalized.history.length, 3);
 """
     return f"""\
@@ -432,13 +428,13 @@ assert.equal(finalized.history.length, 3);
 const assert = require('assert/strict');
 const {{ createModel, executeWorkflow, inspectHistory }} = require('./feature');
 
-let model = createModel({{ id: '{spec.slug}-003' }});
-model = executeWorkflow(model, '{spec.primary_action}', {{ id: 'actor-1' }});
-model = executeWorkflow(model, '{spec.final_action}', {{ id: 'actor-2' }}, {{ evidence: true }});
+let model = createModel({{ id: {json.dumps(f"{spec.slug}-003")} }});
+model = executeWorkflow(model, {json.dumps(spec.primary_action)}, {{ id: 'actor-1' }});
+model = executeWorkflow(model, {json.dumps(spec.final_action)}, {{ id: 'actor-2' }}, {{ evidence: true }});
 const audit = inspectHistory(model);
 
-assert.equal(audit.auditLabel, '{spec.audit_label}');
-assert.equal(audit.latestState, '{spec.final_state}');
+assert.equal(audit.auditLabel, {json.dumps(spec.audit_label)});
+assert.equal(audit.latestState, {json.dumps(spec.final_state)});
 assert.equal(audit.transitions.length, 2);
 assert.match(audit.rollbackHint, /{re.escape(spec.rollback_hint.split()[0])}/i);
 """
@@ -467,16 +463,16 @@ type Model struct {{
 
 func CreateModel(id string) Model {{
 \tif id == "" {{
-\t\tid = "{spec.slug}-entity"
+\t\tid = {json.dumps(f"{spec.slug}-entity")}
 \t}}
 \treturn Model{{
 \t\tID:         id,
-\t\tFeatureKey: "{spec.slug}",
-\t\tScenario:   "{spec.scenario}",
-\t\tState:      "{spec.initial_state}",
+\t\tFeatureKey: {json.dumps(spec.slug)},
+\t\tScenario:   {json.dumps(spec.scenario)},
+\t\tState:      {json.dumps(spec.initial_state)},
 \t\tHistory: []Event{{{{
 \t\t\tType: "created",
-\t\t\tNote: "{spec.feature}",
+\t\t\tNote: {json.dumps(spec.feature)},
 \t\t}}}},
 \t}}
 }}
@@ -489,8 +485,8 @@ func ExecuteWorkflow(model Model, action string, actor string) (Model, error) {{
 \t\treturn model, ErrMissingActor
 \t}}
 \tnextState, ok := map[string]string{{
-\t\t"{spec.primary_action}": "{spec.review_state}",
-\t\t"{spec.final_action}": "{spec.final_state}",
+\t\t{json.dumps(spec.primary_action)}: {json.dumps(spec.review_state)},
+\t\t{json.dumps(spec.final_action)}: {json.dumps(spec.final_state)},
 \t}}[action]
 \tif !ok {{
 \t\treturn model, ErrUnsupportedAction
@@ -527,21 +523,21 @@ func InspectHistory(model Model) Audit {{
 \t\t}}
 \t}}
 \treturn Audit{{
-\t\tFeatureKey: "{spec.slug}",
-\t\tAuditLabel: "{spec.audit_label}",
+\t\tFeatureKey: {json.dumps(spec.slug)},
+\t\tAuditLabel: {json.dumps(spec.audit_label)},
 \t\tLatestState: model.State,
 \t\tEventCount: len(model.History),
 \t\tTransitions: transitions,
-\t\tRollbackHint: "{spec.rollback_hint}",
+\t\tRollbackHint: {json.dumps(spec.rollback_hint)},
 \t}}
 }}
 """
     return body
 
 
-def go_errors() -> str:
+def go_errors(package_name: str) -> str:
     return """\
-package PLACEHOLDER
+package PACKAGE_NAME
 
 import "errors"
 
@@ -549,7 +545,7 @@ var (
 \tErrMissingActor      = errors.New("actor id is required for auditable workflow execution")
 \tErrUnsupportedAction = errors.New("unsupported action")
 )
-"""
+""".replace("PACKAGE_NAME", package_name)
 
 
 def go_test(spec: CaseSpec, slice_id: str) -> str:
@@ -561,11 +557,11 @@ package {package}
 import "testing"
 
 func TestCreateModel(t *testing.T) {{
-\tmodel := CreateModel("{spec.slug}-001")
-\tif model.FeatureKey != "{spec.slug}" {{
+\tmodel := CreateModel({json.dumps(f"{spec.slug}-001")})
+\tif model.FeatureKey != {json.dumps(spec.slug)} {{
 \t\tt.Fatalf("feature key = %s", model.FeatureKey)
 \t}}
-\tif model.State != "{spec.initial_state}" {{
+\tif model.State != {json.dumps(spec.initial_state)} {{
 \t\tt.Fatalf("state = %s", model.State)
 \t}}
 \tif len(model.History) != 1 || model.History[0].Type != "created" {{
@@ -580,19 +576,19 @@ package {package}
 import "testing"
 
 func TestExecuteWorkflow(t *testing.T) {{
-\tmodel := CreateModel("{spec.slug}-002")
-\tmodel, err := ExecuteWorkflow(model, "{spec.primary_action}", "reviewer-1")
+\tmodel := CreateModel({json.dumps(f"{spec.slug}-002")})
+\tmodel, err := ExecuteWorkflow(model, {json.dumps(spec.primary_action)}, "reviewer-1")
 \tif err != nil {{
 \t\tt.Fatal(err)
 \t}}
-\tif model.State != "{spec.review_state}" {{
+\tif model.State != {json.dumps(spec.review_state)} {{
 \t\tt.Fatalf("state = %s", model.State)
 \t}}
-\tmodel, err = ExecuteWorkflow(model, "{spec.final_action}", "approver-1")
+\tmodel, err = ExecuteWorkflow(model, {json.dumps(spec.final_action)}, "approver-1")
 \tif err != nil {{
 \t\tt.Fatal(err)
 \t}}
-\tif model.State != "{spec.final_state}" {{
+\tif model.State != {json.dumps(spec.final_state)} {{
 \t\tt.Fatalf("state = %s", model.State)
 \t}}
 \tif len(model.History) != 3 {{
@@ -606,14 +602,14 @@ package {package}
 import "testing"
 
 func TestInspectHistory(t *testing.T) {{
-\tmodel := CreateModel("{spec.slug}-003")
-\tmodel, _ = ExecuteWorkflow(model, "{spec.primary_action}", "actor-1")
-\tmodel, _ = ExecuteWorkflow(model, "{spec.final_action}", "actor-2")
+\tmodel := CreateModel({json.dumps(f"{spec.slug}-003")})
+\tmodel, _ = ExecuteWorkflow(model, {json.dumps(spec.primary_action)}, "actor-1")
+\tmodel, _ = ExecuteWorkflow(model, {json.dumps(spec.final_action)}, "actor-2")
 \taudit := InspectHistory(model)
-\tif audit.AuditLabel != "{spec.audit_label}" {{
+\tif audit.AuditLabel != {json.dumps(spec.audit_label)} {{
 \t\tt.Fatalf("audit label = %s", audit.AuditLabel)
 \t}}
-\tif audit.LatestState != "{spec.final_state}" {{
+\tif audit.LatestState != {json.dumps(spec.final_state)} {{
 \t\tt.Fatalf("latest state = %s", audit.LatestState)
 \t}}
 \tif len(audit.Transitions) != 2 {{
@@ -626,18 +622,17 @@ func TestInspectHistory(t *testing.T) {{
 """
 
 
-def write_stage(spec: CaseSpec, worktree: Path, stage: int) -> dict[str, Path]:
+def write_stage(spec: CaseSpec, worktree: Path, stage: int) -> None:
     module_dir = worktree / "showcase" / spec.slug
     module_dir.mkdir(parents=True, exist_ok=True)
     if spec.language == "go":
         source = module_dir / "feature.go"
         source.write_text(go_source(spec, stage))
         if stage >= 2:
-            (module_dir / "errors.go").write_text(go_errors().replace("PLACEHOLDER", spec.slug.replace("-", "")))
-        return {"source": source}
+            (module_dir / "errors.go").write_text(go_errors(spec.slug.replace("-", "")))
+        return
     source = module_dir / "feature.js"
     source.write_text(js_source(spec, stage))
-    return {"source": source}
 
 
 def write_test(spec: CaseSpec, worktree: Path, slice_id: str) -> Path:
@@ -655,15 +650,15 @@ def write_test(spec: CaseSpec, worktree: Path, slice_id: str) -> Path:
 def slice_command(spec: CaseSpec, test_path: Path, worktree: Path) -> str:
     rel = test_path.relative_to(worktree).as_posix()
     if spec.language == "go":
-        return f"go test ./showcase/{spec.slug}"
-    return f"node {rel}"
+        return f"go test {shlex.quote(f'./showcase/{spec.slug}')}"
+    return f"node {shlex.quote(rel)}"
 
 
 def all_tests_command(spec: CaseSpec, upto: int = 3) -> str:
     if spec.language == "go":
-        return f"go test ./showcase/{spec.slug} && git diff --check"
+        return f"go test {shlex.quote(f'./showcase/{spec.slug}')} && git diff --check"
     tests = " && ".join(
-        f"node showcase/{spec.slug}/feature.s-00{index}.test.js" for index in range(1, upto + 1)
+        f"node {shlex.quote(f'showcase/{spec.slug}/feature.s-00{index}.test.js')}" for index in range(1, upto + 1)
     )
     return f"{tests} && git diff --check"
 
@@ -676,7 +671,6 @@ def summarize_output(output: str, limit: int = 3000) -> str:
 
 
 def record_evidence(
-    spec: CaseSpec,
     workspace: Path,
     worktree: Path,
     *,
@@ -725,7 +719,7 @@ def diff_hash(worktree: Path) -> str:
     return hashlib.sha256(diff.encode()).hexdigest()
 
 
-def complete_slice(spec: CaseSpec, workspace: Path, worktree: Path, slice_id: str) -> None:
+def complete_slice(workspace: Path, worktree: Path, slice_id: str) -> None:
     featurectl(
         worktree,
         "complete-slice",
@@ -745,7 +739,6 @@ def implement_slices(spec: CaseSpec, case_index: int, workspace: Path, worktree:
         command = slice_command(spec, test_path, worktree)
         red = run_shell(command, cwd=worktree, check=False)
         record_evidence(
-            spec,
             workspace,
             worktree,
             kind="red",
@@ -760,7 +753,6 @@ def implement_slices(spec: CaseSpec, case_index: int, workspace: Path, worktree:
         if green.returncode != 0:
             raise RuntimeError(f"{spec.name} {slice_id} green command failed:\n{green.stdout}")
         record_evidence(
-            spec,
             workspace,
             worktree,
             kind="green",
@@ -774,7 +766,6 @@ def implement_slices(spec: CaseSpec, case_index: int, workspace: Path, worktree:
         if verify.returncode != 0:
             raise RuntimeError(f"{spec.name} {slice_id} verification failed:\n{verify.stdout}")
         record_evidence(
-            spec,
             workspace,
             worktree,
             kind="verification",
@@ -788,7 +779,6 @@ def implement_slices(spec: CaseSpec, case_index: int, workspace: Path, worktree:
             f"and rollback evidence are present in showcase/{spec.slug}."
         )
         record_evidence(
-            spec,
             workspace,
             worktree,
             kind="review",
@@ -797,7 +787,7 @@ def implement_slices(spec: CaseSpec, case_index: int, workspace: Path, worktree:
             output=review_text,
             timestamp_value=timestamp(case_index, index, 3),
         )
-        complete_slice(spec, workspace, worktree, slice_id)
+        complete_slice(workspace, worktree, slice_id)
         observations.append(
             {
                 "slice": slice_id,
@@ -810,7 +800,7 @@ def implement_slices(spec: CaseSpec, case_index: int, workspace: Path, worktree:
     return observations
 
 
-def final_artifacts(spec: CaseSpec, workspace: Path, worktree: Path, case_index: int) -> None:
+def final_artifacts(spec: CaseSpec, workspace: Path, worktree: Path) -> None:
     reviews_dir = workspace / "reviews"
     reviews_dir.mkdir(exist_ok=True)
     evidence_dir = workspace / "evidence"
@@ -1032,7 +1022,7 @@ def implement_case(spec: CaseSpec, case_index: int) -> dict[str, Any]:
     install_pipeline_in_worktree(worktree)
     approve_planning_gates(spec, workspace, worktree)
     observations = implement_slices(spec, case_index, workspace, worktree)
-    final_artifacts(spec, workspace, worktree, case_index)
+    final_artifacts(spec, workspace, worktree)
     write_case_outputs(spec, workspace, worktree, observations)
     return {
         "case": spec.name,

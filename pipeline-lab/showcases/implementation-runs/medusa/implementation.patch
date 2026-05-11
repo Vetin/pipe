@@ -1,6 +1,6 @@
 diff --git a/showcase/first-order-promotion-usage-caps/feature.js b/showcase/first-order-promotion-usage-caps/feature.js
 new file mode 100644
-index 0000000..3ca49b5
+index 0000000..378b07c
 --- /dev/null
 +++ b/showcase/first-order-promotion-usage-caps/feature.js
 @@ -0,0 +1,77 @@
@@ -23,12 +23,12 @@ index 0000000..3ca49b5
 +    id: input.id || entity.id || `${FEATURE.key}-entity`,
 +    featureKey: FEATURE.key,
 +    scenario: FEATURE.scenario,
-+    state: 'cart',
++    state: "cart",
 +    entity,
 +    history: [
 +      {
 +        type: 'created',
-+        state: 'cart',
++        state: "cart",
 +        actor: 'system',
 +        note: FEATURE.name,
 +      },
@@ -38,8 +38,8 @@ index 0000000..3ca49b5
 +
 +
 +const TRANSITIONS = {
-+  'evaluate_first_order': 'eligible',
-+  'reserve_usage_cap': 'reserved',
++  "evaluate_first_order": "eligible",
++  "reserve_usage_cap": "reserved",
 +};
 +
 +function executeWorkflow(model, action, actor = {}, meta = {}) {
@@ -72,18 +72,18 @@ index 0000000..3ca49b5
 +  const transitions = events.filter((event) => event.type === 'transition');
 +  return {
 +    featureKey: FEATURE.key,
-+    auditLabel: 'promotion usage ledger',
++    auditLabel: "promotion usage ledger",
 +    eventCount: events.length,
 +    latestState: model.state,
 +    transitions,
-+    rollbackHint: 'release reservation when order completion fails',
++    rollbackHint: "release reservation when order completion fails",
 +  };
 +}
 +
 +module.exports = { FEATURE, createModel, executeWorkflow, inspectHistory };
 diff --git a/showcase/first-order-promotion-usage-caps/feature.s-001.test.js b/showcase/first-order-promotion-usage-caps/feature.s-001.test.js
 new file mode 100644
-index 0000000..9f6e2b5
+index 0000000..a7b543e
 --- /dev/null
 +++ b/showcase/first-order-promotion-usage-caps/feature.s-001.test.js
 @@ -0,0 +1,10 @@
@@ -92,14 +92,14 @@ index 0000000..9f6e2b5
 +const assert = require('assert/strict');
 +const { FEATURE, createModel } = require('./feature');
 +
-+const model = createModel({ id: 'first-order-promotion-usage-caps-001', entity: { title: 'First Order Promotion Usage Caps' } });
-+assert.equal(FEATURE.key, 'first-order-promotion-usage-caps');
-+assert.equal(model.state, 'cart');
++const model = createModel({ id: "first-order-promotion-usage-caps-001", entity: { title: "First Order Promotion Usage Caps" } });
++assert.equal(FEATURE.key, "first-order-promotion-usage-caps");
++assert.equal(model.state, "cart");
 +assert.equal(model.history[0].type, 'created');
-+assert.equal(model.entity.title, 'First Order Promotion Usage Caps');
++assert.equal(model.entity.title, "First Order Promotion Usage Caps");
 diff --git a/showcase/first-order-promotion-usage-caps/feature.s-002.test.js b/showcase/first-order-promotion-usage-caps/feature.s-002.test.js
 new file mode 100644
-index 0000000..b1c8d75
+index 0000000..108ab23
 --- /dev/null
 +++ b/showcase/first-order-promotion-usage-caps/feature.s-002.test.js
 @@ -0,0 +1,19 @@
@@ -108,23 +108,23 @@ index 0000000..b1c8d75
 +const assert = require('assert/strict');
 +const { createModel, executeWorkflow } = require('./feature');
 +
-+const model = createModel({ id: 'first-order-promotion-usage-caps-002' });
++const model = createModel({ id: "first-order-promotion-usage-caps-002" });
 +const reviewed = executeWorkflow(
 +  model,
-+  'evaluate_first_order',
++  "evaluate_first_order",
 +  { id: 'reviewer-1' },
-+  { reason: 'first-order promotion with usage caps' }
++  { reason: "first-order promotion with usage caps" }
 +);
-+assert.equal(reviewed.state, 'eligible');
-+assert.equal(reviewed.history.at(-1).previousState, 'cart');
++assert.equal(reviewed.state, "eligible");
++assert.equal(reviewed.history.at(-1).previousState, "cart");
 +assert.equal(reviewed.history.at(-1).actor, 'reviewer-1');
 +
-+const finalized = executeWorkflow(reviewed, 'reserve_usage_cap', { id: 'approver-1' });
-+assert.equal(finalized.state, 'reserved');
++const finalized = executeWorkflow(reviewed, "reserve_usage_cap", { id: 'approver-1' });
++assert.equal(finalized.state, "reserved");
 +assert.equal(finalized.history.length, 3);
 diff --git a/showcase/first-order-promotion-usage-caps/feature.s-003.test.js b/showcase/first-order-promotion-usage-caps/feature.s-003.test.js
 new file mode 100644
-index 0000000..f1d022d
+index 0000000..afe6d9d
 --- /dev/null
 +++ b/showcase/first-order-promotion-usage-caps/feature.s-003.test.js
 @@ -0,0 +1,14 @@
@@ -133,12 +133,12 @@ index 0000000..f1d022d
 +const assert = require('assert/strict');
 +const { createModel, executeWorkflow, inspectHistory } = require('./feature');
 +
-+let model = createModel({ id: 'first-order-promotion-usage-caps-003' });
-+model = executeWorkflow(model, 'evaluate_first_order', { id: 'actor-1' });
-+model = executeWorkflow(model, 'reserve_usage_cap', { id: 'actor-2' }, { evidence: true });
++let model = createModel({ id: "first-order-promotion-usage-caps-003" });
++model = executeWorkflow(model, "evaluate_first_order", { id: 'actor-1' });
++model = executeWorkflow(model, "reserve_usage_cap", { id: 'actor-2' }, { evidence: true });
 +const audit = inspectHistory(model);
 +
-+assert.equal(audit.auditLabel, 'promotion usage ledger');
-+assert.equal(audit.latestState, 'reserved');
++assert.equal(audit.auditLabel, "promotion usage ledger");
++assert.equal(audit.latestState, "reserved");
 +assert.equal(audit.transitions.length, 2);
 +assert.match(audit.rollbackHint, /release/i);
