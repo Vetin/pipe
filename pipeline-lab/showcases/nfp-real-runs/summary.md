@@ -2,6 +2,8 @@
 
 Each repository was reset to its upstream default branch, then a supervisor subagent invoked `codex exec` inside that repository to run the native feature pipeline from `nfp-00` through `nfp-12`.
 
+Conversation exports are available in [`conversations/index.md`](conversations/index.md) and [`conversations/index.html`](conversations/index.html).
+
 ## Summary
 
 | Repo | Branch | Commit | Code diff check | Status | Code files |

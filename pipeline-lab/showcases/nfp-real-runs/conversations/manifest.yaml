@@ -1,0 +1,169 @@
+sessions:
+- repo: docmost
+  title: Page Approval Workflow
+  feature_goal: Add draft, review, and approved states for sensitive pages with reviewer
+    comments and approval history.
+  id: 019e17f0-4a83-7982-83e0-4b9f6f987c88
+  thread_name: ''
+  timestamp: '2026-05-11T16:48:04.227Z'
+  cwd: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/docmost
+  source_path: /Users/egormasnankin/.codex/sessions/2026/05/11/rollout-2026-05-11T19-48-04-019e17f0-4a83-7982-83e0-4b9f6f987c88.jsonl
+  source: exec
+  cli_version: 0.130.0
+  final_for_repo: true
+  slug: docmost-2026-05-11T164804-227Z-019e17f0-4a83-7982-83e0-4b9f6f987c88
+  item_count: 167
+- repo: twenty
+  title: Duplicate Company Merge Audit Trail
+  feature_goal: Detect duplicate companies, preview merge effects, merge records,
+    and keep reversible audit history.
+  id: 019e17f0-55e3-7cf0-9fc3-8b7460d6db8f
+  thread_name: ''
+  timestamp: '2026-05-11T16:48:07.139Z'
+  cwd: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/twenty
+  source_path: /Users/egormasnankin/.codex/sessions/2026/05/11/rollout-2026-05-11T19-48-07-019e17f0-55e3-7cf0-9fc3-8b7460d6db8f.jsonl
+  source: exec
+  cli_version: 0.130.0
+  final_for_repo: false
+  slug: twenty-2026-05-11T164807-139Z-019e17f0-55e3-7cf0-9fc3-8b7460d6db8f
+  item_count: 26
+- repo: nocodb
+  title: Schema Change Audit Log
+  feature_goal: Record table, column, and view changes with actor, timestamp, old
+    value, new value, and rollback hints.
+  id: 019e17f0-e791-7cb3-803b-684252e1bf12
+  thread_name: ''
+  timestamp: '2026-05-11T16:48:44.433Z'
+  cwd: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/nocodb
+  source_path: /Users/egormasnankin/.codex/sessions/2026/05/11/rollout-2026-05-11T19-48-44-019e17f0-e791-7cb3-803b-684252e1bf12.jsonl
+  source: exec
+  cli_version: 0.130.0
+  final_for_repo: true
+  slug: nocodb-2026-05-11T164844-433Z-019e17f0-e791-7cb3-803b-684252e1bf12
+  item_count: 148
+- repo: formbricks
+  title: Signed Survey Response Webhooks
+  feature_goal: Let users configure signed survey response webhook endpoints, retry
+    failed deliveries, and inspect delivery logs.
+  id: 019e17f0-f106-72b1-93e1-8a67093c5ce5
+  thread_name: ''
+  timestamp: '2026-05-11T16:48:46.854Z'
+  cwd: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/formbricks
+  source_path: /Users/egormasnankin/.codex/sessions/2026/05/11/rollout-2026-05-11T19-48-46-019e17f0-f106-72b1-93e1-8a67093c5ce5.jsonl
+  source: exec
+  cli_version: 0.130.0
+  final_for_repo: true
+  slug: formbricks-2026-05-11T164846-854Z-019e17f0-f106-72b1-93e1-8a67093c5ce5
+  item_count: 177
+- repo: plane
+  title: Triage Automation Rules
+  feature_goal: Automatically assign labels, priority, or assignees based on issue
+    title, body, and project.
+  id: 019e17f0-f239-7812-b3fd-ae8b7c4aca29
+  thread_name: ''
+  timestamp: '2026-05-11T16:48:47.161Z'
+  cwd: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/plane
+  source_path: /Users/egormasnankin/.codex/sessions/2026/05/11/rollout-2026-05-11T19-48-47-019e17f0-f239-7812-b3fd-ae8b7c4aca29.jsonl
+  source: exec
+  cli_version: 0.130.0
+  final_for_repo: true
+  slug: plane-2026-05-11T164847-161Z-019e17f0-f239-7812-b3fd-ae8b7c4aca29
+  item_count: 133
+- repo: twenty
+  title: Duplicate Company Merge Audit Trail
+  feature_goal: Detect duplicate companies, preview merge effects, merge records,
+    and keep reversible audit history.
+  id: 019e17f1-ef95-7ef3-bb86-de55e11917b5
+  thread_name: ''
+  timestamp: '2026-05-11T16:49:52.021Z'
+  cwd: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/twenty
+  source_path: /Users/egormasnankin/.codex/sessions/2026/05/11/rollout-2026-05-11T19-49-52-019e17f1-ef95-7ef3-bb86-de55e11917b5.jsonl
+  source: exec
+  cli_version: 0.130.0
+  final_for_repo: true
+  slug: twenty-2026-05-11T164952-021Z-019e17f1-ef95-7ef3-bb86-de55e11917b5
+  item_count: 108
+- repo: actual
+  title: Rule Preview And Undo
+  feature_goal: Preview predicted import-rule changes before applying them and allow
+    rollback.
+  id: 019e17f3-3ae0-7183-ac7c-83d693e7db13
+  thread_name: ''
+  timestamp: '2026-05-11T16:51:16.832Z'
+  cwd: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/actual
+  source_path: /Users/egormasnankin/.codex/sessions/2026/05/11/rollout-2026-05-11T19-51-16-019e17f3-3ae0-7183-ac7c-83d693e7db13.jsonl
+  source: exec
+  cli_version: 0.130.0
+  final_for_repo: true
+  slug: actual-2026-05-11T165116-832Z-019e17f3-3ae0-7183-ac7c-83d693e7db13
+  item_count: 222
+- repo: appsmith
+  title: App Version Restore Diff Preview
+  feature_goal: Show differences between saved app versions and restore selected versions
+    safely.
+  id: 019e17fe-54e1-78a1-a3d7-f5398ed5319f
+  thread_name: ''
+  timestamp: '2026-05-11T17:03:24.385Z'
+  cwd: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/appsmith
+  source_path: /Users/egormasnankin/.codex/sessions/2026/05/11/rollout-2026-05-11T20-03-24-019e17fe-54e1-78a1-a3d7-f5398ed5319f.jsonl
+  source: exec
+  cli_version: 0.130.0
+  final_for_repo: true
+  slug: appsmith-2026-05-11T170324-385Z-019e17fe-54e1-78a1-a3d7-f5398ed5319f
+  item_count: 220
+- repo: listmonk
+  title: Double Opt In Segment Onboarding
+  feature_goal: Import subscribers into a pending segment, send confirmation, and
+    move confirmed users to active segment.
+  id: 019e17fe-a797-7ab0-9a42-38c23a47a31d
+  thread_name: ''
+  timestamp: '2026-05-11T17:03:45.559Z'
+  cwd: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/listmonk
+  source_path: /Users/egormasnankin/.codex/sessions/2026/05/11/rollout-2026-05-11T20-03-45-019e17fe-a797-7ab0-9a42-38c23a47a31d.jsonl
+  source: exec
+  cli_version: 0.130.0
+  final_for_repo: false
+  slug: listmonk-2026-05-11T170345-559Z-019e17fe-a797-7ab0-9a42-38c23a47a31d
+  item_count: 105
+- repo: medusa
+  title: First Order Promotion Usage Caps
+  feature_goal: Add a promotion rule for a customer's first completed order with global
+    and customer usage caps.
+  id: 019e1800-446f-7cb2-95bb-b154f4995fcd
+  thread_name: ''
+  timestamp: '2026-05-11T17:05:31.247Z'
+  cwd: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/medusa
+  source_path: /Users/egormasnankin/.codex/sessions/2026/05/11/rollout-2026-05-11T20-05-31-019e1800-446f-7cb2-95bb-b154f4995fcd.jsonl
+  source: exec
+  cli_version: 0.130.0
+  final_for_repo: true
+  slug: medusa-2026-05-11T170531-247Z-019e1800-446f-7cb2-95bb-b154f4995fcd
+  item_count: 165
+- repo: excalidraw
+  title: Layer Lock History Safe Editing
+  feature_goal: Allow users to lock objects or layers against accidental edits while
+    preserving undo and redo behavior.
+  id: 019e1804-1fc1-7750-bb13-fb47d1927eac
+  thread_name: ''
+  timestamp: '2026-05-11T17:09:44.001Z'
+  cwd: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/excalidraw
+  source_path: /Users/egormasnankin/.codex/sessions/2026/05/11/rollout-2026-05-11T20-09-44-019e1804-1fc1-7750-bb13-fb47d1927eac.jsonl
+  source: exec
+  cli_version: 0.130.0
+  final_for_repo: true
+  slug: excalidraw-2026-05-11T170944-001Z-019e1804-1fc1-7750-bb13-fb47d1927eac
+  item_count: 243
+- repo: listmonk
+  title: Double Opt In Segment Onboarding
+  feature_goal: Import subscribers into a pending segment, send confirmation, and
+    move confirmed users to active segment.
+  id: 019e180a-3407-78f0-865f-59ea1b8d4e3d
+  thread_name: ''
+  timestamp: '2026-05-11T17:16:22.407Z'
+  cwd: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/listmonk
+  source_path: /Users/egormasnankin/.codex/sessions/2026/05/11/rollout-2026-05-11T20-16-22-019e180a-3407-78f0-865f-59ea1b8d4e3d.jsonl
+  source: exec
+  cli_version: 0.130.0
+  final_for_repo: true
+  slug: listmonk-2026-05-11T171622-407Z-019e180a-3407-78f0-865f-59ea1b8d4e3d
+  item_count: 148
