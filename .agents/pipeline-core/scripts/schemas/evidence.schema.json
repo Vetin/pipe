@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Native Feature Pipeline evidence manifest",
+  "type": "object",
+  "required": ["artifact_contract_version", "feature_key", "slices"],
+  "properties": {
+    "artifact_contract_version": { "const": "0.1.0" },
+    "feature_key": { "type": "string", "pattern": "^[a-z0-9-]+/[a-z0-9-]+$" },
+    "slices": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["red", "green", "verification", "review"],
+        "properties": {
+          "red": { "$ref": "#/$defs/commandEvidence" },
+          "green": { "$ref": "#/$defs/commandEvidence" },
+          "verification": { "$ref": "#/$defs/verificationEvidence" },
+          "review": { "$ref": "#/$defs/reviewEvidence" },
+          "commit": { "type": "string" },
+          "diff_hash": { "type": "string" }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "commandEvidence": {
+      "type": "object",
+      "required": ["timestamp", "command_file", "output_file", "git_state_file"],
+      "properties": {
+        "timestamp": { "type": "string" },
+        "command_file": { "type": "string" },
+        "output_file": { "type": "string" },
+        "git_state_file": { "type": "string" }
+      }
+    },
+    "verificationEvidence": {
+      "type": "object",
+      "required": ["timestamp", "command_file", "output_file"],
+      "properties": {
+        "timestamp": { "type": "string" },
+        "command_file": { "type": "string" },
+        "output_file": { "type": "string" }
+      }
+    },
+    "reviewEvidence": {
+      "type": "object",
+      "required": ["timestamp", "summary_file"],
+      "properties": {
+        "timestamp": { "type": "string" },
+        "summary_file": { "type": "string" }
+      }
+    }
+  }
+}

@@ -134,6 +134,39 @@ def main(argv: list[str] | None = None) -> int:
     load_docset_parser.add_argument("--step", required=True)
     load_docset_parser.set_defaults(func=cmd_load_docset)
 
+    gate_parser = subparsers.add_parser("gate", help="manage gate state")
+    gate_subparsers = gate_parser.add_subparsers(dest="gate_command", required=True)
+    gate_set_parser = gate_subparsers.add_parser("set", help="set a gate status")
+    gate_set_parser.add_argument("--workspace", required=True)
+    gate_set_parser.add_argument("--gate", required=True)
+    gate_set_parser.add_argument("--status", required=True)
+    gate_set_parser.add_argument("--by", dest="actor", required=True)
+    gate_set_parser.add_argument("--note", default="")
+    gate_set_parser.set_defaults(func=cmd_gate_set)
+
+    mark_stale_parser = subparsers.add_parser("mark-stale", help="mark downstream artifacts stale")
+    mark_stale_parser.add_argument("--workspace", required=True)
+    mark_stale_parser.add_argument("--artifact", required=True)
+    mark_stale_parser.add_argument("--reason", default="")
+    mark_stale_parser.set_defaults(func=cmd_mark_stale)
+
+    record_evidence_parser = subparsers.add_parser("record-evidence", help="record raw slice evidence")
+    record_evidence_parser.add_argument("--workspace", required=True)
+    record_evidence_parser.add_argument("--slice", dest="slice_id", required=True)
+    record_evidence_parser.add_argument("--phase", required=True, choices=["red", "green", "verification", "review"])
+    record_evidence_parser.add_argument("--command", default="")
+    record_evidence_parser.add_argument("--output", required=True)
+    record_evidence_parser.add_argument("--git-state")
+    record_evidence_parser.add_argument("--timestamp")
+    record_evidence_parser.set_defaults(func=cmd_record_evidence)
+
+    complete_slice_parser = subparsers.add_parser("complete-slice", help="mark a slice complete after evidence validation")
+    complete_slice_parser.add_argument("--workspace", required=True)
+    complete_slice_parser.add_argument("--slice", dest="slice_id", required=True)
+    complete_slice_parser.add_argument("--commit")
+    complete_slice_parser.add_argument("--diff-hash")
+    complete_slice_parser.set_defaults(func=cmd_complete_slice)
+
     try:
         args = parser.parse_args(argv)
         args.func(args)
@@ -293,6 +326,110 @@ def cmd_load_docset(args: argparse.Namespace) -> None:
     else:
         print("  none")
     print_docs("suggested_related_files", root, docset.get("suggested_related_files", []), check_exists=False)
+
+
+def cmd_gate_set(args: argparse.Namespace) -> None:
+    root = repo_root()
+    workspace = resolve_workspace(root, args.workspace)
+    if args.gate not in DEFAULT_GATES:
+        raise FeatureCtlError(f"unknown gate: {args.gate}")
+    if args.status not in VALID_GATE_STATES:
+        raise FeatureCtlError(f"invalid gate status: {args.status}")
+    state_path = workspace / "state.yaml"
+    state = read_yaml(state_path)
+    old_status = state.setdefault("gates", {}).get(args.gate)
+    state["gates"][args.gate] = args.status
+    write_yaml(state_path, state)
+    append_execution_event(
+        workspace,
+        "Gate Events",
+        f"- {utc_now()} gate={args.gate} old_status={old_status} new_status={args.status} by={args.actor} note={args.note or 'none'}",
+    )
+    print(f"gate: {args.gate}")
+    print(f"status: {args.status}")
+
+
+def cmd_mark_stale(args: argparse.Namespace) -> None:
+    root = repo_root()
+    workspace = resolve_workspace(root, args.workspace)
+    state_path = workspace / "state.yaml"
+    state = read_yaml(state_path)
+    stale = state.setdefault("stale", {})
+    affected = staleness_targets(args.artifact)
+    if not affected:
+        raise FeatureCtlError(f"unknown artifact for staleness: {args.artifact}")
+    for artifact in affected:
+        stale[artifact] = True
+    write_yaml(state_path, state)
+    append_execution_event(
+        workspace,
+        "Scope Changes",
+        f"- {utc_now()} artifact={args.artifact} marked_stale={', '.join(affected)} reason={args.reason or 'none'}",
+    )
+    print("marked_stale:")
+    for artifact in affected:
+        print(f"  - {artifact}")
+
+
+def cmd_record_evidence(args: argparse.Namespace) -> None:
+    root = repo_root()
+    workspace = resolve_workspace(root, args.workspace)
+    feature = read_yaml(workspace / "feature.yaml")
+    state = read_yaml(workspace / "state.yaml")
+    ensure_known_slice(workspace, args.slice_id)
+    timestamp = args.timestamp or utc_now()
+    validate_timestamp(timestamp)
+    manifest_path = workspace / "evidence/manifest.yaml"
+    manifest = read_manifest_or_default(manifest_path, feature.get("feature_key"))
+    slice_dir = workspace / "evidence" / args.slice_id
+    slice_dir.mkdir(parents=True, exist_ok=True)
+    rels = evidence_phase_files(args.slice_id, args.phase)
+
+    entry: dict[str, Any] = {"timestamp": timestamp}
+    if args.phase in {"red", "green", "verification"}:
+        if not args.command:
+            raise FeatureCtlError(f"{args.phase} evidence requires --command")
+        write_text(workspace / "evidence" / rels["command_file"], args.command + "\n")
+        write_text(workspace / "evidence" / rels["output_file"], args.output)
+        entry["command_file"] = rels["command_file"]
+        entry["output_file"] = rels["output_file"]
+    if args.phase in {"red", "green"}:
+        git_state = args.git_state if args.git_state is not None else current_git_state(root, state)
+        write_text(workspace / "evidence" / rels["git_state_file"], git_state)
+        entry["git_state_file"] = rels["git_state_file"]
+    if args.phase == "review":
+        write_text(workspace / "evidence" / rels["summary_file"], args.output)
+        entry["summary_file"] = rels["summary_file"]
+
+    manifest.setdefault("slices", {}).setdefault(args.slice_id, {})[args.phase] = entry
+    write_yaml(manifest_path, manifest)
+    print(f"recorded: {args.slice_id} {args.phase}")
+
+
+def cmd_complete_slice(args: argparse.Namespace) -> None:
+    root = repo_root()
+    workspace = resolve_workspace(root, args.workspace)
+    ensure_known_slice(workspace, args.slice_id)
+    if not args.commit and not args.diff_hash:
+        raise FeatureCtlError("complete-slice requires --commit or --diff-hash")
+    add_slice_commit_metadata(workspace, args.slice_id, commit=args.commit, diff_hash=args.diff_hash)
+    blockers = validate_slice_evidence(workspace, args.slice_id)
+    if blockers:
+        print("slice_evidence: fail")
+        for blocker in blockers:
+            print(f"- {blocker}")
+        raise FeatureCtlError("slice evidence validation failed")
+
+    manifest_path = workspace / "evidence/manifest.yaml"
+    manifest = read_yaml(manifest_path)
+    write_yaml(manifest_path, manifest)
+    mark_slice_complete(workspace / "slices.yaml", args.slice_id)
+    append_execution_event(
+        workspace,
+        "Summary",
+        f"- {utc_now()} completed slice {args.slice_id} with evidence",
+    )
+    print(f"slice_complete: {args.slice_id}")
 
 
 def ensure_init_tree(root: Path) -> None:
@@ -756,7 +893,7 @@ def validate_evidence_minimum(workspace: Path) -> list[str]:
     manifest = workspace / "evidence/manifest.yaml"
     if not manifest.exists():
         return ["evidence validation requires evidence/manifest.yaml"]
-    return []
+    return validate_evidence_manifest(workspace)
 
 
 def validate_review_minimum(workspace: Path) -> list[str]:
@@ -920,6 +1057,251 @@ def write_text(path: Path, content: str) -> None:
 def write_if_missing(path: Path, content: str) -> None:
     if not path.exists():
         write_text(path, content)
+
+
+def append_execution_event(workspace: Path, section: str, line: str) -> None:
+    path = workspace / "execution.md"
+    existing = path.read_text(encoding="utf-8") if path.exists() else ""
+    heading = f"## {section}"
+    if heading not in existing:
+        existing = existing.rstrip() + f"\n\n{heading}\n\n"
+    existing = existing.rstrip() + "\n" + line + "\n"
+    path.write_text(existing, encoding="utf-8")
+
+
+def staleness_targets(artifact: str) -> list[str]:
+    rules = {
+        "feature": ["architecture", "tech_design", "slices", "evidence", "feature_card", "canonical_docs"],
+        "feature.md": ["architecture", "tech_design", "slices", "evidence", "feature_card", "canonical_docs"],
+        "architecture": ["tech_design", "slices", "evidence", "feature_card", "canonical_docs"],
+        "architecture.md": ["tech_design", "slices", "evidence", "feature_card", "canonical_docs"],
+        "adrs": ["tech_design", "slices", "evidence", "feature_card", "canonical_docs"],
+        "diagrams": ["tech_design", "slices", "evidence", "feature_card", "canonical_docs"],
+        "tech_design": ["slices", "evidence", "feature_card", "canonical_docs"],
+        "tech-design.md": ["slices", "evidence", "feature_card", "canonical_docs"],
+        "contracts": ["slices", "evidence", "feature_card", "canonical_docs"],
+        "slices": ["evidence", "review", "feature_card", "canonical_docs"],
+        "slices.yaml": ["evidence", "review", "feature_card", "canonical_docs"],
+        "feature_yaml": ["index"],
+        "feature.yaml": ["index"],
+    }
+    return rules.get(artifact, [])
+
+
+def read_manifest_or_default(path: Path, feature_key: str | None) -> dict[str, Any]:
+    if path.exists():
+        manifest = read_yaml(path)
+    else:
+        manifest = {
+            "artifact_contract_version": CONTRACT_VERSION,
+            "feature_key": feature_key,
+            "slices": {},
+        }
+    manifest.setdefault("artifact_contract_version", CONTRACT_VERSION)
+    manifest.setdefault("feature_key", feature_key)
+    manifest.setdefault("slices", {})
+    return manifest
+
+
+def evidence_phase_files(slice_id: str, phase: str) -> dict[str, str]:
+    base = f"{slice_id}/"
+    mapping = {
+        "red": {
+            "git_state_file": base + "00-pre-red-git-state.txt",
+            "command_file": base + "01-red-command.txt",
+            "output_file": base + "01-red-output.log",
+        },
+        "green": {
+            "git_state_file": base + "02-pre-green-git-state.txt",
+            "command_file": base + "03-green-command.txt",
+            "output_file": base + "03-green-output.log",
+        },
+        "verification": {
+            "command_file": base + "04-verification-command.txt",
+            "output_file": base + "04-verification-output.log",
+        },
+        "review": {
+            "summary_file": base + "05-review-summary.md",
+        },
+    }
+    return mapping[phase]
+
+
+def current_git_state(root: Path, state: dict[str, Any]) -> str:
+    worktree_value = (state.get("worktree") or {}).get("path")
+    if not worktree_value:
+        return "git state unavailable: state.yaml missing worktree.path\n"
+    worktree_path = (root / worktree_value).resolve()
+    try:
+        return run_git(worktree_path, "status", "--short", "--branch")
+    except FeatureCtlError as exc:
+        return f"git state unavailable: {exc}\n"
+
+
+def validate_timestamp(value: str) -> None:
+    parse_timestamp(value)
+
+
+def parse_timestamp(value: str) -> dt.datetime:
+    try:
+        return dt.datetime.fromisoformat(value.replace("Z", "+00:00"))
+    except ValueError as exc:
+        raise FeatureCtlError(f"invalid timestamp: {value}") from exc
+
+
+def validate_evidence_manifest(workspace: Path) -> list[str]:
+    blockers: list[str] = []
+    manifest_path = workspace / "evidence/manifest.yaml"
+    try:
+        manifest = read_yaml(manifest_path)
+    except FeatureCtlError as exc:
+        return [str(exc)]
+    if manifest.get("artifact_contract_version") != CONTRACT_VERSION:
+        blockers.append("evidence manifest artifact_contract_version mismatch")
+    feature = read_yaml(workspace / "feature.yaml") if (workspace / "feature.yaml").exists() else {}
+    if feature.get("feature_key") and manifest.get("feature_key") != feature.get("feature_key"):
+        blockers.append("evidence manifest feature_key mismatch")
+    slices = manifest.get("slices")
+    if not isinstance(slices, dict):
+        return blockers + ["evidence manifest slices must be a mapping"]
+    known_slices = known_slice_ids(workspace)
+    for slice_id in slices:
+        if known_slices and slice_id not in known_slices:
+            blockers.append(f"evidence manifest references unknown slice: {slice_id}")
+        blockers.extend(validate_slice_evidence(workspace, slice_id))
+    blockers.extend(validate_completed_slices_have_manifest(workspace, slices))
+    return blockers
+
+
+def validate_completed_slices_have_manifest(workspace: Path, manifest_slices: dict[str, Any]) -> list[str]:
+    slices_path = workspace / "slices.yaml"
+    if not slices_path.exists():
+        return []
+    data = read_yaml(slices_path)
+    slices = data.get("slices") or []
+    if isinstance(slices, dict):
+        items = slices.values()
+    else:
+        items = slices
+    blockers = []
+    for item in items:
+        if not isinstance(item, dict):
+            continue
+        if item.get("status") == "complete" and item.get("id") not in manifest_slices:
+            blockers.append(f"completed slice missing evidence manifest entry: {item.get('id')}")
+    return blockers
+
+
+def validate_slice_evidence(workspace: Path, slice_id: str) -> list[str]:
+    manifest_path = workspace / "evidence/manifest.yaml"
+    if not manifest_path.exists():
+        return ["missing evidence/manifest.yaml"]
+    manifest = read_yaml(manifest_path)
+    slice_entry = (manifest.get("slices") or {}).get(slice_id)
+    if not isinstance(slice_entry, dict):
+        return [f"missing evidence for slice {slice_id}"]
+    blockers: list[str] = []
+    for phase in ("red", "green", "verification", "review"):
+        if phase not in slice_entry:
+            blockers.append(f"{slice_id} missing {phase} evidence")
+            continue
+        blockers.extend(validate_phase_entry(workspace, slice_id, phase, slice_entry[phase]))
+    if all(phase in slice_entry for phase in ("red", "green")):
+        red_ts = parse_timestamp(slice_entry["red"]["timestamp"])
+        green_ts = parse_timestamp(slice_entry["green"]["timestamp"])
+        if red_ts >= green_ts:
+            blockers.append(f"{slice_id} red evidence timestamp must be before green evidence timestamp")
+    if "commit" not in slice_entry and "diff_hash" not in slice_entry:
+        blockers.append(f"{slice_id} missing commit or diff_hash")
+    return blockers
+
+
+def validate_phase_entry(workspace: Path, slice_id: str, phase: str, entry: Any) -> list[str]:
+    if not isinstance(entry, dict):
+        return [f"{slice_id} {phase} evidence must be a mapping"]
+    blockers: list[str] = []
+    if "timestamp" not in entry:
+        blockers.append(f"{slice_id} {phase} evidence missing timestamp")
+    else:
+        try:
+            parse_timestamp(entry["timestamp"])
+        except FeatureCtlError as exc:
+            blockers.append(str(exc))
+    file_fields = ["command_file", "output_file"] if phase in {"red", "green", "verification"} else ["summary_file"]
+    if phase in {"red", "green"}:
+        file_fields.append("git_state_file")
+    for field in file_fields:
+        rel = entry.get(field)
+        if not rel:
+            blockers.append(f"{slice_id} {phase} evidence missing {field}")
+        elif evidence_path_blocker(workspace, rel):
+            blockers.append(f"{slice_id} {phase} evidence path invalid: {rel}")
+        elif not (workspace / "evidence" / rel).exists():
+            blockers.append(f"{slice_id} {phase} evidence file missing: {rel}")
+    return blockers
+
+
+def mark_slice_complete(path: Path, slice_id: str) -> None:
+    data = read_yaml(path)
+    slices = data.get("slices")
+    if isinstance(slices, dict):
+        items = slices.values()
+    else:
+        items = slices or []
+    found = False
+    for item in items:
+        if isinstance(item, dict) and item.get("id") == slice_id:
+            item["status"] = "complete"
+            item["evidence_status"] = "complete"
+            found = True
+    if not found:
+        raise FeatureCtlError(f"slices.yaml has no slice {slice_id}")
+    write_yaml(path, data)
+
+
+def known_slice_ids(workspace: Path) -> set[str]:
+    slices_path = workspace / "slices.yaml"
+    if not slices_path.exists():
+        return set()
+    data = read_yaml(slices_path)
+    slices = data.get("slices") or []
+    if isinstance(slices, dict):
+        items = slices.values()
+    else:
+        items = slices
+    return {item.get("id") for item in items if isinstance(item, dict) and item.get("id")}
+
+
+def ensure_known_slice(workspace: Path, slice_id: str) -> None:
+    if not re.match(r"^S-[0-9]{3}$", slice_id):
+        raise FeatureCtlError(f"invalid slice id: {slice_id}")
+    known = known_slice_ids(workspace)
+    if known and slice_id not in known:
+        raise FeatureCtlError(f"unknown slice id: {slice_id}")
+
+
+def add_slice_commit_metadata(workspace: Path, slice_id: str, *, commit: str | None, diff_hash: str | None) -> None:
+    manifest_path = workspace / "evidence/manifest.yaml"
+    manifest = read_yaml(manifest_path)
+    entry = manifest.setdefault("slices", {}).setdefault(slice_id, {})
+    if commit:
+        entry["commit"] = commit
+    if diff_hash:
+        entry["diff_hash"] = diff_hash
+    write_yaml(manifest_path, manifest)
+
+
+def evidence_path_blocker(workspace: Path, rel: str) -> bool:
+    path = Path(rel)
+    if path.is_absolute() or ".." in path.parts:
+        return True
+    evidence_root = (workspace / "evidence").resolve()
+    target = (evidence_root / path).resolve()
+    try:
+        target.relative_to(evidence_root)
+    except ValueError:
+        return True
+    return False
 
 
 if __name__ == "__main__":
