@@ -3,7 +3,7 @@
 ## Repo Snapshot
 - Repo path: `/Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/actual`
 - Remote: `https://github.com/actualbudget/actual.git`
-- Base commit: `1306da2`
+- Base commit: `4db4979`
 - Pipeline workspace: `/Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/worktrees/imports-rule-preview-and-undo-run-actual-import-undo/.ai/feature-workspaces/imports/rule-preview-and-undo--run-actual-import-undo`
 - Feature key: `imports/rule-preview-and-undo`
 - Run ID: `run-actual-import-undo`
@@ -15,7 +15,7 @@
 - Stop point: planning package/readiness
 
 ## Context Summary
-- Primary modules inspected: tests
+- Primary modules inspected: packages, tests
 - Existing patterns reused: root manifests and candidate module names
 - Test tooling detected: README.md, package.json
 

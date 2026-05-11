@@ -245,10 +245,17 @@ def worktree_for_workspace(workspace: Path) -> Path:
 
 
 def install_pipeline_in_worktree(worktree: Path) -> None:
-    agents = worktree / ".agents"
-    if agents.exists():
-        shutil.rmtree(agents)
-    shutil.copytree(ROOT / ".agents", agents)
+    for dirname in (".agents", "skills"):
+        dest = worktree / dirname
+        if dest.exists():
+            shutil.rmtree(dest)
+        shutil.copytree(ROOT / dirname, dest)
+    (worktree / ".ai").mkdir(exist_ok=True)
+    pipeline_docs = worktree / ".ai/pipeline-docs"
+    if pipeline_docs.exists():
+        shutil.rmtree(pipeline_docs)
+    shutil.copytree(ROOT / ".ai/pipeline-docs", pipeline_docs)
+    shutil.copy2(ROOT / ".ai/constitution.md", worktree / ".ai/constitution.md")
 
 
 def featurectl(worktree: Path, *args: str, check: bool = True) -> subprocess.CompletedProcess[str]:
@@ -817,6 +824,12 @@ def final_artifacts(spec: CaseSpec, workspace: Path, worktree: Path) -> None:
                 "artifact": f"showcase/{spec.slug}",
                 "evidence": "red, green, verification, and review evidence recorded for all slices",
                 "recommendation": "review production integration touchpoints before upstreaming beyond the bounded showcase module",
+                "linked_requirement_ids": ["FR-001", "FR-002", "FR-003"],
+                "linked_slice_ids": ["S-001", "S-002", "S-003"],
+                "file_refs": [f"showcase/{spec.slug}", "evidence/manifest.yaml", "slices.yaml"],
+                "reproduction_or_reasoning": "All slice red, green, verification, and review evidence was recorded by the showcase runner.",
+                "fix_verification_command": all_tests_command(spec),
+                "re_review_required": False,
                 "blocking": False,
             },
             sort_keys=False,
@@ -833,6 +846,14 @@ def final_artifacts(spec: CaseSpec, workspace: Path, worktree: Path) -> None:
             Result: pass
 
             The implementation was validated with repo-local tests and git diff checks.
+
+            ## Manual Validation
+
+            The showcase runner executed the final command `{all_tests_command(spec)}` in the feature worktree and preserved the raw output in `evidence/final-verification-output.log`.
+
+            ## Verification Debt
+
+            Production dependency stacks were not installed; validation is limited to the bounded repo-local showcase module and git diff checks.
             """
         )
     )
@@ -872,6 +893,26 @@ def final_artifacts(spec: CaseSpec, workspace: Path, worktree: Path) -> None:
             - Pipeline gates approved.
             - Three TDD slices completed.
             - Red, green, verification, and review evidence recorded for every slice.
+
+            ## Manual Validation
+
+            Final command: `{all_tests_command(spec)}`.
+            Evidence: `evidence/final-verification-output.log`.
+
+            ## Verification Debt
+
+            Production module integration is intentionally deferred; this run validates pipeline integration, artifact generation, TDD evidence, review evidence, and bounded repo-local behavior.
+
+            ## Claim Provenance
+
+            - Feature contract: `feature.md`
+            - Architecture/design: `architecture.md`, `tech-design.md`
+            - Slice plan and evidence: `slices.yaml`, `evidence/manifest.yaml`
+            - Review and verification: `reviews/showcase-review.yaml`, `reviews/verification-review.md`
+
+            ## Rollback Guidance
+
+            Remove `showcase/{spec.slug}` or revert the generated patch. For production integration, use the recorded rollback hint: {spec.rollback_hint}.
             """
         )
     )

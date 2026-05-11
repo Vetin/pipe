@@ -3,8 +3,8 @@ step: tech-design
 required_docs:
   - .agents/pipeline-core/references/native-skill-protocol.md
   - .agents/pipeline-core/references/methodology-lenses.md
-  - methodology/extracted/upstream-pattern-map.md
-  - methodology/extracted/artifact-model.md
+  - skills/native-feature-pipeline/references/upstream-pattern-map.md
+  - skills/native-feature-pipeline/references/artifact-model.md
   - .agents/pipeline-core/references/generated-templates/tech-design-template.md
   - .agents/pipeline-core/references/generated-templates/adr-template.md
   - .ai/constitution.md
@@ -15,7 +15,7 @@ required_docs:
   - .ai/pipeline-docs/steps/tech-design/overview.md
   - .ai/pipeline-docs/steps/tech-design/checklist.md
 optional_docs:
-  - methodology/extracted/workflow-and-gates.md
+  - skills/native-feature-pipeline/references/workflow-and-gates.md
   - .ai/knowledge/module-map.md
   - .ai/knowledge/integration-map.md
 selected_alternatives: []

@@ -3,7 +3,7 @@
 ## Repo Snapshot
 - Repo path: `/Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/medusa`
 - Remote: `https://github.com/medusajs/medusa.git`
-- Base commit: `a4f6fcd`
+- Base commit: `a4f6fcd6`
 - Pipeline workspace: `/Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/worktrees/promotions-first-order-promotion-usage-caps-run-medusa-first-order-promo/.ai/feature-workspaces/promotions/first-order-promotion-usage-caps--run-medusa-first-order-promo`
 - Feature key: `promotions/first-order-promotion-usage-caps`
 - Run ID: `run-medusa-first-order-promo`
@@ -15,7 +15,7 @@
 - Stop point: planning package/readiness
 
 ## Context Summary
-- Primary modules inspected: root sparse checkout only
+- Primary modules inspected: packages, integration-tests
 - Existing patterns reused: root manifests and candidate module names
 - Test tooling detected: README.md, package.json
 

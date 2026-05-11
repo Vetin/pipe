@@ -3,7 +3,7 @@
 - Native run: `/Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-native-debug`
 - Init profile run: `/Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/init-profile-runs/20260512-init-profile`
 - Repeated passes: `3`
-- Generated at: `2026-05-11T23:19:54.078883+00:00`
+- Generated at: `2026-05-11T23:39:44.529556+00:00`
 
 ## Pass Summary
 
@@ -30,6 +30,7 @@
 | `nfp-10-verification` | pass | shared protocol present |
 | `nfp-11-finish` | pass | shared protocol present |
 | `nfp-12-promote` | pass | shared protocol present |
+| `tdd_superpowers_subagent_flow` | pass | mandatory Superpowers subagent flow present |
 | `project-init` | pass | /init profile protocol present |
 
 ## All Checks
@@ -85,6 +86,7 @@
 - `pass` `skill_nfp-10-verification`: shared protocol present
 - `pass` `skill_nfp-11-finish`: shared protocol present
 - `pass` `skill_nfp-12-promote`: shared protocol present
+- `pass` `skill_tdd_superpowers_subagent_flow`: mandatory Superpowers subagent flow present
 - `pass` `skill_project-init`: /init profile protocol present
 - `pass` `web_best_practices_doc`: web best-practices synthesis exists
 - `pass` `web_source_https://academy.openai.com/public/resources/skills`: source recorded: https://academy.openai.com/public/resources/skills
@@ -151,6 +153,7 @@
 - `pass` `skill_nfp-10-verification`: shared protocol present
 - `pass` `skill_nfp-11-finish`: shared protocol present
 - `pass` `skill_nfp-12-promote`: shared protocol present
+- `pass` `skill_tdd_superpowers_subagent_flow`: mandatory Superpowers subagent flow present
 - `pass` `skill_project-init`: /init profile protocol present
 - `pass` `web_best_practices_doc`: web best-practices synthesis exists
 - `pass` `web_source_https://academy.openai.com/public/resources/skills`: source recorded: https://academy.openai.com/public/resources/skills
@@ -217,6 +220,7 @@
 - `pass` `skill_nfp-10-verification`: shared protocol present
 - `pass` `skill_nfp-11-finish`: shared protocol present
 - `pass` `skill_nfp-12-promote`: shared protocol present
+- `pass` `skill_tdd_superpowers_subagent_flow`: mandatory Superpowers subagent flow present
 - `pass` `skill_project-init`: /init profile protocol present
 - `pass` `web_best_practices_doc`: web best-practices synthesis exists
 - `pass` `web_source_https://academy.openai.com/public/resources/skills`: source recorded: https://academy.openai.com/public/resources/skills

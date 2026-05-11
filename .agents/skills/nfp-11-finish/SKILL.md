@@ -11,7 +11,7 @@ Use this skill to prepare feature memory and PR summary.
 Methodology:
 
 - Read `.agents/pipeline-core/references/native-skill-protocol.md`.
-- Apply `methodology/extracted/upstream-pattern-map.md` as the behavioral synthesis of cloned upstream methodologies; cite patterns in `Docs Consulted:` when they influence a decision.
+- Apply `skills/native-feature-pipeline/references/upstream-pattern-map.md` as the behavioral synthesis of cloned upstream methodologies; cite patterns in `Docs Consulted:` when they influence a decision.
 - Apply `.agents/pipeline-core/references/methodology-lenses.md` for claim
   provenance, verification debt, manual validation, plan drift, and promotion
   readiness.
@@ -20,8 +20,8 @@ Methodology:
   `feature.md`, `architecture.md`, `tech-design.md`, `slices.yaml`,
   `reviews/*.yaml`, and `evidence/manifest.yaml`.
 - Load the finish docset with `featurectl.py load-docset --step finish`.
-- Use `methodology/extracted/artifact-model.md`,
-  `methodology/extracted/evaluation-patterns.md`, and
+- Use `skills/native-feature-pipeline/references/artifact-model.md`,
+  `skills/native-feature-pipeline/references/evaluation-patterns.md`, and
   `.agents/pipeline-core/references/generated-templates/feature-card-template.md`.
 - Record `Docs Consulted: Finish` in `execution.md`.
 

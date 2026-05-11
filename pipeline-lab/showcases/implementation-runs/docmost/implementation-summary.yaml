@@ -44,6 +44,40 @@ diff_stat: "showcase/page-approval-workflow/feature.js         | 77 ++++++++++++
   \ 4 files changed, 120 insertions(+)"
 validation: 'validation: pass'
 readiness: 'validation: pass'
-status: "A showcase/page-approval-workflow/feature.js\n A showcase/page-approval-workflow/feature.s-001.test.js\n\
-  \ A showcase/page-approval-workflow/feature.s-002.test.js\n A showcase/page-approval-workflow/feature.s-003.test.js\n\
-  ?? .agents/\n?? .ai/"
+status: "M .agents/pipeline-core/references/README.md\n M .agents/pipeline-core/scripts/featurectl.py\n\
+  \ M .agents/pipeline-core/scripts/pipelinebench.py\n M .agents/pipeline-core/scripts/schemas/review.schema.json\n\
+  \ M .agents/pipeline-core/scripts/schemas/slices.schema.json\n M .agents/skills/nfp-00-intake/SKILL.md\n\
+  \ M .agents/skills/nfp-01-context/SKILL.md\n M .agents/skills/nfp-02-feature-contract/SKILL.md\n\
+  \ M .agents/skills/nfp-03-architecture/SKILL.md\n M .agents/skills/nfp-04-tech-design/SKILL.md\n\
+  \ M .agents/skills/nfp-05-slicing/SKILL.md\n M .agents/skills/nfp-06-readiness/SKILL.md\n\
+  \ M .agents/skills/nfp-07-worktree/SKILL.md\n M .agents/skills/nfp-08-tdd-implementation/SKILL.md\n\
+  \ M .agents/skills/nfp-09-review/SKILL.md\n M .agents/skills/nfp-10-verification/SKILL.md\n\
+  \ M .agents/skills/nfp-11-finish/SKILL.md\n M .agents/skills/nfp-12-promote/SKILL.md\n\
+  \ M .ai/features/index.yaml\n M .ai/pipeline-docs/README.md\n M .ai/pipeline-docs/steps/architecture/checklist.md\n\
+  \ M .ai/pipeline-docs/steps/architecture/docset.yaml\n M .ai/pipeline-docs/steps/architecture/overview.md\n\
+  \ M .ai/pipeline-docs/steps/context/checklist.md\n M .ai/pipeline-docs/steps/context/docset.yaml\n\
+  \ M .ai/pipeline-docs/steps/context/overview.md\n M .ai/pipeline-docs/steps/finish/checklist.md\n\
+  \ M .ai/pipeline-docs/steps/finish/docset.yaml\n M .ai/pipeline-docs/steps/finish/overview.md\n\
+  \ M .ai/pipeline-docs/steps/promote/checklist.md\n M .ai/pipeline-docs/steps/promote/docset.yaml\n\
+  \ M .ai/pipeline-docs/steps/promote/overview.md\n M .ai/pipeline-docs/steps/readiness/checklist.md\n\
+  \ M .ai/pipeline-docs/steps/readiness/docset.yaml\n M .ai/pipeline-docs/steps/readiness/overview.md\n\
+  \ M .ai/pipeline-docs/steps/review/checklist.md\n M .ai/pipeline-docs/steps/review/docset.yaml\n\
+  \ M .ai/pipeline-docs/steps/review/overview.md\n M .ai/pipeline-docs/steps/slicing/checklist.md\n\
+  \ M .ai/pipeline-docs/steps/slicing/docset.yaml\n M .ai/pipeline-docs/steps/slicing/overview.md\n\
+  \ M .ai/pipeline-docs/steps/tdd-implementation/checklist.md\n M .ai/pipeline-docs/steps/tdd-implementation/docset.yaml\n\
+  \ M .ai/pipeline-docs/steps/tdd-implementation/overview.md\n M .ai/pipeline-docs/steps/tech-design/checklist.md\n\
+  \ M .ai/pipeline-docs/steps/tech-design/docset.yaml\n M .ai/pipeline-docs/steps/tech-design/overview.md\n\
+  \ M .ai/pipeline-docs/steps/verification/checklist.md\n M .ai/pipeline-docs/steps/verification/docset.yaml\n\
+  \ M .ai/pipeline-docs/steps/verification/overview.md\n M .ai/pipeline-docs/steps/worktree/checklist.md\n\
+  \ M .ai/pipeline-docs/steps/worktree/docset.yaml\n A showcase/page-approval-workflow/feature.js\n\
+  \ A showcase/page-approval-workflow/feature.s-001.test.js\n A showcase/page-approval-workflow/feature.s-002.test.js\n\
+  \ A showcase/page-approval-workflow/feature.s-003.test.js\n?? .agents/pipeline-core/references/context-reuse-policy.md\n\
+  ?? .agents/pipeline-core/references/feature-identity-policy.md\n?? .agents/pipeline-core/references/generated-templates/\n\
+  ?? .agents/pipeline-core/references/methodology-lenses.md\n?? .agents/pipeline-core/references/native-skill-protocol.md\n\
+  ?? .agents/pipeline-core/references/quality-rubric.md\n?? .agents/pipeline-core/references/skill-power-validation-policy.md\n\
+  ?? .agents/pipeline-core/references/subagent-review-policy.md\n?? .agents/pipeline-core/scripts/__pycache__/\n\
+  ?? .agents/pipeline-core/scripts/schemas/docset.schema.json\n?? .agents/pipeline-core/scripts/schemas/feature.schema.json\n\
+  ?? .agents/pipeline-core/scripts/schemas/state.schema.json\n?? .agents/skills/project-init/\n\
+  ?? .ai/feature-workspaces/pages/page-approval-workflow--run-docmost-approval/\n\
+  ?? .ai/features/pages/page-approval-workflow/\n?? .ai/pipeline-docs/steps/feature-contract/\n\
+  ?? .ai/pipeline-docs/steps/intake/\n?? skills/"

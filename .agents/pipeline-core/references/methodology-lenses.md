@@ -102,6 +102,19 @@ Slices are executable units, not prose bullets. Each slice should expose:
 - Promotion requires fresh final verification after the last implementation or
   review fix.
 
+## Subagent Implementation Lens
+
+- Treat implementation as a controller workflow: one fresh implementer subagent
+  per slice, then spec-compliance review, then code-quality review.
+- Do not run implementation subagents in parallel; finish the current slice and
+  both reviews before starting the next slice.
+- Include full task text and artifact context in each subagent prompt. Do not
+  make implementers infer their assignment from the entire plan.
+- Send reviewer findings back to the same implementer and repeat spec review
+  before code-quality review until both approve.
+- If subagents are unavailable, record a blocker instead of silently switching
+  to direct implementation.
+
 ## Eval Lens
 
 Reusable showcase and skill validations should behave like isolated eval runs:

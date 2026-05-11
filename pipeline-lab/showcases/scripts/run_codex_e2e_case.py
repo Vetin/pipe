@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
-"""Run stable in-place Codex E2E feature implementation cases."""
+"""Run stable Codex E2E feature implementation cases in fresh worktrees."""
 
 from __future__ import annotations
 
 import argparse
 import json
 import os
+import re
+import shutil
 import shlex
 import subprocess
 import sys
@@ -102,17 +104,65 @@ def ensure_clean_repo(repo: Path, allow_dirty: bool) -> None:
 def reset_to_base(repo: Path, base_ref: str | None) -> None:
     if not base_ref:
         raise RuntimeError("case has no base_ref to reset to")
+    run(["git", "reset", "--hard"], repo, check=True)
+    run(["git", "clean", "-fd"], repo, check=True)
+    run(["git", "checkout", "--detach", base_ref], repo, check=True)
     run(["git", "reset", "--hard", base_ref], repo, check=True)
     run(["git", "clean", "-fd"], repo, check=True)
 
 
-def build_prompt(case_id: str, case: dict[str, Any], repo: Path, config_path: Path) -> str:
+def slugify(value: str) -> str:
+    value = value.strip().lower()
+    value = re.sub(r"[^a-z0-9._/-]+", "-", value)
+    value = re.sub(r"-{2,}", "-", value)
+    return value.strip("-") or "case"
+
+
+def prepared_branch(case_id: str, case: dict[str, Any], run_id: str) -> str:
+    target_branch = str(case.get("target_branch") or f"nfp/{case_id}")
+    return target_branch
+
+
+def prepared_worktree_path(repo: Path, case_id: str, run_id: str) -> Path:
+    name = slugify(f"codex-{case_id}-{run_id}").replace("/", "-")
+    return repo.parent / "worktrees" / name
+
+
+def prepare_worktree(repo: Path, case_id: str, case: dict[str, Any], run_id: str) -> tuple[Path, str]:
+    base_ref = case_base_ref(case) or "HEAD"
+    branch = prepared_branch(case_id, case, run_id)
+    worktree = prepared_worktree_path(repo, case_id, run_id)
+    worktree.parent.mkdir(parents=True, exist_ok=True)
+    if worktree.exists():
+        run(["git", "worktree", "remove", "--force", str(worktree)], repo)
+    if worktree.exists():
+        shutil.rmtree(worktree)
+    run(["git", "worktree", "prune"], repo)
+    run(["git", "branch", "-D", branch], repo)
+    run(["git", "worktree", "add", "-b", branch, str(worktree), base_ref], repo, check=True)
+    return worktree.resolve(), branch
+
+
+def install_pipeline_context(worktree: Path) -> None:
+    for dirname in (".agents", "skills"):
+        dest = worktree / dirname
+        if dest.exists():
+            shutil.rmtree(dest)
+        shutil.copytree(ROOT / dirname, dest)
+    (worktree / ".ai").mkdir(exist_ok=True)
+    pipeline_docs = worktree / ".ai/pipeline-docs"
+    if pipeline_docs.exists():
+        shutil.rmtree(pipeline_docs)
+    shutil.copytree(ROOT / ".ai/pipeline-docs", pipeline_docs)
+    shutil.copy2(ROOT / ".ai/constitution.md", worktree / ".ai/constitution.md")
+
+
+def build_prompt(case_id: str, case: dict[str, Any], source_repo: Path, worktree: Path, branch: str, config_path: Path) -> str:
     phases = case.get("workflow_phases") or NATIVE_PHASES
     phase_list = "\n".join(f"  - {phase}" for phase in phases)
     codebase = case.get("original_codebase") or {}
     base_ref = case_base_ref(case) or "current HEAD"
     expected_result = case.get("expected_result", "Implement the requested feature with artifacts, tests, verification, and a final summary.")
-    target_branch = case.get("target_branch", f"nfp/{case_id}")
     title = case.get("title", case_id)
     feature_request = case.get("feature_request")
     if not feature_request:
@@ -121,12 +171,13 @@ def build_prompt(case_id: str, case: dict[str, Any], repo: Path, config_path: Pa
     return f"""You are a nested Codex worker running as a reproducible E2E feature implementation case.
 
 Repository ownership:
-- Work only inside this repository: {repo}
+- Work only inside this fresh feature worktree: {worktree}
+- Original codebase checkout: {source_repo}
 - This repository represents the original codebase from case file: {config_path}
 - Original codebase base ref: {base_ref}
-- Target branch name: {target_branch}
+- Target branch name: {branch}
 - Do not modify sibling repositories or harness files.
-- Do not create a git worktree. Implement directly in this repository checkout.
+- The worktree already exists; do not implement in the base checkout.
 - Preserve unrelated user changes. If unexpected dirty files are present, stop and report them.
 
 Case:
@@ -137,7 +188,7 @@ Case:
 - Expected result: {expected_result}
 
 Native Feature Pipeline:
-- If `.agents/pipeline-core`, `.agents/skills`, or `.ai/pipeline-docs` are missing, copy/install them from {ROOT / '.agents'} and {ROOT / '.ai' / 'pipeline-docs'} into this repository before continuing.
+- If `.agents/pipeline-core`, `.agents/skills`, `.ai/pipeline-docs`, or `skills` are missing, copy/install them from {ROOT / '.agents'}, {ROOT / '.ai' / 'pipeline-docs'}, and {ROOT / 'skills'} into this worktree before continuing.
 - Treat this as a normal user feature request. Discover the repository's native pipeline instructions from `.agents`, `.ai/pipeline-docs`, and local docs; do not ask the user to invoke individual internal skills by name.
 - Progress through these outcomes in order:
 {phase_list}
@@ -149,7 +200,7 @@ Implementation expectations:
 - Complete artifacts, architecture, technical design, slices, TDD implementation, review, verification, finish, promote, and commit.
 - Use focused tests first, then broader validation where feasible.
 - Record red/green evidence and any blocked validation with exact commands and reasons.
-- Commit the finished implementation on `{target_branch}`.
+- Commit the finished implementation on `{branch}`.
 - Final response must include branch, commit, changed files, NFP artifact paths, tests run, and known limitations.
 """
 
@@ -185,44 +236,47 @@ def run_case(
     dry_run: bool,
     reset_base: bool,
 ) -> dict[str, Any]:
-    repo = case_repo(case, config_path)
-    ensure_git_repo(repo)
+    source_repo = case_repo(case, config_path)
+    ensure_git_repo(source_repo)
     if reset_base:
-        reset_to_base(repo, case_base_ref(case))
-    ensure_clean_repo(repo, allow_dirty=allow_dirty)
+        reset_to_base(source_repo, case_base_ref(case))
+    ensure_clean_repo(source_repo, allow_dirty=allow_dirty)
+    worktree, branch = prepare_worktree(source_repo, case_id, case, run_id)
+    install_pipeline_context(worktree)
 
     run_dir = output_dir / case_id / run_id
     run_dir.mkdir(parents=True, exist_ok=True)
     final_path = run_dir / "codex-final.txt"
-    prompt = build_prompt(case_id, case, repo, config_path)
-    command = codex_command(codex_bin, repo, final_path, prompt, extra_args)
+    prompt = build_prompt(case_id, case, source_repo, worktree, branch, config_path)
+    command = codex_command(codex_bin, worktree, final_path, prompt, extra_args)
     started_at = datetime.now(timezone.utc).isoformat()
 
     write_text(run_dir / "prompt.md", prompt)
     write_text(run_dir / "codex-command.json", json.dumps(command, indent=2) + "\n")
 
-    before_head = git_head(repo)
-    before_status = git_status(repo)
+    before_head = git_head(worktree)
+    before_status = git_status(worktree)
     if dry_run:
         returncode = 0
         stdout = "dry run: codex was not invoked\n"
     else:
-        result = subprocess.run(command, cwd=repo, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        result = subprocess.run(command, cwd=worktree, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         returncode = result.returncode
         stdout = result.stdout
     finished_at = datetime.now(timezone.utc).isoformat()
 
-    after_head = git_head(repo)
-    after_status = git_status(repo)
+    after_head = git_head(worktree)
+    after_status = git_status(worktree)
     write_text(run_dir / "codex-output.log", stdout)
     final_text = final_path.read_text(encoding="utf-8", errors="replace") if final_path.exists() else ""
     manifest = {
         "case": case_id,
         "title": case.get("title", case_id),
-        "repo": str(repo),
+        "repo": str(worktree),
+        "source_repo": str(source_repo),
         "feature_request": case.get("feature_request", ""),
         "expected_result": case.get("expected_result", ""),
-        "target_branch": case.get("target_branch", f"nfp/{case_id}"),
+        "target_branch": branch,
         "base_ref": case_base_ref(case),
         "run_id": run_id,
         "dry_run": dry_run,
@@ -286,21 +340,24 @@ def render_report(manifest: dict[str, Any], final_text: str, stdout: str) -> str
     return "\n".join(line.rstrip() for line in lines) + "\n"
 
 
-def selected_cases(config: dict[str, Any], case_name: str | None, all_cases: bool) -> list[tuple[str, dict[str, Any]]]:
+def selected_cases(config: dict[str, Any], case_names: list[str] | None, all_cases: bool) -> list[tuple[str, dict[str, Any]]]:
     cases = config["cases"]
     if all_cases:
         return list(cases.items())
-    if not case_name:
+    if not case_names:
         raise RuntimeError("use --case CASE or --all")
-    if case_name not in cases:
-        raise RuntimeError(f"unknown case: {case_name}")
-    return [(case_name, cases[case_name])]
+    selected = []
+    for case_name in case_names:
+        if case_name not in cases:
+            raise RuntimeError(f"unknown case: {case_name}")
+        selected.append((case_name, cases[case_name]))
+    return selected
 
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--config", default=str(DEFAULT_CONFIG), help="YAML case file")
-    parser.add_argument("--case", help="Case id to run")
+    parser.add_argument("--case", action="append", help="Case id to run; repeat for multiple cases")
     parser.add_argument("--all", action="store_true", help="Run all cases in config order")
     parser.add_argument("--output-dir", default=str(DEFAULT_OUTPUT_DIR), help="Directory for run artifacts")
     parser.add_argument("--run-id", default=None, help="Stable run id. Defaults to UTC timestamp")

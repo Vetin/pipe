@@ -3,7 +3,7 @@
 ## Repo Snapshot
 - Repo path: `/Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/listmonk`
 - Remote: `https://github.com/knadh/listmonk.git`
-- Base commit: `3b9ae59`
+- Base commit: `5898186`
 - Pipeline workspace: `/Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/worktrees/subscribers-double-opt-in-segment-onboarding-run-listmonk-double-opt-in/.ai/feature-workspaces/subscribers/double-opt-in-segment-onboarding--run-listmonk-double-opt-in`
 - Feature key: `subscribers/double-opt-in-segment-onboarding`
 - Run ID: `run-listmonk-double-opt-in`
@@ -15,7 +15,7 @@
 - Stop point: planning package/readiness
 
 ## Context Summary
-- Primary modules inspected: tests
+- Primary modules inspected: cmd, internal, models, tests
 - Existing patterns reused: root manifests and candidate module names
 - Test tooling detected: Makefile, README.md, go.mod
 

@@ -1,0 +1,31 @@
+case: plane-triage-automation
+title: Plane Triage Automation Rules
+repo: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/worktrees/codex-plane-triage-automation-20260512-superpowers-worktree
+source_repo: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/plane
+feature_request: Automatically assign labels, priority, or assignees based on issue
+  title, body, and project.
+expected_result: Separate rule authoring from execution, record rule evaluation flow,
+  audit logs, and conflict behavior.
+target_branch: nfp/plane-triage-automation
+base_ref: origin/preview
+run_id: 20260512-superpowers-worktree
+dry_run: true
+returncode: 0
+started_at: '2026-05-11T23:37:02.984574+00:00'
+finished_at: '2026-05-11T23:37:03.034438+00:00'
+before_head: 4c1bdd1d625fa3f1141e8af9c15423946472069e
+after_head: 4c1bdd1d625fa3f1141e8af9c15423946472069e
+before_status: '?? .agents/
+
+  ?? .ai/
+
+  ?? skills/'
+after_status: '?? .agents/
+
+  ?? .ai/
+
+  ?? skills/'
+prompt: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/codex-e2e-runs/plane-triage-automation/20260512-superpowers-worktree/prompt.md
+command: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/codex-e2e-runs/plane-triage-automation/20260512-superpowers-worktree/codex-command.json
+output: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/codex-e2e-runs/plane-triage-automation/20260512-superpowers-worktree/codex-output.log
+final: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/codex-e2e-runs/plane-triage-automation/20260512-superpowers-worktree/codex-final.txt

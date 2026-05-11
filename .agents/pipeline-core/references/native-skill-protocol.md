@@ -6,8 +6,8 @@ Every production `nfp-*` skill follows the same operating contract:
    the worktree exists.
 2. Read `apex.md`, `feature.yaml`, `state.yaml`, and `execution.md`.
 3. Load the step docset with `featurectl.py load-docset`.
-4. Read required docs first, including methodology extraction docs and
-   `methodology/extracted/upstream-pattern-map.md`.
+4. Read required docs first, including local runtime skill references and
+   `skills/native-feature-pipeline/references/upstream-pattern-map.md`.
 5. Record the docs actually used in `execution.md` under
    `Docs Consulted: <Step>`.
 6. Update only artifacts owned by the current skill.
@@ -29,6 +29,7 @@ Native invocation rule:
   not enumerate every internal `nfp-*` skill as a script.
 - Direct skill names are valid inside skill docs, state, and evidence. They are
   not valid as the primary control plane for native showcase prompts.
-- If a run installs pipeline tooling into another repository, it must copy the
-  tools as context, then proceed through the normal repository workflow rather
-  than asking the user to manually invoke each step.
+- If a run installs pipeline tooling into another repository, it must copy
+  `.agents`, `.ai/pipeline-docs`, and `skills` as context, then proceed through
+  the normal repository workflow rather than asking the user to manually invoke
+  each step.

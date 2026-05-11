@@ -24,7 +24,7 @@ class DocsetLoadingTests(unittest.TestCase):
         shutil.copytree(ROOT / ".ai/knowledge", self.repo / ".ai/knowledge", dirs_exist_ok=True)
         shutil.copytree(ROOT / ".ai/features", self.repo / ".ai/features", dirs_exist_ok=True)
         shutil.copytree(ROOT / ".agents/pipeline-core/references", self.repo / ".agents/pipeline-core/references", dirs_exist_ok=True)
-        shutil.copytree(ROOT / "methodology", self.repo / "methodology", dirs_exist_ok=True)
+        shutil.copytree(ROOT / "skills", self.repo / "skills", dirs_exist_ok=True)
         shutil.copy2(ROOT / ".ai/constitution.md", self.repo / ".ai/constitution.md")
 
     def tearDown(self):

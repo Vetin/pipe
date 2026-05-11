@@ -46,4 +46,4 @@ validation: 'validation: pass'
 readiness: 'validation: pass'
 status: "A showcase/first-order-promotion-usage-caps/feature.js\n A showcase/first-order-promotion-usage-caps/feature.s-001.test.js\n\
   \ A showcase/first-order-promotion-usage-caps/feature.s-002.test.js\n A showcase/first-order-promotion-usage-caps/feature.s-003.test.js\n\
-  ?? .agents/\n?? .ai/"
+  ?? .agents/\n?? .ai/\n?? skills/"

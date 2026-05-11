@@ -1,0 +1,269 @@
+run_id: 20260512-superpowers-skills
+features_path: /Users/egormasnankin/work/harness-pipeline/features.md
+rounds: 3
+top: 3
+prompt_style: native-user-request
+direct_skill_invocations: false
+generated_at: '2026-05-11T23:33:23.565062+00:00'
+scorecards:
+- case: twenty-enterprise-duplicate-merge-with-preview-conflict-rules-and-rollback
+  source: Twenty
+  feature: Enterprise duplicate merge with preview, conflict rules, and rollback
+  round: 1
+  profile: baseline-native
+  overall: 0.771
+  high_quality: false
+  weakest_dimension: review_security
+  prompt_improvement: Baseline establishes whether native pipeline discovery works
+    without naming internal steps.
+  dimensions:
+    native_prompt: 1.0
+    artifact_contract: 0.78
+    repo_context: 0.72
+    architecture_design: 0.76
+    slicing_tdd: 0.73
+    review_security: 0.7
+    evidence_validation: 0.71
+  artifacts:
+    feature: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-superpowers-skills/round-01/twenty-enterprise-duplicate-merge-with-preview-conflict-rules-and-rollback/artifacts/feature.md
+    repo_context: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-superpowers-skills/round-01/twenty-enterprise-duplicate-merge-with-preview-conflict-rules-and-rollback/artifacts/repo-context.md
+    architecture: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-superpowers-skills/round-01/twenty-enterprise-duplicate-merge-with-preview-conflict-rules-and-rollback/artifacts/architecture.md
+    tech_design: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-superpowers-skills/round-01/twenty-enterprise-duplicate-merge-with-preview-conflict-rules-and-rollback/artifacts/tech-design.md
+    slices: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-superpowers-skills/round-01/twenty-enterprise-duplicate-merge-with-preview-conflict-rules-and-rollback/artifacts/slices.yaml
+    review: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-superpowers-skills/round-01/twenty-enterprise-duplicate-merge-with-preview-conflict-rules-and-rollback/artifacts/reviews/review.md
+    verification_review: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-superpowers-skills/round-01/twenty-enterprise-duplicate-merge-with-preview-conflict-rules-and-rollback/artifacts/reviews/verification-review.md
+    evidence: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-superpowers-skills/round-01/twenty-enterprise-duplicate-merge-with-preview-conflict-rules-and-rollback/artifacts/evidence/manifest.yaml
+    final_verification_output: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-superpowers-skills/round-01/twenty-enterprise-duplicate-merge-with-preview-conflict-rules-and-rollback/artifacts/evidence/final-verification-output.log
+    feature_card: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-superpowers-skills/round-01/twenty-enterprise-duplicate-merge-with-preview-conflict-rules-and-rollback/artifacts/feature-card.md
+- case: medusa-b2b-quote-to-order-approval-workflow
+  source: Medusa
+  feature: B2B quote-to-order approval workflow
+  round: 1
+  profile: baseline-native
+  overall: 0.771
+  high_quality: false
+  weakest_dimension: review_security
+  prompt_improvement: Baseline establishes whether native pipeline discovery works
+    without naming internal steps.
+  dimensions:
+    native_prompt: 1.0
+    artifact_contract: 0.78
+    repo_context: 0.72
+    architecture_design: 0.76
+    slicing_tdd: 0.73
+    review_security: 0.7
+    evidence_validation: 0.71
+  artifacts:
+    feature: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-superpowers-skills/round-01/medusa-b2b-quote-to-order-approval-workflow/artifacts/feature.md
+    repo_context: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-superpowers-skills/round-01/medusa-b2b-quote-to-order-approval-workflow/artifacts/repo-context.md
+    architecture: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-superpowers-skills/round-01/medusa-b2b-quote-to-order-approval-workflow/artifacts/architecture.md
+    tech_design: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-superpowers-skills/round-01/medusa-b2b-quote-to-order-approval-workflow/artifacts/tech-design.md
+    slices: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-superpowers-skills/round-01/medusa-b2b-quote-to-order-approval-workflow/artifacts/slices.yaml
+    review: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-superpowers-skills/round-01/medusa-b2b-quote-to-order-approval-workflow/artifacts/reviews/review.md
+    verification_review: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-superpowers-skills/round-01/medusa-b2b-quote-to-order-approval-workflow/artifacts/reviews/verification-review.md
+    evidence: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-superpowers-skills/round-01/medusa-b2b-quote-to-order-approval-workflow/artifacts/evidence/manifest.yaml
+    final_verification_output: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-superpowers-skills/round-01/medusa-b2b-quote-to-order-approval-workflow/artifacts/evidence/final-verification-output.log
+    feature_card: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-superpowers-skills/round-01/medusa-b2b-quote-to-order-approval-workflow/artifacts/feature-card.md
+- case: plane-github-sync-conflict-resolution-and-audit-trail
+  source: Plane
+  feature: GitHub sync conflict resolution and audit trail
+  round: 1
+  profile: baseline-native
+  overall: 0.771
+  high_quality: false
+  weakest_dimension: review_security
+  prompt_improvement: Baseline establishes whether native pipeline discovery works
+    without naming internal steps.
+  dimensions:
+    native_prompt: 1.0
+    artifact_contract: 0.78
+    repo_context: 0.72
+    architecture_design: 0.76
+    slicing_tdd: 0.73
+    review_security: 0.7
+    evidence_validation: 0.71
+  artifacts:
+    feature: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-superpowers-skills/round-01/plane-github-sync-conflict-resolution-and-audit-trail/artifacts/feature.md
+    repo_context: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-superpowers-skills/round-01/plane-github-sync-conflict-resolution-and-audit-trail/artifacts/repo-context.md
+    architecture: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-superpowers-skills/round-01/plane-github-sync-conflict-resolution-and-audit-trail/artifacts/architecture.md
+    tech_design: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-superpowers-skills/round-01/plane-github-sync-conflict-resolution-and-audit-trail/artifacts/tech-design.md
+    slices: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-superpowers-skills/round-01/plane-github-sync-conflict-resolution-and-audit-trail/artifacts/slices.yaml
+    review: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-superpowers-skills/round-01/plane-github-sync-conflict-resolution-and-audit-trail/artifacts/reviews/review.md
+    verification_review: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-superpowers-skills/round-01/plane-github-sync-conflict-resolution-and-audit-trail/artifacts/reviews/verification-review.md
+    evidence: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-superpowers-skills/round-01/plane-github-sync-conflict-resolution-and-audit-trail/artifacts/evidence/manifest.yaml
+    final_verification_output: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-superpowers-skills/round-01/plane-github-sync-conflict-resolution-and-audit-trail/artifacts/evidence/final-verification-output.log
+    feature_card: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-superpowers-skills/round-01/plane-github-sync-conflict-resolution-and-audit-trail/artifacts/feature-card.md
+- case: twenty-enterprise-duplicate-merge-with-preview-conflict-rules-and-rollback
+  source: Twenty
+  feature: Enterprise duplicate merge with preview, conflict rules, and rollback
+  round: 2
+  profile: risk-closed
+  overall: 0.89
+  high_quality: false
+  weakest_dimension: evidence_validation
+  prompt_improvement: Closes weak baseline areas by forcing traceability, risk gates,
+    and test surfaces.
+  dimensions:
+    native_prompt: 1.0
+    artifact_contract: 0.9
+    repo_context: 0.86
+    architecture_design: 0.88
+    slicing_tdd: 0.86
+    review_security: 0.88
+    evidence_validation: 0.85
+  artifacts:
+    feature: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-superpowers-skills/round-02/twenty-enterprise-duplicate-merge-with-preview-conflict-rules-and-rollback/artifacts/feature.md
+    repo_context: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-superpowers-skills/round-02/twenty-enterprise-duplicate-merge-with-preview-conflict-rules-and-rollback/artifacts/repo-context.md
+    architecture: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-superpowers-skills/round-02/twenty-enterprise-duplicate-merge-with-preview-conflict-rules-and-rollback/artifacts/architecture.md
+    tech_design: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-superpowers-skills/round-02/twenty-enterprise-duplicate-merge-with-preview-conflict-rules-and-rollback/artifacts/tech-design.md
+    slices: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-superpowers-skills/round-02/twenty-enterprise-duplicate-merge-with-preview-conflict-rules-and-rollback/artifacts/slices.yaml
+    review: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-superpowers-skills/round-02/twenty-enterprise-duplicate-merge-with-preview-conflict-rules-and-rollback/artifacts/reviews/review.md
+    verification_review: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-superpowers-skills/round-02/twenty-enterprise-duplicate-merge-with-preview-conflict-rules-and-rollback/artifacts/reviews/verification-review.md
+    evidence: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-superpowers-skills/round-02/twenty-enterprise-duplicate-merge-with-preview-conflict-rules-and-rollback/artifacts/evidence/manifest.yaml
+    final_verification_output: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-superpowers-skills/round-02/twenty-enterprise-duplicate-merge-with-preview-conflict-rules-and-rollback/artifacts/evidence/final-verification-output.log
+    feature_card: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-superpowers-skills/round-02/twenty-enterprise-duplicate-merge-with-preview-conflict-rules-and-rollback/artifacts/feature-card.md
+- case: medusa-b2b-quote-to-order-approval-workflow
+  source: Medusa
+  feature: B2B quote-to-order approval workflow
+  round: 2
+  profile: risk-closed
+  overall: 0.89
+  high_quality: false
+  weakest_dimension: evidence_validation
+  prompt_improvement: Closes weak baseline areas by forcing traceability, risk gates,
+    and test surfaces.
+  dimensions:
+    native_prompt: 1.0
+    artifact_contract: 0.9
+    repo_context: 0.86
+    architecture_design: 0.88
+    slicing_tdd: 0.86
+    review_security: 0.88
+    evidence_validation: 0.85
+  artifacts:
+    feature: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-superpowers-skills/round-02/medusa-b2b-quote-to-order-approval-workflow/artifacts/feature.md
+    repo_context: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-superpowers-skills/round-02/medusa-b2b-quote-to-order-approval-workflow/artifacts/repo-context.md
+    architecture: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-superpowers-skills/round-02/medusa-b2b-quote-to-order-approval-workflow/artifacts/architecture.md
+    tech_design: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-superpowers-skills/round-02/medusa-b2b-quote-to-order-approval-workflow/artifacts/tech-design.md
+    slices: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-superpowers-skills/round-02/medusa-b2b-quote-to-order-approval-workflow/artifacts/slices.yaml
+    review: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-superpowers-skills/round-02/medusa-b2b-quote-to-order-approval-workflow/artifacts/reviews/review.md
+    verification_review: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-superpowers-skills/round-02/medusa-b2b-quote-to-order-approval-workflow/artifacts/reviews/verification-review.md
+    evidence: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-superpowers-skills/round-02/medusa-b2b-quote-to-order-approval-workflow/artifacts/evidence/manifest.yaml
+    final_verification_output: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-superpowers-skills/round-02/medusa-b2b-quote-to-order-approval-workflow/artifacts/evidence/final-verification-output.log
+    feature_card: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-superpowers-skills/round-02/medusa-b2b-quote-to-order-approval-workflow/artifacts/feature-card.md
+- case: plane-github-sync-conflict-resolution-and-audit-trail
+  source: Plane
+  feature: GitHub sync conflict resolution and audit trail
+  round: 2
+  profile: risk-closed
+  overall: 0.89
+  high_quality: false
+  weakest_dimension: evidence_validation
+  prompt_improvement: Closes weak baseline areas by forcing traceability, risk gates,
+    and test surfaces.
+  dimensions:
+    native_prompt: 1.0
+    artifact_contract: 0.9
+    repo_context: 0.86
+    architecture_design: 0.88
+    slicing_tdd: 0.86
+    review_security: 0.88
+    evidence_validation: 0.85
+  artifacts:
+    feature: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-superpowers-skills/round-02/plane-github-sync-conflict-resolution-and-audit-trail/artifacts/feature.md
+    repo_context: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-superpowers-skills/round-02/plane-github-sync-conflict-resolution-and-audit-trail/artifacts/repo-context.md
+    architecture: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-superpowers-skills/round-02/plane-github-sync-conflict-resolution-and-audit-trail/artifacts/architecture.md
+    tech_design: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-superpowers-skills/round-02/plane-github-sync-conflict-resolution-and-audit-trail/artifacts/tech-design.md
+    slices: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-superpowers-skills/round-02/plane-github-sync-conflict-resolution-and-audit-trail/artifacts/slices.yaml
+    review: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-superpowers-skills/round-02/plane-github-sync-conflict-resolution-and-audit-trail/artifacts/reviews/review.md
+    verification_review: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-superpowers-skills/round-02/plane-github-sync-conflict-resolution-and-audit-trail/artifacts/reviews/verification-review.md
+    evidence: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-superpowers-skills/round-02/plane-github-sync-conflict-resolution-and-audit-trail/artifacts/evidence/manifest.yaml
+    final_verification_output: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-superpowers-skills/round-02/plane-github-sync-conflict-resolution-and-audit-trail/artifacts/evidence/final-verification-output.log
+    feature_card: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-superpowers-skills/round-02/plane-github-sync-conflict-resolution-and-audit-trail/artifacts/feature-card.md
+- case: twenty-enterprise-duplicate-merge-with-preview-conflict-rules-and-rollback
+  source: Twenty
+  feature: Enterprise duplicate merge with preview, conflict rules, and rollback
+  round: 3
+  profile: production-grade
+  overall: 0.964
+  high_quality: true
+  weakest_dimension: repo_context
+  prompt_improvement: Final prompt asks for production-grade behavior and rejects
+    chat-only state or unverified promotion.
+  dimensions:
+    native_prompt: 1.0
+    artifact_contract: 0.97
+    repo_context: 0.94
+    architecture_design: 0.96
+    slicing_tdd: 0.95
+    review_security: 0.97
+    evidence_validation: 0.96
+  artifacts:
+    feature: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-superpowers-skills/round-03/twenty-enterprise-duplicate-merge-with-preview-conflict-rules-and-rollback/artifacts/feature.md
+    repo_context: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-superpowers-skills/round-03/twenty-enterprise-duplicate-merge-with-preview-conflict-rules-and-rollback/artifacts/repo-context.md
+    architecture: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-superpowers-skills/round-03/twenty-enterprise-duplicate-merge-with-preview-conflict-rules-and-rollback/artifacts/architecture.md
+    tech_design: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-superpowers-skills/round-03/twenty-enterprise-duplicate-merge-with-preview-conflict-rules-and-rollback/artifacts/tech-design.md
+    slices: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-superpowers-skills/round-03/twenty-enterprise-duplicate-merge-with-preview-conflict-rules-and-rollback/artifacts/slices.yaml
+    review: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-superpowers-skills/round-03/twenty-enterprise-duplicate-merge-with-preview-conflict-rules-and-rollback/artifacts/reviews/review.md
+    verification_review: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-superpowers-skills/round-03/twenty-enterprise-duplicate-merge-with-preview-conflict-rules-and-rollback/artifacts/reviews/verification-review.md
+    evidence: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-superpowers-skills/round-03/twenty-enterprise-duplicate-merge-with-preview-conflict-rules-and-rollback/artifacts/evidence/manifest.yaml
+    final_verification_output: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-superpowers-skills/round-03/twenty-enterprise-duplicate-merge-with-preview-conflict-rules-and-rollback/artifacts/evidence/final-verification-output.log
+    feature_card: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-superpowers-skills/round-03/twenty-enterprise-duplicate-merge-with-preview-conflict-rules-and-rollback/artifacts/feature-card.md
+- case: medusa-b2b-quote-to-order-approval-workflow
+  source: Medusa
+  feature: B2B quote-to-order approval workflow
+  round: 3
+  profile: production-grade
+  overall: 0.964
+  high_quality: true
+  weakest_dimension: repo_context
+  prompt_improvement: Final prompt asks for production-grade behavior and rejects
+    chat-only state or unverified promotion.
+  dimensions:
+    native_prompt: 1.0
+    artifact_contract: 0.97
+    repo_context: 0.94
+    architecture_design: 0.96
+    slicing_tdd: 0.95
+    review_security: 0.97
+    evidence_validation: 0.96
+  artifacts:
+    feature: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-superpowers-skills/round-03/medusa-b2b-quote-to-order-approval-workflow/artifacts/feature.md
+    repo_context: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-superpowers-skills/round-03/medusa-b2b-quote-to-order-approval-workflow/artifacts/repo-context.md
+    architecture: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-superpowers-skills/round-03/medusa-b2b-quote-to-order-approval-workflow/artifacts/architecture.md
+    tech_design: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-superpowers-skills/round-03/medusa-b2b-quote-to-order-approval-workflow/artifacts/tech-design.md
+    slices: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-superpowers-skills/round-03/medusa-b2b-quote-to-order-approval-workflow/artifacts/slices.yaml
+    review: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-superpowers-skills/round-03/medusa-b2b-quote-to-order-approval-workflow/artifacts/reviews/review.md
+    verification_review: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-superpowers-skills/round-03/medusa-b2b-quote-to-order-approval-workflow/artifacts/reviews/verification-review.md
+    evidence: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-superpowers-skills/round-03/medusa-b2b-quote-to-order-approval-workflow/artifacts/evidence/manifest.yaml
+    final_verification_output: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-superpowers-skills/round-03/medusa-b2b-quote-to-order-approval-workflow/artifacts/evidence/final-verification-output.log
+    feature_card: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-superpowers-skills/round-03/medusa-b2b-quote-to-order-approval-workflow/artifacts/feature-card.md
+- case: plane-github-sync-conflict-resolution-and-audit-trail
+  source: Plane
+  feature: GitHub sync conflict resolution and audit trail
+  round: 3
+  profile: production-grade
+  overall: 0.964
+  high_quality: true
+  weakest_dimension: repo_context
+  prompt_improvement: Final prompt asks for production-grade behavior and rejects
+    chat-only state or unverified promotion.
+  dimensions:
+    native_prompt: 1.0
+    artifact_contract: 0.97
+    repo_context: 0.94
+    architecture_design: 0.96
+    slicing_tdd: 0.95
+    review_security: 0.97
+    evidence_validation: 0.96
+  artifacts:
+    feature: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-superpowers-skills/round-03/plane-github-sync-conflict-resolution-and-audit-trail/artifacts/feature.md
+    repo_context: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-superpowers-skills/round-03/plane-github-sync-conflict-resolution-and-audit-trail/artifacts/repo-context.md
+    architecture: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-superpowers-skills/round-03/plane-github-sync-conflict-resolution-and-audit-trail/artifacts/architecture.md
+    tech_design: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-superpowers-skills/round-03/plane-github-sync-conflict-resolution-and-audit-trail/artifacts/tech-design.md
+    slices: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-superpowers-skills/round-03/plane-github-sync-conflict-resolution-and-audit-trail/artifacts/slices.yaml
+    review: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-superpowers-skills/round-03/plane-github-sync-conflict-resolution-and-audit-trail/artifacts/reviews/review.md
+    verification_review: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-superpowers-skills/round-03/plane-github-sync-conflict-resolution-and-audit-trail/artifacts/reviews/verification-review.md
+    evidence: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-superpowers-skills/round-03/plane-github-sync-conflict-resolution-and-audit-trail/artifacts/evidence/manifest.yaml
+    final_verification_output: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-superpowers-skills/round-03/plane-github-sync-conflict-resolution-and-audit-trail/artifacts/evidence/final-verification-output.log
+    feature_card: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-superpowers-skills/round-03/plane-github-sync-conflict-resolution-and-audit-trail/artifacts/feature-card.md

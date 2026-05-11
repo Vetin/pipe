@@ -15,7 +15,7 @@
 - Stop point: planning package/readiness
 
 ## Context Summary
-- Primary modules inspected: tests
+- Primary modules inspected: packages, tests
 - Existing patterns reused: root manifests and candidate module names
 - Test tooling detected: README.md, package.json
 

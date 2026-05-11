@@ -1,20 +1,20 @@
 artifact_contract_version: 0.1.0
 generated_by: featurectl.py init --profile-project
-generated_at: '2026-05-11T23:19:53Z'
+generated_at: '2026-05-11T23:32:41Z'
 project:
   name: harness-pipeline
   root: /Users/egormasnankin/work/harness-pipeline
   branch: main
-  head: e66113b
+  head: 367ea97
   remote: none
 counts:
-  tracked_files: 586
-  profiled_files: 232
+  tracked_files: 697
+  profiled_files: 219
   source_files: 15
   test_files: 33
-  doc_files: 106
+  doc_files: 94
   contract_files: 20
-  integration_files: 5
+  integration_files: 4
 package_manifests: []
 scripts: []
 module_dirs:
@@ -26,8 +26,6 @@ module_dirs:
   tracked_files: 55
 - path: tests
   tracked_files: 33
-- path: methodology
-  tracked_files: 13
 source_examples:
 - .agents/pipeline-core/scripts/featurectl.py
 - .agents/pipeline-core/scripts/pipelinebench.py
@@ -130,17 +128,12 @@ contract_examples:
 integration_examples:
 - .agents/pipeline-core/references/workflow-state-machine.md
 - .ai/knowledge/integration-map.md
-- methodology/extracted/workflow-and-gates.md
 - pipeline-lab/benchmarks/scenarios/webhook-integration.yaml
 - pipeline-lab/showcases/scenarios/02-webhook-integration.yaml
 canonical_features: []
 feature_signals:
 - source: features.md
   signal: Best three showcase features
-- source: methodology/extracted/upstream-skill-adjustment-plan-20260512.md
-  signal: 'Batch 1: Intake, Init, Context, Feature Contract'
-- source: methodology/extracted/workflow-and-gates.md
-  signal: Workflow And Gates
 - source: pipeline-lab/README.md
   signal: Pipeline Lab
 - source: pipeline-lab/VALIDATION.md
@@ -162,8 +155,6 @@ feature_signals:
     \ for Codex"
 - source: vision.md
   signal: "Step 1 \u2014 User describes feature"
-- source: methodology/extracted/workflow-and-gates.md
-  signal: workflow and gates
 - source: pipeline-lab/benchmarks/scenarios/webhook-integration.yaml
   signal: webhook integration
 - source: pipeline-lab/showcases/scenarios/02-webhook-integration.yaml
@@ -177,14 +168,6 @@ feature_catalog:
   source_count: 1
   sources:
   - pipeline-lab/showcases/scenarios/02-webhook-integration.yaml
-- name: Batch 1 Intake Init Context Feature Contract
-  kind: detected
-  confidence: medium
-  description: Batch 1 Intake Init Context Feature Contract appears in 1 documentation
-    signal; inspect the listed files before relying on this as architecture truth.
-  source_count: 1
-  sources:
-  - methodology/extracted/upstream-skill-adjustment-plan-20260512.md
 - name: Best Three Showcase Features
   kind: detected
   confidence: medium
@@ -282,11 +265,3 @@ feature_catalog:
   source_count: 1
   sources:
   - pipeline-lab/benchmarks/scenarios/webhook-integration.yaml
-- name: Workflow And Gates
-  kind: detected
-  confidence: medium
-  description: Workflow And Gates appears in 1 documentation signal; inspect the listed
-    files before relying on this as architecture truth.
-  source_count: 1
-  sources:
-  - methodology/extracted/workflow-and-gates.md

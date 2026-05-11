@@ -3,8 +3,8 @@ step: readiness
 required_docs:
   - .agents/pipeline-core/references/native-skill-protocol.md
   - .agents/pipeline-core/references/methodology-lenses.md
-  - methodology/extracted/upstream-pattern-map.md
-  - methodology/extracted/workflow-and-gates.md
+  - skills/native-feature-pipeline/references/upstream-pattern-map.md
+  - skills/native-feature-pipeline/references/workflow-and-gates.md
   - .agents/pipeline-core/references/gate-policy.md
   - .ai/constitution.md
   - .ai/pipeline-docs/steps/readiness/overview.md

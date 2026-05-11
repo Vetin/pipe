@@ -86,7 +86,8 @@ print(json.dumps({
     "has_feature": "stable greeting feature" in prompt,
     "has_native_pipeline": "normal user feature request" in prompt and "Progress through these outcomes" in prompt,
     "no_direct_skill_invocations": "nfp-00-intake" not in prompt and "nfp-12-promote" not in prompt,
-    "in_place": "Do not create a git worktree" in prompt,
+    "fresh_worktree": "fresh feature worktree" in prompt and "do not implement in the base checkout" in prompt,
+    "has_skills_context": "`skills`" in prompt,
 }))
 """,
             encoding="utf-8",
@@ -132,17 +133,23 @@ print(json.dumps({
 
         self.assertIn("returncode: 0", result.stdout)
         self.assertEqual(manifest["returncode"], 0)
-        self.assertEqual(manifest["repo"], str(self.repo.resolve()))
+        self.assertTrue(Path(manifest["repo"]).is_dir())
+        self.assertEqual(manifest["source_repo"], str(self.repo.resolve()))
+        self.assertIn("/worktrees/", manifest["repo"])
         self.assertIn(str(self.fake_codex), command[0])
         self.assertIn("--dangerously-bypass-approvals-and-sandbox", command)
         self.assertIn('"has_feature": true', output)
         self.assertIn('"has_native_pipeline": true', output)
         self.assertIn('"no_direct_skill_invocations": true', output)
+        self.assertIn('"fresh_worktree": true', output)
+        self.assertIn('"has_skills_context": true', output)
         self.assertIn("branch: nfp/toy-feature", report)
-        self.assertIn("Do not create a git worktree", prompt)
+        self.assertIn("fresh feature worktree", prompt)
+        self.assertIn("do not implement in the base checkout", prompt)
         self.assertNotIn("Read and follow every NFP skill doc in order", prompt)
         self.assertNotIn("nfp-00-intake", prompt)
         self.assertNotIn("nfp-12-promote", prompt)
+        self.assertTrue((Path(manifest["repo"]) / "skills/native-feature-pipeline/references").exists())
         self.assertTrue((self.output_dir / "summary-stable-test.yaml").exists())
         self.assertTrue((self.output_dir / "commands-stable-test.sh").exists())
 
@@ -198,11 +205,12 @@ print(json.dumps({
         self.assertIn("repository is not clean", result.stderr)
         self.assertFalse((self.output_dir / "toy-feature/dirty/codex-output.log").exists())
 
-    def test_runner_does_not_use_git_worktree_commands(self):
+    def test_runner_uses_fresh_git_worktree_commands(self):
         content = RUNNER.read_text(encoding="utf-8")
 
-        self.assertNotIn('"worktree"', content)
-        self.assertNotIn("git worktree add", content)
+        self.assertIn('"worktree"', content)
+        self.assertIn('"add"', content)
+        self.assertIn("prepare_worktree", content)
 
 
 if __name__ == "__main__":

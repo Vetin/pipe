@@ -11,14 +11,14 @@ Use this skill to promote a completed workspace into canonical feature memory.
 Methodology:
 
 - Read `.agents/pipeline-core/references/native-skill-protocol.md`.
-- Apply `methodology/extracted/upstream-pattern-map.md` as the behavioral synthesis of cloned upstream methodologies; cite patterns in `Docs Consulted:` when they influence a decision.
+- Apply `skills/native-feature-pipeline/references/upstream-pattern-map.md` as the behavioral synthesis of cloned upstream methodologies; cite patterns in `Docs Consulted:` when they influence a decision.
 - Apply `.agents/pipeline-core/references/methodology-lenses.md` for fresh
   verification, promotion memory, source revision, and conflict safety.
 - Confirm the current directory is the feature worktree.
 - Read `apex.md`, `feature.yaml`, `state.yaml`, `execution.md`, and
   `feature-card.md`.
 - Load the promote docset with `featurectl.py load-docset --step promote`.
-- Use `methodology/extracted/artifact-model.md`,
+- Use `skills/native-feature-pipeline/references/artifact-model.md`,
   `.agents/pipeline-core/references/context-reuse-policy.md`, and
   `.agents/pipeline-core/references/feature-identity-policy.md`.
 - Record `Docs Consulted: Promote` in `execution.md`.

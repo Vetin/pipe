@@ -42,6 +42,7 @@ def run_case(case: str, repo: Path, config: dict[str, Any], report_dir: Path) ->
     install_pipeline(repo)
     git_config(repo)
     workspace = create_workspace(repo, config)
+    install_pipeline_context(worktree_for_workspace(workspace))
     findings = inspect_repo(repo, config)
     write_planning_artifacts(workspace, config, findings)
     set_drafted_gates(workspace)
@@ -59,13 +60,35 @@ def run_case(case: str, repo: Path, config: dict[str, Any], report_dir: Path) ->
 
 
 def install_pipeline(repo: Path) -> None:
-    for dirname in (".agents", ".ai"):
+    for dirname in (".agents", ".ai", "skills"):
         src = ROOT / dirname
         dest = repo / dirname
         if dest.exists():
             shutil.rmtree(dest)
         ignore = shutil.ignore_patterns("feature-workspaces", "features-archive", "logs") if dirname == ".ai" else None
         shutil.copytree(src, dest, ignore=ignore)
+
+
+def worktree_for_workspace(workspace: Path) -> Path:
+    marker = ".ai"
+    parts = workspace.parts
+    if marker not in parts:
+        raise RuntimeError(f"workspace path does not include .ai: {workspace}")
+    return Path(*parts[: parts.index(marker)])
+
+
+def install_pipeline_context(worktree: Path) -> None:
+    for dirname in (".agents", "skills"):
+        dest = worktree / dirname
+        if dest.exists():
+            shutil.rmtree(dest)
+        shutil.copytree(ROOT / dirname, dest)
+    (worktree / ".ai").mkdir(exist_ok=True)
+    pipeline_docs = worktree / ".ai/pipeline-docs"
+    if pipeline_docs.exists():
+        shutil.rmtree(pipeline_docs)
+    shutil.copytree(ROOT / ".ai/pipeline-docs", pipeline_docs)
+    shutil.copy2(ROOT / ".ai/constitution.md", worktree / ".ai/constitution.md")
 
 
 def git_config(repo: Path) -> None:
@@ -190,6 +213,12 @@ Current planning evidence does not show this feature as a complete workflow. Sen
 
     (workspace / "architecture.md").write_text(f"""# Architecture: {title}
 
+## Change Delta
+New: workflow state handling, history/audit recording, and validation tests for `{feature_key}`.
+Modified: candidate touchpoints listed below after source inspection.
+Removed: none.
+Unchanged: unrelated repository modules and existing public behavior until the feature is gated on.
+
 ## System Context
 The feature belongs to `{config['domain']}` and is planned against commit `{findings['commit']}`. Candidate repository boundaries are: {', '.join(modules) if modules else 'not yet expanded from sparse checkout'}.
 
@@ -215,10 +244,22 @@ Record structured audit events, state transition logs, failure reasons, and retr
 ## Rollback Strategy
 Keep implementation behind a feature flag or isolated service path until slices pass. Revert by disabling the workflow and preserving audit records.
 
+## Migration Strategy
+Use additive persistence or schema changes only. Deploy read paths before write paths when existing data needs compatibility.
+
 ## Architecture Risks
 - Cross-module state drift.
 - Missing authorization guard.
 - Incomplete replay, rollback, or retry semantics.
+
+## Alternatives Considered
+- Extend existing generic status fields only; rejected because it hides audit semantics and rollback evidence.
+- Implement as a background-only workflow; rejected because user-visible state and review history must remain inspectable.
+
+## Completeness Correctness Coherence
+Completeness: contract, architecture, technical design, slices, readiness gates, and evidence paths cover the requested workflow.
+Correctness: state transitions, authorization, audit history, and rollback behavior are tied to acceptance criteria.
+Coherence: planned modules, contracts, and slices use the same workflow terms and artifact IDs.
 
 ## ADRs
 - ADR-001: Use explicit event/history records for workflow state changes.
@@ -237,6 +278,12 @@ Implementation must define event shape, retention, authorization, and rollback b
 """, encoding="utf-8")
 
     (workspace / "tech-design.md").write_text(f"""# Technical Design: {title}
+
+## Change Delta
+New: domain workflow service, event/history shape, and focused tests for `{feature_key}`.
+Modified: repository touchpoints that own the workflow entrypoint, persistence, and inspection UI/API.
+Removed: none.
+Unchanged: unrelated modules and existing behavior outside the explicit feature path.
 
 ## Implementation Summary
 Implement the feature through a domain service that validates input, checks authorization, applies state transitions, and writes history events.
@@ -276,6 +323,18 @@ Use unit tests for state transition rules, integration tests for persistence/his
 ## Migration Plan
 Add additive persistence structures only after approval. Backfill is not required for this planning run unless existing records need history.
 
+## Dependency And Ownership Plan
+- Owner: feature implementation slice controller.
+- Dependencies: existing auth/RBAC, persistence, notification or audit utilities, and test harness.
+- File ownership: source and tests under the candidate touchpoints listed in `slices.yaml`; avoid broad refactors outside those paths.
+- Conflict risk: medium until exact production modules are chosen; each slice must update downstream ownership notes when new files are touched.
+
+## Decision Traceability
+- FR-001 maps to workflow service and transition tests.
+- FR-002 maps to history event schema and audit evidence.
+- FR-003 maps to inspection API/UI behavior and failure visibility.
+- ADR-001 justifies explicit history records rather than inferred logs.
+
 ## Rollback Plan
 Disable entry points and leave history records intact. Roll back additive schema only after data retention review.
 
@@ -295,7 +354,14 @@ Implementation must align with existing manifests and module boundaries: {', '.j
             "linked_contracts": ["workflow-history-event"],
             "dependencies": [] if index == 1 else [f"S-{index-1:03d}"],
             "priority": index,
+            "complexity": 4 if index == 2 else 2,
+            "critical_path": index <= 2,
+            "parallelizable": False,
             "expected_touchpoints": touchpoint_list,
+            "file_ownership": touchpoint_list,
+            "conflict_risk": "medium" if index == 2 else "low",
+            "dependency_notes": "Depends on prior workflow model slice." if index > 1 else "No upstream slice dependency.",
+            "test_strategy": "Write a focused failing test for the slice, prove the expected red failure, then run the green and independent verification commands.",
             "scope_confidence": "medium",
             "iteration_budget": 3,
             "rollback_point": "feature branch commit before slice implementation",
@@ -322,6 +388,11 @@ Implementation must align with existing manifests and module boundaries: {', '.j
 - Repo root at `{findings['remote']}` commit `{findings['commit']}`.
 - Top-level files: {', '.join(findings['top_level_files'][:12])}.
 
+## Docs Consulted: Feature Contract
+
+- Feature goal from showcase config: {config['feature_goal']}
+- Acceptance criteria and risks were drafted from inspected touchpoints and expected focus areas: {', '.join(config.get('expected_focus', []))}.
+
 ## Docs Consulted: Architecture
 
 - Candidate modules: {', '.join(modules) if modules else 'root sparse checkout only'}.
@@ -329,6 +400,10 @@ Implementation must align with existing manifests and module boundaries: {', '.j
 ## Docs Consulted: Technical Design
 
 - Manifests/tooling: {', '.join(findings['manifests']) if findings['manifests'] else 'none detected at root'}.
+
+## Docs Consulted: Slicing
+
+- Slices map FR-001 through FR-003 to workflow modeling, transition execution, and inspection/failure handling.
 
 ## Planning Evidence
 

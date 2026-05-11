@@ -1,0 +1,31 @@
+case: medusa-first-order-promo-caps
+title: Medusa First Order Promotion Usage Caps
+repo: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/worktrees/codex-medusa-first-order-promo-caps-20260512-superpowers-worktree
+source_repo: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/medusa
+feature_request: Create a promotion rule that applies only to a customer's first completed
+  order and respects global and customer caps.
+expected_result: Define business rules, promotion evaluation interfaces, first-order
+  detection, cap enforcement, and edge cases.
+target_branch: nfp/medusa-first-order-promo-caps
+base_ref: origin/develop
+run_id: 20260512-superpowers-worktree
+dry_run: true
+returncode: 0
+started_at: '2026-05-11T23:37:03.598754+00:00'
+finished_at: '2026-05-11T23:37:03.668181+00:00'
+before_head: a4f6fcd60c823e9e26b95fc18e1dfd75633bd451
+after_head: a4f6fcd60c823e9e26b95fc18e1dfd75633bd451
+before_status: '?? .agents/
+
+  ?? .ai/
+
+  ?? skills/'
+after_status: '?? .agents/
+
+  ?? .ai/
+
+  ?? skills/'
+prompt: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/codex-e2e-runs/medusa-first-order-promo-caps/20260512-superpowers-worktree/prompt.md
+command: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/codex-e2e-runs/medusa-first-order-promo-caps/20260512-superpowers-worktree/codex-command.json
+output: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/codex-e2e-runs/medusa-first-order-promo-caps/20260512-superpowers-worktree/codex-output.log
+final: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/codex-e2e-runs/medusa-first-order-promo-caps/20260512-superpowers-worktree/codex-final.txt

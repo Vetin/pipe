@@ -138,7 +138,7 @@ def validate_skill_matrix() -> list[dict[str, str]]:
         for token in (
             "pipeline_contract_version: '0.1.0'",
             ".agents/pipeline-core/references/native-skill-protocol.md",
-            "methodology/extracted/upstream-pattern-map.md",
+            "skills/native-feature-pipeline/references/upstream-pattern-map.md",
             "featurectl.py load-docset",
             "Docs Consulted:",
             "featurectl.py validate",
@@ -146,6 +146,26 @@ def validate_skill_matrix() -> list[dict[str, str]]:
             if token not in content:
                 missing.append(token)
         checks.append(check(f"skill_{name}", not missing, "missing: " + ", ".join(missing) if missing else "shared protocol present"))
+    tdd_skill = ROOT / ".agents/skills/nfp-08-tdd-implementation/SKILL.md"
+    tdd_content = read_text(tdd_skill) if tdd_skill.exists() else ""
+    missing_subagent_tokens = [
+        token
+        for token in (
+            "Subagent Flow Is Mandatory",
+            "skills/superpowers/subagent-driven-development/SKILL.md",
+            "fresh implementer subagent",
+            "spec-compliance reviewer subagent",
+            "code-quality reviewer subagent",
+        )
+        if token not in tdd_content
+    ]
+    checks.append(
+        check(
+            "skill_tdd_superpowers_subagent_flow",
+            not missing_subagent_tokens,
+            "missing: " + ", ".join(missing_subagent_tokens) if missing_subagent_tokens else "mandatory Superpowers subagent flow present",
+        )
+    )
     init_skill = ROOT / ".agents/skills/project-init/SKILL.md"
     if not init_skill.exists():
         checks.append(check("skill_project-init", False, "missing project-init skill"))
@@ -167,7 +187,7 @@ def validate_skill_matrix() -> list[dict[str, str]]:
 
 
 def validate_web_best_practices() -> list[dict[str, str]]:
-    path = ROOT / "methodology/extracted/web-best-practices-20260512.md"
+    path = ROOT / "skills/native-feature-pipeline/references/web-best-practices-20260512.md"
     content = read_text(path) if path.exists() else ""
     checks = [check("web_best_practices_doc", path.exists(), "web best-practices synthesis exists")]
     for source in REQUIRED_WEB_SOURCES:

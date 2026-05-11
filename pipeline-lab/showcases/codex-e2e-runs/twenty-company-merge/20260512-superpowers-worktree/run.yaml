@@ -1,0 +1,31 @@
+case: twenty-company-merge
+title: Twenty Duplicate Company Merge Audit Trail
+repo: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/worktrees/codex-twenty-company-merge-20260512-superpowers-worktree
+source_repo: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/twenty
+feature_request: Detect duplicate companies, preview merge effects, merge records,
+  and keep reversible audit history.
+expected_result: Document entity relationships, conflict resolution, duplicate detection,
+  preview, merge, audit log, and rollback-safe behavior.
+target_branch: nfp/twenty-company-merge
+base_ref: origin/main
+run_id: 20260512-superpowers-worktree
+dry_run: true
+returncode: 0
+started_at: '2026-05-11T23:37:05.433568+00:00'
+finished_at: '2026-05-11T23:37:05.645208+00:00'
+before_head: 5f3407878d2c7f613c1556ec9fc97bc452333946
+after_head: 5f3407878d2c7f613c1556ec9fc97bc452333946
+before_status: '?? .agents/
+
+  ?? .ai/
+
+  ?? skills/'
+after_status: '?? .agents/
+
+  ?? .ai/
+
+  ?? skills/'
+prompt: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/codex-e2e-runs/twenty-company-merge/20260512-superpowers-worktree/prompt.md
+command: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/codex-e2e-runs/twenty-company-merge/20260512-superpowers-worktree/codex-command.json
+output: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/codex-e2e-runs/twenty-company-merge/20260512-superpowers-worktree/codex-output.log
+final: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/codex-e2e-runs/twenty-company-merge/20260512-superpowers-worktree/codex-final.txt

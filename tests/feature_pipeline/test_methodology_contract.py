@@ -10,15 +10,22 @@ import yaml
 ROOT = Path(__file__).resolve().parents[2]
 SCRIPT = ROOT / ".agents/pipeline-core/scripts/featurectl.py"
 
-METHODOLOGY_FILES = [
-    "methodology/extracted/methodology-summary.md",
-    "methodology/extracted/upstream-pattern-map.md",
-    "methodology/extracted/artifact-model.md",
-    "methodology/extracted/workflow-and-gates.md",
-    "methodology/extracted/context-and-doc-loading.md",
-    "methodology/extracted/review-and-verification.md",
-    "methodology/extracted/evaluation-patterns.md",
-    "methodology/extracted/web-best-practices-20260512.md",
+RUNTIME_REFERENCE_FILES = [
+    "skills/native-feature-pipeline/references/methodology-summary.md",
+    "skills/native-feature-pipeline/references/upstream-pattern-map.md",
+    "skills/native-feature-pipeline/references/artifact-model.md",
+    "skills/native-feature-pipeline/references/workflow-and-gates.md",
+    "skills/native-feature-pipeline/references/context-and-doc-loading.md",
+    "skills/native-feature-pipeline/references/review-and-verification.md",
+    "skills/native-feature-pipeline/references/evaluation-patterns.md",
+    "skills/native-feature-pipeline/references/web-best-practices-20260512.md",
+]
+
+SUPERPOWERS_SUBAGENT_FILES = [
+    "skills/superpowers/subagent-driven-development/SKILL.md",
+    "skills/superpowers/subagent-driven-development/implementer-prompt.md",
+    "skills/superpowers/subagent-driven-development/spec-reviewer-prompt.md",
+    "skills/superpowers/subagent-driven-development/code-quality-reviewer-prompt.md",
 ]
 
 UPSTREAM_REPOS = {
@@ -69,7 +76,7 @@ SCHEMA_FILES = [
 
 
 class MethodologyContractTests(unittest.TestCase):
-    def test_methodology_extraction_is_actionable(self):
+    def test_runtime_references_are_self_contained_and_actionable(self):
         required_sections = [
             "## What To Borrow",
             "## What To Reject",
@@ -78,7 +85,7 @@ class MethodologyContractTests(unittest.TestCase):
             "## Validation Rule Implied",
         ]
 
-        for rel in METHODOLOGY_FILES:
+        for rel in RUNTIME_REFERENCE_FILES:
             with self.subTest(path=rel):
                 path = ROOT / rel
                 self.assertTrue(path.exists(), rel)
@@ -86,6 +93,13 @@ class MethodologyContractTests(unittest.TestCase):
                 for section in required_sections:
                     self.assertIn(section, content)
                 self.assertIn("nfp-", content)
+
+    def test_superpowers_subagent_flow_is_copied_into_runtime_skills(self):
+        for rel in SUPERPOWERS_SUBAGENT_FILES:
+            with self.subTest(path=rel):
+                path = ROOT / rel
+                self.assertTrue(path.exists(), rel)
+                self.assertGreater(len(path.read_text(encoding="utf-8").strip()), 200)
 
     def test_shared_references_templates_and_schemas_exist(self):
         for rel in [*REFERENCE_FILES, *TEMPLATE_FILES, *SCHEMA_FILES]:
@@ -140,8 +154,8 @@ class MethodologyContractTests(unittest.TestCase):
                     self.assertEqual(docset["step"], step)
                     self.assertIn(".agents/pipeline-core/references/native-skill-protocol.md", docset["required_docs"])
                     self.assertTrue(
-                        any(doc.startswith("methodology/extracted/") for doc in docset["required_docs"] + docset.get("optional_docs", [])),
-                        f"{step} docset must reference methodology extraction",
+                        any(doc.startswith("skills/native-feature-pipeline/references/") for doc in docset["required_docs"] + docset.get("optional_docs", [])),
+                        f"{step} docset must reference runtime skill references",
                     )
                     for doc in docset["required_docs"]:
                         self.assertTrue((ROOT / doc).exists(), f"{step} missing required doc {doc}")
@@ -184,13 +198,26 @@ class MethodologyContractTests(unittest.TestCase):
                 self.assertIn("pipeline_contract_version: '0.1.0'", content)
                 self.assertIn("Methodology:", content)
                 self.assertIn(".agents/pipeline-core/references/native-skill-protocol.md", content)
-                self.assertIn("methodology/extracted/upstream-pattern-map.md", content)
+                self.assertIn("skills/native-feature-pipeline/references/upstream-pattern-map.md", content)
                 self.assertIn("featurectl.py load-docset", content)
                 self.assertIn("Docs Consulted:", content)
-                self.assertIn("methodology/extracted/", content)
+                self.assertIn("skills/native-feature-pipeline/references/", content)
                 for artifact in ("apex.md", "feature.yaml", "state.yaml", "execution.md"):
                     self.assertIn(artifact, content)
                 self.assertIn("featurectl.py validate", content)
+
+    def test_tdd_implementation_requires_superpowers_subagent_loop(self):
+        content = (ROOT / ".agents/skills/nfp-08-tdd-implementation/SKILL.md").read_text(encoding="utf-8")
+        for token in (
+            "Subagent Flow Is Mandatory",
+            "skills/superpowers/subagent-driven-development/SKILL.md",
+            "fresh implementer subagent",
+            "spec-compliance reviewer subagent",
+            "code-quality reviewer subagent",
+            "There is no local/direct implementation fallback",
+            "never dispatch implementation subagents in parallel",
+        ):
+            self.assertIn(token, content)
 
     def test_review_schema_requires_traceable_findings(self):
         schema = yaml.safe_load((ROOT / ".agents/pipeline-core/scripts/schemas/review.schema.json").read_text(encoding="utf-8"))

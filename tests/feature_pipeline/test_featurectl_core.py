@@ -44,7 +44,8 @@ class FeatureCtlCoreTests(unittest.TestCase):
         self.assertTrue((self.repo / ".agents/pipeline-core/scripts/schemas").is_dir())
         self.assertTrue((self.repo / ".agents/pipeline-core/references/generated-templates").is_dir())
         self.assertTrue((self.repo / ".agents/skills").is_dir())
-        self.assertTrue((self.repo / "methodology/extracted").is_dir())
+        self.assertTrue((self.repo / "skills/native-feature-pipeline/references").is_dir())
+        self.assertTrue((self.repo / "skills/superpowers/subagent-driven-development").is_dir())
         self.assertFalse(list(self.repo.rglob("approvals.yaml")))
         self.assertFalse(list(self.repo.rglob("handoff.md")))
 

@@ -11,7 +11,7 @@ Use this skill to create `slices.yaml`.
 Methodology:
 
 - Read `.agents/pipeline-core/references/native-skill-protocol.md`.
-- Apply `methodology/extracted/upstream-pattern-map.md` as the behavioral synthesis of cloned upstream methodologies; cite patterns in `Docs Consulted:` when they influence a decision.
+- Apply `skills/native-feature-pipeline/references/upstream-pattern-map.md` as the behavioral synthesis of cloned upstream methodologies; cite patterns in `Docs Consulted:` when they influence a decision.
 - Apply `.agents/pipeline-core/references/methodology-lenses.md` for task graph
   metadata, complexity scoring, critical path, parallelization, ownership,
   conflict risk, and TDD readiness.
@@ -19,7 +19,7 @@ Methodology:
 - Read `apex.md`, `feature.yaml`, `state.yaml`, `execution.md`,
   `feature.md`, `architecture.md`, and `tech-design.md`.
 - Load the slicing docset with `featurectl.py load-docset --step slicing`.
-- Use `methodology/extracted/workflow-and-gates.md` and
+- Use `skills/native-feature-pipeline/references/workflow-and-gates.md` and
   `.agents/pipeline-core/references/generated-templates/slice-template.yaml`.
 - Record `Docs Consulted: Slicing` in `execution.md`.
 

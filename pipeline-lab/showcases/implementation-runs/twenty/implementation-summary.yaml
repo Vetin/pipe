@@ -46,4 +46,4 @@ validation: 'validation: pass'
 readiness: 'validation: pass'
 status: "A showcase/duplicate-company-merge-audit-trail/feature.js\n A showcase/duplicate-company-merge-audit-trail/feature.s-001.test.js\n\
   \ A showcase/duplicate-company-merge-audit-trail/feature.s-002.test.js\n A showcase/duplicate-company-merge-audit-trail/feature.s-003.test.js\n\
-  ?? .agents/\n?? .ai/"
+  ?? .agents/\n?? .ai/\n?? skills/"

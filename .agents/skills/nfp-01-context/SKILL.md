@@ -11,12 +11,12 @@ Use this skill to discover repository context before drafting feature behavior.
 Methodology:
 
 - Read `.agents/pipeline-core/references/native-skill-protocol.md`.
-- Apply `methodology/extracted/upstream-pattern-map.md` as the behavioral synthesis of cloned upstream methodologies; cite patterns in `Docs Consulted:` when they influence a decision.
+- Apply `skills/native-feature-pipeline/references/upstream-pattern-map.md` as the behavioral synthesis of cloned upstream methodologies; cite patterns in `Docs Consulted:` when they influence a decision.
 - Apply `.agents/pipeline-core/references/methodology-lenses.md` for
   brownfield research, existing-solution scan, source-backed claim provenance,
   and adaptive rigor.
 - Load the context docset with `featurectl.py load-docset --step context`.
-- Use `methodology/extracted/context-and-doc-loading.md` and
+- Use `skills/native-feature-pipeline/references/context-and-doc-loading.md` and
   `.agents/pipeline-core/references/context-reuse-policy.md` to prefer real
   repository evidence over invented architecture.
 - Record `Docs Consulted: Context` in `execution.md`.

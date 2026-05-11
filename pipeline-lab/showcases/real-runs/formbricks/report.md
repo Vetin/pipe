@@ -3,7 +3,7 @@
 ## Repo Snapshot
 - Repo path: `/Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/formbricks`
 - Remote: `https://github.com/formbricks/formbricks.git`
-- Base commit: `cad10b8`
+- Base commit: `94d85e9`
 - Pipeline workspace: `/Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/worktrees/webhooks-signed-survey-response-webhooks-run-formbricks-webhooks/.ai/feature-workspaces/webhooks/signed-survey-response-webhooks--run-formbricks-webhooks`
 - Feature key: `webhooks/signed-survey-response-webhooks`
 - Run ID: `run-formbricks-webhooks`
@@ -15,7 +15,7 @@
 - Stop point: planning package/readiness
 
 ## Context Summary
-- Primary modules inspected: tests
+- Primary modules inspected: apps, packages, packages/database, tests
 - Existing patterns reused: root manifests and candidate module names
 - Test tooling detected: README.md, package.json, pnpm-workspace.yaml
 

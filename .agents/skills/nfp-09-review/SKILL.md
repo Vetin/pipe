@@ -11,7 +11,7 @@ Use this skill to run deterministic and agentic review.
 Methodology:
 
 - Read `.agents/pipeline-core/references/native-skill-protocol.md`.
-- Apply `methodology/extracted/upstream-pattern-map.md` as the behavioral synthesis of cloned upstream methodologies; cite patterns in `Docs Consulted:` when they influence a decision.
+- Apply `skills/native-feature-pipeline/references/upstream-pattern-map.md` as the behavioral synthesis of cloned upstream methodologies; cite patterns in `Docs Consulted:` when they influence a decision.
 - Apply `.agents/pipeline-core/references/methodology-lenses.md` for
   adversarial review, hard/soft findings, zero-finding justification, and claim
   provenance.
@@ -19,8 +19,8 @@ Methodology:
 - Read `apex.md`, `feature.yaml`, `state.yaml`, `execution.md`,
   `feature.md`, `architecture.md`, `tech-design.md`, and `slices.yaml`.
 - Load the review docset with `featurectl.py load-docset --step review`.
-- Use `methodology/extracted/review-and-verification.md`,
-  `methodology/extracted/evaluation-patterns.md`,
+- Use `skills/native-feature-pipeline/references/review-and-verification.md`,
+  `skills/native-feature-pipeline/references/evaluation-patterns.md`,
   `.agents/pipeline-core/references/subagent-review-policy.md`, and
   `.agents/pipeline-core/references/quality-rubric.md`.
 - Record `Docs Consulted: Review` in `execution.md`.

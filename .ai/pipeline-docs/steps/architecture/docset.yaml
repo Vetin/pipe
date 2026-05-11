@@ -3,9 +3,9 @@ step: architecture
 required_docs:
   - .agents/pipeline-core/references/native-skill-protocol.md
   - .agents/pipeline-core/references/methodology-lenses.md
-  - methodology/extracted/upstream-pattern-map.md
-  - methodology/extracted/artifact-model.md
-  - methodology/extracted/context-and-doc-loading.md
+  - skills/native-feature-pipeline/references/upstream-pattern-map.md
+  - skills/native-feature-pipeline/references/artifact-model.md
+  - skills/native-feature-pipeline/references/context-and-doc-loading.md
   - .agents/pipeline-core/references/quality-rubric.md
   - .agents/pipeline-core/references/generated-templates/architecture-template.md
   - .ai/constitution.md
@@ -17,7 +17,7 @@ required_docs:
   - .ai/pipeline-docs/steps/architecture/overview.md
   - .ai/pipeline-docs/steps/architecture/checklist.md
 optional_docs:
-  - methodology/extracted/workflow-and-gates.md
+  - skills/native-feature-pipeline/references/workflow-and-gates.md
   - .ai/knowledge/project-index.yaml
   - .ai/knowledge/project-snapshot.md
   - .ai/features/index.yaml

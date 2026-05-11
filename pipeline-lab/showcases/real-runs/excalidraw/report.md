@@ -3,7 +3,7 @@
 ## Repo Snapshot
 - Repo path: `/Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/excalidraw`
 - Remote: `https://github.com/excalidraw/excalidraw.git`
-- Base commit: `b2b2815`
+- Base commit: `2d7f2ad`
 - Pipeline workspace: `/Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/worktrees/canvas-layer-lock-history-safe-editing-run-excalidraw-layer-lock/.ai/feature-workspaces/canvas/layer-lock-history-safe-editing--run-excalidraw-layer-lock`
 - Feature key: `canvas/layer-lock-history-safe-editing`
 - Run ID: `run-excalidraw-layer-lock`
@@ -15,7 +15,7 @@
 - Stop point: planning package/readiness
 
 ## Context Summary
-- Primary modules inspected: tests
+- Primary modules inspected: packages, tests
 - Existing patterns reused: root manifests and candidate module names
 - Test tooling detected: README.md, package.json
 

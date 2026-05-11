@@ -3,7 +3,7 @@
 ## Repo Snapshot
 - Repo path: `/Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/docmost`
 - Remote: `https://github.com/docmost/docmost.git`
-- Base commit: `a689cca`
+- Base commit: `8f61503`
 - Pipeline workspace: `/Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/worktrees/pages-page-approval-workflow-run-docmost-approval/.ai/feature-workspaces/pages/page-approval-workflow--run-docmost-approval`
 - Feature key: `pages/page-approval-workflow`
 - Run ID: `run-docmost-approval`

@@ -1,0 +1,89 @@
+slices:
+- id: S-001
+  requirement_ids:
+  - FR-001
+  title: Allow a buyer to submit a quote request
+  status: planned
+  owned_surfaces: Quote aggregate/state machine and approval policy
+  complexity: 3
+  critical_path: true
+  parallelizable: false
+  file_ownership:
+  - Quote aggregate/state machine and approval policy
+  conflict_risk: high
+  dependency_notes: Starts the critical path.
+  test_strategy: focused unit test plus integration/regression verification
+  red_command: test medusa-b2b-quote-to-order-approval-workflow S-001 red
+  green_command: test medusa-b2b-quote-to-order-approval-workflow S-001 green
+  rollback: Record before/after state and validate compensation path.
+  review_focus:
+  - permissions
+  - auditability
+  - rollback
+  - failure modes
+- id: S-002
+  requirement_ids:
+  - FR-002
+  title: Require company-admin and merchant approval before quote conversion.
+  status: planned
+  owned_surfaces: Pricing lock snapshot for promotions, tax, shipping, and totals
+  complexity: 4
+  critical_path: true
+  parallelizable: false
+  file_ownership:
+  - Pricing lock snapshot for promotions, tax, shipping, and totals
+  conflict_risk: medium
+  dependency_notes: Depends on prior domain invariant slice.
+  test_strategy: focused unit test plus integration/regression verification
+  red_command: test medusa-b2b-quote-to-order-approval-workflow S-002 red
+  green_command: test medusa-b2b-quote-to-order-approval-workflow S-002 green
+  rollback: Record before/after state and validate compensation path.
+  review_focus:
+  - permissions
+  - auditability
+  - rollback
+  - failure modes
+- id: S-003
+  requirement_ids:
+  - FR-003
+  title: Lock pricing, promotions, tax, and shipping decisions at approval time.
+  status: planned
+  owned_surfaces: Approval APIs and workflow jobs for buyer, company admin, and merchant
+  complexity: 5
+  critical_path: false
+  parallelizable: true
+  file_ownership:
+  - Approval APIs and workflow jobs for buyer, company admin, and merchant
+  conflict_risk: low
+  dependency_notes: Depends on prior domain invariant slice.
+  test_strategy: focused unit test plus integration/regression verification
+  red_command: test medusa-b2b-quote-to-order-approval-workflow S-003 red
+  green_command: test medusa-b2b-quote-to-order-approval-workflow S-003 green
+  rollback: Record before/after state and validate compensation path.
+  review_focus:
+  - permissions
+  - auditability
+  - rollback
+  - failure modes
+- id: S-004
+  requirement_ids:
+  - FR-004
+  title: Convert an approved quote to an order
+  status: planned
+  owned_surfaces: Quote-to-order conversion command with expiry and audit events
+  complexity: 6
+  critical_path: false
+  parallelizable: true
+  file_ownership:
+  - Quote-to-order conversion command with expiry and audit events
+  conflict_risk: low
+  dependency_notes: Depends on prior domain invariant slice.
+  test_strategy: focused unit test plus integration/regression verification
+  red_command: test medusa-b2b-quote-to-order-approval-workflow S-004 red
+  green_command: test medusa-b2b-quote-to-order-approval-workflow S-004 green
+  rollback: Record before/after state and validate compensation path.
+  review_focus:
+  - permissions
+  - auditability
+  - rollback
+  - failure modes

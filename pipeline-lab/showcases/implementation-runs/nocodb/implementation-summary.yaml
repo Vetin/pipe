@@ -44,6 +44,23 @@ diff_stat: "showcase/schema-change-audit-log/feature.js        | 77 ++++++++++++
   \ 4 files changed, 120 insertions(+)"
 validation: 'validation: pass'
 readiness: 'validation: pass'
-status: "A showcase/schema-change-audit-log/feature.js\n A showcase/schema-change-audit-log/feature.s-001.test.js\n\
-  \ A showcase/schema-change-audit-log/feature.s-002.test.js\n A showcase/schema-change-audit-log/feature.s-003.test.js\n\
-  ?? .agents/\n?? .ai/"
+status: "M .agents/pipeline-core/references/README.md\n M .agents/pipeline-core/scripts/featurectl.py\n\
+  \ M .agents/pipeline-core/scripts/pipelinebench.py\n M .agents/pipeline-core/scripts/schemas/review.schema.json\n\
+  \ M .agents/pipeline-core/scripts/schemas/slices.schema.json\n M .agents/skills/nfp-00-intake/SKILL.md\n\
+  \ M .agents/skills/nfp-01-context/SKILL.md\n M .agents/skills/nfp-02-feature-contract/SKILL.md\n\
+  \ M .agents/skills/nfp-03-architecture/SKILL.md\n M .agents/skills/nfp-04-tech-design/SKILL.md\n\
+  \ M .agents/skills/nfp-05-slicing/SKILL.md\n M .agents/skills/nfp-06-readiness/SKILL.md\n\
+  \ M .agents/skills/nfp-07-worktree/SKILL.md\n M .agents/skills/nfp-08-tdd-implementation/SKILL.md\n\
+  \ M .agents/skills/nfp-09-review/SKILL.md\n M .agents/skills/nfp-10-verification/SKILL.md\n\
+  \ M .agents/skills/nfp-11-finish/SKILL.md\n M .agents/skills/nfp-12-promote/SKILL.md\n\
+  \ M .ai/features/index.yaml\n A showcase/schema-change-audit-log/feature.js\n A\
+  \ showcase/schema-change-audit-log/feature.s-001.test.js\n A showcase/schema-change-audit-log/feature.s-002.test.js\n\
+  \ A showcase/schema-change-audit-log/feature.s-003.test.js\n?? .agents/pipeline-core/references/context-reuse-policy.md\n\
+  ?? .agents/pipeline-core/references/feature-identity-policy.md\n?? .agents/pipeline-core/references/generated-templates/\n\
+  ?? .agents/pipeline-core/references/methodology-lenses.md\n?? .agents/pipeline-core/references/native-skill-protocol.md\n\
+  ?? .agents/pipeline-core/references/quality-rubric.md\n?? .agents/pipeline-core/references/skill-power-validation-policy.md\n\
+  ?? .agents/pipeline-core/references/subagent-review-policy.md\n?? .agents/pipeline-core/scripts/__pycache__/\n\
+  ?? .agents/pipeline-core/scripts/schemas/docset.schema.json\n?? .agents/pipeline-core/scripts/schemas/feature.schema.json\n\
+  ?? .agents/pipeline-core/scripts/schemas/state.schema.json\n?? .agents/skill-lab/\n\
+  ?? .agents/skills/project-init/\n?? .ai/constitution.md\n?? .ai/feature-workspaces/schema/\n\
+  ?? .ai/features/schema/\n?? .ai/pipeline-docs/\n?? skills/"

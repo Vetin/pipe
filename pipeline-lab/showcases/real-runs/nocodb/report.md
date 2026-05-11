@@ -3,7 +3,7 @@
 ## Repo Snapshot
 - Repo path: `/Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/nocodb`
 - Remote: `https://github.com/nocodb/nocodb.git`
-- Base commit: `395c543`
+- Base commit: `c4af5df`
 - Pipeline workspace: `/Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/worktrees/schema-schema-change-audit-log-run-nocodb-schema-audit/.ai/feature-workspaces/schema/schema-change-audit-log--run-nocodb-schema-audit`
 - Feature key: `schema/schema-change-audit-log`
 - Run ID: `run-nocodb-schema-audit`
@@ -15,7 +15,7 @@
 - Stop point: planning package/readiness
 
 ## Context Summary
-- Primary modules inspected: tests
+- Primary modules inspected: packages, tests
 - Existing patterns reused: root manifests and candidate module names
 - Test tooling detected: README.md, package.json, pnpm-workspace.yaml
 

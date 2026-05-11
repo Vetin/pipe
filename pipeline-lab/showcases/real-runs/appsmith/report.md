@@ -3,7 +3,7 @@
 ## Repo Snapshot
 - Repo path: `/Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/appsmith`
 - Remote: `https://github.com/appsmithorg/appsmith.git`
-- Base commit: `893572e`
+- Base commit: `420914a`
 - Pipeline workspace: `/Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/worktrees/versions-app-version-restore-diff-preview-run-appsmith-version-restore/.ai/feature-workspaces/versions/app-version-restore-diff-preview--run-appsmith-version-restore`
 - Feature key: `versions/app-version-restore-diff-preview`
 - Run ID: `run-appsmith-version-restore`
@@ -15,7 +15,7 @@
 - Stop point: planning package/readiness
 
 ## Context Summary
-- Primary modules inspected: tests
+- Primary modules inspected: app, tests
 - Existing patterns reused: root manifests and candidate module names
 - Test tooling detected: README.md
 
