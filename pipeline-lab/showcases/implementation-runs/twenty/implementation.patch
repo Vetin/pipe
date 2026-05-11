@@ -1,0 +1,144 @@
+diff --git a/showcase/duplicate-company-merge-audit-trail/feature.js b/showcase/duplicate-company-merge-audit-trail/feature.js
+new file mode 100644
+index 0000000..2105226
+--- /dev/null
++++ b/showcase/duplicate-company-merge-audit-trail/feature.js
+@@ -0,0 +1,77 @@
++'use strict';
++
++const FEATURE = {
++  "key": "duplicate-company-merge-audit-trail",
++  "name": "Duplicate Company Merge Audit Trail",
++  "scenario": "duplicate company merge with audit trail",
++  "auditLabel": "merge audit trail"
++};
++
++function clone(value) {
++  return JSON.parse(JSON.stringify(value));
++}
++
++function createModel(input = {}) {
++  const entity = clone(input.entity || input);
++  return {
++    id: input.id || entity.id || `${FEATURE.key}-entity`,
++    featureKey: FEATURE.key,
++    scenario: FEATURE.scenario,
++    state: 'duplicates_detected',
++    entity,
++    history: [
++      {
++        type: 'created',
++        state: 'duplicates_detected',
++        actor: 'system',
++        note: FEATURE.name,
++      },
++    ],
++  };
++}
++
++
++const TRANSITIONS = {
++  'preview_merge': 'previewed',
++  'merge_company': 'merged',
++};
++
++function executeWorkflow(model, action, actor = {}, meta = {}) {
++  if (!TRANSITIONS[action]) {
++    throw new Error(`unsupported action: ${action}`);
++  }
++  if (!actor.id) {
++    throw new Error('actor id is required for auditable workflow execution');
++  }
++  const nextState = TRANSITIONS[action];
++  const previousState = model.state;
++  const event = {
++    type: 'transition',
++    action,
++    previousState,
++    nextState,
++    actor: actor.id,
++    meta: clone(meta),
++  };
++  return {
++    ...model,
++    state: nextState,
++    history: [...model.history, event],
++  };
++}
++
++
++function inspectHistory(model) {
++  const events = model.history.map((event, index) => ({ ...clone(event), index }));
++  const transitions = events.filter((event) => event.type === 'transition');
++  return {
++    featureKey: FEATURE.key,
++    auditLabel: 'merge audit trail',
++    eventCount: events.length,
++    latestState: model.state,
++    transitions,
++    rollbackHint: 'reconstruct duplicate company from reversible audit payload',
++  };
++}
++
++module.exports = { FEATURE, createModel, executeWorkflow, inspectHistory };
+diff --git a/showcase/duplicate-company-merge-audit-trail/feature.s-001.test.js b/showcase/duplicate-company-merge-audit-trail/feature.s-001.test.js
+new file mode 100644
+index 0000000..3af6950
+--- /dev/null
++++ b/showcase/duplicate-company-merge-audit-trail/feature.s-001.test.js
+@@ -0,0 +1,10 @@
++'use strict';
++
++const assert = require('assert/strict');
++const { FEATURE, createModel } = require('./feature');
++
++const model = createModel({ id: 'duplicate-company-merge-audit-trail-001', entity: { title: 'Duplicate Company Merge Audit Trail' } });
++assert.equal(FEATURE.key, 'duplicate-company-merge-audit-trail');
++assert.equal(model.state, 'duplicates_detected');
++assert.equal(model.history[0].type, 'created');
++assert.equal(model.entity.title, 'Duplicate Company Merge Audit Trail');
+diff --git a/showcase/duplicate-company-merge-audit-trail/feature.s-002.test.js b/showcase/duplicate-company-merge-audit-trail/feature.s-002.test.js
+new file mode 100644
+index 0000000..32a00b3
+--- /dev/null
++++ b/showcase/duplicate-company-merge-audit-trail/feature.s-002.test.js
+@@ -0,0 +1,19 @@
++'use strict';
++
++const assert = require('assert/strict');
++const { createModel, executeWorkflow } = require('./feature');
++
++const model = createModel({ id: 'duplicate-company-merge-audit-trail-002' });
++const reviewed = executeWorkflow(
++  model,
++  'preview_merge',
++  { id: 'reviewer-1' },
++  { reason: 'duplicate company merge with audit trail' }
++);
++assert.equal(reviewed.state, 'previewed');
++assert.equal(reviewed.history.at(-1).previousState, 'duplicates_detected');
++assert.equal(reviewed.history.at(-1).actor, 'reviewer-1');
++
++const finalized = executeWorkflow(reviewed, 'merge_company', { id: 'approver-1' });
++assert.equal(finalized.state, 'merged');
++assert.equal(finalized.history.length, 3);
+diff --git a/showcase/duplicate-company-merge-audit-trail/feature.s-003.test.js b/showcase/duplicate-company-merge-audit-trail/feature.s-003.test.js
+new file mode 100644
+index 0000000..c7f7d00
+--- /dev/null
++++ b/showcase/duplicate-company-merge-audit-trail/feature.s-003.test.js
+@@ -0,0 +1,14 @@
++'use strict';
++
++const assert = require('assert/strict');
++const { createModel, executeWorkflow, inspectHistory } = require('./feature');
++
++let model = createModel({ id: 'duplicate-company-merge-audit-trail-003' });
++model = executeWorkflow(model, 'preview_merge', { id: 'actor-1' });
++model = executeWorkflow(model, 'merge_company', { id: 'actor-2' }, { evidence: true });
++const audit = inspectHistory(model);
++
++assert.equal(audit.auditLabel, 'merge audit trail');
++assert.equal(audit.latestState, 'merged');
++assert.equal(audit.transitions.length, 2);
++assert.match(audit.rollbackHint, /reconstruct/i);

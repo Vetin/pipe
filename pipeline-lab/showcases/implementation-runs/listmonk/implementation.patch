@@ -1,0 +1,185 @@
+diff --git a/showcase/double-opt-in-segment-onboarding/errors.go b/showcase/double-opt-in-segment-onboarding/errors.go
+new file mode 100644
+index 0000000..770e235
+--- /dev/null
++++ b/showcase/double-opt-in-segment-onboarding/errors.go
+@@ -0,0 +1,8 @@
++package doubleoptinsegmentonboarding
++
++import "errors"
++
++var (
++	ErrMissingActor      = errors.New("actor id is required for auditable workflow execution")
++	ErrUnsupportedAction = errors.New("unsupported action")
++)
+diff --git a/showcase/double-opt-in-segment-onboarding/feature.go b/showcase/double-opt-in-segment-onboarding/feature.go
+new file mode 100644
+index 0000000..8d8e956
+--- /dev/null
++++ b/showcase/double-opt-in-segment-onboarding/feature.go
+@@ -0,0 +1,85 @@
++package doubleoptinsegmentonboarding
++
++type Event struct {
++	Type          string
++	Action        string
++	PreviousState string
++	NextState     string
++	Actor         string
++	Note          string
++}
++
++type Model struct {
++	ID          string
++	FeatureKey  string
++	Scenario    string
++	State       string
++	History     []Event
++}
++
++func CreateModel(id string) Model {
++	if id == "" {
++		id = "double-opt-in-segment-onboarding-entity"
++	}
++	return Model{
++		ID:         id,
++		FeatureKey: "double-opt-in-segment-onboarding",
++		Scenario:   "double opt-in segment onboarding",
++		State:      "imported",
++		History: []Event{{
++			Type: "created",
++			Note: "Double Opt In Segment Onboarding",
++		}},
++	}
++}
++
++
++func ExecuteWorkflow(model Model, action string, actor string) (Model, error) {
++	if actor == "" {
++		return model, ErrMissingActor
++	}
++	nextState, ok := map[string]string{
++		"import_pending_subscriber": "pending_confirmation",
++		"confirm_subscription": "active",
++	}[action]
++	if !ok {
++		return model, ErrUnsupportedAction
++	}
++	event := Event{
++		Type: "transition",
++		Action: action,
++		PreviousState: model.State,
++		NextState: nextState,
++		Actor: actor,
++	}
++	model.State = nextState
++	model.History = append(model.History, event)
++	return model, nil
++}
++
++
++type Audit struct {
++	FeatureKey   string
++	AuditLabel   string
++	LatestState  string
++	EventCount   int
++	Transitions  []Event
++	RollbackHint string
++}
++
++func InspectHistory(model Model) Audit {
++	transitions := make([]Event, 0)
++	for _, event := range model.History {
++		if event.Type == "transition" {
++			transitions = append(transitions, event)
++		}
++	}
++	return Audit{
++		FeatureKey: "double-opt-in-segment-onboarding",
++		AuditLabel: "consent audit",
++		LatestState: model.State,
++		EventCount: len(model.History),
++		Transitions: transitions,
++		RollbackHint: "expire confirmation token and keep subscriber outside active segment",
++	}
++}
+diff --git a/showcase/double-opt-in-segment-onboarding/feature_s_001_test.go b/showcase/double-opt-in-segment-onboarding/feature_s_001_test.go
+new file mode 100644
+index 0000000..e952d72
+--- /dev/null
++++ b/showcase/double-opt-in-segment-onboarding/feature_s_001_test.go
+@@ -0,0 +1,16 @@
++package doubleoptinsegmentonboarding
++
++import "testing"
++
++func TestCreateModel(t *testing.T) {
++	model := CreateModel("double-opt-in-segment-onboarding-001")
++	if model.FeatureKey != "double-opt-in-segment-onboarding" {
++		t.Fatalf("feature key = %s", model.FeatureKey)
++	}
++	if model.State != "imported" {
++		t.Fatalf("state = %s", model.State)
++	}
++	if len(model.History) != 1 || model.History[0].Type != "created" {
++		t.Fatalf("expected created history event")
++	}
++}
+diff --git a/showcase/double-opt-in-segment-onboarding/feature_s_002_test.go b/showcase/double-opt-in-segment-onboarding/feature_s_002_test.go
+new file mode 100644
+index 0000000..35aa962
+--- /dev/null
++++ b/showcase/double-opt-in-segment-onboarding/feature_s_002_test.go
+@@ -0,0 +1,24 @@
++package doubleoptinsegmentonboarding
++
++import "testing"
++
++func TestExecuteWorkflow(t *testing.T) {
++	model := CreateModel("double-opt-in-segment-onboarding-002")
++	model, err := ExecuteWorkflow(model, "import_pending_subscriber", "reviewer-1")
++	if err != nil {
++		t.Fatal(err)
++	}
++	if model.State != "pending_confirmation" {
++		t.Fatalf("state = %s", model.State)
++	}
++	model, err = ExecuteWorkflow(model, "confirm_subscription", "approver-1")
++	if err != nil {
++		t.Fatal(err)
++	}
++	if model.State != "active" {
++		t.Fatalf("state = %s", model.State)
++	}
++	if len(model.History) != 3 {
++		t.Fatalf("history len = %d", len(model.History))
++	}
++}
+diff --git a/showcase/double-opt-in-segment-onboarding/feature_s_003_test.go b/showcase/double-opt-in-segment-onboarding/feature_s_003_test.go
+new file mode 100644
+index 0000000..fdda7ad
+--- /dev/null
++++ b/showcase/double-opt-in-segment-onboarding/feature_s_003_test.go
+@@ -0,0 +1,22 @@
++package doubleoptinsegmentonboarding
++
++import "testing"
++
++func TestInspectHistory(t *testing.T) {
++	model := CreateModel("double-opt-in-segment-onboarding-003")
++	model, _ = ExecuteWorkflow(model, "import_pending_subscriber", "actor-1")
++	model, _ = ExecuteWorkflow(model, "confirm_subscription", "actor-2")
++	audit := InspectHistory(model)
++	if audit.AuditLabel != "consent audit" {
++		t.Fatalf("audit label = %s", audit.AuditLabel)
++	}
++	if audit.LatestState != "active" {
++		t.Fatalf("latest state = %s", audit.LatestState)
++	}
++	if len(audit.Transitions) != 2 {
++		t.Fatalf("transitions = %d", len(audit.Transitions))
++	}
++	if audit.RollbackHint == "" {
++		t.Fatalf("expected rollback hint")
++	}
++}

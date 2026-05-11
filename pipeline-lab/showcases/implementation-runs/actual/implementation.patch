@@ -1,0 +1,144 @@
+diff --git a/showcase/rule-preview-and-undo/feature.js b/showcase/rule-preview-and-undo/feature.js
+new file mode 100644
+index 0000000..7eb5959
+--- /dev/null
++++ b/showcase/rule-preview-and-undo/feature.js
+@@ -0,0 +1,77 @@
++'use strict';
++
++const FEATURE = {
++  "key": "rule-preview-and-undo",
++  "name": "Rule Preview And Undo",
++  "scenario": "transaction import rule preview and undo",
++  "auditLabel": "undo ledger"
++};
++
++function clone(value) {
++  return JSON.parse(JSON.stringify(value));
++}
++
++function createModel(input = {}) {
++  const entity = clone(input.entity || input);
++  return {
++    id: input.id || entity.id || `${FEATURE.key}-entity`,
++    featureKey: FEATURE.key,
++    scenario: FEATURE.scenario,
++    state: 'imported',
++    entity,
++    history: [
++      {
++        type: 'created',
++        state: 'imported',
++        actor: 'system',
++        note: FEATURE.name,
++      },
++    ],
++  };
++}
++
++
++const TRANSITIONS = {
++  'preview_rules': 'previewed',
++  'apply_with_undo_token': 'applied',
++};
++
++function executeWorkflow(model, action, actor = {}, meta = {}) {
++  if (!TRANSITIONS[action]) {
++    throw new Error(`unsupported action: ${action}`);
++  }
++  if (!actor.id) {
++    throw new Error('actor id is required for auditable workflow execution');
++  }
++  const nextState = TRANSITIONS[action];
++  const previousState = model.state;
++  const event = {
++    type: 'transition',
++    action,
++    previousState,
++    nextState,
++    actor: actor.id,
++    meta: clone(meta),
++  };
++  return {
++    ...model,
++    state: nextState,
++    history: [...model.history, event],
++  };
++}
++
++
++function inspectHistory(model) {
++  const events = model.history.map((event, index) => ({ ...clone(event), index }));
++  const transitions = events.filter((event) => event.type === 'transition');
++  return {
++    featureKey: FEATURE.key,
++    auditLabel: 'undo ledger',
++    eventCount: events.length,
++    latestState: model.state,
++    transitions,
++    rollbackHint: 'apply inverse transaction patch from undo ledger',
++  };
++}
++
++module.exports = { FEATURE, createModel, executeWorkflow, inspectHistory };
+diff --git a/showcase/rule-preview-and-undo/feature.s-001.test.js b/showcase/rule-preview-and-undo/feature.s-001.test.js
+new file mode 100644
+index 0000000..6ca2e70
+--- /dev/null
++++ b/showcase/rule-preview-and-undo/feature.s-001.test.js
+@@ -0,0 +1,10 @@
++'use strict';
++
++const assert = require('assert/strict');
++const { FEATURE, createModel } = require('./feature');
++
++const model = createModel({ id: 'rule-preview-and-undo-001', entity: { title: 'Rule Preview And Undo' } });
++assert.equal(FEATURE.key, 'rule-preview-and-undo');
++assert.equal(model.state, 'imported');
++assert.equal(model.history[0].type, 'created');
++assert.equal(model.entity.title, 'Rule Preview And Undo');
+diff --git a/showcase/rule-preview-and-undo/feature.s-002.test.js b/showcase/rule-preview-and-undo/feature.s-002.test.js
+new file mode 100644
+index 0000000..5065fda
+--- /dev/null
++++ b/showcase/rule-preview-and-undo/feature.s-002.test.js
+@@ -0,0 +1,19 @@
++'use strict';
++
++const assert = require('assert/strict');
++const { createModel, executeWorkflow } = require('./feature');
++
++const model = createModel({ id: 'rule-preview-and-undo-002' });
++const reviewed = executeWorkflow(
++  model,
++  'preview_rules',
++  { id: 'reviewer-1' },
++  { reason: 'transaction import rule preview and undo' }
++);
++assert.equal(reviewed.state, 'previewed');
++assert.equal(reviewed.history.at(-1).previousState, 'imported');
++assert.equal(reviewed.history.at(-1).actor, 'reviewer-1');
++
++const finalized = executeWorkflow(reviewed, 'apply_with_undo_token', { id: 'approver-1' });
++assert.equal(finalized.state, 'applied');
++assert.equal(finalized.history.length, 3);
+diff --git a/showcase/rule-preview-and-undo/feature.s-003.test.js b/showcase/rule-preview-and-undo/feature.s-003.test.js
+new file mode 100644
+index 0000000..32d67b0
+--- /dev/null
++++ b/showcase/rule-preview-and-undo/feature.s-003.test.js
+@@ -0,0 +1,14 @@
++'use strict';
++
++const assert = require('assert/strict');
++const { createModel, executeWorkflow, inspectHistory } = require('./feature');
++
++let model = createModel({ id: 'rule-preview-and-undo-003' });
++model = executeWorkflow(model, 'preview_rules', { id: 'actor-1' });
++model = executeWorkflow(model, 'apply_with_undo_token', { id: 'actor-2' }, { evidence: true });
++const audit = inspectHistory(model);
++
++assert.equal(audit.auditLabel, 'undo ledger');
++assert.equal(audit.latestState, 'applied');
++assert.equal(audit.transitions.length, 2);
++assert.match(audit.rollbackHint, /apply/i);

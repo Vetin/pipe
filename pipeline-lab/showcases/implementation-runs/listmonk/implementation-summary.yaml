@@ -1,0 +1,52 @@
+case: listmonk
+repository: listmonk
+feature: Double Opt In Segment Onboarding
+language: go
+workspace: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/worktrees/subscribers-double-opt-in-segment-onboarding-run-listmonk-double-opt-in/.ai/feature-workspaces/subscribers/double-opt-in-segment-onboarding--run-listmonk-double-opt-in
+worktree: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/worktrees/subscribers-double-opt-in-segment-onboarding-run-listmonk-double-opt-in
+source_files:
+- showcase/double-opt-in-segment-onboarding/errors.go
+- showcase/double-opt-in-segment-onboarding/feature.go
+- showcase/double-opt-in-segment-onboarding/feature_s_001_test.go
+- showcase/double-opt-in-segment-onboarding/feature_s_002_test.go
+- showcase/double-opt-in-segment-onboarding/feature_s_003_test.go
+artifact_inventory:
+- feature.md
+- architecture.md
+- tech-design.md
+- slices.yaml
+- execution.md
+- evidence/manifest.yaml
+- evidence/final-verification-output.log
+- reviews/showcase-review.yaml
+- reviews/verification-review.md
+- final-output.md
+- feature-card.md
+- state.yaml
+observations:
+- slice: S-001
+  red_returncode: 1
+  green_returncode: 0
+  verification_returncode: 0
+  test: showcase/double-opt-in-segment-onboarding/feature_s_001_test.go
+- slice: S-002
+  red_returncode: 1
+  green_returncode: 0
+  verification_returncode: 0
+  test: showcase/double-opt-in-segment-onboarding/feature_s_002_test.go
+- slice: S-003
+  red_returncode: 1
+  green_returncode: 0
+  verification_returncode: 0
+  test: showcase/double-opt-in-segment-onboarding/feature_s_003_test.go
+diff_stat: ".../double-opt-in-segment-onboarding/errors.go     |  8 ++\n .../double-opt-in-segment-onboarding/feature.go\
+  \    | 85 ++++++++++++++++++++++\n .../feature_s_001_test.go                   \
+  \       | 16 ++++\n .../feature_s_002_test.go                          | 24 ++++++\n\
+  \ .../feature_s_003_test.go                          | 22 ++++++\n 5 files changed,\
+  \ 155 insertions(+)"
+validation: 'validation: pass'
+readiness: 'validation: pass'
+status: "A showcase/double-opt-in-segment-onboarding/errors.go\n A showcase/double-opt-in-segment-onboarding/feature.go\n\
+  \ A showcase/double-opt-in-segment-onboarding/feature_s_001_test.go\n A showcase/double-opt-in-segment-onboarding/feature_s_002_test.go\n\
+  \ A showcase/double-opt-in-segment-onboarding/feature_s_003_test.go\n?? .agents/\n\
+  ?? .ai/"

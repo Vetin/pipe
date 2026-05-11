@@ -1,0 +1,49 @@
+case: appsmith
+repository: appsmith
+feature: App Version Restore Diff Preview
+language: js
+workspace: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/worktrees/versions-app-version-restore-diff-preview-run-appsmith-version-restore/.ai/feature-workspaces/versions/app-version-restore-diff-preview--run-appsmith-version-restore
+worktree: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/worktrees/versions-app-version-restore-diff-preview-run-appsmith-version-restore
+source_files:
+- showcase/app-version-restore-diff-preview/feature.js
+- showcase/app-version-restore-diff-preview/feature.s-001.test.js
+- showcase/app-version-restore-diff-preview/feature.s-002.test.js
+- showcase/app-version-restore-diff-preview/feature.s-003.test.js
+artifact_inventory:
+- feature.md
+- architecture.md
+- tech-design.md
+- slices.yaml
+- execution.md
+- evidence/manifest.yaml
+- evidence/final-verification-output.log
+- reviews/showcase-review.yaml
+- reviews/verification-review.md
+- final-output.md
+- feature-card.md
+- state.yaml
+observations:
+- slice: S-001
+  red_returncode: 1
+  green_returncode: 0
+  verification_returncode: 0
+  test: showcase/app-version-restore-diff-preview/feature.s-001.test.js
+- slice: S-002
+  red_returncode: 1
+  green_returncode: 0
+  verification_returncode: 0
+  test: showcase/app-version-restore-diff-preview/feature.s-002.test.js
+- slice: S-003
+  red_returncode: 1
+  green_returncode: 0
+  verification_returncode: 0
+  test: showcase/app-version-restore-diff-preview/feature.s-003.test.js
+diff_stat: ".../app-version-restore-diff-preview/feature.js    | 77 ++++++++++++++++++++++\n\
+  \ .../feature.s-001.test.js                          | 10 +++\n .../feature.s-002.test.js\
+  \                          | 19 ++++++\n .../feature.s-003.test.js             \
+  \             | 14 ++++\n 4 files changed, 120 insertions(+)"
+validation: 'validation: pass'
+readiness: 'validation: pass'
+status: "A showcase/app-version-restore-diff-preview/feature.js\n A showcase/app-version-restore-diff-preview/feature.s-001.test.js\n\
+  \ A showcase/app-version-restore-diff-preview/feature.s-002.test.js\n A showcase/app-version-restore-diff-preview/feature.s-003.test.js\n\
+  ?? .agents/\n?? .ai/"

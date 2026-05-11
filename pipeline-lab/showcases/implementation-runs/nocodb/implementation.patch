@@ -1,0 +1,144 @@
+diff --git a/showcase/schema-change-audit-log/feature.js b/showcase/schema-change-audit-log/feature.js
+new file mode 100644
+index 0000000..3bca7dd
+--- /dev/null
++++ b/showcase/schema-change-audit-log/feature.js
+@@ -0,0 +1,77 @@
++'use strict';
++
++const FEATURE = {
++  "key": "schema-change-audit-log",
++  "name": "Schema Change Audit Log",
++  "scenario": "schema-change audit log",
++  "auditLabel": "schema audit event"
++};
++
++function clone(value) {
++  return JSON.parse(JSON.stringify(value));
++}
++
++function createModel(input = {}) {
++  const entity = clone(input.entity || input);
++  return {
++    id: input.id || entity.id || `${FEATURE.key}-entity`,
++    featureKey: FEATURE.key,
++    scenario: FEATURE.scenario,
++    state: 'unchanged',
++    entity,
++    history: [
++      {
++        type: 'created',
++        state: 'unchanged',
++        actor: 'system',
++        note: FEATURE.name,
++      },
++    ],
++  };
++}
++
++
++const TRANSITIONS = {
++  'capture_schema_change': 'captured',
++  'write_rollback_hint': 'audited',
++};
++
++function executeWorkflow(model, action, actor = {}, meta = {}) {
++  if (!TRANSITIONS[action]) {
++    throw new Error(`unsupported action: ${action}`);
++  }
++  if (!actor.id) {
++    throw new Error('actor id is required for auditable workflow execution');
++  }
++  const nextState = TRANSITIONS[action];
++  const previousState = model.state;
++  const event = {
++    type: 'transition',
++    action,
++    previousState,
++    nextState,
++    actor: actor.id,
++    meta: clone(meta),
++  };
++  return {
++    ...model,
++    state: nextState,
++    history: [...model.history, event],
++  };
++}
++
++
++function inspectHistory(model) {
++  const events = model.history.map((event, index) => ({ ...clone(event), index }));
++  const transitions = events.filter((event) => event.type === 'transition');
++  return {
++    featureKey: FEATURE.key,
++    auditLabel: 'schema audit event',
++    eventCount: events.length,
++    latestState: model.state,
++    transitions,
++    rollbackHint: 'replay inverse schema operation with stored old value',
++  };
++}
++
++module.exports = { FEATURE, createModel, executeWorkflow, inspectHistory };
+diff --git a/showcase/schema-change-audit-log/feature.s-001.test.js b/showcase/schema-change-audit-log/feature.s-001.test.js
+new file mode 100644
+index 0000000..03dc2dc
+--- /dev/null
++++ b/showcase/schema-change-audit-log/feature.s-001.test.js
+@@ -0,0 +1,10 @@
++'use strict';
++
++const assert = require('assert/strict');
++const { FEATURE, createModel } = require('./feature');
++
++const model = createModel({ id: 'schema-change-audit-log-001', entity: { title: 'Schema Change Audit Log' } });
++assert.equal(FEATURE.key, 'schema-change-audit-log');
++assert.equal(model.state, 'unchanged');
++assert.equal(model.history[0].type, 'created');
++assert.equal(model.entity.title, 'Schema Change Audit Log');
+diff --git a/showcase/schema-change-audit-log/feature.s-002.test.js b/showcase/schema-change-audit-log/feature.s-002.test.js
+new file mode 100644
+index 0000000..e15b17d
+--- /dev/null
++++ b/showcase/schema-change-audit-log/feature.s-002.test.js
+@@ -0,0 +1,19 @@
++'use strict';
++
++const assert = require('assert/strict');
++const { createModel, executeWorkflow } = require('./feature');
++
++const model = createModel({ id: 'schema-change-audit-log-002' });
++const reviewed = executeWorkflow(
++  model,
++  'capture_schema_change',
++  { id: 'reviewer-1' },
++  { reason: 'schema-change audit log' }
++);
++assert.equal(reviewed.state, 'captured');
++assert.equal(reviewed.history.at(-1).previousState, 'unchanged');
++assert.equal(reviewed.history.at(-1).actor, 'reviewer-1');
++
++const finalized = executeWorkflow(reviewed, 'write_rollback_hint', { id: 'approver-1' });
++assert.equal(finalized.state, 'audited');
++assert.equal(finalized.history.length, 3);
+diff --git a/showcase/schema-change-audit-log/feature.s-003.test.js b/showcase/schema-change-audit-log/feature.s-003.test.js
+new file mode 100644
+index 0000000..a4a9a4b
+--- /dev/null
++++ b/showcase/schema-change-audit-log/feature.s-003.test.js
+@@ -0,0 +1,14 @@
++'use strict';
++
++const assert = require('assert/strict');
++const { createModel, executeWorkflow, inspectHistory } = require('./feature');
++
++let model = createModel({ id: 'schema-change-audit-log-003' });
++model = executeWorkflow(model, 'capture_schema_change', { id: 'actor-1' });
++model = executeWorkflow(model, 'write_rollback_hint', { id: 'actor-2' }, { evidence: true });
++const audit = inspectHistory(model);
++
++assert.equal(audit.auditLabel, 'schema audit event');
++assert.equal(audit.latestState, 'audited');
++assert.equal(audit.transitions.length, 2);
++assert.match(audit.rollbackHint, /replay/i);
