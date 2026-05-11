@@ -1,0 +1,92 @@
+artifact_contract_version: '0.1.0'
+showcases:
+  docmost:
+    repo_path: pipeline-lab/showcases/repos/docmost
+    domain: pages
+    title: Page Approval Workflow
+    run_id: run-docmost-approval
+    feature_key: pages/page-approval-workflow
+    feature_goal: Add draft, review, and approved states for sensitive pages with reviewer comments and approval history.
+    expected_focus: [feature-contract, architecture, rbac, notifications, audit-trail, feature-card]
+    touchpoints: [apps, packages, migrations, tests]
+  formbricks:
+    repo_path: pipeline-lab/showcases/repos/formbricks
+    domain: webhooks
+    title: Signed Survey Response Webhooks
+    run_id: run-formbricks-webhooks
+    feature_key: webhooks/signed-survey-response-webhooks
+    feature_goal: Let users configure signed survey response webhook endpoints, retry failed deliveries, and inspect delivery logs.
+    expected_focus: [contracts, signing, retries, delivery-logs, replay-protection]
+    touchpoints: [apps, packages, packages/database, tests]
+  actual:
+    repo_path: pipeline-lab/showcases/repos/actual
+    domain: imports
+    title: Rule Preview And Undo
+    run_id: run-actual-import-undo
+    feature_key: imports/rule-preview-and-undo
+    feature_goal: Preview predicted import-rule changes before applying them and allow rollback.
+    expected_focus: [local-first-data, sync-risks, undo-model, preview-apply-rollback]
+    touchpoints: [packages, upcoming-release-notes, tests]
+  plane:
+    repo_path: pipeline-lab/showcases/repos/plane
+    domain: triage
+    title: Triage Automation Rules
+    run_id: run-plane-triage-rules
+    feature_key: triage/triage-automation-rules
+    feature_goal: Automatically assign labels, priority, or assignees based on issue title, body, and project.
+    expected_focus: [rule-authoring, rule-execution, audit-logs, conflict-behavior]
+    touchpoints: [apiserver, web, tests]
+  nocodb:
+    repo_path: pipeline-lab/showcases/repos/nocodb
+    domain: schema
+    title: Schema Change Audit Log
+    run_id: run-nocodb-schema-audit
+    feature_key: schema/schema-change-audit-log
+    feature_goal: Record table, column, and view changes with actor, timestamp, old value, new value, and rollback hints.
+    expected_focus: [database-migration, auditability, admin-ux, module-communication]
+    touchpoints: [packages, tests, docs]
+  appsmith:
+    repo_path: pipeline-lab/showcases/repos/appsmith
+    domain: versions
+    title: App Version Restore Diff Preview
+    run_id: run-appsmith-version-restore
+    feature_key: versions/app-version-restore-diff-preview
+    feature_goal: Show differences between saved app versions and restore selected versions safely.
+    expected_focus: [frontend-backend-coordination, diff-model, permission-check, rollback]
+    touchpoints: [app, server, tests]
+  listmonk:
+    repo_path: pipeline-lab/showcases/repos/listmonk
+    domain: subscribers
+    title: Double Opt In Segment Onboarding
+    run_id: run-listmonk-double-opt-in
+    feature_key: subscribers/double-opt-in-segment-onboarding
+    feature_goal: Import subscribers into a pending segment, send confirmation, and move confirmed users to active segment.
+    expected_focus: [consent, email, postgres, background-jobs, token-expiry]
+    touchpoints: [cmd, internal, models, tests]
+  medusa:
+    repo_path: pipeline-lab/showcases/repos/medusa
+    domain: promotions
+    title: First Order Promotion Usage Caps
+    run_id: run-medusa-first-order-promo
+    feature_key: promotions/first-order-promotion-usage-caps
+    feature_goal: Add a promotion rule for a customer's first completed order with global and customer usage caps.
+    expected_focus: [business-rules, promotion-evaluation, cap-enforcement, edge-cases]
+    touchpoints: [packages, integration-tests, www]
+  excalidraw:
+    repo_path: pipeline-lab/showcases/repos/excalidraw
+    domain: canvas
+    title: Layer Lock History Safe Editing
+    run_id: run-excalidraw-layer-lock
+    feature_key: canvas/layer-lock-history-safe-editing
+    feature_goal: Allow users to lock objects or layers against accidental edits while preserving undo and redo behavior.
+    expected_focus: [ux, scene-state, history, collaboration]
+    touchpoints: [packages, excalidraw-app, tests]
+  twenty:
+    repo_path: pipeline-lab/showcases/repos/twenty
+    domain: crm
+    title: Duplicate Company Merge Audit Trail
+    run_id: run-twenty-company-merge
+    feature_key: crm/duplicate-company-merge-audit-trail
+    feature_goal: Detect duplicate companies, preview merge effects, merge records, and keep reversible audit history.
+    expected_focus: [entity-relationships, conflict-resolution, audit-log, rollback-safe-behavior]
+    touchpoints: [packages, server, front, tests]
