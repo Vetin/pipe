@@ -11,6 +11,9 @@ class ContextSkillContractTests(unittest.TestCase):
 
         self.assertIn("rg \"<domain>\"", content)
         self.assertIn("Status: provisional", content)
+        self.assertIn("featurectl.py init --profile-project", content)
+        self.assertIn(".ai/knowledge/project-index.yaml", content)
+        self.assertIn(".ai/knowledge/project-snapshot.md", content)
         self.assertIn("Needs human review: yes", content)
         self.assertIn("Sources inspected:", content)
         self.assertIn("Do not invent architecture", content)

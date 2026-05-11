@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import datetime as dt
+import json
 import os
 import random
 import re
@@ -105,6 +106,7 @@ def main(argv: list[str] | None = None) -> int:
     subparsers = parser.add_subparsers(dest="command", required=True)
 
     init_parser = subparsers.add_parser("init", help="initialize pipeline directories")
+    init_parser.add_argument("--profile-project", action="store_true", help="scan repository and update generated .ai/knowledge project context")
     init_parser.set_defaults(func=cmd_init)
 
     new_parser = subparsers.add_parser("new", help="create a feature worktree and workspace")
@@ -185,9 +187,17 @@ def main(argv: list[str] | None = None) -> int:
     return 0
 
 
-def cmd_init(_args: argparse.Namespace) -> None:
+def cmd_init(args: argparse.Namespace) -> None:
     root = repo_root()
     ensure_init_tree(root)
+    if args.profile_project:
+        profile = build_project_profile(root)
+        write_project_profile(root, profile)
+        print("project_profile: updated")
+        print(f"project_name: {profile['project']['name']}")
+        print(f"source_files: {profile['counts']['source_files']}")
+        print(f"test_files: {profile['counts']['test_files']}")
+        print(f"detected_feature_signals: {len(profile['feature_signals'])}")
     print("initialized Native Feature Pipeline directories")
 
 
@@ -559,6 +569,484 @@ def ensure_init_tree(root: Path) -> None:
         root / ".gitignore",
         "pipeline-lab/runs/\n.ai/logs/\n*.tmp\n__pycache__/\n.pytest_cache/\n",
     )
+
+
+def build_project_profile(root: Path) -> dict[str, Any]:
+    files = git_ls_files(root)
+    visible_files = [path for path in files if not generated_or_vendor_path(path)]
+    source_files = [path for path in visible_files if source_path(path)]
+    test_files = [path for path in visible_files if test_path(path)]
+    doc_files = [path for path in visible_files if doc_path(path)]
+    contract_files = [path for path in visible_files if contract_path(path)]
+    integration_files = [path for path in visible_files if integration_path(path)]
+    module_dirs = summarize_module_dirs(visible_files)
+    package_files = [path for path in visible_files if Path(path).name in package_manifest_names()]
+    scripts = collect_project_scripts(root, package_files[:20])
+    feature_signals = collect_feature_signals(root, visible_files, doc_files)
+    canonical_features = collect_canonical_features(root)
+
+    return {
+        "artifact_contract_version": CONTRACT_VERSION,
+        "generated_by": "featurectl.py init --profile-project",
+        "generated_at": utc_now(),
+        "project": {
+            "name": infer_project_name(root, package_files),
+            "root": str(root),
+            "branch": safe_git(root, "rev-parse", "--abbrev-ref", "HEAD") or "unknown",
+            "head": safe_git(root, "rev-parse", "--short", "HEAD") or "unknown",
+            "remote": safe_git(root, "remote", "get-url", "origin") or "none",
+        },
+        "counts": {
+            "tracked_files": len(files),
+            "profiled_files": len(visible_files),
+            "source_files": len(source_files),
+            "test_files": len(test_files),
+            "doc_files": len(doc_files),
+            "contract_files": len(contract_files),
+            "integration_files": len(integration_files),
+        },
+        "package_manifests": package_files[:30],
+        "scripts": scripts,
+        "module_dirs": module_dirs,
+        "source_examples": source_files[:40],
+        "test_examples": test_files[:30],
+        "doc_examples": doc_files[:30],
+        "contract_examples": contract_files[:30],
+        "integration_examples": integration_files[:30],
+        "canonical_features": canonical_features,
+        "feature_signals": feature_signals[:40],
+    }
+
+
+def git_ls_files(root: Path) -> list[str]:
+    try:
+        output = run_git(root, "ls-files")
+    except FeatureCtlError:
+        return []
+    return [line for line in output.splitlines() if line.strip()]
+
+
+def generated_or_vendor_path(path: str) -> bool:
+    parts = Path(path).parts
+    if not parts:
+        return True
+    ignored_prefixes = (
+        ".git",
+        ".venv",
+        "node_modules",
+        "dist",
+        "build",
+        "coverage",
+        ".pytest_cache",
+        "__pycache__",
+        "methodology/upstream",
+        "pipeline-lab/showcases/native-emulation-runs",
+        "pipeline-lab/showcases/codex-e2e-runs",
+        "pipeline-lab/showcases/nfp-real-runs",
+        "pipeline-lab/showcases/implementation-runs",
+        "pipeline-lab/showcases/materialized-runs",
+        "pipeline-lab/showcases/real-runs",
+    )
+    normalized = "/".join(parts)
+    return any(normalized == prefix or normalized.startswith(f"{prefix}/") for prefix in ignored_prefixes)
+
+
+def source_path(path: str) -> bool:
+    suffix = Path(path).suffix.lower()
+    if suffix not in {".py", ".ts", ".tsx", ".js", ".jsx", ".go", ".rs", ".java", ".kt", ".rb", ".php", ".cs", ".swift", ".vue", ".svelte"}:
+        return False
+    lowered = path.lower()
+    return not test_path(path) and not lowered.endswith((".config.js", ".config.ts", ".d.ts"))
+
+
+def test_path(path: str) -> bool:
+    lowered = path.lower()
+    return lowered.startswith(("test/", "tests/")) or any(part in lowered for part in ("/test/", "/tests/", "__tests__", ".test.", ".spec.", "_test."))
+
+
+def doc_path(path: str) -> bool:
+    lowered = path.lower()
+    return lowered.endswith((".md", ".mdx", ".rst", ".adoc")) or lowered.startswith("docs/")
+
+
+def contract_path(path: str) -> bool:
+    lowered = path.lower()
+    return any(token in lowered for token in ("openapi", "schema", "graphql", "proto", "contract", "migration", "event"))
+
+
+def integration_path(path: str) -> bool:
+    lowered = path.lower()
+    return lowered.startswith((".github/", ".gitlab/", "docker", "deploy", "infra", "k8s", "helm")) or any(
+        token in lowered for token in ("dockerfile", "compose", "terraform", "workflow", "integration")
+    )
+
+
+def package_manifest_names() -> set[str]:
+    return {
+        "package.json",
+        "pyproject.toml",
+        "requirements.txt",
+        "poetry.lock",
+        "pnpm-workspace.yaml",
+        "turbo.json",
+        "go.mod",
+        "Cargo.toml",
+        "pom.xml",
+        "build.gradle",
+        "Gemfile",
+        "composer.json",
+        "Makefile",
+    }
+
+
+def infer_project_name(root: Path, package_files: list[str]) -> str:
+    for path in package_files:
+        if Path(path).name == "package.json":
+            try:
+                package = json.loads((root / path).read_text(encoding="utf-8"))
+            except (json.JSONDecodeError, OSError):
+                continue
+            if package.get("name"):
+                return str(package["name"])
+    return root.name
+
+
+def collect_project_scripts(root: Path, package_files: list[str]) -> list[dict[str, str]]:
+    scripts: list[dict[str, str]] = []
+    for path in package_files:
+        file_name = Path(path).name
+        if file_name == "package.json":
+            try:
+                package = json.loads((root / path).read_text(encoding="utf-8"))
+            except (json.JSONDecodeError, OSError):
+                continue
+            for name, command in sorted((package.get("scripts") or {}).items()):
+                scripts.append({"source": path, "name": str(name), "command": str(command)})
+        elif file_name == "Makefile":
+            for line in (root / path).read_text(encoding="utf-8", errors="ignore").splitlines():
+                if re.match(r"^[A-Za-z0-9_.-]+:", line) and not line.startswith("."):
+                    scripts.append({"source": path, "name": line.split(":", 1)[0], "command": "make target"})
+    return scripts[:40]
+
+
+def summarize_module_dirs(files: list[str]) -> list[dict[str, Any]]:
+    counts: dict[str, int] = {}
+    for path in files:
+        parts = Path(path).parts
+        if len(parts) < 2:
+            continue
+        top = parts[0]
+        if top.startswith(".") and top not in {".agents", ".ai", ".github"}:
+            continue
+        counts[top] = counts.get(top, 0) + 1
+        if top in {"apps", "packages", "services", "src"} and len(parts) > 2:
+            nested = f"{parts[0]}/{parts[1]}"
+            counts[nested] = counts.get(nested, 0) + 1
+    return [{"path": path, "tracked_files": count} for path, count in sorted(counts.items(), key=lambda item: (-item[1], item[0]))[:30]]
+
+
+def collect_feature_signals(root: Path, files: list[str], doc_files: list[str]) -> list[dict[str, str]]:
+    signals: list[dict[str, str]] = []
+    heading_re = re.compile(r"^#{1,3}\s+(.+)")
+    signal_doc_files = [path for path in doc_files if feature_signal_candidate_path(path)]
+    for path in signal_doc_files[:80]:
+        content = (root / path).read_text(encoding="utf-8", errors="ignore")
+        for line in content.splitlines()[:300]:
+            match = heading_re.match(line.strip())
+            if not match:
+                continue
+            heading = re.sub(r"\s+", " ", match.group(1)).strip()
+            if feature_signal_text(heading):
+                signals.append({"source": path, "signal": heading})
+                break
+    for path in files:
+        if not feature_signal_candidate_path(path):
+            continue
+        lowered = path.lower()
+        if any(token in lowered for token in ("feature", "route", "controller", "service", "workflow", "integration")):
+            signals.append({"source": path, "signal": Path(path).stem.replace("-", " ").replace("_", " ")})
+        if len(signals) >= 60:
+            break
+    return dedupe_signal_list(signals)
+
+
+def feature_signal_candidate_path(path: str) -> bool:
+    blocked_prefixes = (
+        ".ai/knowledge/",
+        ".ai/pipeline-docs/",
+        ".agents/pipeline-core/references/generated-templates/",
+        "pipeline-lab/showcases/native-emulation-runs/",
+    )
+    return not any(path.startswith(prefix) for prefix in blocked_prefixes)
+
+
+def feature_signal_text(text: str) -> bool:
+    lowered = text.lower()
+    ignored = {"license", "contributing", "installation", "usage", "table of contents"}
+    if lowered in ignored:
+        return False
+    return any(token in lowered for token in ("feature", "workflow", "api", "integration", "architecture", "module", "service", "pipeline", "dashboard"))
+
+
+def dedupe_signal_list(signals: list[dict[str, str]]) -> list[dict[str, str]]:
+    seen: set[tuple[str, str]] = set()
+    deduped: list[dict[str, str]] = []
+    for signal in signals:
+        key = (signal["source"], signal["signal"])
+        if key in seen:
+            continue
+        seen.add(key)
+        deduped.append(signal)
+    return deduped
+
+
+def collect_canonical_features(root: Path) -> list[dict[str, str]]:
+    index_path = root / ".ai/features/index.yaml"
+    features: list[dict[str, str]] = []
+    if index_path.exists():
+        try:
+            data = read_yaml(index_path)
+        except FeatureCtlError:
+            data = {}
+        for item in data.get("features") or []:
+            if isinstance(item, dict):
+                features.append(
+                    {
+                        "feature_key": str(item.get("feature_key") or item.get("key") or "unknown"),
+                        "path": str(item.get("path") or item.get("canonical_path") or ""),
+                    }
+                )
+    for card in sorted((root / ".ai/features").glob("*/*/feature-card.md")):
+        features.append({"feature_key": "/".join(card.parts[-3:-1]), "path": str(card.relative_to(root))})
+    return dedupe_canonical_features(features)
+
+
+def dedupe_canonical_features(features: list[dict[str, str]]) -> list[dict[str, str]]:
+    seen: set[str] = set()
+    deduped: list[dict[str, str]] = []
+    for feature in features:
+        key = feature.get("feature_key", "")
+        if key in seen:
+            continue
+        seen.add(key)
+        deduped.append(feature)
+    return deduped[:40]
+
+
+def write_project_profile(root: Path, profile: dict[str, Any]) -> None:
+    knowledge = root / ".ai/knowledge"
+    knowledge.mkdir(parents=True, exist_ok=True)
+    write_yaml(knowledge / "project-index.yaml", profile)
+    write_generated_doc(knowledge / "project-snapshot.md", render_project_snapshot(profile))
+    write_generated_doc(knowledge / "project-overview.md", render_project_overview(profile))
+    write_generated_doc(knowledge / "features-overview.md", render_features_overview(profile))
+    write_generated_doc(knowledge / "module-map.md", render_module_map(profile))
+    write_generated_doc(knowledge / "architecture-overview.md", render_architecture_overview(profile))
+    write_generated_doc(knowledge / "testing-overview.md", render_testing_overview(profile))
+    write_generated_doc(knowledge / "contracts-overview.md", render_contracts_overview(profile))
+    write_generated_doc(knowledge / "integration-map.md", render_integration_map(profile))
+
+
+def write_generated_doc(path: Path, content: str) -> None:
+    existing = path.read_text(encoding="utf-8") if path.exists() else ""
+    can_replace = not existing.strip() or "Status: initial" in existing or "Status: provisional" in existing or "Generated by featurectl project profile" in existing
+    if can_replace:
+        path.write_text(content, encoding="utf-8")
+    else:
+        generated = path.with_name(f"{path.stem}.generated{path.suffix}")
+        generated.write_text(content, encoding="utf-8")
+
+
+def render_project_snapshot(profile: dict[str, Any]) -> str:
+    project = profile["project"]
+    counts = profile["counts"]
+    return f"""# Project Snapshot
+
+Status: generated
+Confidence: medium
+Needs human review: yes
+Generated by featurectl project profile: {profile['generated_at']}
+
+## Identity
+
+- Name: `{project['name']}`
+- Branch: `{project['branch']}`
+- HEAD: `{project['head']}`
+- Remote: `{project['remote']}`
+
+## Counts
+
+- Tracked files: {counts['tracked_files']}
+- Profiled files: {counts['profiled_files']}
+- Source files: {counts['source_files']}
+- Test files: {counts['test_files']}
+- Documentation files: {counts['doc_files']}
+- Contract/schema files: {counts['contract_files']}
+- Integration/deployment files: {counts['integration_files']}
+
+## Use In Feature Pipeline
+
+Treat this as a source-backed map, not as final architecture truth. Feature
+steps must still inspect the cited files before making behavior or design
+claims.
+"""
+
+
+def render_project_overview(profile: dict[str, Any]) -> str:
+    project = profile["project"]
+    package_lines = bullet_list(profile["package_manifests"], empty="No package manifests detected.")
+    feature_lines = signal_lines(profile["feature_signals"][:12], empty="No feature-like signals detected from docs or paths.")
+    return f"""# Project Overview
+
+Status: generated
+Confidence: medium
+Needs human review: yes
+Generated by featurectl project profile: {profile['generated_at']}
+
+This repository appears to be `{project['name']}`.
+
+## Package And Tooling Signals
+
+{package_lines}
+
+## Detected Feature Signals
+
+{feature_lines}
+
+## Sources Inspected
+
+- `git ls-files`
+- `.ai/features/index.yaml`
+- README/docs headings
+- source, test, contract, and integration path patterns
+"""
+
+
+def render_features_overview(profile: dict[str, Any]) -> str:
+    canonical = profile["canonical_features"]
+    canonical_lines = "\n".join(f"- `{item['feature_key']}` from `{item['path']}`" for item in canonical) or "No canonical features have been promoted yet."
+    signal_text = signal_lines(profile["feature_signals"][:30], empty="No feature-like signals detected from docs or paths.")
+    return f"""# Features Overview
+
+Status: generated
+Confidence: medium
+Needs human review: yes
+Generated by featurectl project profile: {profile['generated_at']}
+
+## Canonical Feature Memory
+
+{canonical_lines}
+
+## Detected Feature Signals
+
+{signal_text}
+"""
+
+
+def render_module_map(profile: dict[str, Any]) -> str:
+    module_lines = "\n".join(f"- `{item['path']}`: {item['tracked_files']} tracked files" for item in profile["module_dirs"]) or "No module directories detected."
+    source_lines = bullet_list(profile["source_examples"][:20], empty="No source examples detected.")
+    return f"""# Module Map
+
+Status: generated
+Confidence: medium
+Needs human review: yes
+Generated by featurectl project profile: {profile['generated_at']}
+
+## Directory Weight
+
+{module_lines}
+
+## Source Examples
+
+{source_lines}
+"""
+
+
+def render_architecture_overview(profile: dict[str, Any]) -> str:
+    packages = "\n".join(f"- `{path}`" for path in profile["package_manifests"][:15]) or "No package manifests detected."
+    modules = "\n".join(f"- `{item['path']}`" for item in profile["module_dirs"][:10]) or "No module directories detected."
+    return f"""# Architecture Overview
+
+Status: generated
+Confidence: medium
+Needs human review: yes
+Generated by featurectl project profile: {profile['generated_at']}
+
+## Architecture Signals
+
+{packages}
+
+## Likely Module Boundaries
+
+{modules}
+
+Architecture claims for a feature must cite the exact modules and files read
+during context discovery.
+"""
+
+
+def render_testing_overview(profile: dict[str, Any]) -> str:
+    script_lines = "\n".join(f"- `{item['name']}` from `{item['source']}`: `{item['command']}`" for item in profile["scripts"] if "test" in item["name"].lower()) or "No test scripts detected."
+    test_lines = bullet_list(profile["test_examples"][:20], empty="No test files detected.")
+    return f"""# Testing Overview
+
+Status: generated
+Confidence: medium
+Needs human review: yes
+Generated by featurectl project profile: {profile['generated_at']}
+
+## Test Commands
+
+{script_lines}
+
+## Test File Examples
+
+{test_lines}
+"""
+
+
+def render_contracts_overview(profile: dict[str, Any]) -> str:
+    return f"""# Contracts Overview
+
+Status: generated
+Confidence: medium
+Needs human review: yes
+Generated by featurectl project profile: {profile['generated_at']}
+
+## Contract And Schema Examples
+
+{bullet_list(profile['contract_examples'][:30], empty='No contract/schema files detected.')}
+"""
+
+
+def render_integration_map(profile: dict[str, Any]) -> str:
+    return f"""# Integration Map
+
+Status: generated
+Confidence: medium
+Needs human review: yes
+Generated by featurectl project profile: {profile['generated_at']}
+
+## Integration And Deployment Examples
+
+{bullet_list(profile['integration_examples'][:30], empty='No integration/deployment files detected.')}
+"""
+
+
+def bullet_list(items: list[str], *, empty: str) -> str:
+    return "\n".join(f"- `{item}`" for item in items) if items else empty
+
+
+def signal_lines(items: list[dict[str, str]], *, empty: str) -> str:
+    return "\n".join(f"- `{item['source']}`: {item['signal']}" for item in items) if items else empty
+
+
+def safe_git(root: Path, *args: str) -> str | None:
+    try:
+        return run_git(root, *args).strip()
+    except FeatureCtlError:
+        return None
 
 
 def render_apex(feature_key: str) -> str:

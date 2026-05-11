@@ -17,6 +17,8 @@ required_docs:
   - .ai/pipeline-docs/steps/architecture/checklist.md
 optional_docs:
   - methodology/extracted/workflow-and-gates.md
+  - .ai/knowledge/project-index.yaml
+  - .ai/knowledge/project-snapshot.md
   - .ai/features/index.yaml
   - .ai/knowledge/integration-map.md
   - .ai/knowledge/contracts-overview.md

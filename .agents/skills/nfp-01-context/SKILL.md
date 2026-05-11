@@ -23,10 +23,25 @@ Responsibilities:
 - read `apex.md`, `feature.yaml`, `state.yaml`, and `execution.md`
 - inspect `.ai/knowledge`, `.ai/features`, docs, source tree, contracts, tests,
   and ADRs
-- bootstrap provisional knowledge when `.ai/knowledge` is missing or sparse
+- bootstrap project knowledge when `.ai/knowledge` is missing, sparse, or
+  clearly generic
 - record docs consulted and context findings in `execution.md`
 
 Do not invent architecture when repository knowledge is missing.
+
+Project init profile:
+
+- At repository root, when project knowledge is absent or generic, run:
+
+  ```bash
+  python .agents/pipeline-core/scripts/featurectl.py init --profile-project
+  ```
+
+- Read `.ai/knowledge/project-index.yaml` and `.ai/knowledge/project-snapshot.md`
+  after the profile is generated.
+- Treat generated knowledge as a map of sources to inspect, not as final truth.
+- Before using a generated claim in feature, architecture, or design artifacts,
+  verify it by reading the cited source path.
 
 Minimum searches:
 
@@ -50,9 +65,15 @@ Sources inspected: ...
 
 Minimum provisional files:
 
+- `.ai/knowledge/project-index.yaml`
+- `.ai/knowledge/project-snapshot.md`
 - `.ai/knowledge/project-overview.md`
+- `.ai/knowledge/features-overview.md`
 - `.ai/knowledge/module-map.md`
 - `.ai/knowledge/architecture-overview.md`
+- `.ai/knowledge/testing-overview.md`
+- `.ai/knowledge/contracts-overview.md`
+- `.ai/knowledge/integration-map.md`
 
 The provisional files must reference real inspected paths and must not claim
 specific architecture facts without a source.

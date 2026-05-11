@@ -7,6 +7,8 @@ required_docs:
   - .agents/pipeline-core/references/context-reuse-policy.md
   - .ai/constitution.md
   - .ai/knowledge/project-overview.md
+  - .ai/knowledge/project-index.yaml
+  - .ai/knowledge/project-snapshot.md
   - .ai/knowledge/features-overview.md
   - .ai/features/index.yaml
   - .ai/pipeline-docs/steps/context/overview.md
@@ -15,6 +17,9 @@ optional_docs:
   - methodology/extracted/methodology-summary.md
   - .ai/knowledge/module-map.md
   - .ai/knowledge/architecture-overview.md
+  - .ai/knowledge/testing-overview.md
+  - .ai/knowledge/contracts-overview.md
+  - .ai/knowledge/integration-map.md
   - .ai/knowledge/adr-index.md
 related_feature_patterns:
   - .ai/features/*/*/feature-card.md

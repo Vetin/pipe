@@ -54,6 +54,8 @@ class DocsetLoadingTests(unittest.TestCase):
         self.assertIn("required_docs:", result.stdout)
         self.assertIn(".ai/pipeline-docs/global/architecture-standards.md", result.stdout)
         self.assertIn(".ai/knowledge/architecture-overview.md", result.stdout)
+        self.assertIn(".ai/knowledge/project-index.yaml", result.stdout)
+        self.assertIn(".ai/knowledge/project-snapshot.md", result.stdout)
         self.assertIn("optional_docs:", result.stdout)
         self.assertIn("missing_docs:\n  none", result.stdout)
         self.assertIn("selected_alternatives:", result.stdout)
@@ -96,6 +98,8 @@ class DocsetLoadingTests(unittest.TestCase):
         self.assertIn("Needs human review: yes", content)
         self.assertIn("Sources inspected:", content)
         self.assertIn(".ai/knowledge/project-overview.md", content)
+        self.assertIn(".ai/knowledge/project-index.yaml", content)
+        self.assertIn(".ai/knowledge/project-snapshot.md", content)
         self.assertIn(".ai/knowledge/module-map.md", content)
         self.assertIn(".ai/knowledge/architecture-overview.md", content)
 

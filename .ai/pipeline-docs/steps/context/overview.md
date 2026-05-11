@@ -4,3 +4,8 @@ Discover existing repository knowledge before drafting product behavior.
 
 If `.ai/knowledge` is missing or sparse, inspect repository files and create
 provisional knowledge documents with confidence and source notes.
+
+For repeatable project discovery, run `featurectl.py init --profile-project` at
+the repository root. Use the generated `project-index.yaml` and
+`project-snapshot.md` as source maps, then verify claims by reading the cited
+files before drafting feature behavior or architecture.
