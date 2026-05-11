@@ -125,6 +125,27 @@ class MethodologyContractTests(unittest.TestCase):
                     )
                     self.assertIn("missing_docs:\n  none", result.stdout)
 
+    def test_step_checklists_repeat_docs_consulted_contract(self):
+        expected_labels = {
+            "intake": "Intake",
+            "context": "Context",
+            "feature-contract": "Feature Contract",
+            "architecture": "Architecture",
+            "tech-design": "Technical Design",
+            "slicing": "Slicing",
+            "readiness": "Readiness",
+            "worktree": "Worktree",
+            "tdd-implementation": "TDD Implementation",
+            "review": "Review",
+            "verification": "Verification",
+            "finish": "Finish",
+            "promote": "Promote",
+        }
+        for step, label in expected_labels.items():
+            with self.subTest(step=step):
+                checklist = (ROOT / f".ai/pipeline-docs/steps/{step}/checklist.md").read_text(encoding="utf-8")
+                self.assertIn(f"Docs Consulted: {label}", checklist)
+
     def test_native_skills_follow_shared_methodology_protocol(self):
         for skill_path in sorted((ROOT / ".agents/skills").glob("nfp-*/SKILL.md")):
             with self.subTest(skill=skill_path.parent.name):

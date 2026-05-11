@@ -264,6 +264,10 @@ Email service required.
                         "review_focus": ["No account enumeration"],
                         "evidence_status": "pending",
                         "status": "pending",
+                        "iteration_budget": 10,
+                        "rollback_point": "pre-slice git state",
+                        "independent_verification": "python -m unittest tests.test_password_reset",
+                        "failure_triage_notes": "Classify failures as test_expected, implementation_bug, test_bug, design_gap, scope_change, environment_failure, or flaky.",
                     }
                 ],
             },

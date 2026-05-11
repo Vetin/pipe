@@ -7,8 +7,12 @@ from pathlib import Path
 
 import yaml
 
-from test_gates_and_evidence import GatesAndEvidenceTests, run as run_cmd
-from test_planning_readiness import write_planning_artifacts
+try:
+    from test_gates_and_evidence import GatesAndEvidenceTests, run as run_cmd
+    from test_planning_readiness import write_planning_artifacts
+except ModuleNotFoundError:
+    from tests.feature_pipeline.test_gates_and_evidence import GatesAndEvidenceTests, run as run_cmd
+    from tests.feature_pipeline.test_planning_readiness import write_planning_artifacts
 
 
 ROOT = Path(__file__).resolve().parents[2]

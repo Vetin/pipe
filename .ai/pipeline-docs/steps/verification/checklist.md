@@ -4,4 +4,5 @@
 - Run tests, lint, typecheck, build, and configured contract/security checks.
 - Store raw final output in `evidence/final-verification-output.log`.
 - Write `reviews/verification-review.md`.
+- Record `Docs Consulted: Verification` in `execution.md`.
 - Mark verification complete only after commands pass.

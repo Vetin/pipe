@@ -932,6 +932,10 @@ def validate_slices_file(path: Path, workspace: Path | None = None) -> list[str]
             "review_focus",
             "evidence_status",
             "status",
+            "iteration_budget",
+            "rollback_point",
+            "independent_verification",
+            "failure_triage_notes",
         ):
             if field not in item:
                 blockers.append(f"{prefix} missing {field}")
@@ -961,6 +965,11 @@ def validate_slices_file(path: Path, workspace: Path | None = None) -> list[str]
                     blockers.append(f"{prefix} tdd missing {field}")
         if not item.get("verification_commands"):
             blockers.append(f"{prefix} must include verification_commands")
+        if not isinstance(item.get("iteration_budget"), int) or item.get("iteration_budget", 0) < 1:
+            blockers.append(f"{prefix} iteration_budget must be a positive integer")
+        for field in ("rollback_point", "independent_verification", "failure_triage_notes"):
+            if field in item and not str(item.get(field) or "").strip():
+                blockers.append(f"{prefix} {field} must not be empty")
     return blockers
 
 

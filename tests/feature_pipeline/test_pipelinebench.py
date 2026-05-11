@@ -7,7 +7,10 @@ from pathlib import Path
 
 import yaml
 
-from test_planning_readiness import write_planning_artifacts
+try:
+    from test_planning_readiness import write_planning_artifacts
+except ModuleNotFoundError:
+    from tests.feature_pipeline.test_planning_readiness import write_planning_artifacts
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -81,6 +84,9 @@ class PipelineBenchTests(unittest.TestCase):
         score = yaml.safe_load(output.read_text(encoding="utf-8"))
         self.assertIn("hard_passed: true", result.stdout)
         self.assertTrue(score["hard_passed"])
+        self.assertIn("schema_valid", [item["name"] for item in score["hard_results"]])
+        self.assertIn("docs_consulted_recorded", [item["name"] for item in score["hard_results"]])
+        self.assertIn("slice_budget_declared", [item["name"] for item in score["hard_results"]])
         self.assertEqual(score["soft_scores"]["requirement_quality"], "not_scored_offline")
         self.assertEqual(score["soft_scores"]["module_communication_quality"], "not_scored_offline")
 

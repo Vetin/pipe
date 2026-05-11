@@ -7,7 +7,10 @@ from pathlib import Path
 
 import yaml
 
-from test_planning_readiness import write_planning_artifacts
+try:
+    from test_planning_readiness import write_planning_artifacts
+except ModuleNotFoundError:
+    from tests.feature_pipeline.test_planning_readiness import write_planning_artifacts
 
 
 ROOT = Path(__file__).resolve().parents[2]

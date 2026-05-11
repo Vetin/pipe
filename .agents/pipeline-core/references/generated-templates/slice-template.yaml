@@ -20,3 +20,7 @@ slices:
     review_focus: []
     evidence_status: pending
     status: pending
+    iteration_budget: 10
+    rollback_point: pre-slice git state
+    independent_verification: <focused command or check>
+    failure_triage_notes: <how to classify expected, implementation, test, design, scope, environment, and flaky failures>

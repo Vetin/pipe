@@ -13,7 +13,7 @@ python -m unittest discover -s tests/feature_pipeline
 Result:
 
 ```text
-Ran 47 tests in 13.227s
+Ran 77 tests in 18.322s
 OK
 ```
 
@@ -28,6 +28,9 @@ Coverage highlights:
 - review and verification blocking
 - finish and promotion, including archive-as-variant conflicts
 - offline benchmark scoring and candidate skill isolation
+- explicit required test matrix from `plan.md`
+- methodology, docset, schema, and generated-template contracts
+- loop-ready slice fields and benchmark hard checks
 
 ## Real Example Validation
 
@@ -62,7 +65,7 @@ workspace: .ai/feature-workspaces/auth/reset-password--run-20260511-real
 next_step: nfp-01-context
 validation: pass
 hard_passed: true
-hard_score: 5/5
+hard_score: 8/8
 ```
 
 ## Benchmark MVP

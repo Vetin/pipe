@@ -19,15 +19,40 @@ CONTRACT_VERSION = "0.1.0"
 SCENARIOS = {
     "auth-reset-password": {
         "required_files": ["feature.md", "architecture.md", "tech-design.md", "slices.yaml", "state.yaml", "execution.md"],
-        "hard_checks": ["core_artifacts", "no_forbidden_files", "slices_have_tdd", "no_auto_implementation", "state_has_no_next_skill"],
+        "hard_checks": [
+            "core_artifacts",
+            "no_forbidden_files",
+            "schema_valid",
+            "docs_consulted_recorded",
+            "slices_have_tdd",
+            "slice_budget_declared",
+            "no_auto_implementation",
+            "state_has_no_next_skill",
+        ],
     },
     "webhook-integration": {
         "required_files": ["feature.md", "architecture.md", "tech-design.md", "slices.yaml", "state.yaml", "execution.md"],
-        "hard_checks": ["core_artifacts", "no_forbidden_files", "slices_have_tdd", "state_has_no_next_skill"],
+        "hard_checks": [
+            "core_artifacts",
+            "no_forbidden_files",
+            "schema_valid",
+            "docs_consulted_recorded",
+            "slices_have_tdd",
+            "slice_budget_declared",
+            "state_has_no_next_skill",
+        ],
     },
     "frontend-settings": {
         "required_files": ["feature.md", "architecture.md", "tech-design.md", "slices.yaml", "state.yaml", "execution.md"],
-        "hard_checks": ["core_artifacts", "no_forbidden_files", "slices_have_tdd", "state_has_no_next_skill"],
+        "hard_checks": [
+            "core_artifacts",
+            "no_forbidden_files",
+            "schema_valid",
+            "docs_consulted_recorded",
+            "slices_have_tdd",
+            "slice_budget_declared",
+            "state_has_no_next_skill",
+        ],
     },
 }
 
@@ -229,9 +254,18 @@ def run_hard_check(workspace: Path, scenario: dict[str, Any], check: str) -> dic
     if check == "no_forbidden_files":
         forbidden = [str(path.relative_to(workspace)) for name in ("approvals.yaml", "handoff.md") for path in workspace.rglob(name)]
         return hard_result(check, not forbidden, f"forbidden: {', '.join(forbidden)}" if forbidden else "no forbidden files")
+    if check == "schema_valid":
+        blockers = schema_valid_blockers(workspace)
+        return hard_result(check, not blockers, "; ".join(blockers) if blockers else "machine-readable artifacts have valid contract versions")
+    if check == "docs_consulted_recorded":
+        blockers = docs_consulted_blockers(workspace)
+        return hard_result(check, not blockers, "; ".join(blockers) if blockers else "required docs consulted entries present")
     if check == "slices_have_tdd":
         blockers = slices_have_tdd_blockers(workspace / "slices.yaml")
         return hard_result(check, not blockers, "; ".join(blockers) if blockers else "all slices have TDD commands")
+    if check == "evidence_files_exist":
+        blockers = evidence_file_blockers(workspace)
+        return hard_result(check, not blockers, "; ".join(blockers) if blockers else "evidence manifest file references exist")
     if check == "no_auto_implementation":
         state = read_yaml(workspace / "state.yaml") if (workspace / "state.yaml").exists() else {}
         implementation_ready = (state.get("gates") or {}).get("implementation") in {"approved", "delegated", "complete"}
@@ -275,6 +309,28 @@ def run_hard_check(workspace: Path, scenario: dict[str, Any], check: str) -> dic
     return hard_result(check, False, "unknown hard check")
 
 
+def schema_valid_blockers(workspace: Path) -> list[str]:
+    blockers = []
+    for rel in ("feature.yaml", "state.yaml", "slices.yaml", "evidence/manifest.yaml"):
+        path = workspace / rel
+        if not path.exists():
+            continue
+        data = read_yaml(path)
+        if data.get("artifact_contract_version") != CONTRACT_VERSION:
+            blockers.append(f"{rel} artifact_contract_version mismatch")
+    for path in sorted((workspace / "reviews").glob("*.yaml")) if (workspace / "reviews").exists() else []:
+        data = read_yaml(path)
+        if data.get("artifact_contract_version") != CONTRACT_VERSION:
+            blockers.append(f"{path.relative_to(workspace)} artifact_contract_version mismatch")
+    return blockers
+
+
+def docs_consulted_blockers(workspace: Path) -> list[str]:
+    execution = read_text(workspace / "execution.md")
+    required = ("Feature Contract", "Architecture", "Technical Design", "Slicing")
+    return [f"execution.md missing Docs Consulted: {label}" for label in required if f"Docs Consulted: {label}" not in execution]
+
+
 def slices_have_tdd_blockers(path: Path) -> list[str]:
     if not path.exists():
         return ["missing slices.yaml"]
@@ -291,6 +347,29 @@ def slices_have_tdd_blockers(path: Path) -> list[str]:
         for field in ("failing_test_file", "red_command", "expected_failure", "green_command"):
             if not tdd.get(field):
                 blockers.append(f"{item.get('id', 'unknown')} missing tdd.{field}")
+    return blockers
+
+
+def evidence_file_blockers(workspace: Path) -> list[str]:
+    manifest_path = workspace / "evidence/manifest.yaml"
+    if not manifest_path.exists():
+        return ["missing evidence/manifest.yaml"]
+    manifest = read_yaml(manifest_path)
+    blockers = []
+    if manifest.get("artifact_contract_version") != CONTRACT_VERSION:
+        blockers.append("evidence/manifest.yaml artifact_contract_version mismatch")
+    for slice_id, phases in (manifest.get("slices") or {}).items():
+        if not isinstance(phases, dict):
+            blockers.append(f"{slice_id} evidence entry must be a mapping")
+            continue
+        for phase, entry in phases.items():
+            if not isinstance(entry, dict):
+                blockers.append(f"{slice_id} {phase} evidence must be a mapping")
+                continue
+            for field in ("command_file", "output_file", "git_state_file", "summary_file"):
+                rel = entry.get(field)
+                if rel and not (workspace / "evidence" / rel).exists():
+                    blockers.append(f"{slice_id} {phase} evidence file missing: {rel}")
     return blockers
 
 

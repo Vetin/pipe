@@ -20,7 +20,11 @@
           "tdd",
           "verification_commands",
           "review_focus",
-          "status"
+          "status",
+          "iteration_budget",
+          "rollback_point",
+          "independent_verification",
+          "failure_triage_notes"
         ],
         "properties": {
           "id": { "type": "string", "pattern": "^S-[0-9]{3}$" },
@@ -46,7 +50,11 @@
           "verification_commands": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
           "review_focus": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
           "evidence_status": { "type": "string" },
-          "status": { "type": "string" }
+          "status": { "type": "string" },
+          "iteration_budget": { "type": "integer", "minimum": 1 },
+          "rollback_point": { "type": "string", "minLength": 1 },
+          "independent_verification": { "type": "string", "minLength": 1 },
+          "failure_triage_notes": { "type": "string", "minLength": 1 }
         },
         "not": {
           "anyOf": [
