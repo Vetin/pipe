@@ -1,0 +1,118 @@
+artifact_contract_version: "0.1.0"
+run_type: native_repository_implementation
+description: >
+  Final inventory for Native Feature Pipeline implementations across the ten
+  cloned showcase repositories. Each repository contains native code changes,
+  NFP workspace artifacts, promoted feature artifacts, and a committed final
+  .codex-nfp-final.txt report.
+global_checks:
+  harness_tests:
+    command: "python -m unittest discover -s tests/feature_pipeline"
+    result: pass
+    tests: 81
+  clone_diff_check:
+    command: "git diff --check HEAD"
+    result: pass
+    repositories: 10
+  clone_worktrees_clean: true
+repositories:
+  docmost:
+    branch: nfp/docmost-page-approval
+    head: 8f61503
+    status: clean
+    diff_check: pass
+    native_file_count: 10
+    feature_artifacts: .ai/features/pages/page-review-approval-workflow
+    workspace_artifacts: .ai/feature-workspaces/pages/page-review-approval-workflow--run-20260511-y58m
+    validation: "server page-verification tests and builds passed"
+    remaining_gap: "copied constitution command references absent tests/feature_pipeline; adjacent pre-existing Jest alias issue documented"
+  formbricks:
+    branch: nfp/formbricks-signed-webhooks
+    head: 94d85e9
+    status: clean
+    diff_check: pass
+    native_file_count: 13
+    feature_artifacts: .ai/features/webhooks/signed-survey-response-webhooks
+    workspace_artifacts: .ai/feature-workspaces/webhooks/signed-survey-response-webhooks--run-20260511-owned
+    validation: "focused Vitest tests, ESLint, Prisma validate, and database build passed"
+    remaining_gap: "broad web tsc still fails on existing repo-wide type/package/asset declaration issues"
+  actual:
+    branch: nfp/actual-import-rule-preview-undo
+    head: 4db4979
+    status: clean
+    diff_check: pass
+    native_file_count: 5
+    feature_artifacts: .ai/features/actual/import-rule-preview-undo
+    workspace_artifacts: .ai/feature-workspaces/actual/import-rule-preview-undo--run-20260511-kn58
+    validation: "focused core tests, typecheck, and formatter check passed"
+    remaining_gap: "desktop UI does not yet expose preview or rollback controls"
+  plane:
+    branch: nfp/plane-triage-automation
+    head: 9851910
+    status: clean
+    diff_check: pass
+    native_file_count: 16
+    feature_artifacts: .ai/features/plane/plane-triage-automation
+    workspace_artifacts: .ai/feature-workspaces/plane/plane-triage-automation--run-20260511-root
+    validation: "Python compile checks and NFP gates passed"
+    remaining_gap: "pytest/Django dependencies unavailable; no web rule-authoring UI"
+  nocodb:
+    branch: nfp/nocodb-schema-audit-log
+    head: c4af5df
+    status: clean
+    diff_check: pass
+    native_file_count: 3
+    feature_artifacts: .ai/features/nocodb/schema-audit-log
+    workspace_artifacts: .ai/feature-workspaces/nocodb/schema-audit-log--run-20260511-wsee
+    validation: "focused Jest and ESLint passed"
+    remaining_gap: "default Jest discovery excludes the spec, so explicit testRegex is used"
+  appsmith:
+    branch: nfp/appsmith-version-restore-diff
+    head: 420914a
+    status: clean
+    diff_check: pass
+    native_file_count: 7
+    feature_artifacts: .ai/features/applications/app-version-restore-diff-preview
+    workspace_artifacts: .ai/feature-workspaces/applications/app-version-restore-diff-preview--run-20260511-f8zd
+    validation: "focused Maven unit test passed with local Java 24 override"
+    remaining_gap: "final root Maven rerun hit local disk exhaustion; frontend UI wiring remains follow-up"
+  listmonk:
+    branch: nfp/listmonk-double-opt-in-segment
+    head: 5898186
+    status: clean
+    diff_check: pass
+    native_file_count: 19
+    feature_artifacts: .ai/features/subscribers/double-opt-in-segment
+    workspace_artifacts: .ai/feature-workspaces/subscribers/double-opt-in-segment--run-20260511
+    validation: "focused tests and go test ./... passed"
+    remaining_gap: "frontend import UI controls were intentionally skipped; API import options drive the feature"
+  medusa:
+    branch: nfp/medusa-first-order-promo-caps
+    head: 217f3a55
+    status: clean
+    diff_check: pass
+    native_file_count: 7
+    feature_artifacts: .ai/features/promotions/first-order-promotion-with-usage-caps
+    workspace_artifacts: .ai/feature-workspaces/promotions/first-order-promotion-with-usage-caps--run-20260511-jvfz
+    validation: "diff check passed; focused integration spec added"
+    remaining_gap: "integration execution blocked by sparse workspace artifacts and missing Yarn release/plugin dependencies"
+  excalidraw:
+    branch: nfp/excalidraw-layer-lock-history
+    head: 2d7f2ad
+    status: clean
+    diff_check: pass
+    native_file_count: 6
+    feature_artifacts: .ai/features/excalidraw/layer-lock-history
+    workspace_artifacts: .ai/feature-workspaces/excalidraw/layer-lock-history--run-20260511-7q1m
+    validation: "featurectl review/evidence validation and diff check passed"
+    remaining_gap: "Vitest blocked because dependency install failed with ENOSPC"
+  twenty:
+    branch: nfp/twenty-company-merge
+    head: 6121576
+    status: clean
+    diff_check: pass
+    native_file_count: 7
+    feature_artifacts: .ai/features/company/duplicate-company-merge-with-audit-trail
+    workspace_artifacts: .ai/feature-workspaces/company/duplicate-company-merge-with-audit-trail--20260511-local
+    validation: "diff check and NFP readiness/worktree/evidence/review/promote gates passed"
+    remaining_gap: "focused Jest blocked by missing declared Yarn workspaces/node_modules state"
