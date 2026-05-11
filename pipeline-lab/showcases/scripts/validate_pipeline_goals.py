@@ -34,6 +34,7 @@ def read_yaml(path: Path) -> dict[str, Any]:
 
 def validate_once(native_run: Path, init_run: Path) -> list[dict[str, str]]:
     checks: list[dict[str, str]] = []
+    checks.extend(validate_agents_policy())
     checks.extend(validate_vision_and_plan())
     checks.extend(validate_best_three(native_run))
     checks.extend(validate_project_profile())
@@ -57,6 +58,32 @@ def validate_vision_and_plan() -> list[dict[str, str]]:
         check("plan_artifact_graph", "one shared artifact graph" in plan and "one deterministic validation layer" in plan, "plan requires artifact graph and validation layer"),
         check("plan_project_context", ".ai/knowledge/" in plan and "bootstrap provisional knowledge" in plan, "plan requires living knowledge and brownfield bootstrap"),
         check("plan_validation_lab", "repeatable validation practice" in plan and "three scorecards" in plan, "plan requires repeatable skill validation"),
+    ]
+
+
+def validate_agents_policy() -> list[dict[str, str]]:
+    agents = read_text(ROOT / "AGENTS.md")
+    return [
+        check(
+            "agents_pipeline_mandatory",
+            "The Native Feature Pipeline is mandatory" in agents and "If there is doubt, use the pipeline" in agents,
+            "AGENTS.md makes pipeline use mandatory for feature-building work",
+        ),
+        check(
+            "agents_self_modification_policy",
+            "Use our own technology while changing it" in agents and "Do not bypass the pipeline because a change is \"internal\"" in agents,
+            "AGENTS.md applies the pipeline to pipeline self-modification",
+        ),
+        check(
+            "agents_init_before_feature_work",
+            "featurectl.py init --profile-project" in agents and ".ai/knowledge/project-index.yaml" in agents,
+            "AGENTS.md requires project init and knowledge inspection before feature planning",
+        ),
+        check(
+            "agents_feature_worktree_sequence",
+            "featurectl.py new" in agents and "dedicated feature worktree" in agents and "nfp-00-intake" in agents and "nfp-12-promote" in agents,
+            "AGENTS.md requires new/resumed workspace and full pipeline sequence",
+        ),
     ]
 
 

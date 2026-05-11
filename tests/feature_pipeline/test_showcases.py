@@ -43,6 +43,7 @@ class ShowcaseTests(unittest.TestCase):
         shutil.copytree(ROOT / ".agents", self.repo / ".agents", dirs_exist_ok=True)
         shutil.copytree(ROOT / ".ai", self.repo / ".ai", dirs_exist_ok=True)
         shutil.copytree(ROOT / "skills", self.repo / "skills", dirs_exist_ok=True)
+        shutil.copy2(ROOT / "AGENTS.md", self.repo / "AGENTS.md")
         run(["git", "add", "."], self.repo)
         run(["git", "commit", "-m", "seed pipeline"], self.repo)
 

@@ -87,6 +87,7 @@ print(json.dumps({
     "has_native_pipeline": "normal user feature request" in prompt and "Progress through these outcomes" in prompt,
     "no_direct_skill_invocations": "nfp-00-intake" not in prompt and "nfp-12-promote" not in prompt,
     "fresh_worktree": "fresh feature worktree" in prompt and "do not implement in the base checkout" in prompt,
+    "has_agents_policy": "AGENTS.md" in prompt,
     "has_skills_context": "`skills`" in prompt,
 }))
 """,
@@ -142,13 +143,16 @@ print(json.dumps({
         self.assertIn('"has_native_pipeline": true', output)
         self.assertIn('"no_direct_skill_invocations": true', output)
         self.assertIn('"fresh_worktree": true', output)
+        self.assertIn('"has_agents_policy": true', output)
         self.assertIn('"has_skills_context": true', output)
         self.assertIn("branch: nfp/toy-feature", report)
+        self.assertIn("AGENTS.md", prompt)
         self.assertIn("fresh feature worktree", prompt)
         self.assertIn("do not implement in the base checkout", prompt)
         self.assertNotIn("Read and follow every NFP skill doc in order", prompt)
         self.assertNotIn("nfp-00-intake", prompt)
         self.assertNotIn("nfp-12-promote", prompt)
+        self.assertTrue((Path(manifest["repo"]) / "AGENTS.md").exists())
         self.assertTrue((Path(manifest["repo"]) / "skills/native-feature-pipeline/references").exists())
         self.assertTrue((self.output_dir / "summary-stable-test.yaml").exists())
         self.assertTrue((self.output_dir / "commands-stable-test.sh").exists())

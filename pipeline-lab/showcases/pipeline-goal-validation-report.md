@@ -3,7 +3,7 @@
 - Native run: `/Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-native-debug`
 - Init profile run: `/Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/init-profile-runs/20260512-init-profile`
 - Repeated passes: `3`
-- Generated at: `2026-05-11T23:49:22.982152+00:00`
+- Generated at: `2026-05-11T23:57:15.301109+00:00`
 
 ## Pass Summary
 
@@ -38,6 +38,10 @@
 ## All Checks
 
 ### Pass 1
+- `pass` `agents_pipeline_mandatory`: AGENTS.md makes pipeline use mandatory for feature-building work
+- `pass` `agents_self_modification_policy`: AGENTS.md applies the pipeline to pipeline self-modification
+- `pass` `agents_init_before_feature_work`: AGENTS.md requires project init and knowledge inspection before feature planning
+- `pass` `agents_feature_worktree_sequence`: AGENTS.md requires new/resumed workspace and full pipeline sequence
 - `pass` `vision_user_flow`: user only describes, answers, and approves gates
 - `pass` `vision_native_workflow`: native workflow hides internal phase commands
 - `pass` `plan_artifact_graph`: plan requires artifact graph and validation layer
@@ -107,6 +111,10 @@
 - `pass` `web_doc_## Validation Rule Implied`: ## Validation Rule Implied present
 
 ### Pass 2
+- `pass` `agents_pipeline_mandatory`: AGENTS.md makes pipeline use mandatory for feature-building work
+- `pass` `agents_self_modification_policy`: AGENTS.md applies the pipeline to pipeline self-modification
+- `pass` `agents_init_before_feature_work`: AGENTS.md requires project init and knowledge inspection before feature planning
+- `pass` `agents_feature_worktree_sequence`: AGENTS.md requires new/resumed workspace and full pipeline sequence
 - `pass` `vision_user_flow`: user only describes, answers, and approves gates
 - `pass` `vision_native_workflow`: native workflow hides internal phase commands
 - `pass` `plan_artifact_graph`: plan requires artifact graph and validation layer
@@ -176,6 +184,10 @@
 - `pass` `web_doc_## Validation Rule Implied`: ## Validation Rule Implied present
 
 ### Pass 3
+- `pass` `agents_pipeline_mandatory`: AGENTS.md makes pipeline use mandatory for feature-building work
+- `pass` `agents_self_modification_policy`: AGENTS.md applies the pipeline to pipeline self-modification
+- `pass` `agents_init_before_feature_work`: AGENTS.md requires project init and knowledge inspection before feature planning
+- `pass` `agents_feature_worktree_sequence`: AGENTS.md requires new/resumed workspace and full pipeline sequence
 - `pass` `vision_user_flow`: user only describes, answers, and approves gates
 - `pass` `vision_native_workflow`: native workflow hides internal phase commands
 - `pass` `plan_artifact_graph`: plan requires artifact graph and validation layer

@@ -60,6 +60,7 @@ def run_case(case: str, repo: Path, config: dict[str, Any], report_dir: Path) ->
 
 
 def install_pipeline(repo: Path) -> None:
+    shutil.copy2(ROOT / "AGENTS.md", repo / "AGENTS.md")
     for dirname in (".agents", ".ai", "skills"):
         src = ROOT / dirname
         dest = repo / dirname
@@ -78,6 +79,7 @@ def worktree_for_workspace(workspace: Path) -> Path:
 
 
 def install_pipeline_context(worktree: Path) -> None:
+    shutil.copy2(ROOT / "AGENTS.md", worktree / "AGENTS.md")
     for dirname in (".agents", "skills"):
         dest = worktree / dirname
         if dest.exists():

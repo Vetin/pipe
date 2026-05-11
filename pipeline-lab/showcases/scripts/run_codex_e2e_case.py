@@ -144,6 +144,7 @@ def prepare_worktree(repo: Path, case_id: str, case: dict[str, Any], run_id: str
 
 
 def install_pipeline_context(worktree: Path) -> None:
+    shutil.copy2(ROOT / "AGENTS.md", worktree / "AGENTS.md")
     for dirname in (".agents", "skills"):
         dest = worktree / dirname
         if dest.exists():
@@ -188,8 +189,8 @@ Case:
 - Expected result: {expected_result}
 
 Native Feature Pipeline:
-- If `.agents/pipeline-core`, `.agents/skills`, `.ai/pipeline-docs`, or `skills` are missing, copy/install them from {ROOT / '.agents'}, {ROOT / '.ai' / 'pipeline-docs'}, and {ROOT / 'skills'} into this worktree before continuing.
-- Treat this as a normal user feature request. Discover the repository's native pipeline instructions from `.agents`, `.ai/pipeline-docs`, and local docs; do not ask the user to invoke individual internal skills by name.
+- If `AGENTS.md`, `.agents/pipeline-core`, `.agents/skills`, `.ai/pipeline-docs`, or `skills` are missing, copy/install them from {ROOT / 'AGENTS.md'}, {ROOT / '.agents'}, {ROOT / '.ai' / 'pipeline-docs'}, and {ROOT / 'skills'} into this worktree before continuing.
+- Treat this as a normal user feature request. Discover the repository's native pipeline instructions from `AGENTS.md`, `.agents`, `.ai/pipeline-docs`, and local docs; do not ask the user to invoke individual internal skills by name.
 - Progress through these outcomes in order:
 {phase_list}
 - Use local helper commands where the discovered pipeline docs point you, especially for scaffolding, validation, gate state, evidence, review, finish, and promotion.

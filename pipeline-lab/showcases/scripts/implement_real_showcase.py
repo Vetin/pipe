@@ -245,6 +245,7 @@ def worktree_for_workspace(workspace: Path) -> Path:
 
 
 def install_pipeline_in_worktree(worktree: Path) -> None:
+    shutil.copy2(ROOT / "AGENTS.md", worktree / "AGENTS.md")
     for dirname in (".agents", "skills"):
         dest = worktree / dirname
         if dest.exists():
