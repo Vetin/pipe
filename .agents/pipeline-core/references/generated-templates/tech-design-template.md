@@ -1,7 +1,9 @@
 # Technical Design: <Title>
 
+## Change Delta
 ## Implementation Summary
 ## Modules And Responsibilities
+## Dependency And Ownership Plan
 ## Contracts
 ## API/Event/Schema Details
 ## Core Code Sketches
@@ -12,3 +14,4 @@
 ## Migration Plan
 ## Rollback Plan
 ## Integration Notes
+## Decision Traceability

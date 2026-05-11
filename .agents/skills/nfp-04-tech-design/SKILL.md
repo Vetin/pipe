@@ -12,6 +12,9 @@ Methodology:
 
 - Read `.agents/pipeline-core/references/native-skill-protocol.md`.
 - Apply `methodology/extracted/upstream-pattern-map.md` as the behavioral synthesis of cloned upstream methodologies; cite patterns in `Docs Consulted:` when they influence a decision.
+- Apply `.agents/pipeline-core/references/methodology-lenses.md` for
+  task-graph metadata, source provenance, design alternatives, and
+  completeness/correctness/coherence checks.
 - Confirm the current directory is the feature worktree.
 - Read `apex.md`, `feature.yaml`, `state.yaml`, `execution.md`,
   `feature.md`, and `architecture.md`.
@@ -23,8 +26,13 @@ Methodology:
 Responsibilities:
 
 - describe implementation modules and responsibilities
+- translate architecture change deltas into concrete implementation deltas
 - define APIs, schemas, events, internal contracts, data model, error handling,
   security considerations, tests, migration, rollback, and integration notes
+- define ownership, dependency, conflict-risk, and test-strategy constraints for
+  later slices
+- record alternatives rejected when interface, data, migration, or contract
+  choices are material
 - record docs consulted in `execution.md`
 
 Workflow:
@@ -43,8 +51,10 @@ Workflow:
    ```markdown
    # Technical Design: <Title>
 
+   ## Change Delta
    ## Implementation Summary
    ## Modules And Responsibilities
+   ## Dependency And Ownership Plan
    ## Contracts
    ## API/Event/Schema Details
    ## Core Code Sketches
@@ -55,13 +65,17 @@ Workflow:
    ## Migration Plan
    ## Rollback Plan
    ## Integration Notes
+   ## Decision Traceability
    ```
 
-5. Add structured contracts under `contracts/` when the design exposes or
+5. In `Dependency And Ownership Plan`, identify the critical path, parallel
+   streams, file ownership, conflict risk, and test ownership expected by
+   `nfp-05-slicing`.
+6. Add structured contracts under `contracts/` when the design exposes or
    consumes API, event, schema, database, or internal module contracts.
-6. Record `Docs Consulted: Technical Design` in `execution.md`.
-7. Set the technical design gate to `drafted`.
-8. Run `featurectl.py validate --workspace <workspace>`.
+7. Record `Docs Consulted: Technical Design` in `execution.md`.
+8. Set the technical design gate to `drafted`.
+9. Run `featurectl.py validate --workspace <workspace>`.
 
 Do not create implementation slices or code in this step.
 

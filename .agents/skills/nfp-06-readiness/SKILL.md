@@ -12,6 +12,9 @@ Methodology:
 
 - Read `.agents/pipeline-core/references/native-skill-protocol.md`.
 - Apply `methodology/extracted/upstream-pattern-map.md` as the behavioral synthesis of cloned upstream methodologies; cite patterns in `Docs Consulted:` when they influence a decision.
+- Apply `.agents/pipeline-core/references/methodology-lenses.md` for
+  cross-artifact analysis, task graph integrity, and
+  completeness/correctness/coherence checks.
 - Confirm the current directory is the feature worktree.
 - Read `apex.md`, `feature.yaml`, `state.yaml`, and `execution.md`.
 - Load the readiness docset with `featurectl.py load-docset --step readiness`.
@@ -22,6 +25,10 @@ Methodology:
 Responsibilities:
 
 - run `featurectl.py validate --readiness`
+- analyze the planning package for duplicate, ambiguous, underspecified,
+  inconsistent, uncovered, and constitution-risk findings
+- validate slice dependencies, complexity, critical path, file ownership,
+  parallelization, and conflict-risk notes
 - summarize blockers, assumptions, stale artifacts, and missing gates
 - ask for implementation approval or stop at the requested point
 
@@ -39,14 +46,25 @@ Workflow:
    ```
 
 4. Append `Docs Consulted: Readiness` to `execution.md`.
-5. Run:
+5. Perform a read-only analyze pass across `feature.md`, `architecture.md`,
+   `tech-design.md`, and `slices.yaml`:
+   - duplicate or conflicting requirements
+   - ambiguous actors, states, permissions, data ownership, or completion
+     signals
+   - requirements without architecture/design/slice/test coverage
+   - architecture decisions without technical design impact
+   - slice dependencies with cycles, bottlenecks, or missing owners
+   - unmitigated destructive, security, public-contract, migration, or data
+     loss risks
+6. Run:
 
    ```bash
    python .agents/pipeline-core/scripts/featurectl.py validate --workspace <workspace> --readiness
    ```
 
-6. If validation fails, summarize blockers and stop.
-7. If validation passes, summarize assumptions and ask for implementation
+7. If validation fails, summarize blockers and stop.
+8. If validation passes, summarize assumptions, residual risks, critical path,
+   parallelization opportunities, and conflict-risk controls, then ask for implementation
    approval unless the user already explicitly delegated that gate.
 
 Implementation may start only when `feature_contract`, `architecture`,

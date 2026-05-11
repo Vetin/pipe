@@ -12,6 +12,9 @@ Methodology:
 
 - Read `.agents/pipeline-core/references/native-skill-protocol.md`.
 - Apply `methodology/extracted/upstream-pattern-map.md` as the behavioral synthesis of cloned upstream methodologies; cite patterns in `Docs Consulted:` when they influence a decision.
+- Apply `.agents/pipeline-core/references/methodology-lenses.md` for task graph
+  metadata, complexity scoring, critical path, parallelization, ownership,
+  conflict risk, and TDD readiness.
 - Confirm the current directory is the feature worktree.
 - Read `apex.md`, `feature.yaml`, `state.yaml`, `execution.md`,
   `feature.md`, `architecture.md`, and `tech-design.md`.
@@ -25,6 +28,9 @@ Responsibilities:
 - create TDD slices linked to requirements and acceptance criteria
 - include expected touchpoints, red command, expected failure, green command,
   verification commands, review focus, evidence status, and status
+- include complexity, critical path, parallelizable marker, file ownership,
+  conflict risk, dependency notes, and test strategy for every slice
+- identify parallel execution streams and bottlenecks before implementation
 - avoid hard allowed-file or forbidden-file enforcement in v1
 
 Workflow:
@@ -49,7 +55,9 @@ Workflow:
    slice IDs. Requirement and acceptance-criteria links must reference IDs that
    appear in `feature.md`.
    For loop-ready execution, also include `iteration_budget`,
-   `rollback_point`, `independent_verification`, and `failure_triage_notes`.
+   `rollback_point`, `independent_verification`, `failure_triage_notes`,
+   `complexity`, `critical_path`, `parallelizable`, `file_ownership`,
+   `conflict_risk`, `dependency_notes`, and `test_strategy`.
 6. Set `slicing_readiness` to `drafted`.
 7. Run `featurectl.py validate --workspace <workspace>`.
 
@@ -64,6 +72,12 @@ Do not use `allowed_files` or `forbidden_files` in v1.
   slice.
 - High-risk slices should appear early enough that design gaps surface before
   broad implementation.
+- Complexity scores use `1..10`; scores `7..10` require smaller follow-up
+  slices or a written reason they cannot be split safely.
+- Critical-path slices must not be blocked by optional UI polish or
+  documentation-only work.
+- Parallelizable slices must have disjoint expected touchpoints or an explicit
+  conflict-risk mitigation.
 
 If automatic handoff does not happen, print:
 

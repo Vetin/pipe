@@ -167,6 +167,12 @@ Forgotten passwords.
     (workspace / "architecture.md").write_text(
         """# Architecture: Reset Password
 
+## Change Delta
+New: reset request and completion behavior.
+Modified: auth API and email dispatch.
+Removed: none.
+Unchanged: login and session validation.
+
 ## System Context
 Auth owns reset.
 
@@ -188,8 +194,17 @@ Audit.
 ## Rollback Strategy
 Disable endpoint.
 
+## Migration Strategy
+Add token table before enabling reset endpoints.
+
 ## Architecture Risks
 Enumeration.
+
+## Alternatives Considered
+Reuse session tokens; rejected because reset tokens need separate expiry and audit.
+
+## Completeness Correctness Coherence
+Feature requirements, module boundaries, risks, rollback, and tests are aligned.
 
 ## ADRs
 None.
@@ -199,11 +214,18 @@ None.
     (workspace / "tech-design.md").write_text(
         """# Technical Design: Reset Password
 
+## Change Delta
+Add token repository, request endpoint, email job, and completion command.
+
 ## Implementation Summary
 Add reset request and completion flow.
 
 ## Modules And Responsibilities
 Auth service owns orchestration.
+
+## Dependency And Ownership Plan
+Token repository is critical path before API and email integration. Auth owns
+service files; tests own reset behavior. Conflict risk is medium around auth routes.
 
 ## Contracts
 Internal API contract.
@@ -234,6 +256,10 @@ Disable reset endpoints.
 
 ## Integration Notes
 Email service required.
+
+## Decision Traceability
+FR-001 and AC-001 map to token generation, email dispatch, generic response,
+and completion tests.
 """,
         encoding="utf-8",
     )
@@ -252,8 +278,15 @@ Email service required.
                         "linked_contracts": [],
                         "dependencies": [],
                         "priority": 1,
+                        "complexity": 4,
+                        "critical_path": True,
+                        "parallelizable": False,
+                        "file_ownership": ["src/auth/password_reset.py", "tests/test_password_reset.py"],
+                        "conflict_risk": "medium",
+                        "dependency_notes": "First slice owns token repository and blocks email integration.",
                         "expected_touchpoints": ["src/auth/password_reset.py", "tests/test_password_reset.py"],
                         "scope_confidence": "medium",
+                        "test_strategy": "Unit test token creation and generic response before integration tests.",
                         "tdd": {
                             "failing_test_file": "tests/test_password_reset.py",
                             "red_command": "python -m unittest tests.test_password_reset",

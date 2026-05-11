@@ -1,31 +1,31 @@
 artifact_contract_version: 0.1.0
 generated_by: featurectl.py init --profile-project
-generated_at: '2026-05-11T23:06:11Z'
+generated_at: '2026-05-11T23:13:38Z'
 project:
   name: harness-pipeline
   root: /Users/egormasnankin/work/harness-pipeline
   branch: main
-  head: 4ccced3
+  head: 822f3d9
   remote: none
 counts:
-  tracked_files: 397
-  profiled_files: 227
-  source_files: 14
-  test_files: 32
-  doc_files: 104
+  tracked_files: 494
+  profiled_files: 232
+  source_files: 15
+  test_files: 33
+  doc_files: 106
   contract_files: 20
   integration_files: 5
 package_manifests: []
 scripts: []
 module_dirs:
 - path: .agents
-  tracked_files: 67
+  tracked_files: 68
 - path: .ai
   tracked_files: 58
 - path: pipeline-lab
-  tracked_files: 52
+  tracked_files: 55
 - path: tests
-  tracked_files: 32
+  tracked_files: 33
 - path: methodology
   tracked_files: 13
 source_examples:
@@ -36,6 +36,7 @@ source_examples:
 - pipeline-lab/showcases/scripts/collect_nfp_real_runs.py
 - pipeline-lab/showcases/scripts/export_codex_conversations.py
 - pipeline-lab/showcases/scripts/implement_real_showcase.py
+- pipeline-lab/showcases/scripts/judge_native_feature_builds.py
 - pipeline-lab/showcases/scripts/materialize_implementation_runs.py
 - pipeline-lab/showcases/scripts/run_codex_e2e_case.py
 - pipeline-lab/showcases/scripts/run_init_profile_showcases.py
@@ -59,6 +60,7 @@ test_examples:
 - tests/feature_pipeline/test_init_profile_showcases.py
 - tests/feature_pipeline/test_methodology_contract.py
 - tests/feature_pipeline/test_native_feature_emulation.py
+- tests/feature_pipeline/test_native_feature_judge.py
 - tests/feature_pipeline/test_native_feature_validation.py
 - tests/feature_pipeline/test_pipeline_goal_validation.py
 - tests/feature_pipeline/test_pipelinebench.py
@@ -73,7 +75,6 @@ test_examples:
 - tests/feature_pipeline/test_slices_validation.py
 - tests/feature_pipeline/test_staleness.py
 - tests/feature_pipeline/test_state_machine.py
-- tests/feature_pipeline/test_workspace_creation.py
 doc_examples:
 - .agents/pipeline-core/references/README.md
 - .agents/pipeline-core/references/artifact-requirements.md
@@ -89,6 +90,7 @@ doc_examples:
 - .agents/pipeline-core/references/generated-templates/feature-template.md
 - .agents/pipeline-core/references/generated-templates/review-template.md
 - .agents/pipeline-core/references/generated-templates/tech-design-template.md
+- .agents/pipeline-core/references/methodology-lenses.md
 - .agents/pipeline-core/references/native-skill-protocol.md
 - .agents/pipeline-core/references/quality-rubric.md
 - .agents/pipeline-core/references/skill-power-validation-policy.md
@@ -104,7 +106,6 @@ doc_examples:
 - .agents/skills/nfp-07-worktree/SKILL.md
 - .agents/skills/nfp-08-tdd-implementation/SKILL.md
 - .agents/skills/nfp-09-review/SKILL.md
-- .agents/skills/nfp-10-verification/SKILL.md
 contract_examples:
 - .agents/pipeline-core/references/native-skill-protocol.md
 - .agents/pipeline-core/scripts/schemas/.gitkeep
@@ -148,6 +149,8 @@ feature_signals:
   signal: Native Feature Emulation
 - source: pipeline-lab/showcases/init-profile-report.md
   signal: Reuse In Feature Pipeline
+- source: pipeline-lab/showcases/native-emulation-judge-report.md
+  signal: Native Feature Build Judge Report
 - source: pipeline-lab/showcases/native-emulation-report.md
   signal: Native Feature Emulation Report
 - source: pipeline-lab/showcases/native-emulation-validation-report.md
@@ -190,6 +193,14 @@ feature_catalog:
   source_count: 1
   sources:
   - features.md
+- name: Native Feature Build Judge Report
+  kind: detected
+  confidence: medium
+  description: Native Feature Build Judge Report appears in 1 documentation signal;
+    inspect the listed files before relying on this as architecture truth.
+  source_count: 1
+  sources:
+  - pipeline-lab/showcases/native-emulation-judge-report.md
 - name: Native Feature Emulation
   kind: detected
   confidence: medium

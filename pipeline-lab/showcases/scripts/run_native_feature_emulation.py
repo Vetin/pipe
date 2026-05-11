@@ -447,6 +447,12 @@ Round {round_number} requires live Codex implementation to inspect these paths b
         artifacts / "architecture.md",
         f"""# Architecture: {case.feature}
 
+## Change Delta
+- New: {case.feature} workflow, durable event trail, and verification evidence.
+- Modified: nearest domain service, API/UI entry point, and test surfaces identified during context.
+- Removed: none assumed before live source inspection.
+- Unchanged: unrelated repository workflows and permission boundaries.
+
 ## System Context
 The feature is modeled as a change set around {case.source} domain state, API/UI entry points, persistence, audit events, and verification evidence.
 
@@ -480,9 +486,22 @@ sequenceDiagram
 ## Rollback Strategy
 Persist enough before/after state and relation movement metadata to replay or compensate the operation safely.
 
+## Migration Strategy
+Deploy persistence and feature flag first, backfill or index audit records where required, then enable the user workflow after verification.
+
 ## ADRs
 - ADR-001: Use append-only audit events for safety-critical state transitions.
 - ADR-002: Block promotion until verification evidence covers every accepted requirement.
+
+## Alternatives Considered
+- Reuse existing domain event table directly; acceptable only if it can store rollback payloads and actor provenance.
+- Add a feature-specific audit table; safer when existing events cannot preserve before/after state.
+- Ship UI-only preview first; rejected for production because apply and rollback invariants must be designed together.
+
+## Completeness Correctness Coherence
+- Completeness: every requirement has an architecture component and rollback path.
+- Correctness: permissions, audit, and stale/replay controls protect unsafe transitions.
+- Coherence: modules align with repository context and defer exact names to source inspection.
 """,
     )
 
@@ -490,10 +509,21 @@ Persist enough before/after state and relation movement metadata to replay or co
         artifacts / "tech-design.md",
         f"""# Technical Design: {case.feature}
 
+## Change Delta
+- Add preview/apply/audit behavior behind a feature flag.
+- Extend the closest domain service instead of creating a parallel subsystem.
+- Add tests for state transitions, permissions, rollback, and stale/replay behavior.
+
 ## Interfaces
 - Preview command returns affected entities, conflicts, warnings, and audit preview id.
 - Apply command requires preview token/version, actor id, and explicit confirmation.
 - Audit query returns immutable event history linked to source entity and request id.
+
+## Dependency And Ownership Plan
+- Critical path: domain invariant, persistence/audit contract, apply command, then UI/API integration.
+- Parallel streams: documentation and read-only preview UI can run after the contract is stable.
+- File ownership: domain service and tests own invariant behavior; API/UI files own orchestration only.
+- Conflict risk: medium for shared domain services; high if migrations or public contracts already exist.
 
 ## Data Model
 - `feature_state`: state machine value, actor, timestamps, source version.
@@ -510,6 +540,11 @@ Persist enough before/after state and relation movement metadata to replay or co
 
 ## Observability
 - Emit counters for preview, apply, blocked apply, rollback, and audit-write failure.
+
+## Decision Traceability
+- `FR-001..FR-004` map to preview, apply, audit, and rollback slices.
+- ADR-001 maps to append-only audit event shape.
+- ADR-002 maps to evidence and promotion gates.
 """,
     )
 
@@ -523,6 +558,13 @@ Persist enough before/after state and relation movement metadata to replay or co
                 "title": text.split(" with ")[0][:80],
                 "status": "planned" if round_number < 3 else "evidence-ready",
                 "owned_surfaces": modules[max(0, min(idx - 1, len(modules) - 1))],
+                "complexity": min(6, 2 + idx),
+                "critical_path": idx <= 2,
+                "parallelizable": idx > 2,
+                "file_ownership": [modules[max(0, min(idx - 1, len(modules) - 1))]],
+                "conflict_risk": "high" if idx == 1 else "medium" if idx == 2 else "low",
+                "dependency_notes": "Depends on prior domain invariant slice." if idx > 1 else "Starts the critical path.",
+                "test_strategy": "focused unit test plus integration/regression verification",
                 "red_command": f"test {case.key} {slice_id} red",
                 "green_command": f"test {case.key} {slice_id} green",
                 "rollback": "Record before/after state and validate compensation path.",

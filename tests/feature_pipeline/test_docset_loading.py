@@ -193,6 +193,12 @@ Forgotten passwords.
         (workspace / "architecture.md").write_text(
             """# Architecture: Reset Password
 
+## Change Delta
+New: reset request and token validation.
+Modified: auth API and email flow.
+Removed: none.
+Unchanged: login.
+
 ## System Context
 Auth owns reset flow.
 
@@ -214,8 +220,17 @@ Audit reset attempts.
 ## Rollback Strategy
 Disable endpoint and preserve login.
 
+## Migration Strategy
+Create token storage before endpoint enablement.
+
 ## Architecture Risks
 Account enumeration.
+
+## Alternatives Considered
+Reuse session tokens; rejected due different expiry and audit behavior.
+
+## Completeness Correctness Coherence
+The architecture covers requirement, risk, rollback, and module communication.
 
 ## ADRs
 None for this sample.

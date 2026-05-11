@@ -9,8 +9,15 @@ slices:
     linked_contracts: []
     dependencies: []
     priority: 1
+    complexity: 3
+    critical_path: true
+    parallelizable: false
+    file_ownership: []
+    conflict_risk: medium
+    dependency_notes: <dependency chain, blockers, and bottlenecks>
     expected_touchpoints: []
     scope_confidence: medium
+    test_strategy: <unit/integration/e2e/manual strategy for this slice>
     tdd:
       failing_test_file: <path>
       red_command: <command>

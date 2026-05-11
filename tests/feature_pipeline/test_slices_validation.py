@@ -57,6 +57,35 @@ class SlicesValidationTests(unittest.TestCase):
         self.assertIn("missing iteration_budget", result.stdout)
         self.assertIn("rollback_point must not be empty", result.stdout)
 
+    def test_slices_require_task_graph_fields(self):
+        workspace = create_workspace(self.tempdir, self.repo, run_id="run-slices-graph")
+        write_planning_artifacts(workspace)
+        slices_path = workspace / "slices.yaml"
+        data = yaml.safe_load(slices_path.read_text(encoding="utf-8"))
+        data["slices"][0]["complexity"] = 11
+        data["slices"][0]["critical_path"] = "yes"
+        data["slices"][0]["parallelizable"] = "no"
+        data["slices"][0]["file_ownership"] = []
+        data["slices"][0]["conflict_risk"] = "unknown"
+        data["slices"][0]["dependency_notes"] = ""
+        data["slices"][0]["test_strategy"] = ""
+        slices_path.write_text(yaml.safe_dump(data, sort_keys=False), encoding="utf-8")
+        state_path = workspace / "state.yaml"
+        state = yaml.safe_load(state_path.read_text(encoding="utf-8"))
+        state["gates"]["slicing_readiness"] = "drafted"
+        state_path.write_text(yaml.safe_dump(state, sort_keys=False), encoding="utf-8")
+
+        result = run(["python", str(FEATURECTL), "validate", "--workspace", str(workspace)], self.repo, check=False)
+
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("complexity must be an integer from 1 to 10", result.stdout)
+        self.assertIn("critical_path must be true or false", result.stdout)
+        self.assertIn("parallelizable must be true or false", result.stdout)
+        self.assertIn("file_ownership must be a non-empty list", result.stdout)
+        self.assertIn("conflict_risk must be low, medium, or high", result.stdout)
+        self.assertIn("dependency_notes must not be empty", result.stdout)
+        self.assertIn("test_strategy must not be empty", result.stdout)
+
 
 if __name__ == "__main__":
     unittest.main()

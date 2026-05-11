@@ -12,6 +12,9 @@ Methodology:
 
 - Read `.agents/pipeline-core/references/native-skill-protocol.md`.
 - Apply `methodology/extracted/upstream-pattern-map.md` as the behavioral synthesis of cloned upstream methodologies; cite patterns in `Docs Consulted:` when they influence a decision.
+- Apply `.agents/pipeline-core/references/methodology-lenses.md` for
+  brownfield research, elicitation lenses, change-delta thinking, and
+  completeness/correctness/coherence checks.
 - Confirm the current directory is the feature worktree.
 - Read `apex.md`, `feature.yaml`, `state.yaml`, `execution.md`, and
   `feature.md`.
@@ -26,8 +29,12 @@ Responsibilities:
 
 - load the architecture docset
 - read feature and context findings
+- identify new, modified, removed, and unchanged behavior
 - describe module communication, security model, failure modes, observability,
   rollback, and architecture risks
+- document considered alternatives and why the selected direction fits the
+  existing repository
+- keep claims grounded in inspected files, ADRs, contracts, and tests
 - create ADRs only for significant decisions
 - record docs consulted in `execution.md`
 
@@ -48,6 +55,8 @@ Workflow:
    ```markdown
    # Architecture: <Title>
 
+   ## Change Delta
+
    ## System Context
 
    ## Component Interactions
@@ -62,17 +71,26 @@ Workflow:
 
    ## Rollback Strategy
 
+   ## Migration Strategy
+
    ## Architecture Risks
+
+   ## Alternatives Considered
+
+   ## Completeness Correctness Coherence
 
    ## ADRs
    ```
 
-6. Add diagrams under `diagrams/` when they clarify flow or module boundaries.
-7. Add ADRs under `adrs/` only for significant decisions.
-8. Append `Docs Consulted: Architecture` to `execution.md` with short notes on
+6. In `Change Delta`, explicitly list new, modified, removed, and unchanged
+   behavior. If a category is empty, say so.
+7. Add diagrams under `diagrams/` when they clarify flow or module boundaries.
+8. Add ADRs under `adrs/` only for significant decisions. Each ADR must include
+   alternatives and consequences.
+9. Append `Docs Consulted: Architecture` to `execution.md` with short notes on
    how each document was used.
-9. Set the architecture gate to `drafted` once the artifact exists.
-10. Run:
+10. Set the architecture gate to `drafted` once the artifact exists.
+11. Run:
 
     ```bash
     python .agents/pipeline-core/scripts/featurectl.py validate --workspace <workspace>

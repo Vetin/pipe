@@ -82,8 +82,10 @@ FEATURE_REQUIRED_HEADINGS = (
     "## Open Questions",
 )
 TECH_DESIGN_REQUIRED_HEADINGS = (
+    "## Change Delta",
     "## Implementation Summary",
     "## Modules And Responsibilities",
+    "## Dependency And Ownership Plan",
     "## Contracts",
     "## API/Event/Schema Details",
     "## Core Code Sketches",
@@ -94,6 +96,7 @@ TECH_DESIGN_REQUIRED_HEADINGS = (
     "## Migration Plan",
     "## Rollback Plan",
     "## Integration Notes",
+    "## Decision Traceability",
 )
 
 
@@ -1588,13 +1591,17 @@ def validate_architecture_if_started(workspace: Path, state: dict[str, Any]) -> 
         return ["architecture gate requires architecture.md"]
     content = architecture_path.read_text(encoding="utf-8")
     required_headings = (
+        "## Change Delta",
         "## System Context",
         "## Component Interactions",
         "## Security Model",
         "## Failure Modes",
         "## Observability",
         "## Rollback Strategy",
+        "## Migration Strategy",
         "## Architecture Risks",
+        "## Alternatives Considered",
+        "## Completeness Correctness Coherence",
         "## ADRs",
     )
     blockers = [f"architecture.md missing heading: {heading}" for heading in required_headings if heading not in content]
@@ -1680,8 +1687,15 @@ def validate_slices_file(path: Path, workspace: Path | None = None) -> list[str]
             "linked_contracts",
             "dependencies",
             "priority",
+            "complexity",
+            "critical_path",
+            "parallelizable",
+            "file_ownership",
+            "conflict_risk",
+            "dependency_notes",
             "expected_touchpoints",
             "scope_confidence",
+            "test_strategy",
             "verification_commands",
             "review_focus",
             "evidence_status",
@@ -1707,6 +1721,20 @@ def validate_slices_file(path: Path, workspace: Path | None = None) -> list[str]
                     blockers.append(f"{prefix} links unknown acceptance criterion {criterion}")
         if item.get("scope_confidence") not in {"low", "medium", "high"}:
             blockers.append(f"{prefix} scope_confidence must be low, medium, or high")
+        if not isinstance(item.get("complexity"), int) or not 1 <= item.get("complexity", 0) <= 10:
+            blockers.append(f"{prefix} complexity must be an integer from 1 to 10")
+        if not isinstance(item.get("critical_path"), bool):
+            blockers.append(f"{prefix} critical_path must be true or false")
+        if not isinstance(item.get("parallelizable"), bool):
+            blockers.append(f"{prefix} parallelizable must be true or false")
+        if item.get("conflict_risk") not in {"low", "medium", "high"}:
+            blockers.append(f"{prefix} conflict_risk must be low, medium, or high")
+        file_ownership = item.get("file_ownership")
+        if not isinstance(file_ownership, list) or not file_ownership:
+            blockers.append(f"{prefix} file_ownership must be a non-empty list")
+        for field in ("dependency_notes", "test_strategy"):
+            if field in item and not str(item.get(field) or "").strip():
+                blockers.append(f"{prefix} {field} must not be empty")
         for dependency in item.get("dependencies") or []:
             if dependency not in all_ids:
                 blockers.append(f"{prefix} depends on unknown slice {dependency}")

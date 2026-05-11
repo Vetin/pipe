@@ -3,7 +3,7 @@
 - Native run: `/Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-native-debug`
 - Init profile run: `/Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/init-profile-runs/20260512-init-profile`
 - Repeated passes: `3`
-- Generated at: `2026-05-11T23:06:21.006049+00:00`
+- Generated at: `2026-05-11T23:13:39.127419+00:00`
 
 ## Pass Summary
 
@@ -57,8 +57,8 @@
 - `pass` `twenty-enterprise-duplicate-merge-with-preview-conflict-rules-and-rollback_round3_artifacts`: round 3 artifacts exist
 - `pass` `init_project_index_exists`: project-index.yaml exists
 - `pass` `init_project_snapshot_exists`: project-snapshot.md exists
-- `pass` `init_source_count`: source files: 14
-- `pass` `init_test_count`: test files: 32
+- `pass` `init_source_count`: source files: 15
+- `pass` `init_test_count`: test files: 33
 - `pass` `init_feature_signals`: feature signals extracted
 - `pass` `init_feature_catalog`: feature catalog extracted
 - `pass` `init_current_feature_picture`: features overview describes current feature picture
@@ -123,8 +123,8 @@
 - `pass` `twenty-enterprise-duplicate-merge-with-preview-conflict-rules-and-rollback_round3_artifacts`: round 3 artifacts exist
 - `pass` `init_project_index_exists`: project-index.yaml exists
 - `pass` `init_project_snapshot_exists`: project-snapshot.md exists
-- `pass` `init_source_count`: source files: 14
-- `pass` `init_test_count`: test files: 32
+- `pass` `init_source_count`: source files: 15
+- `pass` `init_test_count`: test files: 33
 - `pass` `init_feature_signals`: feature signals extracted
 - `pass` `init_feature_catalog`: feature catalog extracted
 - `pass` `init_current_feature_picture`: features overview describes current feature picture
@@ -189,8 +189,8 @@
 - `pass` `twenty-enterprise-duplicate-merge-with-preview-conflict-rules-and-rollback_round3_artifacts`: round 3 artifacts exist
 - `pass` `init_project_index_exists`: project-index.yaml exists
 - `pass` `init_project_snapshot_exists`: project-snapshot.md exists
-- `pass` `init_source_count`: source files: 14
-- `pass` `init_test_count`: test files: 32
+- `pass` `init_source_count`: source files: 15
+- `pass` `init_test_count`: test files: 33
 - `pass` `init_feature_signals`: feature signals extracted
 - `pass` `init_feature_catalog`: feature catalog extracted
 - `pass` `init_current_feature_picture`: features overview describes current feature picture
