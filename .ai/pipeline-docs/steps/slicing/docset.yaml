@@ -1,0 +1,18 @@
+artifact_contract_version: '0.1.0'
+step: slicing
+required_docs:
+  - .ai/constitution.md
+  - .ai/pipeline-docs/global/testing-standards.md
+  - .ai/pipeline-docs/steps/slicing/overview.md
+  - .ai/pipeline-docs/steps/slicing/checklist.md
+optional_docs:
+  - .ai/knowledge/testing-overview.md
+selected_alternatives: []
+suggested_related_files:
+  - tests/
+  - src/
+budget:
+  max_related_features: 5
+  max_doc_chars: 60000
+  required_docs_first: true
+  summarize_large_docs: true

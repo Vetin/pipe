@@ -14,3 +14,29 @@ Responsibilities:
 - include expected touchpoints, red command, expected failure, green command,
   verification commands, review focus, evidence status, and status
 - avoid hard allowed-file or forbidden-file enforcement in v1
+
+Workflow:
+
+1. Confirm the current directory is the feature worktree.
+2. Read `feature.md`, `architecture.md`, `tech-design.md`, `state.yaml`, and
+   `execution.md`.
+3. Run:
+
+   ```bash
+   python .agents/pipeline-core/scripts/featurectl.py load-docset --workspace <workspace> --step slicing
+   ```
+
+4. Create `slices.yaml` with `artifact_contract_version`, `feature_key`, and a
+   `slices` list.
+5. For each slice include `id`, `title`, linked requirements, linked acceptance
+   criteria, dependencies, priority, expected touchpoints, scope confidence,
+   `tdd.failing_test_file`, `tdd.red_command`, `tdd.expected_failure`,
+   `tdd.green_command`, verification commands, review focus, evidence status,
+   and status.
+   Slice IDs must be unique `S-###` values. Dependencies must reference existing
+   slice IDs. Requirement and acceptance-criteria links must reference IDs that
+   appear in `feature.md`.
+6. Set `slicing_readiness` to `drafted`.
+7. Run `featurectl.py validate --workspace <workspace>`.
+
+Do not use `allowed_files` or `forbidden_files` in v1.

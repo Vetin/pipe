@@ -14,3 +14,41 @@ Responsibilities:
 - define APIs, schemas, events, internal contracts, data model, error handling,
   security considerations, tests, migration, rollback, and integration notes
 - record docs consulted in `execution.md`
+
+Workflow:
+
+1. Confirm the current directory is the feature worktree.
+2. Read `apex.md`, `feature.yaml`, `state.yaml`, `execution.md`,
+   `feature.md`, and `architecture.md`.
+3. Run:
+
+   ```bash
+   python .agents/pipeline-core/scripts/featurectl.py load-docset --workspace <workspace> --step tech-design
+   ```
+
+4. Draft `tech-design.md` with:
+
+   ```markdown
+   # Technical Design: <Title>
+
+   ## Implementation Summary
+   ## Modules And Responsibilities
+   ## Contracts
+   ## API/Event/Schema Details
+   ## Core Code Sketches
+   ## Data Model
+   ## Error Handling
+   ## Security Considerations
+   ## Test Strategy
+   ## Migration Plan
+   ## Rollback Plan
+   ## Integration Notes
+   ```
+
+5. Add structured contracts under `contracts/` when the design exposes or
+   consumes API, event, schema, database, or internal module contracts.
+6. Record `Docs Consulted: Technical Design` in `execution.md`.
+7. Set the technical design gate to `drafted`.
+8. Run `featurectl.py validate --workspace <workspace>`.
+
+Do not create implementation slices or code in this step.

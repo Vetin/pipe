@@ -1,0 +1,23 @@
+artifact_contract_version: '0.1.0'
+step: tech-design
+required_docs:
+  - .ai/constitution.md
+  - .ai/knowledge/tech-design-overview.md
+  - .ai/knowledge/contracts-overview.md
+  - .ai/pipeline-docs/global/coding-standards.md
+  - .ai/pipeline-docs/global/testing-standards.md
+  - .ai/pipeline-docs/steps/tech-design/overview.md
+  - .ai/pipeline-docs/steps/tech-design/checklist.md
+optional_docs:
+  - .ai/knowledge/module-map.md
+  - .ai/knowledge/integration-map.md
+selected_alternatives: []
+suggested_related_files:
+  - src/
+  - tests/
+  - docs/
+budget:
+  max_related_features: 5
+  max_doc_chars: 60000
+  required_docs_first: true
+  summarize_large_docs: true
