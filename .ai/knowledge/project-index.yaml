@@ -1,17 +1,17 @@
 artifact_contract_version: 0.1.0
 generated_by: featurectl.py init --profile-project
-generated_at: '2026-05-11T23:57:11Z'
+generated_at: '2026-05-11T23:58:57Z'
 project:
   name: harness-pipeline
   root: /Users/egormasnankin/work/harness-pipeline
   branch: main
-  head: 461e3b5
+  head: 693c0a7
   remote: none
 counts:
-  tracked_files: 956
-  profiled_files: 223
+  tracked_files: 957
+  profiled_files: 224
   source_files: 15
-  test_files: 33
+  test_files: 34
   doc_files: 96
   contract_files: 20
   integration_files: 4
@@ -25,7 +25,7 @@ module_dirs:
 - path: .ai
   tracked_files: 58
 - path: tests
-  tracked_files: 33
+  tracked_files: 34
 source_examples:
 - .agents/pipeline-core/scripts/featurectl.py
 - .agents/pipeline-core/scripts/pipelinebench.py
@@ -45,6 +45,7 @@ source_examples:
 test_examples:
 - tests/feature_pipeline/.gitkeep
 - tests/feature_pipeline/plan_test_helpers.py
+- tests/feature_pipeline/test_agents_policy.py
 - tests/feature_pipeline/test_codex_e2e_runner.py
 - tests/feature_pipeline/test_context_skill_contract.py
 - tests/feature_pipeline/test_docset_loading.py
@@ -72,7 +73,6 @@ test_examples:
 - tests/feature_pipeline/test_skill_candidate_isolation.py
 - tests/feature_pipeline/test_slices_validation.py
 - tests/feature_pipeline/test_staleness.py
-- tests/feature_pipeline/test_state_machine.py
 doc_examples:
 - .agents/pipeline-core/references/README.md
 - .agents/pipeline-core/references/artifact-requirements.md
