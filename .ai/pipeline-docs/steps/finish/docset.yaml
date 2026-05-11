@@ -2,6 +2,7 @@ artifact_contract_version: '0.1.0'
 step: finish
 required_docs:
   - .agents/pipeline-core/references/native-skill-protocol.md
+  - .agents/pipeline-core/references/methodology-lenses.md
   - methodology/extracted/upstream-pattern-map.md
   - methodology/extracted/artifact-model.md
   - methodology/extracted/review-and-verification.md

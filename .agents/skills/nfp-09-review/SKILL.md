@@ -12,6 +12,9 @@ Methodology:
 
 - Read `.agents/pipeline-core/references/native-skill-protocol.md`.
 - Apply `methodology/extracted/upstream-pattern-map.md` as the behavioral synthesis of cloned upstream methodologies; cite patterns in `Docs Consulted:` when they influence a decision.
+- Apply `.agents/pipeline-core/references/methodology-lenses.md` for
+  adversarial review, hard/soft findings, zero-finding justification, and claim
+  provenance.
 - Confirm the current directory is the feature worktree.
 - Read `apex.md`, `feature.yaml`, `state.yaml`, `execution.md`,
   `feature.md`, `architecture.md`, `tech-design.md`, and `slices.yaml`.
@@ -27,6 +30,11 @@ Responsibilities:
 - run deterministic validation through `featurectl.py validate --review`
 - perform or delegate spec, code quality, security, architecture, contract, test,
   regression, and performance review according to the requested tier
+- actively search for defects; do not treat review as confirmation
+- separate hard findings that block verification from soft concerns that can be
+  tracked as residual risk
+- explain zero-finding reviews with inspected artifacts, commands, and risk
+  lenses used
 - write review files under `reviews/`
 - block verification for critical findings
 
@@ -51,12 +59,17 @@ Workflow:
    - `strict_review`: basic review plus security, contract, and test quality
    - `enterprise_review`: strict review plus performance, regression risk, and
      architecture compliance
-6. Write structured findings as `reviews/*.yaml` using severity `critical`,
+6. Use at least these review lenses: requirement traceability, permission/RBAC,
+   data loss or rollback, stale/replay/idempotency, test evidence, migration,
+   observability, and plan drift.
+7. Write structured findings as `reviews/*.yaml` using severity `critical`,
    `major`, `minor`, or `note`.
-7. Mark critical findings as `blocking: true`.
-8. Set the review gate to `blocked` if critical blocking findings exist;
+8. Mark critical findings as `blocking: true`.
+9. If no findings are written, create a note-level review record explaining why
+   no blocking or soft findings remain and cite evidence.
+10. Set the review gate to `blocked` if critical blocking findings exist;
    otherwise set it to `complete`.
-9. Run `featurectl.py validate --workspace <workspace> --review`.
+11. Run `featurectl.py validate --workspace <workspace> --review`.
 
 Critical findings block verification.
 

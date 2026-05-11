@@ -12,6 +12,8 @@ Methodology:
 
 - Read `.agents/pipeline-core/references/native-skill-protocol.md`.
 - Apply `methodology/extracted/upstream-pattern-map.md` as the behavioral synthesis of cloned upstream methodologies; cite patterns in `Docs Consulted:` when they influence a decision.
+- Apply `.agents/pipeline-core/references/methodology-lenses.md` for fresh
+  verification, promotion memory, source revision, and conflict safety.
 - Confirm the current directory is the feature worktree.
 - Read `apex.md`, `feature.yaml`, `state.yaml`, `execution.md`, and
   `feature-card.md`.
@@ -25,6 +27,10 @@ Responsibilities:
 
 - validate finish state
 - check canonical path conflicts
+- confirm final verification was recorded after the last implementation/review
+  change
+- confirm promoted memory includes verification debt, manual validation, claim
+  provenance, source revision, and rollback guidance
 - promote the workspace to `.ai/features/<domain>/<slug>/`
 - regenerate `.ai/features/index.yaml`
 - archive conflicting variants only when explicitly requested
@@ -44,15 +50,19 @@ Workflow:
    python .agents/pipeline-core/scripts/featurectl.py validate --workspace <workspace>
    ```
 
-4. Run:
+4. Recheck `feature-card.md`, `reviews/verification-review.md`,
+   `evidence/final-verification-output.log`, and `evidence/manifest.yaml` for
+   source revision, verification debt, manual validation, claim provenance, and
+   rollback guidance.
+5. Run:
 
    ```bash
    python .agents/pipeline-core/scripts/featurectl.py promote --workspace <workspace> --conflict abort
    ```
 
-5. If a canonical feature already exists, stop by default.
-6. Use `--conflict archive-as-variant` only when the user explicitly approves
+6. If a canonical feature already exists, stop by default.
+7. Use `--conflict archive-as-variant` only when the user explicitly approves
    archiving the existing canonical feature as a variant.
-7. Confirm `.ai/features/index.yaml` contains the promoted feature key.
+8. Confirm `.ai/features/index.yaml` contains the promoted feature key.
 
 Do not implement merge or replace conflict behavior in v1.

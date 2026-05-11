@@ -1,14 +1,14 @@
 artifact_contract_version: 0.1.0
 generated_by: featurectl.py init --profile-project
-generated_at: '2026-05-11T23:13:38Z'
+generated_at: '2026-05-11T23:19:53Z'
 project:
   name: harness-pipeline
   root: /Users/egormasnankin/work/harness-pipeline
   branch: main
-  head: 822f3d9
+  head: e66113b
   remote: none
 counts:
-  tracked_files: 494
+  tracked_files: 586
   profiled_files: 232
   source_files: 15
   test_files: 33

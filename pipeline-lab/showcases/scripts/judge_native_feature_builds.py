@@ -131,7 +131,9 @@ def judge_card(card: dict[str, Any]) -> CaseJudgment:
     tech_design = read_text(artifact_path(card, "tech_design"))
     slices = read_text(artifact_path(card, "slices"))
     review = read_text(artifact_path(card, "review"))
+    verification_review = read_text(artifact_path(card, "verification_review"))
     evidence = read_text(artifact_path(card, "evidence"))
+    final_output = read_text(artifact_path(card, "final_verification_output"))
     feature_card = read_text(artifact_path(card, "feature_card"))
 
     dimensions = {
@@ -202,8 +204,24 @@ def judge_card(card: dict[str, Any]) -> CaseJudgment:
             ),
         ),
         "review_evidence": score_terms(
-            review + "\n" + evidence + "\n" + feature_card,
-            ("Blocking", "Findings", "evidence", "commands", "judge_dimensions", "promotion", "verification"),
+            review + "\n" + verification_review + "\n" + evidence + "\n" + final_output + "\n" + feature_card,
+            (
+                "Blocking",
+                "Hard Findings",
+                "Soft Concerns",
+                "Zero-Finding Justification",
+                "Manual Validation",
+                "Verification Debt",
+                "Claim Provenance",
+                "Rollback Guidance",
+                "source_revision",
+                "final-verification-output",
+                "evidence",
+                "commands",
+                "judge_dimensions",
+                "promotion",
+                "verification",
+            ),
         ),
     }
     overall = round(mean(dimensions.values()), 3)

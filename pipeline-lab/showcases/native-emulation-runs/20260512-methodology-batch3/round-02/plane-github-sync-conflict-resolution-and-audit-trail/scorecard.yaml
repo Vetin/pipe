@@ -1,0 +1,29 @@
+case: plane-github-sync-conflict-resolution-and-audit-trail
+source: Plane
+feature: GitHub sync conflict resolution and audit trail
+round: 2
+profile: risk-closed
+overall: 0.89
+high_quality: false
+weakest_dimension: evidence_validation
+prompt_improvement: Closes weak baseline areas by forcing traceability, risk gates,
+  and test surfaces.
+dimensions:
+  native_prompt: 1.0
+  artifact_contract: 0.9
+  repo_context: 0.86
+  architecture_design: 0.88
+  slicing_tdd: 0.86
+  review_security: 0.88
+  evidence_validation: 0.85
+artifacts:
+  feature: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-methodology-batch3/round-02/plane-github-sync-conflict-resolution-and-audit-trail/artifacts/feature.md
+  repo_context: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-methodology-batch3/round-02/plane-github-sync-conflict-resolution-and-audit-trail/artifacts/repo-context.md
+  architecture: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-methodology-batch3/round-02/plane-github-sync-conflict-resolution-and-audit-trail/artifacts/architecture.md
+  tech_design: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-methodology-batch3/round-02/plane-github-sync-conflict-resolution-and-audit-trail/artifacts/tech-design.md
+  slices: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-methodology-batch3/round-02/plane-github-sync-conflict-resolution-and-audit-trail/artifacts/slices.yaml
+  review: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-methodology-batch3/round-02/plane-github-sync-conflict-resolution-and-audit-trail/artifacts/reviews/review.md
+  verification_review: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-methodology-batch3/round-02/plane-github-sync-conflict-resolution-and-audit-trail/artifacts/reviews/verification-review.md
+  evidence: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-methodology-batch3/round-02/plane-github-sync-conflict-resolution-and-audit-trail/artifacts/evidence/manifest.yaml
+  final_verification_output: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-methodology-batch3/round-02/plane-github-sync-conflict-resolution-and-audit-trail/artifacts/evidence/final-verification-output.log
+  feature_card: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-methodology-batch3/round-02/plane-github-sync-conflict-resolution-and-audit-trail/artifacts/feature-card.md

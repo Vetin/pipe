@@ -586,8 +586,41 @@ Review feature contract, repository context, architecture, technical design, sli
 - No external integration path can replay stale data over newer state.
 - No final promotion is allowed while critical/high findings remain open.
 
+## Hard Findings
+- None open in round {round_number}; live implementation must record any critical or major blocker as structured YAML.
+
+## Soft Concerns
+- Confirm exact module ownership and migration mechanics during source-backed implementation.
+
+## Zero-Finding Justification
+Round {round_number} review inspected feature contract, repository context, architecture, technical design, slices, evidence plan, rollback, and stale/replay controls.
+
+## Claim Provenance
+- Contract claims: `feature.md`
+- Design claims: `architecture.md` and `tech-design.md`
+- Slice claims: `slices.yaml`
+- Evidence claims: `evidence/manifest.yaml`
+
 ## Findings
 - None in round {round_number}; residual risk is tracked in the scorecard when repo inspection is incomplete.
+""",
+    )
+
+    write_text(
+        reviews / "verification-review.md",
+        f"""# Verification Review: {case.feature}
+
+## Commands
+- Planned final command: run repository tests, lint/typecheck when configured, and focused slice checks.
+
+## Manual Validation
+- Status: required for user-visible workflows before promotion; not executed in offline emulation.
+- UAT owner: live implementation agent or user delegate.
+
+## Verification Debt
+- Debt: live source inspection and repository command execution are outside this offline emulation.
+- Risk: generated artifacts must be replayed in the checkout before production merge.
+- Follow-up: run the round-3 prompt in the target repository and replace planned evidence with raw command output.
 """,
     )
 
@@ -597,6 +630,20 @@ Review feature contract, repository context, architecture, technical design, sli
             {
                 "case": case.key,
                 "round": round_number,
+                "run_id": run_dir.parents[1].name,
+                "source_revision": "offline-emulation-source-map",
+                "manual_validation": {
+                    "status": "planned",
+                    "note": "Run UAT/manual validation in the live checkout for user-visible workflows.",
+                },
+                "verification_debt": [
+                    {
+                        "check": "live repository command execution",
+                        "risk": "offline emulation cannot prove code compiles in target checkout",
+                        "owner": "implementation agent",
+                        "follow_up": "replace planned evidence with raw command output",
+                    }
+                ],
                 "commands": [
                     {"name": "contract-lint", "status": "planned", "scope": "feature.md"},
                     {"name": "slice-red-green", "status": "planned", "scope": "slices.yaml"},
@@ -618,6 +665,11 @@ Review feature contract, repository context, architecture, technical design, sli
     )
 
     write_text(
+        evidence / "final-verification-output.log",
+        "final-verification-output: offline emulation planned verification; live run must replace this with repository command output\n",
+    )
+
+    write_text(
         artifacts / "feature-card.md",
         f"""# Feature Card: {case.feature}
 
@@ -626,6 +678,27 @@ Review feature contract, repository context, architecture, technical design, sli
 - Final behavior: {case.expected_result}
 - Safety: permissions, audit, rollback, verification, and promotion memory are mandatory.
 - Best next live step: run a local Codex implementation session from `prompt.md` in the target checkout.
+
+## Manual Validation
+- Planned for user-visible workflow after live implementation.
+
+## Verification Debt
+- Offline emulation does not execute target repository tests; live run must close this debt.
+
+## Claim Provenance
+- Feature behavior: `feature.md`
+- Architecture and design: `architecture.md`, `tech-design.md`
+- Task graph: `slices.yaml`
+- Review and verification: `reviews/review.md`, `reviews/verification-review.md`, `evidence/manifest.yaml`
+
+## Rollback Guidance
+- Preserve before/after state, audit event ids, and compensating action notes for every destructive transition.
+
+## Plan Drift
+- None in offline emulation; live implementation must mark stale artifacts if code changes the plan.
+
+## Source Revision
+- Offline source map only; live implementation must record git commit or diff hash.
 """,
     )
 
@@ -636,7 +709,9 @@ Review feature contract, repository context, architecture, technical design, sli
         "tech_design": str(artifacts / "tech-design.md"),
         "slices": str(artifacts / "slices.yaml"),
         "review": str(reviews / "review.md"),
+        "verification_review": str(reviews / "verification-review.md"),
         "evidence": str(evidence / "manifest.yaml"),
+        "final_verification_output": str(evidence / "final-verification-output.log"),
         "feature_card": str(artifacts / "feature-card.md"),
     }
 

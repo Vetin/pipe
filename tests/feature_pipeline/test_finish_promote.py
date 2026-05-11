@@ -51,6 +51,18 @@ class FinishPromoteTests(unittest.TestCase):
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("finish requires feature-card.md", result.stdout)
 
+    def test_finish_validation_requires_feature_card_operational_sections(self):
+        workspace = self.completed_workspace("run-finish-sections")
+        (workspace / "feature-card.md").write_text("# Feature Card: auth/reset-password\n\nThin summary.\n", encoding="utf-8")
+
+        result = run([sys.executable, str(SCRIPT), "validate", "--workspace", str(workspace)], self.repo, check=False)
+
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("feature-card.md missing heading: ## Manual Validation", result.stdout)
+        self.assertIn("feature-card.md missing heading: ## Verification Debt", result.stdout)
+        self.assertIn("feature-card.md missing heading: ## Claim Provenance", result.stdout)
+        self.assertIn("feature-card.md missing heading: ## Rollback Guidance", result.stdout)
+
     def test_promote_copies_workspace_and_regenerates_index(self):
         workspace = self.completed_workspace("run-promote")
 
@@ -118,10 +130,32 @@ class FinishPromoteTests(unittest.TestCase):
             ),
             encoding="utf-8",
         )
-        (workspace / "reviews/verification-review.md").write_text("# Verification Review\n\nPassed.\n", encoding="utf-8")
+        (workspace / "reviews/verification-review.md").write_text(
+            "# Verification Review\n\nPassed.\n\n## Manual Validation\n\nNot applicable.\n\n## Verification Debt\n\nNone.\n",
+            encoding="utf-8",
+        )
         (workspace / "evidence/final-verification-output.log").write_text("tests passed\n", encoding="utf-8")
         (workspace / "feature-card.md").write_text(
-            "# Feature Card: auth/reset-password\n\nIntent, architecture, contracts, tests, reviews, and evidence summarized.\n",
+            """# Feature Card: auth/reset-password
+
+Intent, architecture, contracts, tests, reviews, and evidence summarized.
+
+## Manual Validation
+
+Not applicable.
+
+## Verification Debt
+
+None.
+
+## Claim Provenance
+
+Final claims map to feature.md, slices.yaml, evidence/manifest.yaml, and final verification output.
+
+## Rollback Guidance
+
+Disable reset endpoints and preserve existing login behavior.
+""",
             encoding="utf-8",
         )
         state_path = workspace / "state.yaml"

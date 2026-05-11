@@ -1867,9 +1867,16 @@ def validate_verification_if_started(workspace: Path, state: dict[str, Any]) -> 
     verification_review = workspace / "reviews/verification-review.md"
     if not verification_review.exists():
         blockers.append("verification gate requires reviews/verification-review.md")
+    else:
+        content = verification_review.read_text(encoding="utf-8")
+        for heading in ("## Manual Validation", "## Verification Debt"):
+            if heading not in content:
+                blockers.append(f"verification review missing heading: {heading}")
     final_output = workspace / "evidence/final-verification-output.log"
     if not final_output.exists():
         blockers.append("verification gate requires evidence/final-verification-output.log")
+    elif not final_output.read_text(encoding="utf-8").strip():
+        blockers.append("verification gate requires non-empty final verification output")
     blockers.extend(validate_review_minimum(workspace))
     return blockers
 
@@ -1879,8 +1886,14 @@ def validate_finish_if_started(workspace: Path, state: dict[str, Any]) -> list[s
     if gate not in {"drafted", "approved", "delegated", "complete"} and state.get("current_step") not in {"finish", "promote"}:
         return []
     blockers = []
-    if not (workspace / "feature-card.md").exists():
+    feature_card = workspace / "feature-card.md"
+    if not feature_card.exists():
         blockers.append("finish requires feature-card.md")
+    else:
+        content = feature_card.read_text(encoding="utf-8")
+        for heading in ("## Manual Validation", "## Verification Debt", "## Claim Provenance", "## Rollback Guidance"):
+            if heading not in content:
+                blockers.append(f"feature-card.md missing heading: {heading}")
     stale = state.get("stale") or {}
     if stale.get("feature_card"):
         blockers.append("finish blocked by stale feature_card")

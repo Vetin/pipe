@@ -1,11 +1,11 @@
 artifact_contract_version: 0.1.0
 judge_mode: deterministic-llm-style
-generated_at: '2026-05-11T23:13:30.838368+00:00'
+generated_at: '2026-05-11T23:19:46.019874+00:00'
 runs:
 - summary_path: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-native-debug/summary.yaml
   run_id: 20260512-native-debug
   judge_mode: deterministic-llm-style
-  case_average: 0.689
+  case_average: 0.614
   methodology_coverage:
     overall: 1.0
     dimensions:
@@ -36,7 +36,7 @@ runs:
     - /Users/egormasnankin/work/harness-pipeline/.agents/skills/nfp-10-verification/SKILL.md
     - /Users/egormasnankin/work/harness-pipeline/.agents/skills/nfp-01-context/SKILL.md
     - /Users/egormasnankin/work/harness-pipeline/.agents/pipeline-core/references/methodology-lenses.md
-  overall: 0.845
+  overall: 0.807
   high_quality: false
   hard_failures: []
   cases:
@@ -44,8 +44,8 @@ runs:
     source: Twenty
     feature: Enterprise duplicate merge with preview, conflict rules, and rollback
     round: 3
-    overall: 0.712
-    weakest_dimension: slicing_tdd
+    overall: 0.637
+    weakest_dimension: review_evidence
     high_quality: false
     hard_failures: []
     dimensions:
@@ -55,13 +55,13 @@ runs:
       repo_context_research: 0.75
       architecture_design: 0.462
       slicing_tdd: 0.417
-      review_evidence: 0.857
+      review_evidence: 0.333
   - case: medusa-b2b-quote-to-order-approval-workflow
     source: Medusa
     feature: B2B quote-to-order approval workflow
     round: 3
-    overall: 0.677
-    weakest_dimension: slicing_tdd
+    overall: 0.602
+    weakest_dimension: review_evidence
     high_quality: false
     hard_failures: []
     dimensions:
@@ -71,13 +71,13 @@ runs:
       repo_context_research: 0.5
       architecture_design: 0.462
       slicing_tdd: 0.417
-      review_evidence: 0.857
+      review_evidence: 0.333
   - case: plane-github-sync-conflict-resolution-and-audit-trail
     source: Plane
     feature: GitHub sync conflict resolution and audit trail
     round: 3
-    overall: 0.677
-    weakest_dimension: slicing_tdd
+    overall: 0.602
+    weakest_dimension: review_evidence
     high_quality: false
     hard_failures: []
     dimensions:
@@ -87,11 +87,11 @@ runs:
       repo_context_research: 0.5
       architecture_design: 0.462
       slicing_tdd: 0.417
-      review_evidence: 0.857
+      review_evidence: 0.333
 - summary_path: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-methodology-batch1/summary.yaml
   run_id: 20260512-methodology-batch1
   judge_mode: deterministic-llm-style
-  case_average: 0.84
+  case_average: 0.754
   methodology_coverage:
     overall: 1.0
     dimensions:
@@ -122,7 +122,7 @@ runs:
     - /Users/egormasnankin/work/harness-pipeline/.agents/skills/nfp-10-verification/SKILL.md
     - /Users/egormasnankin/work/harness-pipeline/.agents/skills/nfp-01-context/SKILL.md
     - /Users/egormasnankin/work/harness-pipeline/.agents/pipeline-core/references/methodology-lenses.md
-  overall: 0.92
+  overall: 0.877
   high_quality: true
   hard_failures: []
   cases:
@@ -130,8 +130,8 @@ runs:
     source: Twenty
     feature: Enterprise duplicate merge with preview, conflict rules, and rollback
     round: 3
-    overall: 0.84
-    weakest_dimension: slicing_tdd
+    overall: 0.754
+    weakest_dimension: review_evidence
     high_quality: false
     hard_failures: []
     dimensions:
@@ -141,13 +141,13 @@ runs:
       repo_context_research: 1.0
       architecture_design: 0.462
       slicing_tdd: 0.417
-      review_evidence: 1.0
+      review_evidence: 0.4
   - case: medusa-b2b-quote-to-order-approval-workflow
     source: Medusa
     feature: B2B quote-to-order approval workflow
     round: 3
-    overall: 0.84
-    weakest_dimension: slicing_tdd
+    overall: 0.754
+    weakest_dimension: review_evidence
     high_quality: false
     hard_failures: []
     dimensions:
@@ -157,13 +157,13 @@ runs:
       repo_context_research: 1.0
       architecture_design: 0.462
       slicing_tdd: 0.417
-      review_evidence: 1.0
+      review_evidence: 0.4
   - case: plane-github-sync-conflict-resolution-and-audit-trail
     source: Plane
     feature: GitHub sync conflict resolution and audit trail
     round: 3
-    overall: 0.84
-    weakest_dimension: slicing_tdd
+    overall: 0.754
+    weakest_dimension: review_evidence
     high_quality: false
     hard_failures: []
     dimensions:
@@ -173,9 +173,95 @@ runs:
       repo_context_research: 1.0
       architecture_design: 0.462
       slicing_tdd: 0.417
-      review_evidence: 1.0
+      review_evidence: 0.4
 - summary_path: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-methodology-batch2/summary.yaml
   run_id: 20260512-methodology-batch2
+  judge_mode: deterministic-llm-style
+  case_average: 0.914
+  methodology_coverage:
+    overall: 1.0
+    dimensions:
+      adaptive_rigor: 1.0
+      ambiguity_taxonomy: 1.0
+      bounded_clarification: 1.0
+      brownfield_reuse: 1.0
+      source_provenance: 1.0
+      task_graph: 1.0
+      tdd_law: 1.0
+      adversarial_review: 1.0
+      verification_debt: 1.0
+      eval_metrics: 1.0
+    missing_or_weak: []
+    scanned_files:
+    - /Users/egormasnankin/work/harness-pipeline/.agents/skills/nfp-04-tech-design/SKILL.md
+    - /Users/egormasnankin/work/harness-pipeline/.agents/skills/nfp-09-review/SKILL.md
+    - /Users/egormasnankin/work/harness-pipeline/.agents/skills/nfp-07-worktree/SKILL.md
+    - /Users/egormasnankin/work/harness-pipeline/.agents/skills/nfp-02-feature-contract/SKILL.md
+    - /Users/egormasnankin/work/harness-pipeline/.agents/skills/nfp-11-finish/SKILL.md
+    - /Users/egormasnankin/work/harness-pipeline/.agents/skills/nfp-06-readiness/SKILL.md
+    - /Users/egormasnankin/work/harness-pipeline/.agents/skills/project-init/SKILL.md
+    - /Users/egormasnankin/work/harness-pipeline/.agents/skills/nfp-12-promote/SKILL.md
+    - /Users/egormasnankin/work/harness-pipeline/.agents/skills/nfp-03-architecture/SKILL.md
+    - /Users/egormasnankin/work/harness-pipeline/.agents/skills/nfp-05-slicing/SKILL.md
+    - /Users/egormasnankin/work/harness-pipeline/.agents/skills/nfp-00-intake/SKILL.md
+    - /Users/egormasnankin/work/harness-pipeline/.agents/skills/nfp-08-tdd-implementation/SKILL.md
+    - /Users/egormasnankin/work/harness-pipeline/.agents/skills/nfp-10-verification/SKILL.md
+    - /Users/egormasnankin/work/harness-pipeline/.agents/skills/nfp-01-context/SKILL.md
+    - /Users/egormasnankin/work/harness-pipeline/.agents/pipeline-core/references/methodology-lenses.md
+  overall: 0.957
+  high_quality: true
+  hard_failures: []
+  cases:
+  - case: twenty-enterprise-duplicate-merge-with-preview-conflict-rules-and-rollback
+    source: Twenty
+    feature: Enterprise duplicate merge with preview, conflict rules, and rollback
+    round: 3
+    overall: 0.914
+    weakest_dimension: review_evidence
+    high_quality: true
+    hard_failures: []
+    dimensions:
+      native_prompt_integrity: 1.0
+      artifact_completeness: 1.0
+      contract_clarity: 1.0
+      repo_context_research: 1.0
+      architecture_design: 1.0
+      slicing_tdd: 1.0
+      review_evidence: 0.4
+  - case: medusa-b2b-quote-to-order-approval-workflow
+    source: Medusa
+    feature: B2B quote-to-order approval workflow
+    round: 3
+    overall: 0.914
+    weakest_dimension: review_evidence
+    high_quality: true
+    hard_failures: []
+    dimensions:
+      native_prompt_integrity: 1.0
+      artifact_completeness: 1.0
+      contract_clarity: 1.0
+      repo_context_research: 1.0
+      architecture_design: 1.0
+      slicing_tdd: 1.0
+      review_evidence: 0.4
+  - case: plane-github-sync-conflict-resolution-and-audit-trail
+    source: Plane
+    feature: GitHub sync conflict resolution and audit trail
+    round: 3
+    overall: 0.914
+    weakest_dimension: review_evidence
+    high_quality: true
+    hard_failures: []
+    dimensions:
+      native_prompt_integrity: 1.0
+      artifact_completeness: 1.0
+      contract_clarity: 1.0
+      repo_context_research: 1.0
+      architecture_design: 1.0
+      slicing_tdd: 1.0
+      review_evidence: 0.4
+- summary_path: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-methodology-batch3/summary.yaml
+  run_id: 20260512-methodology-batch3
   judge_mode: deterministic-llm-style
   case_average: 1.0
   methodology_coverage:

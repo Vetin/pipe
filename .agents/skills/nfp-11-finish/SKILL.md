@@ -12,6 +12,9 @@ Methodology:
 
 - Read `.agents/pipeline-core/references/native-skill-protocol.md`.
 - Apply `methodology/extracted/upstream-pattern-map.md` as the behavioral synthesis of cloned upstream methodologies; cite patterns in `Docs Consulted:` when they influence a decision.
+- Apply `.agents/pipeline-core/references/methodology-lenses.md` for claim
+  provenance, verification debt, manual validation, plan drift, and promotion
+  readiness.
 - Confirm the current directory is the feature worktree.
 - Read `apex.md`, `feature.yaml`, `state.yaml`, `execution.md`,
   `feature.md`, `architecture.md`, `tech-design.md`, `slices.yaml`,
@@ -28,6 +31,8 @@ Responsibilities:
 - generate `feature-card.md`
 - write PR summary and final execution summary
 - update living documentation summaries when appropriate
+- do not claim completion without fresh final verification after the last
+  implementation or review fix
 
 Workflow:
 
@@ -35,10 +40,12 @@ Workflow:
 2. Append `Docs Consulted: Finish` to `execution.md`.
 3. Run `featurectl.py validate --workspace <workspace> --evidence`.
 4. Run `featurectl.py validate --workspace <workspace> --review`.
-5. Confirm `reviews/verification-review.md` and final verification output exist.
+5. Confirm `reviews/verification-review.md` and final verification output exist
+   and include manual validation and verification debt state.
 6. Write `feature-card.md` with feature key, intent, requirements, architecture
    summary, contracts, slices, tests, reviews, evidence, and future modification
-   notes.
+   notes. Include `## Manual Validation`, `## Verification Debt`,
+   `## Claim Provenance`, and `## Rollback Guidance`.
 7. Update `execution.md` with final summary and PR summary.
 8. Update `.ai/knowledge` summaries when appropriate.
 9. Set the finish gate to `complete`.
@@ -52,6 +59,10 @@ Feature memory must include:
 - failed attempts and their failure classes
 - stale or replanned artifacts
 - accepted residual risks
+- verification debt and owner/follow-up, or explicit "none"
+- manual/UAT validation result, or explicit "not applicable"
+- claim provenance mapping final claims to artifacts and commands
+- rollback guidance for operators or future agents
 - commands that prove final state
 - plan drift notes explaining what changed from `feature.md`,
   `architecture.md`, `tech-design.md`, and `slices.yaml`

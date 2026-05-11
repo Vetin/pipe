@@ -80,7 +80,10 @@ class ReviewVerificationTests(unittest.TestCase):
     def test_verification_artifacts_validate(self):
         workspace = self.workspace_with_review("note", False, "run-verification-pass")
         (workspace / "evidence/final-verification-output.log").write_text("tests passed\n", encoding="utf-8")
-        (workspace / "reviews/verification-review.md").write_text("# Verification Review\n\nPassed.\n", encoding="utf-8")
+        (workspace / "reviews/verification-review.md").write_text(
+            "# Verification Review\n\nPassed.\n\n## Manual Validation\n\nNot applicable.\n\n## Verification Debt\n\nNone.\n",
+            encoding="utf-8",
+        )
         state_path = workspace / "state.yaml"
         state = yaml.safe_load(state_path.read_text(encoding="utf-8"))
         state["current_step"] = "verification"
@@ -90,6 +93,22 @@ class ReviewVerificationTests(unittest.TestCase):
         result = run([sys.executable, str(SCRIPT), "validate", "--workspace", str(workspace)], self.repo)
 
         self.assertIn("validation: pass", result.stdout)
+
+    def test_verification_review_requires_manual_validation_and_debt(self):
+        workspace = self.workspace_with_review("note", False, "run-verification-sections")
+        (workspace / "evidence/final-verification-output.log").write_text("tests passed\n", encoding="utf-8")
+        (workspace / "reviews/verification-review.md").write_text("# Verification Review\n\nPassed.\n", encoding="utf-8")
+        state_path = workspace / "state.yaml"
+        state = yaml.safe_load(state_path.read_text(encoding="utf-8"))
+        state["current_step"] = "verification"
+        state["gates"]["verification"] = "complete"
+        state_path.write_text(yaml.safe_dump(state, sort_keys=False), encoding="utf-8")
+
+        result = run([sys.executable, str(SCRIPT), "validate", "--workspace", str(workspace)], self.repo, check=False)
+
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("verification review missing heading: ## Manual Validation", result.stdout)
+        self.assertIn("verification review missing heading: ## Verification Debt", result.stdout)
 
     def workspace_with_review(self, severity, blocking, run_id="run-review-critical"):
         workspace = self.create_workspace(run_id)

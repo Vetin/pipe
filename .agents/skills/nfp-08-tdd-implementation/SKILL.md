@@ -12,6 +12,8 @@ Methodology:
 
 - Read `.agents/pipeline-core/references/native-skill-protocol.md`.
 - Apply `methodology/extracted/upstream-pattern-map.md` as the behavioral synthesis of cloned upstream methodologies; cite patterns in `Docs Consulted:` when they influence a decision.
+- Apply `.agents/pipeline-core/references/methodology-lenses.md` for the TDD
+  law, evidence order, failure triage, claim provenance, and eval run metadata.
 - Confirm the current directory is the feature worktree.
 - Read `apex.md`, `feature.yaml`, `state.yaml`, `execution.md`, and
   `slices.yaml`.
@@ -26,10 +28,15 @@ Responsibilities:
 
 - record pre-red git state
 - write failing test first
+- do not write production code for a slice until its focused red test has
+  failed for the expected reason
+- triage wrong red failures before implementation
 - store raw red, green, and verification outputs under `evidence/`
 - record evidence through `featurectl.py record-evidence`
 - complete slices only after evidence order is valid
 - commit each completed slice or record a diff hash
+- update future slices when implementation changes dependencies, ownership,
+  conflict risk, or test strategy
 
 Before implementation:
 
@@ -55,16 +62,19 @@ Per slice:
 1. Record pre-red git state.
 2. Write the failing test first.
 3. Run the slice red command.
-4. Store raw red output with `featurectl.py record-evidence`.
-5. Implement the minimum code needed for green.
-6. Run the slice green command.
-7. Store raw green output with `featurectl.py record-evidence`.
-8. Run verification commands.
-9. Store raw verification output with `featurectl.py record-evidence`.
-10. Run review and store review evidence.
-11. Commit the slice or compute a diff hash.
-12. Run `featurectl.py complete-slice`.
-13. Run `featurectl.py validate --workspace <workspace> --implementation`.
+4. Confirm the red failure matches `tdd.expected_failure`. If the failure is
+   wrong, classify it as `test_bug`, `design_gap`, `scope_change`,
+   `environment_failure`, or `flaky` before writing production code.
+5. Store raw red output with `featurectl.py record-evidence`.
+6. Implement the minimum code needed for green.
+7. Run the slice green command.
+8. Store raw green output with `featurectl.py record-evidence`.
+9. Run verification commands.
+10. Store raw verification output with `featurectl.py record-evidence`.
+11. Run review and store review evidence.
+12. Commit the slice or compute a diff hash.
+13. Run `featurectl.py complete-slice`.
+14. Run `featurectl.py validate --workspace <workspace> --implementation`.
 
 If implementation reveals the plan is wrong, stop, write `scope-change.md`, mark
 affected artifacts stale, and return to the correct earlier skill.

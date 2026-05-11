@@ -6,6 +6,11 @@
 ## Contracts
 ## Slices
 ## Tests And Evidence
+## Manual Validation
 ## Reviews
+## Verification Debt
+## Claim Provenance
+## Rollback Guidance
+## Plan Drift
 ## Known Risks
 ## Future Modification Notes

@@ -12,6 +12,9 @@ Methodology:
 
 - Read `.agents/pipeline-core/references/native-skill-protocol.md`.
 - Apply `methodology/extracted/upstream-pattern-map.md` as the behavioral synthesis of cloned upstream methodologies; cite patterns in `Docs Consulted:` when they influence a decision.
+- Apply `.agents/pipeline-core/references/methodology-lenses.md` for evidence
+  before claims, manual/UAT validation, verification debt, and fresh final
+  verification.
 - Confirm the current directory is the feature worktree.
 - Read `apex.md`, `feature.yaml`, `state.yaml`, `execution.md`,
   `feature.md`, `architecture.md`, `tech-design.md`, `slices.yaml`, and
@@ -29,6 +32,9 @@ Responsibilities:
 - run tests, lint, typecheck, build, and configured contract/security checks
 - store raw outputs under `evidence/`
 - write verification review
+- record manual or UAT validation for user-visible workflows
+- record verification debt when a command cannot run, with reason, risk, owner,
+  and follow-up
 
 Workflow:
 
@@ -49,9 +55,12 @@ Workflow:
 5. Stop if critical review findings block verification.
 6. Run verification commands from `.ai/constitution.md`.
 7. Store raw final output in `evidence/final-verification-output.log`.
-8. Write `reviews/verification-review.md`.
-9. Set the verification gate to `complete` only when verification passes.
-10. Run `featurectl.py validate --workspace <workspace>`.
+8. Run or document manual/UAT validation for relevant user workflows.
+9. Write `reviews/verification-review.md` with `## Manual Validation` and
+   `## Verification Debt` sections.
+10. Set the verification gate to `complete` only when verification passes and
+   verification debt is either absent or explicitly accepted as residual risk.
+11. Run `featurectl.py validate --workspace <workspace>`.
 
 Loop-aware verification:
 

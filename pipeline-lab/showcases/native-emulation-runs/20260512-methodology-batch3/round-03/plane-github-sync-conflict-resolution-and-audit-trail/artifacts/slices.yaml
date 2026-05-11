@@ -1,0 +1,94 @@
+slices:
+- id: S-001
+  requirement_ids:
+  - FR-001
+  title: Detect divergence between Plane issue state and GitHub issue state from webhook/
+  status: evidence-ready
+  owned_surfaces: GitHub sync state model and conflict detector
+  complexity: 3
+  critical_path: true
+  parallelizable: false
+  file_ownership:
+  - GitHub sync state model and conflict detector
+  conflict_risk: high
+  dependency_notes: Starts the critical path.
+  test_strategy: focused unit test plus integration/regression verification
+  red_command: test plane-github-sync-conflict-resolution-and-audit-trail S-001 red
+  green_command: test plane-github-sync-conflict-resolution-and-audit-trail S-001
+    green
+  rollback: Record before/after state and validate compensation path.
+  review_focus:
+  - permissions
+  - auditability
+  - rollback
+  - failure modes
+- id: S-002
+  requirement_ids:
+  - FR-002
+  title: 'Show a conflict preview that identifies changed fields, timestamps, actors,
+    and '
+  status: evidence-ready
+  owned_surfaces: Conflict preview API and resolution command
+  complexity: 4
+  critical_path: true
+  parallelizable: false
+  file_ownership:
+  - Conflict preview API and resolution command
+  conflict_risk: medium
+  dependency_notes: Depends on prior domain invariant slice.
+  test_strategy: focused unit test plus integration/regression verification
+  red_command: test plane-github-sync-conflict-resolution-and-audit-trail S-002 red
+  green_command: test plane-github-sync-conflict-resolution-and-audit-trail S-002
+    green
+  rollback: Record before/after state and validate compensation path.
+  review_focus:
+  - permissions
+  - auditability
+  - rollback
+  - failure modes
+- id: S-003
+  requirement_ids:
+  - FR-003
+  title: 'Apply an explicit resolution policy and record an audit event for each resolved '
+  status: evidence-ready
+  owned_surfaces: Webhook/API stale-event handling and retry-safe audit events
+  complexity: 5
+  critical_path: false
+  parallelizable: true
+  file_ownership:
+  - Webhook/API stale-event handling and retry-safe audit events
+  conflict_risk: low
+  dependency_notes: Depends on prior domain invariant slice.
+  test_strategy: focused unit test plus integration/regression verification
+  red_command: test plane-github-sync-conflict-resolution-and-audit-trail S-003 red
+  green_command: test plane-github-sync-conflict-resolution-and-audit-trail S-003
+    green
+  rollback: Record before/after state and validate compensation path.
+  review_focus:
+  - permissions
+  - auditability
+  - rollback
+  - failure modes
+- id: S-004
+  requirement_ids:
+  - FR-004
+  title: 'Handle webhook retries, stale payloads, and API failure without losing conflict '
+  status: evidence-ready
+  owned_surfaces: Issue activity UI for conflict resolution history
+  complexity: 6
+  critical_path: false
+  parallelizable: true
+  file_ownership:
+  - Issue activity UI for conflict resolution history
+  conflict_risk: low
+  dependency_notes: Depends on prior domain invariant slice.
+  test_strategy: focused unit test plus integration/regression verification
+  red_command: test plane-github-sync-conflict-resolution-and-audit-trail S-004 red
+  green_command: test plane-github-sync-conflict-resolution-and-audit-trail S-004
+    green
+  rollback: Record before/after state and validate compensation path.
+  review_focus:
+  - permissions
+  - auditability
+  - rollback
+  - failure modes
