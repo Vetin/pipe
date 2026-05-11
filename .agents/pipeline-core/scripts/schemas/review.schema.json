@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Native Feature Pipeline review finding",
+  "type": "object",
+  "required": [
+    "artifact_contract_version",
+    "review_id",
+    "tier",
+    "severity",
+    "finding",
+    "artifact",
+    "evidence",
+    "recommendation",
+    "blocking"
+  ],
+  "properties": {
+    "artifact_contract_version": { "const": "0.1.0" },
+    "review_id": { "type": "string", "minLength": 1 },
+    "tier": { "enum": ["basic_review", "strict_review", "enterprise_review"] },
+    "severity": { "enum": ["critical", "major", "minor", "note"] },
+    "finding": { "type": "string", "minLength": 1 },
+    "artifact": { "type": "string", "minLength": 1 },
+    "evidence": { "type": "string", "minLength": 1 },
+    "recommendation": { "type": "string", "minLength": 1 },
+    "blocking": { "type": "boolean" }
+  }
+}

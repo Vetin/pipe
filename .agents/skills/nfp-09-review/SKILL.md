@@ -15,3 +15,25 @@ Responsibilities:
   regression, and performance review according to the requested tier
 - write review files under `reviews/`
 - block verification for critical findings
+
+Workflow:
+
+1. Confirm worktree status.
+2. Run:
+
+   ```bash
+   python .agents/pipeline-core/scripts/featurectl.py validate --workspace <workspace> --review
+   ```
+
+3. Perform agentic review at one tier:
+   - `basic_review`: spec compliance and code quality
+   - `strict_review`: basic review plus security, contract, and test quality
+   - `enterprise_review`: strict review plus performance, regression risk, and
+     architecture compliance
+4. Write structured findings as `reviews/*.yaml` using severity `critical`,
+   `major`, `minor`, or `note`.
+5. Mark critical findings as `blocking: true`.
+6. Set the review gate to `blocked` if critical blocking findings exist;
+   otherwise set it to `complete`.
+
+Critical findings block verification.

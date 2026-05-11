@@ -709,6 +709,8 @@ def validate_workspace(
         blockers.extend(validate_evidence_minimum(workspace))
     if review:
         blockers.extend(validate_review_minimum(workspace))
+    if state.get("current_step") in {"verification", "finish", "promote"}:
+        blockers.extend(validate_verification_if_started(workspace, state))
     return blockers
 
 
@@ -942,10 +944,46 @@ def validate_evidence_minimum(workspace: Path) -> list[str]:
 
 def validate_review_minimum(workspace: Path) -> list[str]:
     blockers: list[str] = []
-    for review_file in workspace.glob("reviews/*.yaml"):
+    review_files = sorted(workspace.glob("reviews/*.yaml"))
+    if not review_files:
+        return ["review validation requires at least one reviews/*.yaml file"]
+    for review_file in review_files:
         review = read_yaml(review_file)
+        blockers.extend(validate_review_file(review_file, review, workspace))
         if review.get("blocking") is True and review.get("severity") == "critical":
             blockers.append(f"critical review finding blocks verification: {review_file.relative_to(workspace)}")
+    return blockers
+
+
+def validate_review_file(path: Path, review: dict[str, Any], workspace: Path) -> list[str]:
+    blockers = []
+    required = ("artifact_contract_version", "review_id", "tier", "severity", "finding", "artifact", "evidence", "recommendation", "blocking")
+    for field in required:
+        if field not in review:
+            blockers.append(f"{path.relative_to(workspace)} missing {field}")
+    if review.get("artifact_contract_version") != CONTRACT_VERSION:
+        blockers.append(f"{path.relative_to(workspace)} artifact_contract_version mismatch")
+    if review.get("severity") not in {"critical", "major", "minor", "note"}:
+        blockers.append(f"{path.relative_to(workspace)} invalid severity")
+    if not isinstance(review.get("blocking"), bool):
+        blockers.append(f"{path.relative_to(workspace)} blocking must be boolean")
+    if review.get("severity") == "critical" and review.get("blocking") is not True:
+        blockers.append(f"{path.relative_to(workspace)} critical severity must be blocking")
+    return blockers
+
+
+def validate_verification_if_started(workspace: Path, state: dict[str, Any]) -> list[str]:
+    gate = (state.get("gates") or {}).get("verification")
+    if gate not in {"drafted", "approved", "delegated", "complete"}:
+        return []
+    blockers = []
+    verification_review = workspace / "reviews/verification-review.md"
+    if not verification_review.exists():
+        blockers.append("verification gate requires reviews/verification-review.md")
+    final_output = workspace / "evidence/final-verification-output.log"
+    if not final_output.exists():
+        blockers.append("verification gate requires evidence/final-verification-output.log")
+    blockers.extend(validate_review_minimum(workspace))
     return blockers
 
 

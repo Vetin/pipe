@@ -14,3 +14,18 @@ Responsibilities:
 - run tests, lint, typecheck, build, and configured contract/security checks
 - store raw outputs under `evidence/`
 - write verification review
+
+Workflow:
+
+1. Confirm worktree status.
+2. Run:
+
+   ```bash
+   python .agents/pipeline-core/scripts/featurectl.py validate --workspace <workspace> --review
+   ```
+
+3. Stop if critical review findings block verification.
+4. Run verification commands from `.ai/constitution.md`.
+5. Store raw final output in `evidence/final-verification-output.log`.
+6. Write `reviews/verification-review.md`.
+7. Set the verification gate to `complete` only when verification passes.
