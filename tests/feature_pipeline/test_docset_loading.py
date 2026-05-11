@@ -124,6 +124,23 @@ class DocsetLoadingTests(unittest.TestCase):
 
         self.assertIn("validation: pass", result.stdout)
 
+    def test_architecture_requires_mermaid_topology_and_shared_knowledge(self):
+        workspace = self.create_workspace("run-arch-topology-required")
+        self.write_feature_contract(workspace)
+        self.write_architecture(workspace)
+        content = (workspace / "architecture.md").read_text(encoding="utf-8")
+        content = content.replace("```mermaid", "```text")
+        content = content.replace("## Shared Knowledge Impact", "## Shared Knowledge Notes")
+        (workspace / "architecture.md").write_text(content, encoding="utf-8")
+        self.append_docs_consulted(workspace)
+        self.set_gates(workspace, feature_contract="approved", architecture="drafted", current_step="tech_design")
+
+        result = run([sys.executable, str(SCRIPT), "validate", "--workspace", str(workspace)], self.repo, check=False)
+
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("architecture.md requires mermaid feature topology diagram", result.stdout)
+        self.assertIn("architecture.md missing heading: ## Shared Knowledge Impact", result.stdout)
+
     def create_workspace(self, run_id="run-arch-missing"):
         run(["git", "add", ".ai", "README.md"], self.repo)
         run(["git", "commit", "-m", f"seed docs {run_id}"], self.repo)
@@ -205,8 +222,19 @@ Auth owns reset flow.
 ## Component Interactions
 Web calls Auth API, which calls token store and email service.
 
+## Feature Topology
+```mermaid
+flowchart LR
+  User[User] --> Web[Web reset form]
+  Web --> API[Auth API]
+  API --> Token[Token service]
+  Token --> Store[(Reset token store)]
+  API --> Email[Email service]
+  API --> Audit[Audit log]
+```
+
 ## Diagrams
-See diagrams when needed.
+The Mermaid topology shows the high-level reset feature communication.
 
 ## Security Model
 Tokens are secret and not stored as plaintext.
@@ -228,6 +256,12 @@ Account enumeration.
 
 ## Alternatives Considered
 Reuse session tokens; rejected due different expiry and audit behavior.
+
+## Shared Knowledge Impact
+- `.ai/knowledge/features-overview.md`: add reset password as completed feature memory.
+- `.ai/knowledge/architecture-overview.md`: record auth reset topology.
+- `.ai/knowledge/module-map.md`: record auth API, token, and email ownership.
+- `.ai/knowledge/integration-map.md`: record email service communication.
 
 ## Completeness Correctness Coherence
 The architecture covers requirement, risk, rollback, and module communication.

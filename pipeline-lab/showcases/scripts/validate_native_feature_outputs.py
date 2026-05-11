@@ -25,10 +25,10 @@ DIRECT_INVOCATION_TERMS = (
 REQUIRED_ARTIFACT_SECTIONS = {
     "feature": ("## Intent", "## Motivation", "## Actors", "## Goals", "## Acceptance Criteria", "## Product Risks"),
     "repo_context": ("## Candidate Files And Modules", "## Context Rule"),
-    "architecture": ("## System Context", "## Component Interactions", "## Security Model", "## Failure Modes", "## Rollback Strategy", "## ADRs"),
+    "architecture": ("## System Context", "## Component Interactions", "## Feature Topology", "```mermaid", "flowchart", "## Shared Knowledge Impact", "## Security Model", "## Failure Modes", "## Rollback Strategy", "## ADRs"),
     "tech_design": ("## Interfaces", "## Data Model", "## Test Surfaces", "## Feature Flags", "## Observability"),
     "review": ("## Scope", "## Blocking Checks", "## Findings"),
-    "feature_card": ("- Source:", "- Final behavior:", "- Safety:"),
+    "feature_card": ("- Source:", "- Final behavior:", "- Safety:", "## Shared Knowledge Updates", ".ai/knowledge/"),
 }
 
 DOMAIN_SIGNALS = {

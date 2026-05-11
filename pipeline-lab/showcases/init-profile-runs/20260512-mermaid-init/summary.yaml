@@ -1,0 +1,2046 @@
+artifact_contract_version: 0.1.0
+generated_at: '2026-05-11T23:47:50.759245+00:00'
+generated_by: run_init_profile_showcases.py
+run_id: 20260512-mermaid-init
+passes: 3
+cases:
+- key: actual-import-rule-preview-undo
+  title: Actual Rule Preview And Undo
+  repo_path: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/actual
+- key: appsmith-version-restore-diff
+  title: Appsmith App Version Restore Diff Preview
+  repo_path: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/appsmith
+- key: docmost-page-approval
+  title: Docmost Page Review Approval Workflow
+  repo_path: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/docmost
+- key: excalidraw-layer-lock-history
+  title: Excalidraw Layer Lock History Safe Editing
+  repo_path: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/excalidraw
+- key: formbricks-signed-webhooks
+  title: Formbricks Signed Survey Response Webhooks
+  repo_path: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/formbricks
+- key: listmonk-double-opt-in-segment
+  title: listmonk Double Opt In Segment Onboarding
+  repo_path: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/listmonk
+- key: medusa-first-order-promo-caps
+  title: Medusa First Order Promotion Usage Caps
+  repo_path: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/medusa
+- key: nocodb-schema-audit-log
+  title: NocoDB Schema Change Audit Log
+  repo_path: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/nocodb
+- key: plane-triage-automation
+  title: Plane Triage Automation Rules
+  repo_path: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/plane
+- key: twenty-company-merge
+  title: Twenty Duplicate Company Merge Audit Trail
+  repo_path: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/twenty
+results:
+- case: actual-import-rule-preview-undo
+  title: Actual Rule Preview And Undo
+  repo_path: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/actual
+  pass: 1
+  status: pass
+  command: /opt/homebrew/opt/python@3.11/bin/python3.11 /Users/egormasnankin/work/harness-pipeline/.agents/pipeline-core/scripts/featurectl.py
+    init --profile-project
+  duration_seconds: 0.165
+  counts:
+    tracked_files: 3753
+    profiled_files: 3645
+    source_files: 1575
+    test_files: 592
+    doc_files: 274
+    contract_files: 99
+    integration_files: 75
+  feature_catalog_count: 13
+  feature_signals_count: 14
+  top_features: &id001
+  - Enablebanking Service
+  - Files Service
+  - Gocardless Api
+  - Gocardless Service
+  - Integration Bank
+  - Location Service
+  - Pluggyai Service
+  - Plugin Service Worker
+  knowledge_paths:
+  - .ai/knowledge/project-index.yaml
+  - .ai/knowledge/project-snapshot.md
+  - .ai/knowledge/features-overview.md
+  - .ai/knowledge/module-map.md
+  - .ai/knowledge/testing-overview.md
+  - .ai/knowledge/contracts-overview.md
+  - .ai/knowledge/integration-map.md
+  failure: ''
+  stdout_tail: 'project_profile: updated
+
+    project_name: actual
+
+    source_files: 1575
+
+    test_files: 592
+
+    detected_feature_signals: 14
+
+    detected_feature_catalog_items: 13
+
+    initialized Native Feature Pipeline directories'
+  stderr_tail: ''
+  project:
+    name: actual
+    root: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/actual
+    branch: nfp/actual-import-rule-preview-undo
+    head: 4db4979
+    remote: https://github.com/actualbudget/actual.git
+- case: appsmith-version-restore-diff
+  title: Appsmith App Version Restore Diff Preview
+  repo_path: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/appsmith
+  pass: 1
+  status: pass
+  command: /opt/homebrew/opt/python@3.11/bin/python3.11 /Users/egormasnankin/work/harness-pipeline/.agents/pipeline-core/scripts/featurectl.py
+    init --profile-project
+  duration_seconds: 0.283
+  counts:
+    tracked_files: 13567
+    profiled_files: 13491
+    source_files: 7709
+    test_files: 949
+    doc_files: 172
+    contract_files: 311
+    integration_files: 329
+  feature_catalog_count: 30
+  feature_signals_count: 40
+  top_features: &id004
+  - Sagas
+  - ConsolidatedPageLoadApi
+  - AppRoutes
+  - AppThemingApi
+  - ServiceWorkerUtils
+  - WorkflowCardList
+  - WorkflowConstants
+  - WorkflowHelpers
+  knowledge_paths:
+  - .ai/knowledge/project-index.yaml
+  - .ai/knowledge/project-snapshot.md
+  - .ai/knowledge/features-overview.md
+  - .ai/knowledge/module-map.md
+  - .ai/knowledge/testing-overview.md
+  - .ai/knowledge/contracts-overview.md
+  - .ai/knowledge/integration-map.md
+  failure: ''
+  stdout_tail: 'project_profile: updated
+
+    project_name: appsmith
+
+    source_files: 7709
+
+    test_files: 949
+
+    detected_feature_signals: 40
+
+    detected_feature_catalog_items: 30
+
+    initialized Native Feature Pipeline directories'
+  stderr_tail: ''
+  project:
+    name: appsmith
+    root: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/appsmith
+    branch: nfp/appsmith-version-restore-diff
+    head: 420914a
+    remote: https://github.com/appsmithorg/appsmith.git
+- case: docmost-page-approval
+  title: Docmost Page Review Approval Workflow
+  repo_path: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/docmost
+  pass: 1
+  status: pass
+  command: /opt/homebrew/opt/python@3.11/bin/python3.11 /Users/egormasnankin/work/harness-pipeline/.agents/pipeline-core/scripts/featurectl.py
+    init --profile-project
+  duration_seconds: 0.116
+  counts:
+    tracked_files: 1469
+    profiled_files: 1375
+    source_files: 1099
+    test_files: 28
+    doc_files: 60
+    contract_files: 62
+    integration_files: 97
+  feature_catalog_count: 20
+  feature_signals_count: 40
+  top_features: &id007
+  - Editor
+  - Auth
+  - Comment
+  - Attachments
+  - Ai Chat Service
+  - Ai Search Service
+  - Ai Service
+  - Api Key Service
+  knowledge_paths:
+  - .ai/knowledge/project-index.yaml
+  - .ai/knowledge/project-snapshot.md
+  - .ai/knowledge/features-overview.md
+  - .ai/knowledge/module-map.md
+  - .ai/knowledge/testing-overview.md
+  - .ai/knowledge/contracts-overview.md
+  - .ai/knowledge/integration-map.md
+  failure: ''
+  stdout_tail: 'project_profile: updated
+
+    project_name: client
+
+    source_files: 1099
+
+    test_files: 28
+
+    detected_feature_signals: 40
+
+    detected_feature_catalog_items: 20
+
+    initialized Native Feature Pipeline directories'
+  stderr_tail: ''
+  project:
+    name: client
+    root: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/docmost
+    branch: nfp/docmost-page-approval
+    head: 8f61503
+    remote: https://github.com/docmost/docmost.git
+- case: excalidraw-layer-lock-history
+  title: Excalidraw Layer Lock History Safe Editing
+  repo_path: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/excalidraw
+  pass: 1
+  status: pass
+  command: /opt/homebrew/opt/python@3.11/bin/python3.11 /Users/egormasnankin/work/harness-pipeline/.agents/pipeline-core/scripts/featurectl.py
+    init --profile-project
+  duration_seconds: 0.115
+  counts:
+    tracked_files: 1409
+    profiled_files: 1323
+    source_files: 500
+    test_files: 147
+    doc_files: 105
+    contract_files: 14
+    integration_files: 23
+  feature_catalog_count: 3
+  feature_signals_count: 6
+  top_features: &id010
+  - Integration
+  - Excalidraw API
+  - Service Worker
+  knowledge_paths:
+  - .ai/knowledge/project-index.yaml
+  - .ai/knowledge/project-snapshot.md
+  - .ai/knowledge/features-overview.md
+  - .ai/knowledge/module-map.md
+  - .ai/knowledge/testing-overview.md
+  - .ai/knowledge/contracts-overview.md
+  - .ai/knowledge/integration-map.md
+  failure: ''
+  stdout_tail: 'project_profile: updated
+
+    project_name: excalidraw-monorepo
+
+    source_files: 500
+
+    test_files: 147
+
+    detected_feature_signals: 6
+
+    detected_feature_catalog_items: 3
+
+    initialized Native Feature Pipeline directories'
+  stderr_tail: ''
+  project:
+    name: excalidraw-monorepo
+    root: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/excalidraw
+    branch: nfp/excalidraw-layer-lock-history
+    head: 2d7f2ad
+    remote: https://github.com/excalidraw/excalidraw.git
+- case: formbricks-signed-webhooks
+  title: Formbricks Signed Survey Response Webhooks
+  repo_path: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/formbricks
+  pass: 1
+  status: pass
+  command: /opt/homebrew/opt/python@3.11/bin/python3.11 /Users/egormasnankin/work/harness-pipeline/.agents/pipeline-core/scripts/featurectl.py
+    init --profile-project
+  duration_seconds: 0.148
+  counts:
+    tracked_files: 3642
+    profiled_files: 3529
+    source_files: 1767
+    test_files: 487
+    doc_files: 673
+    contract_files: 226
+    integration_files: 253
+  feature_catalog_count: 14
+  feature_signals_count: 40
+  top_features: &id013
+  - Airtable
+  - Notion
+  - Analysis
+  - Google Sheets
+  - Slack
+  - Account
+  - Feature Architects
+  - HandleIntegrations
+  knowledge_paths:
+  - .ai/knowledge/project-index.yaml
+  - .ai/knowledge/project-snapshot.md
+  - .ai/knowledge/features-overview.md
+  - .ai/knowledge/module-map.md
+  - .ai/knowledge/testing-overview.md
+  - .ai/knowledge/contracts-overview.md
+  - .ai/knowledge/integration-map.md
+  failure: ''
+  stdout_tail: 'project_profile: updated
+
+    project_name: storybook
+
+    source_files: 1767
+
+    test_files: 487
+
+    detected_feature_signals: 40
+
+    detected_feature_catalog_items: 14
+
+    initialized Native Feature Pipeline directories'
+  stderr_tail: ''
+  project:
+    name: storybook
+    root: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/formbricks
+    branch: nfp/formbricks-signed-webhooks
+    head: 94d85e9
+    remote: https://github.com/formbricks/formbricks.git
+- case: listmonk-double-opt-in-segment
+  title: listmonk Double Opt In Segment Onboarding
+  repo_path: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/listmonk
+  pass: 1
+  status: pass
+  command: /opt/homebrew/opt/python@3.11/bin/python3.11 /Users/egormasnankin/work/harness-pipeline/.agents/pipeline-core/scripts/featurectl.py
+    init --profile-project
+  duration_seconds: 0.126
+  counts:
+    tracked_files: 728
+    profiled_files: 599
+    source_files: 255
+    test_files: 3
+    doc_files: 157
+    contract_files: 36
+    integration_files: 18
+  feature_catalog_count: 16
+  feature_signals_count: 19
+  top_features: &id016
+  - API Users
+  - APIs
+  - Bounces
+  - Campaigns
+  - External Integration
+  - Import
+  - Listmonk
+  - Listmonk Simple
+  knowledge_paths:
+  - .ai/knowledge/project-index.yaml
+  - .ai/knowledge/project-snapshot.md
+  - .ai/knowledge/features-overview.md
+  - .ai/knowledge/module-map.md
+  - .ai/knowledge/testing-overview.md
+  - .ai/knowledge/contracts-overview.md
+  - .ai/knowledge/integration-map.md
+  failure: ''
+  stdout_tail: 'project_profile: updated
+
+    project_name: @listmonk/email-builder
+
+    source_files: 255
+
+    test_files: 3
+
+    detected_feature_signals: 19
+
+    detected_feature_catalog_items: 16
+
+    initialized Native Feature Pipeline directories'
+  stderr_tail: ''
+  project:
+    name: '@listmonk/email-builder'
+    root: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/listmonk
+    branch: nfp/listmonk-double-opt-in-segment
+    head: '5898186'
+    remote: https://github.com/knadh/listmonk.git
+- case: medusa-first-order-promo-caps
+  title: Medusa First Order Promotion Usage Caps
+  repo_path: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/medusa
+  pass: 1
+  status: pass
+  command: /opt/homebrew/opt/python@3.11/bin/python3.11 /Users/egormasnankin/work/harness-pipeline/.agents/pipeline-core/scripts/featurectl.py
+    init --profile-project
+  duration_seconds: 0.366
+  counts:
+    tracked_files: 21934
+    profiled_files: 21934
+    source_files: 9248
+    test_files: 1310
+    doc_files: 7880
+    contract_files: 2284
+    integration_files: 2997
+  feature_catalog_count: 30
+  feature_signals_count: 40
+  top_features: &id019
+  - Custom
+  - Medusa Config
+  - Client Authentication
+  - Create Admin User
+  - Custom Ff
+  - Env Ff
+  - Event Payload
+  - Integration Tests
+  knowledge_paths:
+  - .ai/knowledge/project-index.yaml
+  - .ai/knowledge/project-snapshot.md
+  - .ai/knowledge/features-overview.md
+  - .ai/knowledge/module-map.md
+  - .ai/knowledge/testing-overview.md
+  - .ai/knowledge/contracts-overview.md
+  - .ai/knowledge/integration-map.md
+  failure: ''
+  stdout_tail: 'project_profile: updated
+
+    project_name: integration-tests-modules
+
+    source_files: 9248
+
+    test_files: 1310
+
+    detected_feature_signals: 40
+
+    detected_feature_catalog_items: 30
+
+    initialized Native Feature Pipeline directories'
+  stderr_tail: ''
+  project:
+    name: integration-tests-modules
+    root: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/medusa
+    branch: HEAD
+    head: a4f6fcd6
+    remote: https://github.com/medusajs/medusa.git
+- case: nocodb-schema-audit-log
+  title: NocoDB Schema Change Audit Log
+  repo_path: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/nocodb
+  pass: 1
+  status: pass
+  command: /opt/homebrew/opt/python@3.11/bin/python3.11 /Users/egormasnankin/work/harness-pipeline/.agents/pipeline-core/scripts/featurectl.py
+    init --profile-project
+  duration_seconds: 0.16
+  counts:
+    tracked_files: 4246
+    profiled_files: 4187
+    source_files: 2621
+    test_files: 215
+    doc_files: 66
+    contract_files: 243
+    integration_files: 170
+  feature_catalog_count: 30
+  feature_signals_count: 40
+  top_features: &id022
+  - Forms
+  - Connect
+  - Integration
+  - Integrations
+  - Types
+  - Workflow
+  - 1 Nocodb Workflows
+  - ActiveConnectionsSection
+  knowledge_paths:
+  - .ai/knowledge/project-index.yaml
+  - .ai/knowledge/project-snapshot.md
+  - .ai/knowledge/features-overview.md
+  - .ai/knowledge/module-map.md
+  - .ai/knowledge/testing-overview.md
+  - .ai/knowledge/contracts-overview.md
+  - .ai/knowledge/integration-map.md
+  failure: ''
+  stdout_tail: 'project_profile: updated
+
+    project_name: nocodb-root
+
+    source_files: 2621
+
+    test_files: 215
+
+    detected_feature_signals: 40
+
+    detected_feature_catalog_items: 30
+
+    initialized Native Feature Pipeline directories'
+  stderr_tail: ''
+  project:
+    name: nocodb-root
+    root: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/nocodb
+    branch: nfp/nocodb-schema-audit-log
+    head: c4af5df
+    remote: https://github.com/nocodb/nocodb.git
+- case: plane-triage-automation
+  title: Plane Triage Automation Rules
+  repo_path: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/plane
+  pass: 1
+  status: pass
+  command: /opt/homebrew/opt/python@3.11/bin/python3.11 /Users/egormasnankin/work/harness-pipeline/.agents/pipeline-core/scripts/featurectl.py
+    init --profile-project
+  duration_seconds: 0.168
+  counts:
+    tracked_files: 4931
+    profiled_files: 4931
+    source_files: 4107
+    test_files: 39
+    doc_files: 27
+    contract_files: 165
+    integration_files: 81
+  feature_catalog_count: 30
+  feature_signals_count: 40
+  top_features: &id025
+  - Pdf Export
+  - Detail
+  - List
+  - Base
+  - Cycles
+  - Github
+  - Intake
+  - Integrations Dark
+  knowledge_paths:
+  - .ai/knowledge/project-index.yaml
+  - .ai/knowledge/project-snapshot.md
+  - .ai/knowledge/features-overview.md
+  - .ai/knowledge/module-map.md
+  - .ai/knowledge/testing-overview.md
+  - .ai/knowledge/contracts-overview.md
+  - .ai/knowledge/integration-map.md
+  failure: ''
+  stdout_tail: 'project_profile: updated
+
+    project_name: plane-api
+
+    source_files: 4107
+
+    test_files: 39
+
+    detected_feature_signals: 40
+
+    detected_feature_catalog_items: 30
+
+    initialized Native Feature Pipeline directories'
+  stderr_tail: ''
+  project:
+    name: plane-api
+    root: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/plane
+    branch: HEAD
+    head: 4c1bdd1
+    remote: https://github.com/makeplane/plane.git
+- case: twenty-company-merge
+  title: Twenty Duplicate Company Merge Audit Trail
+  repo_path: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/twenty
+  pass: 1
+  status: pass
+  command: /opt/homebrew/opt/python@3.11/bin/python3.11 /Users/egormasnankin/work/harness-pipeline/.agents/pipeline-core/scripts/featurectl.py
+    init --profile-project
+  duration_seconds: 0.506
+  counts:
+    tracked_files: 21690
+    profiled_files: 21690
+    source_files: 14571
+    test_files: 2737
+    doc_files: 2801
+    contract_files: 2738
+    integration_files: 2721
+  feature_catalog_count: 2
+  feature_signals_count: 40
+  top_features: &id028
+  - Github
+  - Architecture Overview
+  knowledge_paths:
+  - .ai/knowledge/project-index.yaml
+  - .ai/knowledge/project-snapshot.md
+  - .ai/knowledge/features-overview.md
+  - .ai/knowledge/module-map.md
+  - .ai/knowledge/testing-overview.md
+  - .ai/knowledge/contracts-overview.md
+  - .ai/knowledge/integration-map.md
+  failure: ''
+  stdout_tail: 'project_profile: updated
+
+    project_name: twenty
+
+    source_files: 14571
+
+    test_files: 2737
+
+    detected_feature_signals: 40
+
+    detected_feature_catalog_items: 2
+
+    initialized Native Feature Pipeline directories'
+  stderr_tail: ''
+  project:
+    name: twenty
+    root: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/twenty
+    branch: HEAD
+    head: 5f34078
+    remote: https://github.com/twentyhq/twenty.git
+- case: actual-import-rule-preview-undo
+  title: Actual Rule Preview And Undo
+  repo_path: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/actual
+  pass: 2
+  status: pass
+  command: /opt/homebrew/opt/python@3.11/bin/python3.11 /Users/egormasnankin/work/harness-pipeline/.agents/pipeline-core/scripts/featurectl.py
+    init --profile-project
+  duration_seconds: 0.165
+  counts:
+    tracked_files: 3753
+    profiled_files: 3645
+    source_files: 1575
+    test_files: 592
+    doc_files: 274
+    contract_files: 99
+    integration_files: 75
+  feature_catalog_count: 13
+  feature_signals_count: 14
+  top_features: &id002
+  - Enablebanking Service
+  - Files Service
+  - Gocardless Api
+  - Gocardless Service
+  - Integration Bank
+  - Location Service
+  - Pluggyai Service
+  - Plugin Service Worker
+  knowledge_paths:
+  - .ai/knowledge/project-index.yaml
+  - .ai/knowledge/project-snapshot.md
+  - .ai/knowledge/features-overview.md
+  - .ai/knowledge/module-map.md
+  - .ai/knowledge/testing-overview.md
+  - .ai/knowledge/contracts-overview.md
+  - .ai/knowledge/integration-map.md
+  failure: ''
+  stdout_tail: 'project_profile: updated
+
+    project_name: actual
+
+    source_files: 1575
+
+    test_files: 592
+
+    detected_feature_signals: 14
+
+    detected_feature_catalog_items: 13
+
+    initialized Native Feature Pipeline directories'
+  stderr_tail: ''
+  project:
+    name: actual
+    root: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/actual
+    branch: nfp/actual-import-rule-preview-undo
+    head: 4db4979
+    remote: https://github.com/actualbudget/actual.git
+- case: appsmith-version-restore-diff
+  title: Appsmith App Version Restore Diff Preview
+  repo_path: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/appsmith
+  pass: 2
+  status: pass
+  command: /opt/homebrew/opt/python@3.11/bin/python3.11 /Users/egormasnankin/work/harness-pipeline/.agents/pipeline-core/scripts/featurectl.py
+    init --profile-project
+  duration_seconds: 0.301
+  counts:
+    tracked_files: 13567
+    profiled_files: 13491
+    source_files: 7709
+    test_files: 949
+    doc_files: 172
+    contract_files: 311
+    integration_files: 329
+  feature_catalog_count: 30
+  feature_signals_count: 40
+  top_features: &id005
+  - Sagas
+  - ConsolidatedPageLoadApi
+  - AppRoutes
+  - AppThemingApi
+  - ServiceWorkerUtils
+  - WorkflowCardList
+  - WorkflowConstants
+  - WorkflowHelpers
+  knowledge_paths:
+  - .ai/knowledge/project-index.yaml
+  - .ai/knowledge/project-snapshot.md
+  - .ai/knowledge/features-overview.md
+  - .ai/knowledge/module-map.md
+  - .ai/knowledge/testing-overview.md
+  - .ai/knowledge/contracts-overview.md
+  - .ai/knowledge/integration-map.md
+  failure: ''
+  stdout_tail: 'project_profile: updated
+
+    project_name: appsmith
+
+    source_files: 7709
+
+    test_files: 949
+
+    detected_feature_signals: 40
+
+    detected_feature_catalog_items: 30
+
+    initialized Native Feature Pipeline directories'
+  stderr_tail: ''
+  project:
+    name: appsmith
+    root: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/appsmith
+    branch: nfp/appsmith-version-restore-diff
+    head: 420914a
+    remote: https://github.com/appsmithorg/appsmith.git
+- case: docmost-page-approval
+  title: Docmost Page Review Approval Workflow
+  repo_path: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/docmost
+  pass: 2
+  status: pass
+  command: /opt/homebrew/opt/python@3.11/bin/python3.11 /Users/egormasnankin/work/harness-pipeline/.agents/pipeline-core/scripts/featurectl.py
+    init --profile-project
+  duration_seconds: 0.126
+  counts:
+    tracked_files: 1469
+    profiled_files: 1375
+    source_files: 1099
+    test_files: 28
+    doc_files: 60
+    contract_files: 62
+    integration_files: 97
+  feature_catalog_count: 20
+  feature_signals_count: 40
+  top_features: &id008
+  - Editor
+  - Auth
+  - Comment
+  - Attachments
+  - Ai Chat Service
+  - Ai Search Service
+  - Ai Service
+  - Api Key Service
+  knowledge_paths:
+  - .ai/knowledge/project-index.yaml
+  - .ai/knowledge/project-snapshot.md
+  - .ai/knowledge/features-overview.md
+  - .ai/knowledge/module-map.md
+  - .ai/knowledge/testing-overview.md
+  - .ai/knowledge/contracts-overview.md
+  - .ai/knowledge/integration-map.md
+  failure: ''
+  stdout_tail: 'project_profile: updated
+
+    project_name: client
+
+    source_files: 1099
+
+    test_files: 28
+
+    detected_feature_signals: 40
+
+    detected_feature_catalog_items: 20
+
+    initialized Native Feature Pipeline directories'
+  stderr_tail: ''
+  project:
+    name: client
+    root: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/docmost
+    branch: nfp/docmost-page-approval
+    head: 8f61503
+    remote: https://github.com/docmost/docmost.git
+- case: excalidraw-layer-lock-history
+  title: Excalidraw Layer Lock History Safe Editing
+  repo_path: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/excalidraw
+  pass: 2
+  status: pass
+  command: /opt/homebrew/opt/python@3.11/bin/python3.11 /Users/egormasnankin/work/harness-pipeline/.agents/pipeline-core/scripts/featurectl.py
+    init --profile-project
+  duration_seconds: 0.122
+  counts:
+    tracked_files: 1409
+    profiled_files: 1323
+    source_files: 500
+    test_files: 147
+    doc_files: 105
+    contract_files: 14
+    integration_files: 23
+  feature_catalog_count: 3
+  feature_signals_count: 6
+  top_features: &id011
+  - Integration
+  - Excalidraw API
+  - Service Worker
+  knowledge_paths:
+  - .ai/knowledge/project-index.yaml
+  - .ai/knowledge/project-snapshot.md
+  - .ai/knowledge/features-overview.md
+  - .ai/knowledge/module-map.md
+  - .ai/knowledge/testing-overview.md
+  - .ai/knowledge/contracts-overview.md
+  - .ai/knowledge/integration-map.md
+  failure: ''
+  stdout_tail: 'project_profile: updated
+
+    project_name: excalidraw-monorepo
+
+    source_files: 500
+
+    test_files: 147
+
+    detected_feature_signals: 6
+
+    detected_feature_catalog_items: 3
+
+    initialized Native Feature Pipeline directories'
+  stderr_tail: ''
+  project:
+    name: excalidraw-monorepo
+    root: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/excalidraw
+    branch: nfp/excalidraw-layer-lock-history
+    head: 2d7f2ad
+    remote: https://github.com/excalidraw/excalidraw.git
+- case: formbricks-signed-webhooks
+  title: Formbricks Signed Survey Response Webhooks
+  repo_path: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/formbricks
+  pass: 2
+  status: pass
+  command: /opt/homebrew/opt/python@3.11/bin/python3.11 /Users/egormasnankin/work/harness-pipeline/.agents/pipeline-core/scripts/featurectl.py
+    init --profile-project
+  duration_seconds: 0.145
+  counts:
+    tracked_files: 3642
+    profiled_files: 3529
+    source_files: 1767
+    test_files: 487
+    doc_files: 673
+    contract_files: 226
+    integration_files: 253
+  feature_catalog_count: 14
+  feature_signals_count: 40
+  top_features: &id014
+  - Airtable
+  - Notion
+  - Analysis
+  - Google Sheets
+  - Slack
+  - Account
+  - Feature Architects
+  - HandleIntegrations
+  knowledge_paths:
+  - .ai/knowledge/project-index.yaml
+  - .ai/knowledge/project-snapshot.md
+  - .ai/knowledge/features-overview.md
+  - .ai/knowledge/module-map.md
+  - .ai/knowledge/testing-overview.md
+  - .ai/knowledge/contracts-overview.md
+  - .ai/knowledge/integration-map.md
+  failure: ''
+  stdout_tail: 'project_profile: updated
+
+    project_name: storybook
+
+    source_files: 1767
+
+    test_files: 487
+
+    detected_feature_signals: 40
+
+    detected_feature_catalog_items: 14
+
+    initialized Native Feature Pipeline directories'
+  stderr_tail: ''
+  project:
+    name: storybook
+    root: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/formbricks
+    branch: nfp/formbricks-signed-webhooks
+    head: 94d85e9
+    remote: https://github.com/formbricks/formbricks.git
+- case: listmonk-double-opt-in-segment
+  title: listmonk Double Opt In Segment Onboarding
+  repo_path: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/listmonk
+  pass: 2
+  status: pass
+  command: /opt/homebrew/opt/python@3.11/bin/python3.11 /Users/egormasnankin/work/harness-pipeline/.agents/pipeline-core/scripts/featurectl.py
+    init --profile-project
+  duration_seconds: 0.125
+  counts:
+    tracked_files: 728
+    profiled_files: 599
+    source_files: 255
+    test_files: 3
+    doc_files: 157
+    contract_files: 36
+    integration_files: 18
+  feature_catalog_count: 16
+  feature_signals_count: 19
+  top_features: &id017
+  - API Users
+  - APIs
+  - Bounces
+  - Campaigns
+  - External Integration
+  - Import
+  - Listmonk
+  - Listmonk Simple
+  knowledge_paths:
+  - .ai/knowledge/project-index.yaml
+  - .ai/knowledge/project-snapshot.md
+  - .ai/knowledge/features-overview.md
+  - .ai/knowledge/module-map.md
+  - .ai/knowledge/testing-overview.md
+  - .ai/knowledge/contracts-overview.md
+  - .ai/knowledge/integration-map.md
+  failure: ''
+  stdout_tail: 'project_profile: updated
+
+    project_name: @listmonk/email-builder
+
+    source_files: 255
+
+    test_files: 3
+
+    detected_feature_signals: 19
+
+    detected_feature_catalog_items: 16
+
+    initialized Native Feature Pipeline directories'
+  stderr_tail: ''
+  project:
+    name: '@listmonk/email-builder'
+    root: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/listmonk
+    branch: nfp/listmonk-double-opt-in-segment
+    head: '5898186'
+    remote: https://github.com/knadh/listmonk.git
+- case: medusa-first-order-promo-caps
+  title: Medusa First Order Promotion Usage Caps
+  repo_path: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/medusa
+  pass: 2
+  status: pass
+  command: /opt/homebrew/opt/python@3.11/bin/python3.11 /Users/egormasnankin/work/harness-pipeline/.agents/pipeline-core/scripts/featurectl.py
+    init --profile-project
+  duration_seconds: 0.356
+  counts:
+    tracked_files: 21934
+    profiled_files: 21934
+    source_files: 9248
+    test_files: 1310
+    doc_files: 7880
+    contract_files: 2284
+    integration_files: 2997
+  feature_catalog_count: 30
+  feature_signals_count: 40
+  top_features: &id020
+  - Custom
+  - Medusa Config
+  - Client Authentication
+  - Create Admin User
+  - Custom Ff
+  - Env Ff
+  - Event Payload
+  - Integration Tests
+  knowledge_paths:
+  - .ai/knowledge/project-index.yaml
+  - .ai/knowledge/project-snapshot.md
+  - .ai/knowledge/features-overview.md
+  - .ai/knowledge/module-map.md
+  - .ai/knowledge/testing-overview.md
+  - .ai/knowledge/contracts-overview.md
+  - .ai/knowledge/integration-map.md
+  failure: ''
+  stdout_tail: 'project_profile: updated
+
+    project_name: integration-tests-modules
+
+    source_files: 9248
+
+    test_files: 1310
+
+    detected_feature_signals: 40
+
+    detected_feature_catalog_items: 30
+
+    initialized Native Feature Pipeline directories'
+  stderr_tail: ''
+  project:
+    name: integration-tests-modules
+    root: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/medusa
+    branch: HEAD
+    head: a4f6fcd6
+    remote: https://github.com/medusajs/medusa.git
+- case: nocodb-schema-audit-log
+  title: NocoDB Schema Change Audit Log
+  repo_path: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/nocodb
+  pass: 2
+  status: pass
+  command: /opt/homebrew/opt/python@3.11/bin/python3.11 /Users/egormasnankin/work/harness-pipeline/.agents/pipeline-core/scripts/featurectl.py
+    init --profile-project
+  duration_seconds: 0.17
+  counts:
+    tracked_files: 4246
+    profiled_files: 4187
+    source_files: 2621
+    test_files: 215
+    doc_files: 66
+    contract_files: 243
+    integration_files: 170
+  feature_catalog_count: 30
+  feature_signals_count: 40
+  top_features: &id023
+  - Forms
+  - Connect
+  - Integration
+  - Integrations
+  - Types
+  - Workflow
+  - 1 Nocodb Workflows
+  - ActiveConnectionsSection
+  knowledge_paths:
+  - .ai/knowledge/project-index.yaml
+  - .ai/knowledge/project-snapshot.md
+  - .ai/knowledge/features-overview.md
+  - .ai/knowledge/module-map.md
+  - .ai/knowledge/testing-overview.md
+  - .ai/knowledge/contracts-overview.md
+  - .ai/knowledge/integration-map.md
+  failure: ''
+  stdout_tail: 'project_profile: updated
+
+    project_name: nocodb-root
+
+    source_files: 2621
+
+    test_files: 215
+
+    detected_feature_signals: 40
+
+    detected_feature_catalog_items: 30
+
+    initialized Native Feature Pipeline directories'
+  stderr_tail: ''
+  project:
+    name: nocodb-root
+    root: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/nocodb
+    branch: nfp/nocodb-schema-audit-log
+    head: c4af5df
+    remote: https://github.com/nocodb/nocodb.git
+- case: plane-triage-automation
+  title: Plane Triage Automation Rules
+  repo_path: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/plane
+  pass: 2
+  status: pass
+  command: /opt/homebrew/opt/python@3.11/bin/python3.11 /Users/egormasnankin/work/harness-pipeline/.agents/pipeline-core/scripts/featurectl.py
+    init --profile-project
+  duration_seconds: 0.171
+  counts:
+    tracked_files: 4931
+    profiled_files: 4931
+    source_files: 4107
+    test_files: 39
+    doc_files: 27
+    contract_files: 165
+    integration_files: 81
+  feature_catalog_count: 30
+  feature_signals_count: 40
+  top_features: &id026
+  - Pdf Export
+  - Detail
+  - List
+  - Base
+  - Cycles
+  - Github
+  - Intake
+  - Integrations Dark
+  knowledge_paths:
+  - .ai/knowledge/project-index.yaml
+  - .ai/knowledge/project-snapshot.md
+  - .ai/knowledge/features-overview.md
+  - .ai/knowledge/module-map.md
+  - .ai/knowledge/testing-overview.md
+  - .ai/knowledge/contracts-overview.md
+  - .ai/knowledge/integration-map.md
+  failure: ''
+  stdout_tail: 'project_profile: updated
+
+    project_name: plane-api
+
+    source_files: 4107
+
+    test_files: 39
+
+    detected_feature_signals: 40
+
+    detected_feature_catalog_items: 30
+
+    initialized Native Feature Pipeline directories'
+  stderr_tail: ''
+  project:
+    name: plane-api
+    root: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/plane
+    branch: HEAD
+    head: 4c1bdd1
+    remote: https://github.com/makeplane/plane.git
+- case: twenty-company-merge
+  title: Twenty Duplicate Company Merge Audit Trail
+  repo_path: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/twenty
+  pass: 2
+  status: pass
+  command: /opt/homebrew/opt/python@3.11/bin/python3.11 /Users/egormasnankin/work/harness-pipeline/.agents/pipeline-core/scripts/featurectl.py
+    init --profile-project
+  duration_seconds: 0.35
+  counts:
+    tracked_files: 21690
+    profiled_files: 21690
+    source_files: 14571
+    test_files: 2737
+    doc_files: 2801
+    contract_files: 2738
+    integration_files: 2721
+  feature_catalog_count: 2
+  feature_signals_count: 40
+  top_features: &id029
+  - Github
+  - Architecture Overview
+  knowledge_paths:
+  - .ai/knowledge/project-index.yaml
+  - .ai/knowledge/project-snapshot.md
+  - .ai/knowledge/features-overview.md
+  - .ai/knowledge/module-map.md
+  - .ai/knowledge/testing-overview.md
+  - .ai/knowledge/contracts-overview.md
+  - .ai/knowledge/integration-map.md
+  failure: ''
+  stdout_tail: 'project_profile: updated
+
+    project_name: twenty
+
+    source_files: 14571
+
+    test_files: 2737
+
+    detected_feature_signals: 40
+
+    detected_feature_catalog_items: 2
+
+    initialized Native Feature Pipeline directories'
+  stderr_tail: ''
+  project:
+    name: twenty
+    root: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/twenty
+    branch: HEAD
+    head: 5f34078
+    remote: https://github.com/twentyhq/twenty.git
+- case: actual-import-rule-preview-undo
+  title: Actual Rule Preview And Undo
+  repo_path: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/actual
+  pass: 3
+  status: pass
+  command: /opt/homebrew/opt/python@3.11/bin/python3.11 /Users/egormasnankin/work/harness-pipeline/.agents/pipeline-core/scripts/featurectl.py
+    init --profile-project
+  duration_seconds: 0.16
+  counts:
+    tracked_files: 3753
+    profiled_files: 3645
+    source_files: 1575
+    test_files: 592
+    doc_files: 274
+    contract_files: 99
+    integration_files: 75
+  feature_catalog_count: 13
+  feature_signals_count: 14
+  top_features: &id003
+  - Enablebanking Service
+  - Files Service
+  - Gocardless Api
+  - Gocardless Service
+  - Integration Bank
+  - Location Service
+  - Pluggyai Service
+  - Plugin Service Worker
+  knowledge_paths:
+  - .ai/knowledge/project-index.yaml
+  - .ai/knowledge/project-snapshot.md
+  - .ai/knowledge/features-overview.md
+  - .ai/knowledge/module-map.md
+  - .ai/knowledge/testing-overview.md
+  - .ai/knowledge/contracts-overview.md
+  - .ai/knowledge/integration-map.md
+  failure: ''
+  stdout_tail: 'project_profile: updated
+
+    project_name: actual
+
+    source_files: 1575
+
+    test_files: 592
+
+    detected_feature_signals: 14
+
+    detected_feature_catalog_items: 13
+
+    initialized Native Feature Pipeline directories'
+  stderr_tail: ''
+  project:
+    name: actual
+    root: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/actual
+    branch: nfp/actual-import-rule-preview-undo
+    head: 4db4979
+    remote: https://github.com/actualbudget/actual.git
+- case: appsmith-version-restore-diff
+  title: Appsmith App Version Restore Diff Preview
+  repo_path: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/appsmith
+  pass: 3
+  status: pass
+  command: /opt/homebrew/opt/python@3.11/bin/python3.11 /Users/egormasnankin/work/harness-pipeline/.agents/pipeline-core/scripts/featurectl.py
+    init --profile-project
+  duration_seconds: 0.292
+  counts:
+    tracked_files: 13567
+    profiled_files: 13491
+    source_files: 7709
+    test_files: 949
+    doc_files: 172
+    contract_files: 311
+    integration_files: 329
+  feature_catalog_count: 30
+  feature_signals_count: 40
+  top_features: &id006
+  - Sagas
+  - ConsolidatedPageLoadApi
+  - AppRoutes
+  - AppThemingApi
+  - ServiceWorkerUtils
+  - WorkflowCardList
+  - WorkflowConstants
+  - WorkflowHelpers
+  knowledge_paths:
+  - .ai/knowledge/project-index.yaml
+  - .ai/knowledge/project-snapshot.md
+  - .ai/knowledge/features-overview.md
+  - .ai/knowledge/module-map.md
+  - .ai/knowledge/testing-overview.md
+  - .ai/knowledge/contracts-overview.md
+  - .ai/knowledge/integration-map.md
+  failure: ''
+  stdout_tail: 'project_profile: updated
+
+    project_name: appsmith
+
+    source_files: 7709
+
+    test_files: 949
+
+    detected_feature_signals: 40
+
+    detected_feature_catalog_items: 30
+
+    initialized Native Feature Pipeline directories'
+  stderr_tail: ''
+  project:
+    name: appsmith
+    root: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/appsmith
+    branch: nfp/appsmith-version-restore-diff
+    head: 420914a
+    remote: https://github.com/appsmithorg/appsmith.git
+- case: docmost-page-approval
+  title: Docmost Page Review Approval Workflow
+  repo_path: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/docmost
+  pass: 3
+  status: pass
+  command: /opt/homebrew/opt/python@3.11/bin/python3.11 /Users/egormasnankin/work/harness-pipeline/.agents/pipeline-core/scripts/featurectl.py
+    init --profile-project
+  duration_seconds: 0.119
+  counts:
+    tracked_files: 1469
+    profiled_files: 1375
+    source_files: 1099
+    test_files: 28
+    doc_files: 60
+    contract_files: 62
+    integration_files: 97
+  feature_catalog_count: 20
+  feature_signals_count: 40
+  top_features: &id009
+  - Editor
+  - Auth
+  - Comment
+  - Attachments
+  - Ai Chat Service
+  - Ai Search Service
+  - Ai Service
+  - Api Key Service
+  knowledge_paths:
+  - .ai/knowledge/project-index.yaml
+  - .ai/knowledge/project-snapshot.md
+  - .ai/knowledge/features-overview.md
+  - .ai/knowledge/module-map.md
+  - .ai/knowledge/testing-overview.md
+  - .ai/knowledge/contracts-overview.md
+  - .ai/knowledge/integration-map.md
+  failure: ''
+  stdout_tail: 'project_profile: updated
+
+    project_name: client
+
+    source_files: 1099
+
+    test_files: 28
+
+    detected_feature_signals: 40
+
+    detected_feature_catalog_items: 20
+
+    initialized Native Feature Pipeline directories'
+  stderr_tail: ''
+  project:
+    name: client
+    root: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/docmost
+    branch: nfp/docmost-page-approval
+    head: 8f61503
+    remote: https://github.com/docmost/docmost.git
+- case: excalidraw-layer-lock-history
+  title: Excalidraw Layer Lock History Safe Editing
+  repo_path: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/excalidraw
+  pass: 3
+  status: pass
+  command: /opt/homebrew/opt/python@3.11/bin/python3.11 /Users/egormasnankin/work/harness-pipeline/.agents/pipeline-core/scripts/featurectl.py
+    init --profile-project
+  duration_seconds: 0.117
+  counts:
+    tracked_files: 1409
+    profiled_files: 1323
+    source_files: 500
+    test_files: 147
+    doc_files: 105
+    contract_files: 14
+    integration_files: 23
+  feature_catalog_count: 3
+  feature_signals_count: 6
+  top_features: &id012
+  - Integration
+  - Excalidraw API
+  - Service Worker
+  knowledge_paths:
+  - .ai/knowledge/project-index.yaml
+  - .ai/knowledge/project-snapshot.md
+  - .ai/knowledge/features-overview.md
+  - .ai/knowledge/module-map.md
+  - .ai/knowledge/testing-overview.md
+  - .ai/knowledge/contracts-overview.md
+  - .ai/knowledge/integration-map.md
+  failure: ''
+  stdout_tail: 'project_profile: updated
+
+    project_name: excalidraw-monorepo
+
+    source_files: 500
+
+    test_files: 147
+
+    detected_feature_signals: 6
+
+    detected_feature_catalog_items: 3
+
+    initialized Native Feature Pipeline directories'
+  stderr_tail: ''
+  project:
+    name: excalidraw-monorepo
+    root: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/excalidraw
+    branch: nfp/excalidraw-layer-lock-history
+    head: 2d7f2ad
+    remote: https://github.com/excalidraw/excalidraw.git
+- case: formbricks-signed-webhooks
+  title: Formbricks Signed Survey Response Webhooks
+  repo_path: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/formbricks
+  pass: 3
+  status: pass
+  command: /opt/homebrew/opt/python@3.11/bin/python3.11 /Users/egormasnankin/work/harness-pipeline/.agents/pipeline-core/scripts/featurectl.py
+    init --profile-project
+  duration_seconds: 0.147
+  counts:
+    tracked_files: 3642
+    profiled_files: 3529
+    source_files: 1767
+    test_files: 487
+    doc_files: 673
+    contract_files: 226
+    integration_files: 253
+  feature_catalog_count: 14
+  feature_signals_count: 40
+  top_features: &id015
+  - Airtable
+  - Notion
+  - Analysis
+  - Google Sheets
+  - Slack
+  - Account
+  - Feature Architects
+  - HandleIntegrations
+  knowledge_paths:
+  - .ai/knowledge/project-index.yaml
+  - .ai/knowledge/project-snapshot.md
+  - .ai/knowledge/features-overview.md
+  - .ai/knowledge/module-map.md
+  - .ai/knowledge/testing-overview.md
+  - .ai/knowledge/contracts-overview.md
+  - .ai/knowledge/integration-map.md
+  failure: ''
+  stdout_tail: 'project_profile: updated
+
+    project_name: storybook
+
+    source_files: 1767
+
+    test_files: 487
+
+    detected_feature_signals: 40
+
+    detected_feature_catalog_items: 14
+
+    initialized Native Feature Pipeline directories'
+  stderr_tail: ''
+  project:
+    name: storybook
+    root: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/formbricks
+    branch: nfp/formbricks-signed-webhooks
+    head: 94d85e9
+    remote: https://github.com/formbricks/formbricks.git
+- case: listmonk-double-opt-in-segment
+  title: listmonk Double Opt In Segment Onboarding
+  repo_path: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/listmonk
+  pass: 3
+  status: pass
+  command: /opt/homebrew/opt/python@3.11/bin/python3.11 /Users/egormasnankin/work/harness-pipeline/.agents/pipeline-core/scripts/featurectl.py
+    init --profile-project
+  duration_seconds: 0.114
+  counts:
+    tracked_files: 728
+    profiled_files: 599
+    source_files: 255
+    test_files: 3
+    doc_files: 157
+    contract_files: 36
+    integration_files: 18
+  feature_catalog_count: 16
+  feature_signals_count: 19
+  top_features: &id018
+  - API Users
+  - APIs
+  - Bounces
+  - Campaigns
+  - External Integration
+  - Import
+  - Listmonk
+  - Listmonk Simple
+  knowledge_paths:
+  - .ai/knowledge/project-index.yaml
+  - .ai/knowledge/project-snapshot.md
+  - .ai/knowledge/features-overview.md
+  - .ai/knowledge/module-map.md
+  - .ai/knowledge/testing-overview.md
+  - .ai/knowledge/contracts-overview.md
+  - .ai/knowledge/integration-map.md
+  failure: ''
+  stdout_tail: 'project_profile: updated
+
+    project_name: @listmonk/email-builder
+
+    source_files: 255
+
+    test_files: 3
+
+    detected_feature_signals: 19
+
+    detected_feature_catalog_items: 16
+
+    initialized Native Feature Pipeline directories'
+  stderr_tail: ''
+  project:
+    name: '@listmonk/email-builder'
+    root: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/listmonk
+    branch: nfp/listmonk-double-opt-in-segment
+    head: '5898186'
+    remote: https://github.com/knadh/listmonk.git
+- case: medusa-first-order-promo-caps
+  title: Medusa First Order Promotion Usage Caps
+  repo_path: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/medusa
+  pass: 3
+  status: pass
+  command: /opt/homebrew/opt/python@3.11/bin/python3.11 /Users/egormasnankin/work/harness-pipeline/.agents/pipeline-core/scripts/featurectl.py
+    init --profile-project
+  duration_seconds: 0.352
+  counts:
+    tracked_files: 21934
+    profiled_files: 21934
+    source_files: 9248
+    test_files: 1310
+    doc_files: 7880
+    contract_files: 2284
+    integration_files: 2997
+  feature_catalog_count: 30
+  feature_signals_count: 40
+  top_features: &id021
+  - Custom
+  - Medusa Config
+  - Client Authentication
+  - Create Admin User
+  - Custom Ff
+  - Env Ff
+  - Event Payload
+  - Integration Tests
+  knowledge_paths:
+  - .ai/knowledge/project-index.yaml
+  - .ai/knowledge/project-snapshot.md
+  - .ai/knowledge/features-overview.md
+  - .ai/knowledge/module-map.md
+  - .ai/knowledge/testing-overview.md
+  - .ai/knowledge/contracts-overview.md
+  - .ai/knowledge/integration-map.md
+  failure: ''
+  stdout_tail: 'project_profile: updated
+
+    project_name: integration-tests-modules
+
+    source_files: 9248
+
+    test_files: 1310
+
+    detected_feature_signals: 40
+
+    detected_feature_catalog_items: 30
+
+    initialized Native Feature Pipeline directories'
+  stderr_tail: ''
+  project:
+    name: integration-tests-modules
+    root: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/medusa
+    branch: HEAD
+    head: a4f6fcd6
+    remote: https://github.com/medusajs/medusa.git
+- case: nocodb-schema-audit-log
+  title: NocoDB Schema Change Audit Log
+  repo_path: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/nocodb
+  pass: 3
+  status: pass
+  command: /opt/homebrew/opt/python@3.11/bin/python3.11 /Users/egormasnankin/work/harness-pipeline/.agents/pipeline-core/scripts/featurectl.py
+    init --profile-project
+  duration_seconds: 0.174
+  counts:
+    tracked_files: 4246
+    profiled_files: 4187
+    source_files: 2621
+    test_files: 215
+    doc_files: 66
+    contract_files: 243
+    integration_files: 170
+  feature_catalog_count: 30
+  feature_signals_count: 40
+  top_features: &id024
+  - Forms
+  - Connect
+  - Integration
+  - Integrations
+  - Types
+  - Workflow
+  - 1 Nocodb Workflows
+  - ActiveConnectionsSection
+  knowledge_paths:
+  - .ai/knowledge/project-index.yaml
+  - .ai/knowledge/project-snapshot.md
+  - .ai/knowledge/features-overview.md
+  - .ai/knowledge/module-map.md
+  - .ai/knowledge/testing-overview.md
+  - .ai/knowledge/contracts-overview.md
+  - .ai/knowledge/integration-map.md
+  failure: ''
+  stdout_tail: 'project_profile: updated
+
+    project_name: nocodb-root
+
+    source_files: 2621
+
+    test_files: 215
+
+    detected_feature_signals: 40
+
+    detected_feature_catalog_items: 30
+
+    initialized Native Feature Pipeline directories'
+  stderr_tail: ''
+  project:
+    name: nocodb-root
+    root: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/nocodb
+    branch: nfp/nocodb-schema-audit-log
+    head: c4af5df
+    remote: https://github.com/nocodb/nocodb.git
+- case: plane-triage-automation
+  title: Plane Triage Automation Rules
+  repo_path: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/plane
+  pass: 3
+  status: pass
+  command: /opt/homebrew/opt/python@3.11/bin/python3.11 /Users/egormasnankin/work/harness-pipeline/.agents/pipeline-core/scripts/featurectl.py
+    init --profile-project
+  duration_seconds: 0.168
+  counts:
+    tracked_files: 4931
+    profiled_files: 4931
+    source_files: 4107
+    test_files: 39
+    doc_files: 27
+    contract_files: 165
+    integration_files: 81
+  feature_catalog_count: 30
+  feature_signals_count: 40
+  top_features: &id027
+  - Pdf Export
+  - Detail
+  - List
+  - Base
+  - Cycles
+  - Github
+  - Intake
+  - Integrations Dark
+  knowledge_paths:
+  - .ai/knowledge/project-index.yaml
+  - .ai/knowledge/project-snapshot.md
+  - .ai/knowledge/features-overview.md
+  - .ai/knowledge/module-map.md
+  - .ai/knowledge/testing-overview.md
+  - .ai/knowledge/contracts-overview.md
+  - .ai/knowledge/integration-map.md
+  failure: ''
+  stdout_tail: 'project_profile: updated
+
+    project_name: plane-api
+
+    source_files: 4107
+
+    test_files: 39
+
+    detected_feature_signals: 40
+
+    detected_feature_catalog_items: 30
+
+    initialized Native Feature Pipeline directories'
+  stderr_tail: ''
+  project:
+    name: plane-api
+    root: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/plane
+    branch: HEAD
+    head: 4c1bdd1
+    remote: https://github.com/makeplane/plane.git
+- case: twenty-company-merge
+  title: Twenty Duplicate Company Merge Audit Trail
+  repo_path: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/twenty
+  pass: 3
+  status: pass
+  command: /opt/homebrew/opt/python@3.11/bin/python3.11 /Users/egormasnankin/work/harness-pipeline/.agents/pipeline-core/scripts/featurectl.py
+    init --profile-project
+  duration_seconds: 0.341
+  counts:
+    tracked_files: 21690
+    profiled_files: 21690
+    source_files: 14571
+    test_files: 2737
+    doc_files: 2801
+    contract_files: 2738
+    integration_files: 2721
+  feature_catalog_count: 2
+  feature_signals_count: 40
+  top_features: &id030
+  - Github
+  - Architecture Overview
+  knowledge_paths:
+  - .ai/knowledge/project-index.yaml
+  - .ai/knowledge/project-snapshot.md
+  - .ai/knowledge/features-overview.md
+  - .ai/knowledge/module-map.md
+  - .ai/knowledge/testing-overview.md
+  - .ai/knowledge/contracts-overview.md
+  - .ai/knowledge/integration-map.md
+  failure: ''
+  stdout_tail: 'project_profile: updated
+
+    project_name: twenty
+
+    source_files: 14571
+
+    test_files: 2737
+
+    detected_feature_signals: 40
+
+    detected_feature_catalog_items: 2
+
+    initialized Native Feature Pipeline directories'
+  stderr_tail: ''
+  project:
+    name: twenty
+    root: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/twenty
+    branch: HEAD
+    head: 5f34078
+    remote: https://github.com/twentyhq/twenty.git
+comparisons:
+- case: actual-import-rule-preview-undo
+  status: pass
+  passes_seen:
+  - 1
+  - 2
+  - 3
+  stable_metrics: true
+  metrics:
+  - profiled_files: 3645
+    source_files: 1575
+    test_files: 592
+    doc_files: 274
+    contract_files: 99
+    integration_files: 75
+    feature_catalog: 13
+    feature_signals: 14
+  - profiled_files: 3645
+    source_files: 1575
+    test_files: 592
+    doc_files: 274
+    contract_files: 99
+    integration_files: 75
+    feature_catalog: 13
+    feature_signals: 14
+  - profiled_files: 3645
+    source_files: 1575
+    test_files: 592
+    doc_files: 274
+    contract_files: 99
+    integration_files: 75
+    feature_catalog: 13
+    feature_signals: 14
+  top_features_by_pass:
+    1: *id001
+    2: *id002
+    3: *id003
+- case: appsmith-version-restore-diff
+  status: pass
+  passes_seen:
+  - 1
+  - 2
+  - 3
+  stable_metrics: true
+  metrics:
+  - profiled_files: 13491
+    source_files: 7709
+    test_files: 949
+    doc_files: 172
+    contract_files: 311
+    integration_files: 329
+    feature_catalog: 30
+    feature_signals: 40
+  - profiled_files: 13491
+    source_files: 7709
+    test_files: 949
+    doc_files: 172
+    contract_files: 311
+    integration_files: 329
+    feature_catalog: 30
+    feature_signals: 40
+  - profiled_files: 13491
+    source_files: 7709
+    test_files: 949
+    doc_files: 172
+    contract_files: 311
+    integration_files: 329
+    feature_catalog: 30
+    feature_signals: 40
+  top_features_by_pass:
+    1: *id004
+    2: *id005
+    3: *id006
+- case: docmost-page-approval
+  status: pass
+  passes_seen:
+  - 1
+  - 2
+  - 3
+  stable_metrics: true
+  metrics:
+  - profiled_files: 1375
+    source_files: 1099
+    test_files: 28
+    doc_files: 60
+    contract_files: 62
+    integration_files: 97
+    feature_catalog: 20
+    feature_signals: 40
+  - profiled_files: 1375
+    source_files: 1099
+    test_files: 28
+    doc_files: 60
+    contract_files: 62
+    integration_files: 97
+    feature_catalog: 20
+    feature_signals: 40
+  - profiled_files: 1375
+    source_files: 1099
+    test_files: 28
+    doc_files: 60
+    contract_files: 62
+    integration_files: 97
+    feature_catalog: 20
+    feature_signals: 40
+  top_features_by_pass:
+    1: *id007
+    2: *id008
+    3: *id009
+- case: excalidraw-layer-lock-history
+  status: pass
+  passes_seen:
+  - 1
+  - 2
+  - 3
+  stable_metrics: true
+  metrics:
+  - profiled_files: 1323
+    source_files: 500
+    test_files: 147
+    doc_files: 105
+    contract_files: 14
+    integration_files: 23
+    feature_catalog: 3
+    feature_signals: 6
+  - profiled_files: 1323
+    source_files: 500
+    test_files: 147
+    doc_files: 105
+    contract_files: 14
+    integration_files: 23
+    feature_catalog: 3
+    feature_signals: 6
+  - profiled_files: 1323
+    source_files: 500
+    test_files: 147
+    doc_files: 105
+    contract_files: 14
+    integration_files: 23
+    feature_catalog: 3
+    feature_signals: 6
+  top_features_by_pass:
+    1: *id010
+    2: *id011
+    3: *id012
+- case: formbricks-signed-webhooks
+  status: pass
+  passes_seen:
+  - 1
+  - 2
+  - 3
+  stable_metrics: true
+  metrics:
+  - profiled_files: 3529
+    source_files: 1767
+    test_files: 487
+    doc_files: 673
+    contract_files: 226
+    integration_files: 253
+    feature_catalog: 14
+    feature_signals: 40
+  - profiled_files: 3529
+    source_files: 1767
+    test_files: 487
+    doc_files: 673
+    contract_files: 226
+    integration_files: 253
+    feature_catalog: 14
+    feature_signals: 40
+  - profiled_files: 3529
+    source_files: 1767
+    test_files: 487
+    doc_files: 673
+    contract_files: 226
+    integration_files: 253
+    feature_catalog: 14
+    feature_signals: 40
+  top_features_by_pass:
+    1: *id013
+    2: *id014
+    3: *id015
+- case: listmonk-double-opt-in-segment
+  status: pass
+  passes_seen:
+  - 1
+  - 2
+  - 3
+  stable_metrics: true
+  metrics:
+  - profiled_files: 599
+    source_files: 255
+    test_files: 3
+    doc_files: 157
+    contract_files: 36
+    integration_files: 18
+    feature_catalog: 16
+    feature_signals: 19
+  - profiled_files: 599
+    source_files: 255
+    test_files: 3
+    doc_files: 157
+    contract_files: 36
+    integration_files: 18
+    feature_catalog: 16
+    feature_signals: 19
+  - profiled_files: 599
+    source_files: 255
+    test_files: 3
+    doc_files: 157
+    contract_files: 36
+    integration_files: 18
+    feature_catalog: 16
+    feature_signals: 19
+  top_features_by_pass:
+    1: *id016
+    2: *id017
+    3: *id018
+- case: medusa-first-order-promo-caps
+  status: pass
+  passes_seen:
+  - 1
+  - 2
+  - 3
+  stable_metrics: true
+  metrics:
+  - profiled_files: 21934
+    source_files: 9248
+    test_files: 1310
+    doc_files: 7880
+    contract_files: 2284
+    integration_files: 2997
+    feature_catalog: 30
+    feature_signals: 40
+  - profiled_files: 21934
+    source_files: 9248
+    test_files: 1310
+    doc_files: 7880
+    contract_files: 2284
+    integration_files: 2997
+    feature_catalog: 30
+    feature_signals: 40
+  - profiled_files: 21934
+    source_files: 9248
+    test_files: 1310
+    doc_files: 7880
+    contract_files: 2284
+    integration_files: 2997
+    feature_catalog: 30
+    feature_signals: 40
+  top_features_by_pass:
+    1: *id019
+    2: *id020
+    3: *id021
+- case: nocodb-schema-audit-log
+  status: pass
+  passes_seen:
+  - 1
+  - 2
+  - 3
+  stable_metrics: true
+  metrics:
+  - profiled_files: 4187
+    source_files: 2621
+    test_files: 215
+    doc_files: 66
+    contract_files: 243
+    integration_files: 170
+    feature_catalog: 30
+    feature_signals: 40
+  - profiled_files: 4187
+    source_files: 2621
+    test_files: 215
+    doc_files: 66
+    contract_files: 243
+    integration_files: 170
+    feature_catalog: 30
+    feature_signals: 40
+  - profiled_files: 4187
+    source_files: 2621
+    test_files: 215
+    doc_files: 66
+    contract_files: 243
+    integration_files: 170
+    feature_catalog: 30
+    feature_signals: 40
+  top_features_by_pass:
+    1: *id022
+    2: *id023
+    3: *id024
+- case: plane-triage-automation
+  status: pass
+  passes_seen:
+  - 1
+  - 2
+  - 3
+  stable_metrics: true
+  metrics:
+  - profiled_files: 4931
+    source_files: 4107
+    test_files: 39
+    doc_files: 27
+    contract_files: 165
+    integration_files: 81
+    feature_catalog: 30
+    feature_signals: 40
+  - profiled_files: 4931
+    source_files: 4107
+    test_files: 39
+    doc_files: 27
+    contract_files: 165
+    integration_files: 81
+    feature_catalog: 30
+    feature_signals: 40
+  - profiled_files: 4931
+    source_files: 4107
+    test_files: 39
+    doc_files: 27
+    contract_files: 165
+    integration_files: 81
+    feature_catalog: 30
+    feature_signals: 40
+  top_features_by_pass:
+    1: *id025
+    2: *id026
+    3: *id027
+- case: twenty-company-merge
+  status: pass
+  passes_seen:
+  - 1
+  - 2
+  - 3
+  stable_metrics: true
+  metrics:
+  - profiled_files: 21690
+    source_files: 14571
+    test_files: 2737
+    doc_files: 2801
+    contract_files: 2738
+    integration_files: 2721
+    feature_catalog: 2
+    feature_signals: 40
+  - profiled_files: 21690
+    source_files: 14571
+    test_files: 2737
+    doc_files: 2801
+    contract_files: 2738
+    integration_files: 2721
+    feature_catalog: 2
+    feature_signals: 40
+  - profiled_files: 21690
+    source_files: 14571
+    test_files: 2737
+    doc_files: 2801
+    contract_files: 2738
+    integration_files: 2721
+    feature_catalog: 2
+    feature_signals: 40
+  top_features_by_pass:
+    1: *id028
+    2: *id029
+    3: *id030
+failures: []

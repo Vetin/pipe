@@ -8,7 +8,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 VALIDATOR = ROOT / "pipeline-lab/showcases/scripts/validate_native_feature_outputs.py"
-RUN_DIR = ROOT / "pipeline-lab/showcases/native-emulation-runs/20260512-native-debug"
+RUN_DIR = ROOT / "pipeline-lab/showcases/native-emulation-runs/20260512-mermaid-topology"
 
 
 def run(cmd, cwd, check=True):

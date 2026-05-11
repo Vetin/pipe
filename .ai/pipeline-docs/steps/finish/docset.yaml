@@ -13,6 +13,9 @@ required_docs:
   - .ai/pipeline-docs/steps/finish/checklist.md
 optional_docs:
   - .ai/knowledge/features-overview.md
+  - .ai/knowledge/architecture-overview.md
+  - .ai/knowledge/module-map.md
+  - .ai/knowledge/integration-map.md
   - .ai/knowledge/adr-index.md
 selected_alternatives: []
 suggested_related_files:

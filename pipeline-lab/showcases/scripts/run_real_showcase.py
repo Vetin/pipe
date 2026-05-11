@@ -227,6 +227,18 @@ The feature belongs to `{config['domain']}` and is planned against commit `{find
 - Domain service -> persistence layer: records state transition and history.
 - Domain service -> notification/audit subsystem: emits reviewable events.
 
+## Feature Topology
+```mermaid
+flowchart LR
+  Actor[Product user or administrator] --> Entry[UI/API entrypoint]
+  Entry --> Authz[Authorization guard]
+  Authz --> Workflow[{config['domain']} workflow service]
+  Workflow --> Store[(State and history store)]
+  Workflow --> Audit[Audit/event stream]
+  Workflow --> Notify[Notification or delivery job]
+  Audit --> Knowledge[Shared feature memory]
+```
+
 ## Diagrams
 Sequence diagram recommended during implementation: request, authorization, state transition, audit event, notification, and rollback/failure path.
 
@@ -255,6 +267,12 @@ Use additive persistence or schema changes only. Deploy read paths before write 
 ## Alternatives Considered
 - Extend existing generic status fields only; rejected because it hides audit semantics and rollback evidence.
 - Implement as a background-only workflow; rejected because user-visible state and review history must remain inspectable.
+
+## Shared Knowledge Impact
+- `.ai/knowledge/features-overview.md`: record the completed workflow as reusable feature memory after finish.
+- `.ai/knowledge/architecture-overview.md`: summarize the feature topology and affected boundaries for future planning.
+- `.ai/knowledge/module-map.md`: note source modules selected for the final implementation.
+- `.ai/knowledge/integration-map.md`: record notification, webhook, job, or audit integration paths when used.
 
 ## Completeness Correctness Coherence
 Completeness: contract, architecture, technical design, slices, readiness gates, and evidence paths cover the requested workflow.

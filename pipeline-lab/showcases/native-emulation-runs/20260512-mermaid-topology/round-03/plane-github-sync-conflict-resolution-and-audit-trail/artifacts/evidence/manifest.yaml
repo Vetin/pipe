@@ -1,0 +1,31 @@
+case: plane-github-sync-conflict-resolution-and-audit-trail
+round: 3
+run_id: 20260512-mermaid-topology
+source_revision: offline-emulation-source-map
+manual_validation:
+  status: planned
+  note: Run UAT/manual validation in the live checkout for user-visible workflows.
+verification_debt:
+- check: live repository command execution
+  risk: offline emulation cannot prove code compiles in target checkout
+  owner: implementation agent
+  follow_up: replace planned evidence with raw command output
+commands:
+- name: contract-lint
+  status: planned
+  scope: feature.md
+- name: slice-red-green
+  status: planned
+  scope: slices.yaml
+- name: review-replay
+  status: planned
+  scope: reviews/review.md
+judge_dimensions:
+- native_prompt_integrity
+- artifact_completeness
+- contract_clarity
+- repo_context_research
+- architecture_design
+- slicing_tdd
+- review_evidence
+native_prompt: no direct internal skill invocation

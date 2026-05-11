@@ -459,6 +459,18 @@ The feature is modeled as a change set around {case.source} domain state, API/UI
 ## Component Interactions
 {modules_md}
 
+## Feature Topology
+```mermaid
+flowchart LR
+  Actor[Primary actor] --> Client[UI or API client]
+  Client --> Entry[Feature entrypoint]
+  Entry --> Domain[Domain service/module]
+  Domain --> Store[(State and history)]
+  Domain --> Audit[Audit or event stream]
+  Domain --> External[External integration when applicable]
+  Audit --> Knowledge[Shared knowledge update]
+```
+
 ## Diagrams
 ```mermaid
 sequenceDiagram
@@ -497,6 +509,12 @@ Deploy persistence and feature flag first, backfill or index audit records where
 - Reuse existing domain event table directly; acceptable only if it can store rollback payloads and actor provenance.
 - Add a feature-specific audit table; safer when existing events cannot preserve before/after state.
 - Ship UI-only preview first; rejected for production because apply and rollback invariants must be designed together.
+
+## Shared Knowledge Impact
+- `.ai/knowledge/features-overview.md`: add completed feature memory and current behavior summary.
+- `.ai/knowledge/architecture-overview.md`: add the high-level topology and affected module boundaries.
+- `.ai/knowledge/module-map.md`: update ownership and source/test touchpoints selected by implementation.
+- `.ai/knowledge/integration-map.md`: update integration, job, webhook, audit, or external contract paths.
 
 ## Completeness Correctness Coherence
 - Completeness: every requirement has an architecture component and rollback path.
@@ -693,6 +711,12 @@ Round {round_number} review inspected feature contract, repository context, arch
 
 ## Rollback Guidance
 - Preserve before/after state, audit event ids, and compensating action notes for every destructive transition.
+
+## Shared Knowledge Updates
+- `.ai/knowledge/features-overview.md`: add or refresh the feature card entry after promotion.
+- `.ai/knowledge/architecture-overview.md`: add high-level topology and affected boundaries after live implementation.
+- `.ai/knowledge/module-map.md`: add final source/test ownership once exact files are selected.
+- `.ai/knowledge/integration-map.md`: add integration, event, job, webhook, or audit communication paths.
 
 ## Plan Drift
 - None in offline emulation; live implementation must mark stale artifacts if code changes the plan.

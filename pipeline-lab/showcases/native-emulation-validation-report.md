@@ -1,9 +1,9 @@
 # Native Feature Output Validation
 
-- Run directory: `/Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-superpowers-skills`
+- Run directory: `/Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-mermaid-topology`
 - Repeated passes: `3`
 - Minimum final score: `0.920`
-- Generated at: `2026-05-11T23:33:33.819172+00:00`
+- Generated at: `2026-05-11T23:46:38.511617+00:00`
 
 ## Pass Summary
 

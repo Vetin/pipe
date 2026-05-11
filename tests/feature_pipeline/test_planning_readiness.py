@@ -179,8 +179,18 @@ Auth owns reset.
 ## Component Interactions
 API calls token store and email service.
 
+## Feature Topology
+```mermaid
+flowchart LR
+  User[User] --> API[Auth API]
+  API --> Token[Token service]
+  Token --> Store[(Token store)]
+  API --> Email[Email service]
+  API --> Audit[Audit log]
+```
+
 ## Diagrams
-None.
+The topology captures feature/service/module communication at a high level.
 
 ## Security Model
 Hash tokens.
@@ -202,6 +212,12 @@ Enumeration.
 
 ## Alternatives Considered
 Reuse session tokens; rejected because reset tokens need separate expiry and audit.
+
+## Shared Knowledge Impact
+- `.ai/knowledge/features-overview.md`: add reset password current feature memory.
+- `.ai/knowledge/architecture-overview.md`: record auth reset topology.
+- `.ai/knowledge/module-map.md`: record auth, token, and email module ownership.
+- `.ai/knowledge/integration-map.md`: record email and audit communication.
 
 ## Completeness Correctness Coherence
 Feature requirements, module boundaries, risks, rollback, and tests are aligned.

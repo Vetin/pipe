@@ -12,9 +12,15 @@ Required architecture sections:
 
 - System Context
 - Component Interactions
+- Feature Topology
+- Diagrams
 - Security Model
 - Failure Modes
 - Observability
 - Rollback Strategy
+- Migration Strategy
 - Architecture Risks
+- Alternatives Considered
+- Shared Knowledge Impact
+- Completeness Correctness Coherence
 - ADRs

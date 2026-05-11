@@ -146,6 +146,22 @@ def validate_skill_matrix() -> list[dict[str, str]]:
             if token not in content:
                 missing.append(token)
         checks.append(check(f"skill_{name}", not missing, "missing: " + ", ".join(missing) if missing else "shared protocol present"))
+    architecture_skill = read_text(ROOT / ".agents/skills/nfp-03-architecture/SKILL.md")
+    checks.append(
+        check(
+            "skill_architecture_mermaid_topology",
+            "## Feature Topology" in architecture_skill and "Mermaid" in architecture_skill and ".ai/knowledge" in architecture_skill,
+            "architecture skill requires Mermaid topology and shared knowledge impact",
+        )
+    )
+    finish_skill = read_text(ROOT / ".agents/skills/nfp-11-finish/SKILL.md")
+    checks.append(
+        check(
+            "skill_finish_shared_knowledge_updates",
+            "## Shared Knowledge Updates" in finish_skill and ".ai/knowledge/features-overview.md" in finish_skill,
+            "finish skill requires shared knowledge update reporting",
+        )
+    )
     tdd_skill = ROOT / ".agents/skills/nfp-08-tdd-implementation/SKILL.md"
     tdd_content = read_text(tdd_skill) if tdd_skill.exists() else ""
     missing_subagent_tokens = [

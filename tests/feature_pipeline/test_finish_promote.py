@@ -62,6 +62,18 @@ class FinishPromoteTests(unittest.TestCase):
         self.assertIn("feature-card.md missing heading: ## Verification Debt", result.stdout)
         self.assertIn("feature-card.md missing heading: ## Claim Provenance", result.stdout)
         self.assertIn("feature-card.md missing heading: ## Rollback Guidance", result.stdout)
+        self.assertIn("feature-card.md missing heading: ## Shared Knowledge Updates", result.stdout)
+
+    def test_finish_validation_requires_shared_knowledge_paths(self):
+        workspace = self.completed_workspace("run-finish-knowledge-paths")
+        content = (workspace / "feature-card.md").read_text(encoding="utf-8")
+        content = content.replace(".ai/knowledge/", "knowledge/")
+        (workspace / "feature-card.md").write_text(content, encoding="utf-8")
+
+        result = run([sys.executable, str(SCRIPT), "validate", "--workspace", str(workspace)], self.repo, check=False)
+
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("feature-card.md must describe shared knowledge updates using .ai/knowledge paths", result.stdout)
 
     def test_promote_copies_workspace_and_regenerates_index(self):
         workspace = self.completed_workspace("run-promote")
@@ -155,6 +167,13 @@ Final claims map to feature.md, slices.yaml, evidence/manifest.yaml, and final v
 ## Rollback Guidance
 
 Disable reset endpoints and preserve existing login behavior.
+
+## Shared Knowledge Updates
+
+- `.ai/knowledge/features-overview.md`: reset password feature memory updated.
+- `.ai/knowledge/architecture-overview.md`: auth reset topology recorded.
+- `.ai/knowledge/module-map.md`: auth/token/email ownership recorded.
+- `.ai/knowledge/integration-map.md`: email delivery communication recorded.
 """,
             encoding="utf-8",
         )

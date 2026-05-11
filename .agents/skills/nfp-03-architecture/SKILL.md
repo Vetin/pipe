@@ -32,6 +32,11 @@ Responsibilities:
 - identify new, modified, removed, and unchanged behavior
 - describe module communication, security model, failure modes, observability,
   rollback, and architecture risks
+- draw a high-level Mermaid feature topology showing actors, entry points,
+  services/modules, data stores, events, and external systems before detailed
+  design begins
+- identify which `.ai/knowledge` summaries the feature should update at finish
+  so future feature work can reuse the architecture picture
 - document considered alternatives and why the selected direction fits the
   existing repository
 - keep claims grounded in inspected files, ADRs, contracts, and tests
@@ -61,6 +66,8 @@ Workflow:
 
    ## Component Interactions
 
+   ## Feature Topology
+
    ## Diagrams
 
    ## Security Model
@@ -77,6 +84,8 @@ Workflow:
 
    ## Alternatives Considered
 
+   ## Shared Knowledge Impact
+
    ## Completeness Correctness Coherence
 
    ## ADRs
@@ -84,13 +93,20 @@ Workflow:
 
 6. In `Change Delta`, explicitly list new, modified, removed, and unchanged
    behavior. If a category is empty, say so.
-7. Add diagrams under `diagrams/` when they clarify flow or module boundaries.
-8. Add ADRs under `adrs/` only for significant decisions. Each ADR must include
+7. In `Feature Topology`, include a `mermaid` flowchart or graph that can be
+   read from the top of the feature without implementation detail. It must show
+   at least actor/client, entrypoint, affected services/modules, persistence or
+   event/audit path, and external integration when applicable.
+8. In `Shared Knowledge Impact`, list the `.ai/knowledge` files that finish
+   should update or confirm unchanged, with one line explaining the future reuse
+   value of each update.
+9. Add diagrams under `diagrams/` when they clarify flow or module boundaries.
+10. Add ADRs under `adrs/` only for significant decisions. Each ADR must include
    alternatives and consequences.
-9. Append `Docs Consulted: Architecture` to `execution.md` with short notes on
+11. Append `Docs Consulted: Architecture` to `execution.md` with short notes on
    how each document was used.
-10. Set the architecture gate to `drafted` once the artifact exists.
-11. Run:
+12. Set the architecture gate to `drafted` once the artifact exists.
+13. Run:
 
     ```bash
     python .agents/pipeline-core/scripts/featurectl.py validate --workspace <workspace>

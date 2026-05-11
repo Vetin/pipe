@@ -913,6 +913,13 @@ def final_artifacts(spec: CaseSpec, workspace: Path, worktree: Path) -> None:
             ## Rollback Guidance
 
             Remove `showcase/{spec.slug}` or revert the generated patch. For production integration, use the recorded rollback hint: {spec.rollback_hint}.
+
+            ## Shared Knowledge Updates
+
+            - `.ai/knowledge/features-overview.md`: promotion adds the feature card as reusable completed feature memory.
+            - `.ai/knowledge/architecture-overview.md`: update with the high-level Mermaid topology when production modules are integrated.
+            - `.ai/knowledge/module-map.md`: update with final source and test module ownership after upstream integration.
+            - `.ai/knowledge/integration-map.md`: update if the production feature uses notifications, background jobs, webhooks, or audit events.
             """
         )
     )
