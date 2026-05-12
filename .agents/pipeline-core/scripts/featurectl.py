@@ -1480,6 +1480,13 @@ def status_blockers(root: Path, workspace: Path, feature: dict[str, Any], state:
     current_step = state.get("current_step")
     if current_step not in VALID_STEPS:
         blockers.append(f"invalid current_step: {current_step}")
+    try:
+        workspace.relative_to(root / ".ai/features")
+        is_canonical_memory = current_step == "promote"
+    except ValueError:
+        is_canonical_memory = False
+    if is_canonical_memory:
+        return blockers
     worktree_info = state.get("worktree") or {}
     worktree_value = worktree_info.get("path")
     branch_value = worktree_info.get("branch")

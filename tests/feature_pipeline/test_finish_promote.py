@@ -87,6 +87,8 @@ class FinishPromoteTests(unittest.TestCase):
         self.assertEqual(index["features"][0]["feature_key"], "auth/reset-password")
         self.assertEqual(index["features"][0]["path"], ".ai/features/auth/reset-password")
         self.assertEqual(yaml.safe_load((canonical / "feature.yaml").read_text(encoding="utf-8"))["status"], "complete")
+        validation = run([sys.executable, str(SCRIPT), "validate", "--workspace", str(canonical)], self.repo)
+        self.assertIn("validation: pass", validation.stdout)
 
     def test_promote_conflict_aborts_by_default(self):
         first = self.completed_workspace("run-promote-first")
