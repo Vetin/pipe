@@ -1,0 +1,120 @@
+artifact_contract_version: 0.1.0
+feature_key: pipeline/portable-artifact-consistency
+slices:
+- id: S-001
+  title: Canonical knowledge portability
+  linked_requirements: [FR-001, FR-002, FR-003]
+  linked_acceptance_criteria: [AC-001, AC-002, AC-003]
+  linked_adrs: []
+  linked_contracts: []
+  dependencies: []
+  priority: 1
+  complexity: 5
+  critical_path: true
+  parallelizable: false
+  file_ownership:
+  - .agents/pipeline-core/scripts/featurectl.py
+  - tests/feature_pipeline/test_featurectl_core.py
+  - tests/feature_pipeline/test_finish_promote.py
+  - .ai/knowledge
+  conflict_risk: medium
+  dependency_notes: Must land before final profile refresh and promotion.
+  expected_touchpoints:
+  - featurectl profile and promotion helpers
+  - canonical knowledge files
+  scope_confidence: high
+  test_strategy: Add tests for project.root portability, canonical sync validation, and catalog labels.
+  tdd:
+    failing_test_file: tests/feature_pipeline/test_featurectl_core.py
+    red_command: python -m pytest tests/feature_pipeline/test_featurectl_core.py tests/feature_pipeline/test_finish_promote.py
+    expected_failure: project root is absolute and canonical knowledge sync is not validated
+    green_command: python -m pytest tests/feature_pipeline/test_featurectl_core.py tests/feature_pipeline/test_finish_promote.py
+  verification_commands:
+  - python -m pytest tests/feature_pipeline/test_featurectl_core.py tests/feature_pipeline/test_finish_promote.py
+  review_focus:
+  - canonical memory cannot drift
+  - profile output is portable
+  evidence_status: pending
+  status: pending
+  iteration_budget: 4
+  rollback_point: pre-slice git state
+  independent_verification: python -m pytest tests/feature_pipeline/test_featurectl_core.py
+  failure_triage_notes: classify failures as profile rendering, validation, or fixture drift
+- id: S-002
+  title: Structured execution and evidence metadata
+  linked_requirements: [FR-004, FR-005, FR-007]
+  linked_acceptance_criteria: [AC-004, AC-005, AC-007]
+  linked_adrs: []
+  linked_contracts: []
+  dependencies: [S-001]
+  priority: 2
+  complexity: 6
+  critical_path: true
+  parallelizable: false
+  file_ownership:
+  - .agents/pipeline-core/scripts/featurectl.py
+  - tests/feature_pipeline/test_finish_promote.py
+  - tests/feature_pipeline/test_gates_and_evidence.py
+  - .ai/features
+  - .ai/feature-workspaces
+  conflict_risk: high
+  dependency_notes: Requires migrating current source-controlled execution logs and manifests.
+  expected_touchpoints:
+  - execution event helpers
+  - evidence manifest helpers
+  scope_confidence: high
+  test_strategy: Add tests for unstructured event rejection and change_label handling.
+  tdd:
+    failing_test_file: tests/feature_pipeline/test_gates_and_evidence.py
+    red_command: python -m pytest tests/feature_pipeline/test_gates_and_evidence.py tests/feature_pipeline/test_finish_promote.py
+    expected_failure: unstructured events are accepted and semantic labels are stored as diff_hash
+    green_command: python -m pytest tests/feature_pipeline/test_gates_and_evidence.py tests/feature_pipeline/test_finish_promote.py
+  verification_commands:
+  - python -m pytest tests/feature_pipeline/test_gates_and_evidence.py tests/feature_pipeline/test_finish_promote.py
+  review_focus:
+  - event log has one slice schema
+  - labels are not called hashes
+  evidence_status: pending
+  status: pending
+  iteration_budget: 5
+  rollback_point: pre-slice git state
+  independent_verification: python -m pytest tests/feature_pipeline/test_finish_promote.py
+  failure_triage_notes: classify failures as event migration, metadata migration, or path convention drift
+- id: S-003
+  title: Readability guards and promotion
+  linked_requirements: [FR-006]
+  linked_acceptance_criteria: [AC-006]
+  linked_adrs: []
+  linked_contracts: []
+  dependencies: [S-001, S-002]
+  priority: 3
+  complexity: 4
+  critical_path: false
+  parallelizable: false
+  file_ownership:
+  - tests/feature_pipeline/test_artifact_formatting.py
+  - .gitignore
+  - .ai/feature-workspaces/pipeline/portable-artifact-consistency--20260512-portable-consistency
+  conflict_risk: medium
+  dependency_notes: Final source-readability check runs after migrations.
+  expected_touchpoints:
+  - formatting tests
+  - final feature artifacts
+  scope_confidence: high
+  test_strategy: Add Python line-length and newline guards, then run full feature-pipeline suite.
+  tdd:
+    failing_test_file: tests/feature_pipeline/test_artifact_formatting.py
+    red_command: python -m pytest tests/feature_pipeline/test_artifact_formatting.py
+    expected_failure: source readability guards do not cover Python source and .gitignore
+    green_command: python -m pytest tests/feature_pipeline/test_artifact_formatting.py
+  verification_commands:
+  - python -m pytest tests/feature_pipeline -q
+  review_focus:
+  - artifacts remain readable on disk
+  - no generated one-line source-controlled files
+  evidence_status: pending
+  status: pending
+  iteration_budget: 4
+  rollback_point: pre-slice git state
+  independent_verification: python -m pytest tests/feature_pipeline/test_artifact_formatting.py
+  failure_triage_notes: classify failures as source formatting, artifact formatting, or validation drift
