@@ -68,7 +68,8 @@ class GatesAndEvidenceTests(unittest.TestCase):
         self.assertIn("status: approved", result.stdout)
         self.assertEqual(state["gates"]["feature_contract"], "approved")
         self.assertEqual(state["gates"]["architecture"], "pending")
-        self.assertIn("old_status=pending new_status=approved by=user", execution)
+        self.assertIn("event_type=gate_status_changed", execution)
+        self.assertIn("gate=feature_contract old_status=pending new_status=approved by=user", execution)
         self.assertFalse(list(workspace.rglob("approvals.yaml")))
         self.assertFalse(list(workspace.rglob("handoff.md")))
 
@@ -91,12 +92,15 @@ class GatesAndEvidenceTests(unittest.TestCase):
         )
 
         state = yaml.safe_load((workspace / "state.yaml").read_text(encoding="utf-8"))
+        execution = (workspace / "execution.md").read_text(encoding="utf-8")
         self.assertTrue(state["stale"]["tech_design"])
         self.assertTrue(state["stale"]["slices"])
         self.assertTrue(state["stale"]["evidence"])
         self.assertTrue(state["stale"]["feature_card"])
         self.assertTrue(state["stale"]["canonical_docs"])
         self.assertFalse(state["stale"]["feature"])
+        self.assertIn("event_type=artifact_marked_stale", execution)
+        self.assertIn("artifact=architecture", execution)
 
     def test_record_evidence_and_complete_slice(self):
         workspace = self.ready_workspace()

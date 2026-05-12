@@ -385,7 +385,14 @@ def cmd_gate_set(args: argparse.Namespace) -> None:
     append_execution_event(
         workspace,
         "Gate Events",
-        f"- {utc_now()} gate={args.gate} old_status={old_status} new_status={args.status} by={args.actor} note={args.note or 'none'}",
+        render_execution_event(
+            "gate_status_changed",
+            gate=args.gate,
+            old_status=old_status,
+            new_status=args.status,
+            by=args.actor,
+            note=args.note or "none",
+        ),
     )
     print(f"gate: {args.gate}")
     print(f"status: {args.status}")
@@ -406,7 +413,12 @@ def cmd_mark_stale(args: argparse.Namespace) -> None:
     append_execution_event(
         workspace,
         "Scope Changes",
-        f"- {utc_now()} artifact={args.artifact} marked_stale={', '.join(affected)} reason={args.reason or 'none'}",
+        render_execution_event(
+            "artifact_marked_stale",
+            artifact=args.artifact,
+            marked_stale=affected,
+            reason=args.reason or "none",
+        ),
     )
     print("marked_stale:")
     for artifact in affected:
@@ -546,7 +558,11 @@ def cmd_promote(args: argparse.Namespace) -> None:
         archive.parent.mkdir(parents=True, exist_ok=True)
         shutil.copytree(workspace, archive)
         update_feature_status(archive, "archived", current_step="promote", lifecycle="archived", read_only=True)
-        append_execution_event(archive, "Summary", f"- {utc_now()} archived incoming variant for {feature['canonical_path']}")
+        append_execution_event(
+            archive,
+            "Summary",
+            render_execution_event("incoming_variant_archived", canonical_path=feature["canonical_path"]),
+        )
         update_feature_status(workspace, "archived", current_step="promote", lifecycle="archived", read_only=True)
         regenerate_feature_index(root)
         sync_knowledge_canonical_features(root)
@@ -579,7 +595,11 @@ def cmd_promote(args: argparse.Namespace) -> None:
     update_feature_status(workspace, "promoted-readonly", current_step="promote", lifecycle="promoted-readonly", read_only=True)
     regenerate_feature_index(root)
     sync_knowledge_canonical_features(root)
-    append_execution_event(canonical, "Summary", f"- {utc_now()} promoted feature memory to {feature['canonical_path']}")
+    append_execution_event(
+        canonical,
+        "Summary",
+        render_execution_event("feature_promoted", canonical_path=feature["canonical_path"]),
+    )
     print("promotion: complete")
     print(f"canonical_path: {feature['canonical_path']}")
 
@@ -2589,6 +2609,24 @@ def normalize_execution_event_line(section: str, line: str) -> str:
     if stripped.startswith("- "):
         return stripped
     return f"- {utc_now()} event_type={slugify_event_value(section)} detail={slugify_event_value(stripped)}"
+
+
+def render_execution_event(event_type: str, **fields: Any) -> str:
+    parts = [f"- {utc_now()}", f"event_type={format_event_value(event_type)}"]
+    for key, value in fields.items():
+        parts.append(f"{key}={format_event_value(value)}")
+    return " ".join(parts)
+
+
+def format_event_value(value: Any) -> str:
+    if value is None:
+        return "none"
+    if isinstance(value, (list, tuple, set)):
+        return ",".join(format_event_value(item) for item in value)
+    text = str(value).strip() or "none"
+    text = re.sub(r"\s+", "-", text)
+    text = re.sub(r"[^A-Za-z0-9_./,:=-]+", "-", text)
+    return text.strip("-") or "none"
 
 
 def staleness_targets(artifact: str) -> list[str]:

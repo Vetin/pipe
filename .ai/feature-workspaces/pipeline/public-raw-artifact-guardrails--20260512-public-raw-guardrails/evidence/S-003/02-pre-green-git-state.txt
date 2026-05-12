@@ -1,0 +1,5 @@
+ M .agents/pipeline-core/scripts/featurectl_core/cli.py
+ M .ai/feature-workspaces/pipeline/public-raw-artifact-guardrails--20260512-public-raw-guardrails/evidence/manifest.yaml
+ M tests/feature_pipeline/test_finish_promote.py
+ M tests/feature_pipeline/test_gates_and_evidence.py
+?? .ai/feature-workspaces/pipeline/public-raw-artifact-guardrails--20260512-public-raw-guardrails/evidence/S-003/
