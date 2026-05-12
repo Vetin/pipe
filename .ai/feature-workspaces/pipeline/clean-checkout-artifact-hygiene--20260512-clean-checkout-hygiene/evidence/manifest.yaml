@@ -1,0 +1,22 @@
+artifact_contract_version: 0.1.0
+feature_key: pipeline/clean-checkout-artifact-hygiene
+slices:
+  S-001:
+    red:
+      timestamp: '2026-05-12T19:26:03Z'
+      command_file: S-001/01-red-command.txt
+      output_file: S-001/01-red-output.log
+      git_state_file: S-001/00-pre-red-git-state.txt
+    green:
+      timestamp: '2026-05-12T19:28:36Z'
+      command_file: S-001/03-green-command.txt
+      output_file: S-001/03-green-output.log
+      git_state_file: S-001/02-pre-green-git-state.txt
+    verification:
+      timestamp: '2026-05-12T19:28:36Z'
+      command_file: S-001/04-verification-command.txt
+      output_file: S-001/04-verification-output.log
+    review:
+      timestamp: '2026-05-12T19:28:36Z'
+      summary_file: S-001/05-review-summary.md
+    diff_hash: 92a595dbb75910794101787c6127b6d635e64056ecd5944e8280d762b22c76d6

@@ -45,8 +45,8 @@ Project init profile:
   python .agents/pipeline-core/scripts/featurectl.py init --profile-project
   ```
 
-- Read `.ai/knowledge/project-index.yaml` and `.ai/knowledge/project-snapshot.md`
-  after the profile is generated.
+- Read `.ai/knowledge/project-index.yaml`, `.ai/knowledge/profile-examples.yaml`,
+  and `.ai/knowledge/project-snapshot.md` after the profile is generated.
 - Read `.ai/knowledge/features-overview.md` before `.ai/knowledge/discovered-signals.md`.
   Canonical feature memory is the first retrieval layer; discovered signals are
   only source leads until verified.

@@ -1,0 +1,15 @@
+ M .agents/pipeline-core/scripts/featurectl.py
+ M .agents/skills/nfp-01-context/SKILL.md
+ M .ai/knowledge/contracts-overview.md
+ M .ai/knowledge/discovered-signals.md
+ M .ai/knowledge/features-overview.md
+ M .ai/knowledge/project-index.yaml
+ M .ai/knowledge/project-overview.md
+ M .ai/knowledge/project-snapshot.md
+ M .ai/knowledge/testing-overview.md
+ M tests/feature_pipeline/test_featurectl_core.py
+?? .ai/feature-workspaces/pipeline/clean-checkout-artifact-hygiene--20260512-clean-checkout-hygiene/evidence/
+?? .ai/knowledge/architecture-overview.generated.md
+?? .ai/knowledge/integration-map.generated.md
+?? .ai/knowledge/module-map.generated.md
+?? .ai/knowledge/profile-examples.yaml

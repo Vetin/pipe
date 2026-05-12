@@ -35,8 +35,8 @@ slices:
   review_focus:
   - project-index keeps only compact retrieval memory
   - lab_signal usage remains constrained
-  evidence_status: pending
-  status: pending
+  evidence_status: complete
+  status: complete
   iteration_budget: 3
   rollback_point: pre-slice git state
   independent_verification: inspect .ai/knowledge/project-index.yaml and profile-examples.yaml
