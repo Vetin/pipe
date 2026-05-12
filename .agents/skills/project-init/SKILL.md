@@ -1,5 +1,6 @@
 ---
 name: project-init
+description: Profile a repository, refresh .ai knowledge, and extract a current feature picture before feature work.
 version: '0.1.0'
 pipeline_contract_version: '0.1.0'
 ---

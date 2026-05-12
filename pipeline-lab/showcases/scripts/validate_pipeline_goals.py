@@ -167,6 +167,7 @@ def validate_skill_matrix() -> list[dict[str, str]]:
         name = path.parent.name
         missing = []
         for token in (
+            "description:",
             "pipeline_contract_version: '0.1.0'",
             ".agents/pipeline-core/references/native-skill-protocol.md",
             "skills/native-feature-pipeline/references/upstream-pattern-map.md",
@@ -277,6 +278,7 @@ def validate_codex_debug_run(run_dir: Path) -> list[dict[str, str]]:
     summary_path = run_dir / "summary.yaml"
     validation_path = run_dir / "validation.md"
     comparison_path = run_dir / "comparison.md"
+    real_diagnostic_path = run_dir / "real-mode-diagnostic.md"
     if not summary_path.exists():
         return [check("codex_debug_summary_exists", False, f"missing {summary_path}")]
     summary = read_yaml(summary_path)
@@ -289,6 +291,7 @@ def validate_codex_debug_run(run_dir: Path) -> list[dict[str, str]]:
     ]
     comparison_text = read_text(comparison_path) if comparison_path.exists() else ""
     validation_text = read_text(validation_path) if validation_path.exists() else ""
+    real_diagnostic = read_text(real_diagnostic_path) if real_diagnostic_path.exists() else ""
     return [
         check("codex_debug_summary_exists", summary_path.exists(), "codex debug summary exists"),
         check("codex_debug_status_pass", summary.get("status") == "pass", f"status: {summary.get('status')}"),
@@ -301,6 +304,11 @@ def validate_codex_debug_run(run_dir: Path) -> list[dict[str, str]]:
         ),
         check("codex_debug_artifacts_validated", bool(results) and all(artifact_results), "generated NFP artifacts validated"),
         check("codex_debug_validation_report", "Codex Debug Pipeline Validation" in validation_text, "validation report exists"),
+        check(
+            "codex_debug_real_mode_diagnostic",
+            "uses_real_codex: true" in real_diagnostic and "missing field" in real_diagnostic,
+            "real mode diagnostic records real Codex attempt and loader fix",
+        ),
     ]
 
 

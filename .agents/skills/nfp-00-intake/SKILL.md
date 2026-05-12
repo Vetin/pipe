@@ -1,5 +1,6 @@
 ---
 name: nfp-00-intake
+description: Start a Native Feature Pipeline run from user intent and create the feature workspace.
 version: '0.1.0'
 pipeline_contract_version: '0.1.0'
 ---

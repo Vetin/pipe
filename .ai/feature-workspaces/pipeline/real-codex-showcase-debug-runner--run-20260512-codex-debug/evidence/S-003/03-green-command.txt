@@ -1,0 +1,1 @@
+python pipeline-lab/showcases/scripts/run_codex_debug_pipeline.py --config pipeline-lab/showcases/codex-debug-cases.yaml --case harness-codex-debug-smoke --run-id 20260512-debug --output-dir pipeline-lab/showcases/codex-debug-runs --mode mock --clean --allow-dirty

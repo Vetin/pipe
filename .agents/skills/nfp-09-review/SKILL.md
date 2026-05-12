@@ -1,5 +1,6 @@
 ---
 name: nfp-09-review
+description: Run deterministic and adversarial review, record findings, and require fix verification.
 version: '0.1.0'
 pipeline_contract_version: '0.1.0'
 ---

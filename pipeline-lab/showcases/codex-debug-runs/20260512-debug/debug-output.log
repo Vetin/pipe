@@ -1,0 +1,4 @@
+case: harness-codex-debug-smoke
+run_dir: /Users/egormasnankin/work/worktrees/pipeline-real-codex-showcase-debug-runner-run-20260512-codex-debug/pipeline-lab/showcases/codex-debug-runs/20260512-debug/e2e/harness-codex-debug-smoke/20260512-debug
+returncode: 0
+summary: /Users/egormasnankin/work/worktrees/pipeline-real-codex-showcase-debug-runner-run-20260512-codex-debug/pipeline-lab/showcases/codex-debug-runs/20260512-debug/e2e/summary-20260512-debug.yaml

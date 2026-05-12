@@ -1,5 +1,6 @@
 ---
 name: nfp-04-tech-design
+description: Specify implementation contracts, module responsibilities, data, errors, flags, and test strategy.
 version: '0.1.0'
 pipeline_contract_version: '0.1.0'
 ---

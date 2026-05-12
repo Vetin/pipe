@@ -1,5 +1,6 @@
 ---
 name: nfp-01-context
+description: Discover repository context, project knowledge, and source evidence before feature planning.
 version: '0.1.0'
 pipeline_contract_version: '0.1.0'
 ---

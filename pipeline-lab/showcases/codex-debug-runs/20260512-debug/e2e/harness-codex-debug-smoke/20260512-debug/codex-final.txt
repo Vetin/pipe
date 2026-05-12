@@ -1,0 +1,3 @@
+branch: nfp/harness-codex-debug-smoke
+commit: 69d7ce23f29b7195e0674f989be69d363556b5f3
+changed files: .ai/feature-workspaces/debug/harness-codex-debug-smoke, README.codex-debug.md

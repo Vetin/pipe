@@ -1,5 +1,6 @@
 ---
 name: nfp-02-feature-contract
+description: Draft the measurable feature contract, requirements, assumptions, and acceptance criteria.
 version: '0.1.0'
 pipeline_contract_version: '0.1.0'
 ---

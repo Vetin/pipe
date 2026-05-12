@@ -1,5 +1,6 @@
 ---
 name: nfp-07-worktree
+description: Verify feature worktree isolation, branch state, locks, and implementation safety.
 version: '0.1.0'
 pipeline_contract_version: '0.1.0'
 ---

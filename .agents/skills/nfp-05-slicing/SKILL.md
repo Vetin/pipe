@@ -1,5 +1,6 @@
 ---
 name: nfp-05-slicing
+description: Split approved planning into dependency-aware implementation slices with evidence requirements.
 version: '0.1.0'
 pipeline_contract_version: '0.1.0'
 ---

@@ -1,5 +1,6 @@
 ---
 name: nfp-11-finish
+description: Prepare feature memory, final feature card, shared knowledge updates, and release summary.
 version: '0.1.0'
 pipeline_contract_version: '0.1.0'
 ---

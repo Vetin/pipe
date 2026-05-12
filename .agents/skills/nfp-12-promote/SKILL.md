@@ -1,5 +1,6 @@
 ---
 name: nfp-12-promote
+description: Promote completed feature artifacts into canonical knowledge and close the pipeline workspace.
 version: '0.1.0'
 pipeline_contract_version: '0.1.0'
 ---

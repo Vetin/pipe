@@ -171,15 +171,36 @@ def load_json_array(path: Path) -> list[str]:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
-def collect_pipeline_artifacts(repo: Path) -> dict[str, list[str]]:
+def changed_files(repo: Path, before_head: str | None, after_head: str | None) -> list[str]:
+    if not before_head or not after_head or before_head == after_head:
+        return []
+    result = run(["git", "diff", "--name-only", before_head, after_head], repo)
+    if result.returncode != 0:
+        return []
+    return [line.strip() for line in result.stdout.splitlines() if line.strip()]
+
+
+def collect_pipeline_artifacts(repo: Path, before_head: str | None, after_head: str | None) -> tuple[dict[str, list[str]], str]:
     feature_root = repo / ".ai/feature-workspaces"
     artifacts: dict[str, list[str]] = {name: [] for name in REQUIRED_ARTIFACT_NAMES}
+    changed = changed_files(repo, before_head, after_head)
+    changed_artifacts: dict[str, list[str]] = {name: [] for name in REQUIRED_ARTIFACT_NAMES}
+    for rel_path in changed:
+        path = Path(rel_path)
+        if not rel_path.startswith(".ai/feature-workspaces/"):
+            continue
+        for name in REQUIRED_ARTIFACT_NAMES:
+            if path.name == name:
+                changed_artifacts[name].append(str(repo / path))
+    if any(changed_artifacts.values()):
+        return changed_artifacts, "changed_files"
+
     if not feature_root.exists():
-        return artifacts
+        return artifacts, "missing_feature_root"
     for name in REQUIRED_ARTIFACT_NAMES:
         matches = sorted(path for path in feature_root.rglob(name) if path.is_file())
         artifacts[name] = [str(path) for path in matches[:20]]
-    return artifacts
+    return artifacts, "workspace_scan_fallback"
 
 
 def validate_run(manifest: dict[str, Any], expected_mode: str) -> dict[str, Any]:
@@ -192,7 +213,7 @@ def validate_run(manifest: dict[str, Any], expected_mode: str) -> dict[str, Any]
     prompt = prompt_path.read_text(encoding="utf-8", errors="replace") if prompt_path.exists() else ""
     command = load_json_array(command_path) if command_path.exists() else []
     output = output_path.read_text(encoding="utf-8", errors="replace") if output_path.exists() else ""
-    artifacts = collect_pipeline_artifacts(repo)
+    artifacts, artifact_source = collect_pipeline_artifacts(repo, manifest.get("before_head"), manifest.get("after_head"))
 
     if manifest.get("execution_mode") != expected_mode:
         failures.append(f"execution_mode is {manifest.get('execution_mode')}, expected {expected_mode}")
@@ -222,6 +243,8 @@ def validate_run(manifest: dict[str, Any], expected_mode: str) -> dict[str, Any]
             failures.append("missing generated pipeline artifacts: " + ", ".join(missing_artifacts))
     else:
         warnings.append("dry-run validates prompt and command only; no implementation artifacts are expected")
+    if expected_mode != "dry-run" and artifact_source == "workspace_scan_fallback":
+        warnings.append("pipeline artifacts were found by workspace scan because no artifact changes were visible between before_head and after_head")
 
     return {
         "case": manifest["case"],
@@ -234,6 +257,7 @@ def validate_run(manifest: dict[str, Any], expected_mode: str) -> dict[str, Any]
         "target_branch": manifest["target_branch"],
         "after_head": manifest["after_head"],
         "after_status": manifest["after_status"],
+        "artifact_source": artifact_source,
         "artifacts": artifacts,
         "failures": failures,
         "warnings": warnings,

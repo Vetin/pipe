@@ -143,8 +143,8 @@ slices:
   review_focus:
   - no mock output represented as real Codex
   - real mode command is documented and scalable
-  evidence_status: planned
-  status: planned
+  evidence_status: complete
+  status: complete
   iteration_budget: 10
   rollback_point: Remove generated debug run and promoted feature memory.
   independent_verification: Compare old fake test behavior against new debug report.

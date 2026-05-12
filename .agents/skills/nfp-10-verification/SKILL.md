@@ -1,5 +1,6 @@
 ---
 name: nfp-10-verification
+description: Run final verification across tests, artifacts, evidence, and remaining delivery risks.
 version: '0.1.0'
 pipeline_contract_version: '0.1.0'
 ---

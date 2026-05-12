@@ -1,5 +1,6 @@
 ---
 name: nfp-06-readiness
+description: Validate gates, risks, dependencies, and artifact readiness before implementation starts.
 version: '0.1.0'
 pipeline_contract_version: '0.1.0'
 ---

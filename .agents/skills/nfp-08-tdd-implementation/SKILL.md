@@ -1,5 +1,6 @@
 ---
 name: nfp-08-tdd-implementation
+description: Implement slices through mandatory subagent flow with red-green evidence and review.
 version: '0.1.0'
 pipeline_contract_version: '0.1.0'
 ---

@@ -1,5 +1,6 @@
 ---
 name: nfp-03-architecture
+description: Design source-grounded architecture, ADRs, Mermaid topology, and shared knowledge impact.
 version: '0.1.0'
 pipeline_contract_version: '0.1.0'
 ---

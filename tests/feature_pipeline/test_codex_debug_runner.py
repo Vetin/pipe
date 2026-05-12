@@ -96,6 +96,7 @@ class CodexDebugRunnerTests(unittest.TestCase):
         self.assertEqual(summary["status"], "pass")
         self.assertEqual(summary["case_count"], 1)
         self.assertTrue(summary["comparison"]["current_unit_tests_use_fake_codex"])
+        self.assertEqual(summary["results"][0]["artifact_source"], "changed_files")
         self.assertEqual(e2e_run["execution_mode"], "mock")
         self.assertFalse(e2e_run["uses_real_codex"])
         self.assertTrue((repo / ".ai/feature-workspaces/debug/toy-feature/feature.md").exists())
