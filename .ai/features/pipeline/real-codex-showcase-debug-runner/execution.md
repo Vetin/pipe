@@ -90,3 +90,4 @@ technical design, and slices are drafted for readiness validation.
 - 2026-05-12T00:40:16Z gate=review old_status=pending new_status=complete by=codex note=review artifacts recorded
 - 2026-05-12T00:40:17Z gate=verification old_status=pending new_status=complete by=codex note=final verification output recorded
 - 2026-05-12T00:40:17Z gate=finish old_status=pending new_status=complete by=codex note=feature card complete
+- 2026-05-12T00:40:25Z promoted feature memory to .ai/features/pipeline/real-codex-showcase-debug-runner

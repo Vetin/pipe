@@ -1,0 +1,27 @@
+artifact_contract_version: 0.1.0
+review_id: review-codex-debug-runner-20260512
+tier: deterministic-and-agentic
+severity: note
+finding: Real Codex debug runner is implemented and mock showcase passes; real full-pipeline smoke remains timeout-sensitive.
+artifact: pipeline-lab/showcases/scripts/run_codex_debug_pipeline.py
+evidence: Focused tests pass, full feature-pipeline test discovery passes, goal validation passes, and real-mode diagnostic confirms the CLI path invokes /opt/homebrew/bin/codex.
+recommendation: Keep mock mode as stable CI/default evidence; use real mode with larger timeout or narrower smoke cases for operator debugging.
+blocking: false
+linked_requirement_ids:
+  - FR-001
+  - FR-002
+  - FR-003
+  - FR-004
+  - FR-005
+linked_slice_ids:
+  - S-001
+  - S-002
+  - S-003
+file_refs:
+  - pipeline-lab/showcases/scripts/run_codex_e2e_case.py
+  - pipeline-lab/showcases/scripts/run_codex_debug_pipeline.py
+  - pipeline-lab/showcases/codex-debug-runs/20260512-debug/summary.yaml
+  - pipeline-lab/showcases/codex-debug-runs/20260512-debug/real-mode-diagnostic.md
+reproduction_or_reasoning: The old unit test path used write_fake_codex. The new debug runner reports execution_mode and uses_real_codex, validates generated artifacts from changed files, and records a real Codex diagnostic separately from the stable mock run.
+fix_verification_command: python -m unittest discover tests/feature_pipeline && python pipeline-lab/showcases/scripts/validate_pipeline_goals.py --passes 3 --report /tmp/pipeline-goal-validation-codex-debug.md
+re_review_required: false

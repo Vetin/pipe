@@ -1,34 +1,35 @@
 artifact_contract_version: 0.1.0
 generated_by: featurectl.py init --profile-project
-generated_at: '2026-05-12T00:13:11Z'
+generated_at: '2026-05-12T00:40:48Z'
 project:
-  name: harness-pipeline
-  root: /Users/egormasnankin/work/harness-pipeline
-  branch: main
-  head: dc49306
+  name: pipeline-real-codex-showcase-debug-runner-run-20260512-codex-debug
+  root: /Users/egormasnankin/work/worktrees/pipeline-real-codex-showcase-debug-runner-run-20260512-codex-debug
+  branch: feature/pipeline-real-codex-showcase-debug-runner-run-20260512-codex-debug
+  head: 6a0720c
   remote: none
 counts:
-  tracked_files: 1185
-  profiled_files: 412
-  source_files: 16
-  test_files: 35
-  doc_files: 160
+  tracked_files: 1239
+  profiled_files: 430
+  source_files: 18
+  test_files: 36
+  doc_files: 165
   contract_files: 20
   integration_files: 4
 package_manifests: []
 scripts: []
 module_dirs:
 - path: pipeline-lab
-  tracked_files: 246
+  tracked_files: 263
 - path: .agents
   tracked_files: 68
 - path: .ai
   tracked_files: 58
 - path: tests
-  tracked_files: 35
+  tracked_files: 36
 source_examples:
 - .agents/pipeline-core/scripts/featurectl.py
 - .agents/pipeline-core/scripts/pipelinebench.py
+- pipeline-lab/showcases/codex-debug-runs/20260512-debug/fake-codex.py
 - pipeline-lab/showcases/scripts/aggregate_implementation_runs.py
 - pipeline-lab/showcases/scripts/aggregate_real_showcases.py
 - pipeline-lab/showcases/scripts/collect_nfp_real_runs.py
@@ -36,6 +37,7 @@ source_examples:
 - pipeline-lab/showcases/scripts/implement_real_showcase.py
 - pipeline-lab/showcases/scripts/judge_native_feature_builds.py
 - pipeline-lab/showcases/scripts/materialize_implementation_runs.py
+- pipeline-lab/showcases/scripts/run_codex_debug_pipeline.py
 - pipeline-lab/showcases/scripts/run_codex_e2e_case.py
 - pipeline-lab/showcases/scripts/run_init_profile_showcases.py
 - pipeline-lab/showcases/scripts/run_native_feature_emulation.py
@@ -47,6 +49,7 @@ test_examples:
 - tests/feature_pipeline/.gitkeep
 - tests/feature_pipeline/plan_test_helpers.py
 - tests/feature_pipeline/test_agents_policy.py
+- tests/feature_pipeline/test_codex_debug_runner.py
 - tests/feature_pipeline/test_codex_e2e_runner.py
 - tests/feature_pipeline/test_context_skill_contract.py
 - tests/feature_pipeline/test_docset_loading.py
@@ -73,7 +76,6 @@ test_examples:
 - tests/feature_pipeline/test_review_verification.py
 - tests/feature_pipeline/test_showcases.py
 - tests/feature_pipeline/test_skill_candidate_isolation.py
-- tests/feature_pipeline/test_slices_validation.py
 doc_examples:
 - .agents/pipeline-core/references/README.md
 - .agents/pipeline-core/references/artifact-requirements.md
@@ -134,6 +136,8 @@ integration_examples:
 canonical_features:
 - feature_key: pipeline/random-feature-stress-lab
   path: .ai/features/pipeline/random-feature-stress-lab
+- feature_key: pipeline/real-codex-showcase-debug-runner
+  path: .ai/features/pipeline/real-codex-showcase-debug-runner
 feature_signals:
 - source: features.md
   signal: Best three showcase features
@@ -143,6 +147,10 @@ feature_signals:
   signal: Native Feature Pipeline Validation
 - source: pipeline-lab/showcases/README.md
   signal: Native Feature Emulation
+- source: pipeline-lab/showcases/codex-debug-runs/20260512-debug/e2e/harness-codex-debug-smoke/20260512-debug/report.md
+  signal: Feature Request
+- source: pipeline-lab/showcases/codex-debug-runs/20260512-debug/validation.md
+  signal: Codex Debug Pipeline Validation
 - source: pipeline-lab/showcases/init-profile-report.md
   signal: Reuse In Feature Pipeline
 - source: pipeline-lab/showcases/native-emulation-judge-report.md
@@ -211,10 +219,6 @@ feature_signals:
   signal: 'Architecture: Guided Shared knowledge coverage gate'
 - source: pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/07-guided-shared-knowledge-coverage-gate/artifacts/feature-card.md
   signal: 'Feature Card: 07-guided-shared-knowledge-coverage-gate'
-- source: pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/07-guided-shared-knowledge-coverage-gate/artifacts/feature.md
-  signal: 'Feature: Guided Shared knowledge coverage gate'
-- source: pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/07-guided-shared-knowledge-coverage-gate/artifacts/repo-context.md
-  signal: Candidate Files And Modules
 feature_catalog:
 - name: pipeline/random-feature-stress-lab
   kind: canonical
@@ -223,6 +227,13 @@ feature_catalog:
   source_count: 1
   sources:
   - .ai/features/pipeline/random-feature-stress-lab
+- name: pipeline/real-codex-showcase-debug-runner
+  kind: canonical
+  confidence: high
+  description: Promoted feature memory recorded by the Native Feature Pipeline.
+  source_count: 1
+  sources:
+  - .ai/features/pipeline/real-codex-showcase-debug-runner
 - name: Candidate Files And Modules
   kind: detected
   confidence: high
@@ -369,6 +380,14 @@ feature_catalog:
   source_count: 1
   sources:
   - pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/09-bounded-gate-autoresume-hints/artifacts/feature.md
+- name: Codex Debug Pipeline Validation
+  kind: detected
+  confidence: medium
+  description: Codex Debug Pipeline Validation appears in 1 documentation signal;
+    inspect the listed files before relying on this as architecture truth.
+  source_count: 1
+  sources:
+  - pipeline-lab/showcases/codex-debug-runs/20260512-debug/validation.md
 - name: Feature Card 01 Guided Workspace Recovery Doctor
   kind: detected
   confidence: medium
@@ -455,19 +474,3 @@ feature_catalog:
   source_count: 1
   sources:
   - pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/10-traceable-review-finding-deduplicator/artifacts/feature-card.md
-- name: Guided Scenario Score Drift Detector
-  kind: detected
-  confidence: medium
-  description: Guided Scenario Score Drift Detector appears in 1 documentation signal;
-    inspect the listed files before relying on this as architecture truth.
-  source_count: 1
-  sources:
-  - pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/08-guided-scenario-score-drift-detector/artifacts/feature.md
-- name: Guided Shared Knowledge Coverage Gate
-  kind: detected
-  confidence: medium
-  description: Guided Shared Knowledge Coverage Gate appears in 1 documentation signal;
-    inspect the listed files before relying on this as architecture truth.
-  source_count: 1
-  sources:
-  - pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/07-guided-shared-knowledge-coverage-gate/artifacts/feature.md

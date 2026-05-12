@@ -1,0 +1,1 @@
+fatal: path tests/feature_pipeline/test_codex_debug_runner.py does not exist in HEAD; baseline has no explicit Codex debug runner or artifact validator.

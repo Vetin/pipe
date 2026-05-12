@@ -1,0 +1,152 @@
+artifact_contract_version: 0.1.0
+slices:
+- id: S-001
+  title: Execution mode and timeout support in E2E runner
+  linked_requirements:
+  - FR-001
+  - FR-002
+  linked_acceptance_criteria:
+  - AC-001
+  - AC-003
+  linked_adrs:
+  - ADR-001
+  linked_contracts:
+  - run-yaml
+  dependencies: []
+  priority: 1
+  complexity: 4
+  critical_path: true
+  parallelizable: false
+  file_ownership:
+  - pipeline-lab/showcases/scripts/run_codex_e2e_case.py
+  conflict_risk: low
+  dependency_notes: Debug wrapper relies on this metadata.
+  expected_touchpoints:
+  - pipeline-lab/showcases/scripts/run_codex_e2e_case.py
+  - tests/feature_pipeline/test_codex_e2e_runner.py
+  scope_confidence: high
+  test_strategy: Focused unit tests using fake Codex and dry-run modes.
+  tdd:
+    failing_test_file: tests/feature_pipeline/test_codex_debug_runner.py
+    red_command: python -m unittest tests.feature_pipeline.test_codex_debug_runner
+    expected_failure: execution mode metadata and timeout not present
+    green_command: python -m unittest tests.feature_pipeline.test_codex_debug_runner
+  verification_commands:
+  - python -m unittest tests.feature_pipeline.test_codex_e2e_runner tests.feature_pipeline.test_codex_debug_runner
+  review_focus:
+  - mock vs real mode clarity
+  - timeout reporting
+  - no direct nfp prompt scripting
+  evidence_status: complete
+  status: complete
+  iteration_budget: 10
+  rollback_point: Revert E2E runner metadata changes.
+  independent_verification: Inspect generated run.yaml and comparison.md.
+  failure_triage_notes: Classify failures as mode metadata, timeout, or prompt regression.
+- id: S-002
+  title: Real-Codex-capable debug wrapper
+  linked_requirements:
+  - FR-002
+  - FR-003
+  - FR-004
+  - FR-005
+  linked_acceptance_criteria:
+  - AC-002
+  - AC-003
+  - AC-004
+  linked_adrs:
+  - ADR-001
+  - ADR-002
+  linked_contracts:
+  - debug-summary-yaml
+  - validation-yaml
+  dependencies:
+  - S-001
+  priority: 2
+  complexity: 6
+  critical_path: true
+  parallelizable: false
+  file_ownership:
+  - pipeline-lab/showcases/scripts/run_codex_debug_pipeline.py
+  - tests/feature_pipeline/test_codex_debug_runner.py
+  conflict_risk: medium
+  dependency_notes: Uses existing E2E runner after mode/timeout support lands.
+  expected_touchpoints:
+  - pipeline-lab/showcases/scripts/run_codex_debug_pipeline.py
+  - tests/feature_pipeline/test_codex_debug_runner.py
+  - pipeline-lab/showcases/codex-debug-runs/**
+  scope_confidence: high
+  test_strategy: Run mock mode in temp repo; assert real mode preflight fails for
+    missing binary.
+  tdd:
+    failing_test_file: tests/feature_pipeline/test_codex_debug_runner.py
+    red_command: python -m unittest tests.feature_pipeline.test_codex_debug_runner
+    expected_failure: debug runner missing
+    green_command: python -m unittest tests.feature_pipeline.test_codex_debug_runner
+  verification_commands:
+  - python -m unittest tests.feature_pipeline.test_codex_debug_runner
+  - python pipeline-lab/showcases/scripts/run_codex_debug_pipeline.py --mode mock
+    --run-id 20260512-debug --clean
+  review_focus:
+  - real Codex preflight
+  - validation quality
+  - scalable case config reuse
+  evidence_status: complete
+  status: complete
+  iteration_budget: 10
+  rollback_point: Remove debug runner and generated outputs.
+  independent_verification: Read debug summary, comparison, validation, and replay
+    command.
+  failure_triage_notes: Classify failures as wrapper, validation, or generated artifact
+    weakness.
+- id: S-003
+  title: Regenerate and compare debug artifacts
+  linked_requirements:
+  - FR-003
+  - FR-004
+  - FR-005
+  linked_acceptance_criteria:
+  - AC-004
+  linked_adrs:
+  - ADR-001
+  - ADR-002
+  linked_contracts:
+  - comparison-md
+  - feature-card
+  dependencies:
+  - S-001
+  - S-002
+  priority: 3
+  complexity: 4
+  critical_path: false
+  parallelizable: true
+  file_ownership:
+  - pipeline-lab/showcases/codex-debug-runs/**
+  - .ai/features/pipeline/real-codex-showcase-debug-runner/**
+  - .ai/knowledge/**
+  conflict_risk: low
+  dependency_notes: Final documentation depends on debug runner outputs.
+  expected_touchpoints:
+  - pipeline-lab/showcases/codex-debug-runs/**
+  - .ai/features/pipeline/real-codex-showcase-debug-runner/**
+  - .ai/knowledge/**
+  scope_confidence: high
+  test_strategy: Run focused tests, goal validation, and full feature pipeline suite.
+  tdd:
+    failing_test_file: tests/feature_pipeline/test_codex_debug_runner.py
+    red_command: python -m unittest tests.feature_pipeline.test_codex_debug_runner
+    expected_failure: committed debug outputs missing
+    green_command: python -m unittest tests.feature_pipeline.test_codex_debug_runner
+  verification_commands:
+  - python -m unittest discover tests/feature_pipeline
+  - python pipeline-lab/showcases/scripts/validate_pipeline_goals.py --passes 3
+  review_focus:
+  - no mock output represented as real Codex
+  - real mode command is documented and scalable
+  evidence_status: complete
+  status: complete
+  iteration_budget: 10
+  rollback_point: Remove generated debug run and promoted feature memory.
+  independent_verification: Compare old fake test behavior against new debug report.
+  failure_triage_notes: Classify failures as artifact, validator, or knowledge update
+    gap.

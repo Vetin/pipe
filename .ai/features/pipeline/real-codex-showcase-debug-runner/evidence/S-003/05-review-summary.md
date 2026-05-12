@@ -1,0 +1,1 @@
+No critical findings after artifact regeneration. Mock mode is explicit and passes. Real mode invokes /opt/homebrew/bin/codex and no longer reports missing skill descriptions after metadata fix; bounded full-pipeline real smoke still times out before artifacts and is documented as an operator diagnostic.

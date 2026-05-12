@@ -1,0 +1,22 @@
+## feature/pipeline-real-codex-showcase-debug-runner-run-20260512-codex-debug
+ M .agents/skills/nfp-00-intake/SKILL.md
+ M .agents/skills/nfp-01-context/SKILL.md
+ M .agents/skills/nfp-02-feature-contract/SKILL.md
+ M .agents/skills/nfp-03-architecture/SKILL.md
+ M .agents/skills/nfp-04-tech-design/SKILL.md
+ M .agents/skills/nfp-05-slicing/SKILL.md
+ M .agents/skills/nfp-06-readiness/SKILL.md
+ M .agents/skills/nfp-07-worktree/SKILL.md
+ M .agents/skills/nfp-08-tdd-implementation/SKILL.md
+ M .agents/skills/nfp-09-review/SKILL.md
+ M .agents/skills/nfp-10-verification/SKILL.md
+ M .agents/skills/nfp-11-finish/SKILL.md
+ M .agents/skills/nfp-12-promote/SKILL.md
+ M .agents/skills/project-init/SKILL.md
+ M .ai/feature-workspaces/pipeline/real-codex-showcase-debug-runner--run-20260512-codex-debug/evidence/manifest.yaml
+ M pipeline-lab/showcases/scripts/run_codex_debug_pipeline.py
+ M pipeline-lab/showcases/scripts/validate_pipeline_goals.py
+ M tests/feature_pipeline/test_codex_debug_runner.py
+ M tests/feature_pipeline/test_pipeline_goal_validation.py
+?? .ai/feature-workspaces/pipeline/real-codex-showcase-debug-runner--run-20260512-codex-debug/evidence/S-003/
+?? pipeline-lab/showcases/codex-debug-runs/
