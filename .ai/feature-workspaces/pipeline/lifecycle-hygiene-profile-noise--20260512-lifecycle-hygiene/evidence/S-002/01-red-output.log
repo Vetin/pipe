@@ -1,0 +1,1 @@
+Red run failed as expected: duplicate complete-slice returned success, active legacy Current/Next sections passed validation, duplicate Latest Status passed validation, and duplicate completed-slice events passed validation. Summary: 5 failed, 21 passed.

@@ -120,11 +120,11 @@ None yet.
 
 None.
 
-## Current Step
+## History: Initial Current Step
 
 context
 
-## Next Step
+## History: Initial Next Step
 
 nfp-01-context
 
@@ -237,3 +237,10 @@ iteration_id: I-002
 - 2026-05-12T11:41:09Z gate=verification old_status=pending new_status=approved by=codex note=Focused tests and pipeline goal validation passed.
 - 2026-05-12T11:41:09Z gate=finish old_status=pending new_status=approved by=codex note=Feature-card and shared knowledge update plan completed.
 - 2026-05-12T11:42:49Z promoted feature memory to .ai/features/pipeline/codex-e2e-runner-hardening
+
+## Latest Status
+
+Current step: promote
+Next recommended skill: nfp-12-promote
+Blocking issues: none
+Last updated: 2026-05-12T14:05:00Z

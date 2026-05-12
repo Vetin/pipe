@@ -98,8 +98,8 @@ slices:
   review_focus:
   - duplicate slice completion cannot silently rewrite evidence
   - execution logs have one active latest status
-  evidence_status: pending
-  status: pending
+  evidence_status: complete
+  status: complete
   iteration_budget: 5
   rollback_point: pre-slice git state
   independent_verification: python -m pytest tests/feature_pipeline/test_gates_and_evidence.py

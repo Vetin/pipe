@@ -173,6 +173,7 @@ def main(argv: list[str] | None = None) -> int:
     complete_slice_parser.add_argument("--slice", dest="slice_id", required=True)
     complete_slice_parser.add_argument("--commit")
     complete_slice_parser.add_argument("--diff-hash")
+    complete_slice_parser.add_argument("--append-retry", action="store_true", help="record an explicit retry for an already-complete slice")
     complete_slice_parser.set_defaults(func=cmd_complete_slice)
 
     worktree_status_parser = subparsers.add_parser("worktree-status", help="verify feature worktree readiness")
@@ -445,13 +446,15 @@ def cmd_complete_slice(args: argparse.Namespace) -> None:
     ensure_known_slice(workspace, args.slice_id)
     if not args.commit and not args.diff_hash:
         raise FeatureCtlError("complete-slice requires --commit or --diff-hash")
+    if slice_completion_status(workspace / "slices.yaml", args.slice_id) == "complete" and not args.append_retry:
+        raise FeatureCtlError(f"slice {args.slice_id} is already complete; use --append-retry to record an explicit retry")
     manifest_path = workspace / "evidence/manifest.yaml"
     if not manifest_path.exists():
         blockers = ["missing evidence/manifest.yaml"]
     else:
         manifest = read_yaml(manifest_path)
         proposed_manifest = copy.deepcopy(manifest)
-        add_slice_commit_metadata(proposed_manifest, args.slice_id, commit=args.commit, diff_hash=args.diff_hash)
+        add_slice_commit_metadata(proposed_manifest, args.slice_id, commit=args.commit, diff_hash=args.diff_hash, retry=args.append_retry)
         blockers = validate_slice_evidence(workspace, args.slice_id, manifest=proposed_manifest)
     if blockers:
         print("slice_evidence: fail")
@@ -464,7 +467,7 @@ def cmd_complete_slice(args: argparse.Namespace) -> None:
     append_execution_event(
         workspace,
         "Summary",
-        f"- {utc_now()} completed slice {args.slice_id} with evidence",
+        f"- {utc_now()} completed slice {args.slice_id} with evidence" + (" retry" if args.append_retry else ""),
     )
     print(f"slice_complete: {args.slice_id}")
 
@@ -1460,11 +1463,11 @@ None yet.
 
 None.
 
-## Current Step
+## History: Initial Current Step
 
 context
 
-## Next Step
+## History: Initial Next Step
 
 nfp-01-context
 
@@ -1735,13 +1738,18 @@ def validate_execution_latest_status(workspace: Path, state: dict[str, Any]) -> 
         return ["execution.md missing"]
     execution = execution_path.read_text(encoding="utf-8")
     marker = "## Latest Status"
-    if marker not in execution:
+    marker_count = len(re.findall(r"^## Latest Status\s*$", execution, flags=re.MULTILINE))
+    if marker_count == 0:
         return ["execution.md missing ## Latest Status"]
+    blockers: list[str] = []
+    if marker_count != 1:
+        blockers.append("execution.md must contain exactly one active ## Latest Status section")
+    blockers.extend(validate_no_active_legacy_execution_sections(execution))
+    blockers.extend(validate_execution_completion_events(execution))
     latest = execution.split(marker, 1)[1]
     next_heading = re.search(r"\n##\s+", latest)
     if next_heading:
         latest = latest[: next_heading.start()]
-    blockers: list[str] = []
     fields = {
         "Current step": None,
         "Next recommended skill": None,
@@ -1759,6 +1767,28 @@ def validate_execution_latest_status(workspace: Path, state: dict[str, Any]) -> 
     latest_step = fields.get("Current step")
     if latest_step and latest_step != current_step:
         blockers.append(f"execution.md Latest Status current step {latest_step} does not match state.yaml current_step {current_step}")
+    return blockers
+
+
+def validate_no_active_legacy_execution_sections(execution: str) -> list[str]:
+    blockers: list[str] = []
+    for heading in ("Current Step", "Next Step"):
+        if re.search(rf"^## {re.escape(heading)}\s*$", execution, flags=re.MULTILINE):
+            blockers.append(f"execution.md contains active legacy ## {heading} section outside History")
+    return blockers
+
+
+def validate_execution_completion_events(execution: str) -> list[str]:
+    blockers: list[str] = []
+    seen: set[str] = set()
+    for line in execution.splitlines():
+        match = re.search(r"\bcompleted slice (S-[0-9]{3})\b", line)
+        if not match:
+            continue
+        slice_id = match.group(1)
+        if slice_id in seen and "retry" not in line.lower():
+            blockers.append(f"execution.md duplicate completed slice event for {slice_id}")
+        seen.add(slice_id)
     return blockers
 
 
@@ -2495,6 +2525,19 @@ def mark_slice_complete(path: Path, slice_id: str) -> None:
     write_yaml(path, data)
 
 
+def slice_completion_status(path: Path, slice_id: str) -> str | None:
+    data = read_yaml(path)
+    slices = data.get("slices")
+    if isinstance(slices, dict):
+        items = slices.values()
+    else:
+        items = slices or []
+    for item in items:
+        if isinstance(item, dict) and item.get("id") == slice_id:
+            return item.get("status")
+    raise FeatureCtlError(f"slices.yaml has no slice {slice_id}")
+
+
 def known_slice_ids(workspace: Path) -> set[str]:
     slices_path = workspace / "slices.yaml"
     if not slices_path.exists():
@@ -2516,12 +2559,15 @@ def ensure_known_slice(workspace: Path, slice_id: str) -> None:
         raise FeatureCtlError(f"unknown slice id: {slice_id}")
 
 
-def add_slice_commit_metadata(manifest: dict[str, Any], slice_id: str, *, commit: str | None, diff_hash: str | None) -> None:
+def add_slice_commit_metadata(manifest: dict[str, Any], slice_id: str, *, commit: str | None, diff_hash: str | None, retry: bool = False) -> None:
     entry = manifest.setdefault("slices", {}).setdefault(slice_id, {})
     if commit:
         entry["commit"] = commit
     if diff_hash:
         entry["diff_hash"] = diff_hash
+    if retry:
+        retries = entry.setdefault("retries", [])
+        retries.append({"timestamp": utc_now(), "commit": commit, "diff_hash": diff_hash})
 
 
 def evidence_path_blocker(workspace: Path, rel: str) -> bool:

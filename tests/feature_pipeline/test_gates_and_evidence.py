@@ -124,6 +124,46 @@ class GatesAndEvidenceTests(unittest.TestCase):
         self.assertEqual(slices["slices"][0]["status"], "complete")
         self.assertEqual(slices["slices"][0]["evidence_status"], "complete")
 
+    def test_complete_slice_is_idempotent_without_explicit_retry(self):
+        workspace = self.ready_workspace("run-idempotent-complete")
+
+        self.record_full_evidence(workspace)
+        run(
+            [
+                sys.executable,
+                str(SCRIPT),
+                "complete-slice",
+                "--workspace",
+                str(workspace),
+                "--slice",
+                "S-001",
+                "--diff-hash",
+                "abc123",
+            ],
+            self.repo,
+        )
+        manifest_before = (workspace / "evidence/manifest.yaml").read_text(encoding="utf-8")
+
+        result = run(
+            [
+                sys.executable,
+                str(SCRIPT),
+                "complete-slice",
+                "--workspace",
+                str(workspace),
+                "--slice",
+                "S-001",
+                "--diff-hash",
+                "changed456",
+            ],
+            self.repo,
+            check=False,
+        )
+
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("slice S-001 is already complete; use --append-retry to record an explicit retry", result.stderr)
+        self.assertEqual((workspace / "evidence/manifest.yaml").read_text(encoding="utf-8"), manifest_before)
+
     def test_complete_slice_fails_when_green_is_before_red(self):
         workspace = self.ready_workspace("run-bad-order")
         self.record_full_evidence(workspace, red_ts="2026-05-11T10:00:00Z", green_ts="2026-05-11T09:00:00Z")

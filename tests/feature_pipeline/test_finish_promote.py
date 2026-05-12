@@ -169,6 +169,45 @@ class FinishPromoteTests(unittest.TestCase):
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("execution.md Latest Status current step slicing does not match state.yaml current_step finish", result.stdout)
 
+    def test_validate_rejects_multiple_latest_status_sections(self):
+        workspace = self.completed_workspace("run-duplicate-latest-status")
+        execution_path = workspace / "execution.md"
+        execution_path.write_text(
+            execution_path.read_text(encoding="utf-8")
+            + "\n## Latest Status\n\nCurrent step: finish\nNext recommended skill: nfp-12-promote\nBlocking issues: none\nLast updated: 2026-05-12T13:00:00Z\n",
+            encoding="utf-8",
+        )
+
+        result = run([sys.executable, str(SCRIPT), "validate", "--workspace", str(workspace)], self.repo, check=False)
+
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("execution.md must contain exactly one active ## Latest Status section", result.stdout)
+
+    def test_validate_rejects_active_legacy_current_next_sections(self):
+        workspace = self.completed_workspace("run-legacy-current-step")
+        execution_path = workspace / "execution.md"
+        execution_path.write_text(
+            execution_path.read_text(encoding="utf-8")
+            + "\n## Current Step\n\nfinish\n\n## Next Step\n\nnfp-12-promote\n",
+            encoding="utf-8",
+        )
+
+        result = run([sys.executable, str(SCRIPT), "validate", "--workspace", str(workspace)], self.repo, check=False)
+
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("execution.md contains active legacy ## Current Step section outside History", result.stdout)
+        self.assertIn("execution.md contains active legacy ## Next Step section outside History", result.stdout)
+
+    def test_validate_rejects_duplicate_completed_slice_events(self):
+        workspace = self.completed_workspace("run-duplicate-slice-complete")
+        with (workspace / "execution.md").open("a", encoding="utf-8") as handle:
+            handle.write("\n- 2026-05-12T13:01:00Z completed slice S-001 with evidence\n")
+
+        result = run([sys.executable, str(SCRIPT), "validate", "--workspace", str(workspace)], self.repo, check=False)
+
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("execution.md duplicate completed slice event for S-001", result.stdout)
+
     def test_promote_conflict_aborts_by_default(self):
         first = self.completed_workspace("run-promote-first")
         run([sys.executable, str(SCRIPT), "promote", "--workspace", str(first)], self.repo)

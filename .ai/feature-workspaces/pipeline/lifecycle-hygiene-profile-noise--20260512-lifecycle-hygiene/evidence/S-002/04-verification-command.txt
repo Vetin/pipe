@@ -1,0 +1,1 @@
+for each canonical/promoted workspace: featurectl.py validate; then pytest focused execution/evidence tests

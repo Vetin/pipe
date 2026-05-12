@@ -64,11 +64,11 @@ None yet.
 - 2026-05-12T00:16:00Z scope set to harness tooling and debug artifacts; no
   cloned showcase repo mutation in tests.
 
-## Current Step
+## History: Initial Current Step
 
 slicing
 
-## Next Step
+## History: Initial Next Step
 
 nfp-06-readiness
 
@@ -83,8 +83,8 @@ technical design, and slices are drafted for readiness validation.
 - 2026-05-12T00:18:03Z gate=implementation old_status=blocked new_status=delegated by=codex note=implementation may proceed in feature worktree
 - 2026-05-12T00:26:42Z completed slice S-001 with evidence
 - 2026-05-12T00:26:42Z completed slice S-002 with evidence
-- 2026-05-12T00:26:54Z completed slice S-001 with evidence
-- 2026-05-12T00:26:54Z completed slice S-002 with evidence
+- 2026-05-12T00:26:54Z completed slice S-001 with evidence retry
+- 2026-05-12T00:26:54Z completed slice S-002 with evidence retry
 - 2026-05-12T00:38:38Z completed slice S-003 with evidence
 - 2026-05-12T00:39:02Z gate=implementation old_status=delegated new_status=complete by=codex note=all slices complete
 - 2026-05-12T00:40:16Z gate=review old_status=pending new_status=complete by=codex note=review artifacts recorded

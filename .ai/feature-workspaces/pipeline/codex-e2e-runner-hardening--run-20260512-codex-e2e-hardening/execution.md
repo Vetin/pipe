@@ -120,11 +120,11 @@ None yet.
 
 None.
 
-## Current Step
+## History: Initial Current Step
 
 context
 
-## Next Step
+## History: Initial Next Step
 
 nfp-01-context
 
