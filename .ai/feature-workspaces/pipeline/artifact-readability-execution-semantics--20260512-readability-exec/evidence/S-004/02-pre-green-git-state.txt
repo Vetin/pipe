@@ -1,0 +1,1 @@
+S-004 manual soft-score parser and report output present

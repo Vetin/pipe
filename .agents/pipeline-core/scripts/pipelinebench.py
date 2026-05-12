@@ -76,6 +76,7 @@ def main(argv: list[str] | None = None) -> int:
     score_parser.add_argument("--scenario", required=True)
     score_parser.add_argument("--output")
     score_parser.add_argument("--candidate")
+    score_parser.add_argument("--soft-score-file")
     score_parser.set_defaults(func=cmd_score_run)
 
     compare_parser = subparsers.add_parser("compare-runs", help="compare scored runs")
@@ -140,6 +141,14 @@ def cmd_score_run(args: argparse.Namespace) -> None:
     result = score_workspace(workspace.resolve(), scenario)
     if args.candidate:
         result["candidate"] = normalize_candidate_path(root, Path(args.candidate))
+    if args.soft_score_file:
+        soft_score_file = Path(args.soft_score_file)
+        if not soft_score_file.is_absolute():
+            soft_score_file = root / soft_score_file
+        soft_scores, soft_summary = parse_manual_soft_scores(soft_score_file)
+        result["soft_scores"] = soft_scores
+        result["soft_score_summary"] = soft_summary
+        result["soft_score_file"] = normalize_score_path(root, soft_score_file)
     output_path = Path(args.output) if args.output else root / f"pipeline-lab/runs/{args.scenario}-score.yaml"
     if not output_path.is_absolute():
         output_path = root / output_path
@@ -147,6 +156,9 @@ def cmd_score_run(args: argparse.Namespace) -> None:
     print(f"score_result: {output_path}")
     print(f"hard_passed: {str(result['hard_passed']).lower()}")
     print(f"hard_score: {result['hard_score']}/{result['hard_total']}")
+    if result.get("soft_score_summary"):
+        summary = result["soft_score_summary"]
+        print(f"soft_score: {summary['score']}/{summary['max']}")
 
 
 def cmd_compare_runs(args: argparse.Namespace) -> None:
@@ -161,10 +173,20 @@ def cmd_compare_runs(args: argparse.Namespace) -> None:
 def cmd_generate_report(args: argparse.Namespace) -> None:
     rows = [read_yaml(Path(path)) for path in args.scores]
     output = Path(args.output)
-    lines = ["# Pipeline Benchmark Report", "", "| Scenario | Hard Score | Hard Passed | Soft Scores |", "| --- | ---: | --- | --- |"]
+    lines = [
+        "# Pipeline Benchmark Report",
+        "",
+        "| Scenario | Hard Score | Hard Passed | Soft Score | Soft Scores | Comments |",
+        "| --- | ---: | --- | ---: | --- | --- |",
+    ]
     for row in rows:
-        soft = ", ".join(f"{key}: {value}" for key, value in row.get("soft_scores", {}).items())
-        lines.append(f"| {row.get('scenario')} | {row.get('hard_score')}/{row.get('hard_total')} | {row.get('hard_passed')} | {soft} |")
+        summary = row.get("soft_score_summary") or {}
+        soft_total = f"{summary.get('score')}/{summary.get('max')}" if summary else "not scored"
+        comments = markdown_table_cell(str(summary.get("comments") or ""))
+        soft = markdown_table_cell(format_soft_scores(row.get("soft_scores", {})))
+        lines.append(
+            f"| {row.get('scenario')} | {row.get('hard_score')}/{row.get('hard_total')} | {row.get('hard_passed')} | {soft_total} | {soft} | {comments} |"
+        )
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text("\n".join(lines) + "\n", encoding="utf-8")
     print(f"report: {output}")
@@ -245,6 +267,77 @@ def score_workspace(workspace: Path, scenario: dict[str, Any]) -> dict[str, Any]
             "review_quality": "not_scored_offline",
         },
     }
+
+
+def parse_manual_soft_scores(path: Path) -> tuple[dict[str, Any], dict[str, Any]]:
+    if not path.exists():
+        raise BenchError(f"soft score file does not exist: {path}")
+    data = read_yaml(path)
+    if not isinstance(data, dict):
+        raise BenchError("soft score file must be a mapping")
+    comments = str(data.get("comments") or "").strip()
+    scores: dict[str, Any] = {}
+    total_score = 0
+    total_max = 0
+    for key, value in data.items():
+        if key == "comments":
+            continue
+        if isinstance(value, (int, float)):
+            score = numeric_score(value, f"{key}.score")
+            scores[key] = {"score": score, "max": 5}
+            total_score += score
+            total_max += 5
+        elif isinstance(value, dict):
+            score = numeric_score(value.get("score"), f"{key}.score")
+            max_score = numeric_score(value.get("max", 5), f"{key}.max")
+            if max_score <= 0:
+                raise BenchError(f"{key}.max must be positive")
+            item = {"score": score, "max": max_score}
+            if value.get("comment"):
+                item["comment"] = str(value["comment"])
+            scores[key] = item
+            total_score += score
+            total_max += max_score
+        else:
+            raise BenchError(f"{key} must be a number or mapping with score/max")
+    if not scores:
+        raise BenchError("soft score file must contain at least one score")
+    return scores, {
+        "score": total_score,
+        "max": total_max,
+        "percent": round(total_score / total_max, 3) if total_max else 0,
+        "comments": comments,
+    }
+
+
+def numeric_score(value: Any, field: str) -> int:
+    if not isinstance(value, (int, float)):
+        raise BenchError(f"{field} must be numeric")
+    if value < 0:
+        raise BenchError(f"{field} must be non-negative")
+    return int(value)
+
+
+def format_soft_scores(scores: dict[str, Any]) -> str:
+    parts = []
+    for key, value in scores.items():
+        if isinstance(value, dict) and "score" in value:
+            comment = f" ({value['comment']})" if value.get("comment") else ""
+            parts.append(f"{key}: {value.get('score')}/{value.get('max')}{comment}")
+        else:
+            parts.append(f"{key}: {value}")
+    return ", ".join(parts)
+
+
+def markdown_table_cell(value: str) -> str:
+    return value.replace("|", "\\|").replace("\n", "<br>")
+
+
+def normalize_score_path(root: Path, path: Path) -> str:
+    try:
+        return path.resolve().relative_to(root.resolve()).as_posix()
+    except ValueError:
+        return str(path)
 
 
 def run_hard_check(workspace: Path, scenario: dict[str, Any], check: str) -> dict[str, Any]:

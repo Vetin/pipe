@@ -90,6 +90,57 @@ class PipelineBenchTests(unittest.TestCase):
         self.assertEqual(score["soft_scores"]["requirement_quality"], "not_scored_offline")
         self.assertEqual(score["soft_scores"]["module_communication_quality"], "not_scored_offline")
 
+    def test_score_run_accepts_manual_soft_score_file(self):
+        workspace = self.workspace("run-soft-score")
+        output = self.repo / "pipeline-lab/runs/soft-score.yaml"
+        report = self.repo / "pipeline-lab/runs/soft-score-report.md"
+        manual_score = self.repo / "manual-score.yaml"
+        manual_score.write_text(
+            yaml.safe_dump(
+                {
+                    "architecture_clarity": 4,
+                    "module_communication_quality": {
+                        "score": 5,
+                        "max": 5,
+                        "comment": "Clear module flow.",
+                    },
+                    "adr_usefulness": 3,
+                    "comments": "Good module communication; rollback detail is thin.",
+                },
+                sort_keys=False,
+            ),
+            encoding="utf-8",
+        )
+
+        result = run(
+            [
+                sys.executable,
+                str(BENCH),
+                "score-run",
+                "--workspace",
+                str(workspace),
+                "--scenario",
+                "auth-reset-password",
+                "--soft-score-file",
+                str(manual_score),
+                "--output",
+                str(output),
+            ],
+            self.repo,
+        )
+        run([sys.executable, str(BENCH), "generate-report", "--scores", str(output), "--output", str(report)], self.repo)
+
+        score = yaml.safe_load(output.read_text(encoding="utf-8"))
+        report_text = report.read_text(encoding="utf-8")
+        self.assertIn("soft_score: 12/15", result.stdout)
+        self.assertEqual(score["soft_scores"]["architecture_clarity"]["score"], 4)
+        self.assertEqual(score["soft_scores"]["module_communication_quality"]["comment"], "Clear module flow.")
+        self.assertEqual(score["soft_score_summary"]["score"], 12)
+        self.assertEqual(score["soft_score_summary"]["max"], 15)
+        self.assertEqual(score["soft_score_summary"]["comments"], "Good module communication; rollback detail is thin.")
+        self.assertIn("12/15", report_text)
+        self.assertIn("Good module communication; rollback detail is thin.", report_text)
+
     def test_score_run_fails_hard_when_required_files_are_missing(self):
         workspace = self.workspace("run-missing")
         (workspace / "architecture.md").unlink()

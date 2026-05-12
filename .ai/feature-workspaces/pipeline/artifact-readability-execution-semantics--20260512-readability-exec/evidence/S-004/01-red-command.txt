@@ -1,0 +1,1 @@
+python -m pytest tests/feature_pipeline/test_pipelinebench.py::PipelineBenchTests::test_score_run_accepts_manual_soft_score_file -q

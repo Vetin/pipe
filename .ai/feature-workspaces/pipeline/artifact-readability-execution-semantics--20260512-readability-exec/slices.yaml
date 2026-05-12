@@ -179,8 +179,8 @@ slices:
   review_focus:
   - hard checks remain deterministic
   - soft scores are data only and optional
-  evidence_status: pending
-  status: pending
+  evidence_status: complete
+  status: complete
   iteration_budget: 4
   rollback_point: pre-slice git state
   independent_verification: python -m pytest tests/feature_pipeline/test_pipelinebench.py
