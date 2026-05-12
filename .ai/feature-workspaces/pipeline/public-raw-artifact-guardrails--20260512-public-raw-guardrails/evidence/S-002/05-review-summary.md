@@ -1,3 +1,1 @@
-Spec review: pass. S-002 removes feature_signals and feature_catalog from compact project-index output, preserves canonical feature references there, and keeps discovered/catalog information in discovered-signals.md.
-
-Code-quality review: pass. Goal validation now follows the split by reading discovered-signals.md, while featurectl still computes signal data internally for renderers and stdout counts.
+Retry review: init-profile showcase runner now reads discovered-signals.md after project-index compaction. Targeted tests passed: python -m pytest tests/feature_pipeline/test_init_profile_showcases.py tests/feature_pipeline/test_pipeline_goal_validation.py tests/feature_pipeline/test_featurectl_core.py -q. No blocking review findings remain.

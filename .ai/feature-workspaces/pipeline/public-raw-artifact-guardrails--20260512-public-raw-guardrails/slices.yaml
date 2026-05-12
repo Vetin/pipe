@@ -73,6 +73,7 @@ slices:
   - .agents/pipeline-core/scripts/featurectl_core/cli.py
   - tests/feature_pipeline/test_featurectl_core.py
   - pipeline-lab/showcases/scripts/validate_pipeline_goals.py
+  - pipeline-lab/showcases/scripts/run_init_profile_showcases.py
   expected_touchpoints:
   - .ai/knowledge/project-index.yaml
   - .ai/knowledge/discovered-signals.md
@@ -99,6 +100,7 @@ slices:
   file_ownership:
   - .agents/pipeline-core/scripts/featurectl_core/cli.py
   - tests/feature_pipeline/test_featurectl_core.py
+  - pipeline-lab/showcases/scripts/run_init_profile_showcases.py
   conflict_risk: medium
   dependency_notes: Depends on S-001 broad artifact guards.
   scope_confidence: high

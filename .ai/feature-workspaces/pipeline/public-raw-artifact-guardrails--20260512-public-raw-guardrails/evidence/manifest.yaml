@@ -35,13 +35,18 @@ slices:
       output_file: S-002/03-green-output.log
       git_state_file: S-002/02-pre-green-git-state.txt
     verification:
-      timestamp: '2026-05-12T20:41:09Z'
+      timestamp: '2026-05-12T20:51:08Z'
       command_file: S-002/04-verification-command.txt
       output_file: S-002/04-verification-output.log
     review:
-      timestamp: '2026-05-12T20:41:09Z'
+      timestamp: '2026-05-12T20:51:38Z'
       summary_file: S-002/05-review-summary.md
     diff_hash: d92f494ee79c195b17439be438dea7d3da0062e27319b37c8b5e6135d130662d
+    retries:
+    - timestamp: '2026-05-12T20:51:09Z'
+      attempt: 2
+      reason: init-showcase-profile-split-regression
+      diff_hash: b8fbd0098b2441c32cf4a041d6a141510077a15eb2d95070a56e259102442c0e
   S-003:
     red:
       timestamp: '2026-05-12T20:42:18Z'

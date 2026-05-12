@@ -1,9 +1,2 @@
-project_profile: updated
-project_name: pipe
-source_files: 6
-test_files: 37
-detected_feature_signals: 2
-detected_feature_catalog_items: 10
-initialized Native Feature Pipeline directories
-..................... [100%]
-21 passed, 137 subtests passed in 3.08s
+.............                                                            [100%]
+13 passed in 2.81s

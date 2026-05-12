@@ -29,10 +29,12 @@ file_refs:
 - tests/feature_pipeline/test_gates_and_evidence.py
 - tests/feature_pipeline/test_finish_promote.py
 - pipeline-lab/showcases/scripts/validate_pipeline_goals.py
+- pipeline-lab/showcases/scripts/run_init_profile_showcases.py
 reproduction_or_reasoning: >
   Review checked stale public raw claims against executable wrapper tests,
   verified line-based .gitignore expectations, reviewed compact project memory
-  separation, and confirmed event_type records for gate, stale, archive, slice,
-  retry, and promotion events.
+  separation across goal validation and init-profile showcase runners, and
+  confirmed event_type records for gate, stale, archive, slice, retry, and
+  promotion events.
 fix_verification_command: python -m pytest tests/feature_pipeline -q
 re_review_required: false

@@ -96,22 +96,26 @@ def run_profile(case: dict[str, Any], pass_number: int) -> dict[str, Any]:
         return result
 
     index_path = repo_path / ".ai/knowledge/project-index.yaml"
+    discovered_path = repo_path / ".ai/knowledge/discovered-signals.md"
     if not index_path.exists():
         result["failure"] = "missing .ai/knowledge/project-index.yaml after init"
         return result
+    if not discovered_path.exists():
+        result["failure"] = "missing .ai/knowledge/discovered-signals.md after init"
+        return result
     profile = read_yaml(index_path)
+    discovered = parse_discovered_signals(discovered_path)
     counts = profile.get("counts") or {}
-    catalog = profile.get("feature_catalog") or []
-    signals = profile.get("feature_signals") or []
     result["project"] = profile.get("project") or {}
     result["counts"] = counts
-    result["feature_catalog_count"] = len(catalog)
-    result["feature_signals_count"] = len(signals)
-    result["top_features"] = [item.get("name", "unknown") for item in catalog[:8]]
+    result["feature_catalog_count"] = len(discovered["catalog"])
+    result["feature_signals_count"] = discovered["signal_count"]
+    result["top_features"] = discovered["catalog"][:8]
     result["knowledge_paths"] = [
         ".ai/knowledge/project-index.yaml",
         ".ai/knowledge/project-snapshot.md",
         ".ai/knowledge/features-overview.md",
+        ".ai/knowledge/discovered-signals.md",
         ".ai/knowledge/module-map.md",
         ".ai/knowledge/testing-overview.md",
         ".ai/knowledge/contracts-overview.md",
@@ -124,6 +128,23 @@ def run_profile(case: dict[str, Any], pass_number: int) -> dict[str, Any]:
         return result
     result["status"] = "pass"
     return result
+
+
+def parse_discovered_signals(path: Path) -> dict[str, Any]:
+    content = path.read_text(encoding="utf-8")
+    catalog: list[str] = []
+    for line in content.splitlines():
+        if line.startswith("### "):
+            name = line.removeprefix("### ").strip()
+            if name:
+                catalog.append(name)
+    return {
+        "catalog": catalog,
+        "signal_count": content.count("[lab_signal]")
+        + content.count("[doc_signal]")
+        + content.count("[source_signal]")
+        + content.count("[test_signal]"),
+    }
 
 
 def result_blockers(result: dict[str, Any]) -> list[str]:

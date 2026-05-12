@@ -130,6 +130,7 @@ None yet.
 - 2026-05-12T20:43:59Z event_type=slice_completed slice=S-003 attempt=1 reason=initial
 - 2026-05-12T20:44:16Z event_type=gate_status_changed gate=implementation old_status=approved new_status=complete by=codex note=all-guardrail-slices-complete
 - 2026-05-12T20:45:31Z event_type=gate_status_changed gate=review old_status=pending new_status=complete by=codex note=strict-review-found-no-blockers
+- 2026-05-12T20:51:09Z event_type=slice_retry_completed slice=S-002 attempt=2 reason=init-showcase-profile-split-regression supersedes=attempt-1
 
 ## History
 
