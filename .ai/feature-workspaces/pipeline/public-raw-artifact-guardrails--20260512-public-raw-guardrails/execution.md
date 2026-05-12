@@ -117,6 +117,22 @@ None yet.
   - Decision or pattern reused: validate tests cover stale claims and real regressions.
   - Confidence: high.
 
+## Docs Consulted: Verification
+
+- `.agents/pipeline-core/references/review-and-verification.md`
+  - Used for: final verification evidence and verification debt policy.
+  - Decision or pattern reused: failed final verification requires a fix loop
+    before the verification gate can close.
+  - Confidence: high.
+- `.ai/constitution.md`
+  - Used for: repository verification command baseline.
+  - Decision or pattern reused: run `python -m unittest discover -s tests/feature_pipeline`.
+  - Confidence: high.
+- `.ai/pipeline-docs/global/testing-standards.md`
+  - Used for: combining focused tests with full-suite verification.
+  - Decision or pattern reused: final verification runs after the last fix.
+  - Confidence: high.
+
 ## Event Log
 
 - 2026-05-12T20:33:38Z event_type=run_initialized step=context next=nfp-01-context
@@ -131,6 +147,9 @@ None yet.
 - 2026-05-12T20:44:16Z event_type=gate_status_changed gate=implementation old_status=approved new_status=complete by=codex note=all-guardrail-slices-complete
 - 2026-05-12T20:45:31Z event_type=gate_status_changed gate=review old_status=pending new_status=complete by=codex note=strict-review-found-no-blockers
 - 2026-05-12T20:51:09Z event_type=slice_retry_completed slice=S-002 attempt=2 reason=init-showcase-profile-split-regression supersedes=attempt-1
+- 2026-05-12T20:52:12Z event_type=verification_started mode=final-full-suite
+- 2026-05-12T20:53:55Z event_type=verification_passed tests=149 subtests=228 goal_failures=0
+- 2026-05-12T20:54:01Z event_type=gate_status_changed gate=verification old_status=pending new_status=complete by=codex note=full-suite-and-goal-validation-passed
 
 ## History
 
@@ -139,7 +158,7 @@ None yet.
 
 ## Current Run State
 
-Current step: review
-Next recommended skill: nfp-09-review
+Current step: verification
+Next recommended skill: nfp-11-finish
 Blocking issues: none
-Last updated: 2026-05-12T20:44:20Z
+Last updated: 2026-05-12T20:53:55Z
