@@ -14,7 +14,7 @@ gates:
   slicing_readiness: approved
   implementation: complete
   review: complete
-  verification: pending
+  verification: complete
   finish: pending
 stale:
   feature: false

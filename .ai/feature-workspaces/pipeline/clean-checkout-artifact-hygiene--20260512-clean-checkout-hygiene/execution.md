@@ -121,6 +121,21 @@ None yet.
   - Decision or pattern reused: S-003 retry records reason and superseded attempt.
   - Confidence: high.
 
+## Docs Consulted: Verification
+
+- `.ai/constitution.md`
+  - Used for: repository-level verification command selection.
+  - Decision or pattern reused: run `python -m unittest discover -s tests/feature_pipeline`.
+  - Confidence: high.
+- `.agents/pipeline-core/references/review-and-verification.md`
+  - Used for: final verification debt and manual validation recording.
+  - Decision or pattern reused: raw final output belongs in `evidence/final-verification-output.log`.
+  - Confidence: high.
+- `.ai/pipeline-docs/steps/verification/checklist.md`
+  - Used for: final artifact and regression validation checklist.
+  - Decision or pattern reused: run full feature-pipeline suite after last implementation change.
+  - Confidence: high.
+
 ## Event Log
 
 - 2026-05-12T19:19:25Z event_type=run_initialized step=context next=nfp-01-context
@@ -134,6 +149,7 @@ None yet.
 - 2026-05-12T19:51:23Z event_type=slice_retry_completed slice=S-003 attempt=2 reason=curated-knowledge-sidecar-fix supersedes=attempt-1
 - 2026-05-12T19:52:36Z gate=implementation old_status=approved new_status=complete by=codex note=all slices complete with retry evidence
 - 2026-05-12T19:54:06Z gate=review old_status=pending new_status=complete by=codex note=strict review found no blocking findings
+- 2026-05-12T19:57:30Z gate=verification old_status=pending new_status=complete by=codex note=final unittest pytest goal validation and diff check passed
 
 ## History
 
@@ -143,6 +159,6 @@ None yet.
 ## Current Run State
 
 Current step: verification
-Next recommended skill: nfp-10-verification
+Next recommended skill: nfp-11-finish
 Blocking issues: none
-Last updated: 2026-05-12T19:54:12Z
+Last updated: 2026-05-12T19:57:33Z

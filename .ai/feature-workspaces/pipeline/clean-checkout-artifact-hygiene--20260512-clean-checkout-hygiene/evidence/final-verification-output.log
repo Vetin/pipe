@@ -1,0 +1,23 @@
+$ python -m unittest discover -s tests/feature_pipeline
+..................................................................................................................................................
+----------------------------------------------------------------------
+Ran 146 tests in 47.969s
+
+OK
+unittest_exit=0
+
+$ python -m pytest tests/feature_pipeline -q
+........................................................................... [ 51%]
+........................................................ [ 89%]
+...............                                                          [100%]
+146 passed, 157 subtests passed in 46.12s
+pytest_exit=0
+
+$ python pipeline-lab/showcases/scripts/validate_pipeline_goals.py --passes 3 --report /tmp/pipeline-goal-validation-final.md
+report: /tmp/pipeline-goal-validation-final.md
+passes: 3
+failures: 0
+goal_validation_exit=0
+
+$ git diff --check
+diff_check_exit=0
