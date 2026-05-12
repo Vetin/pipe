@@ -2,6 +2,8 @@ artifact_contract_version: 0.1.0
 feature_key: pipeline/real-codex-showcase-debug-runner
 run_id: run-20260512-codex-debug
 current_step: promote
+lifecycle: promoted-readonly
+read_only: true
 worktree:
   branch: feature/pipeline-real-codex-showcase-debug-runner-run-20260512-codex-debug
   path: ../worktrees/pipeline-real-codex-showcase-debug-runner-run-20260512-codex-debug

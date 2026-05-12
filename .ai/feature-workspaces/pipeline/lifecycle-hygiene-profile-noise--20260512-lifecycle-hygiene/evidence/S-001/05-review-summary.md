@@ -1,0 +1,1 @@
+Review focus checked: canonical feature status remains complete; source workspaces become promoted-readonly/archived with read_only true; active duplicate workspaces without inactive lifecycle fail validation.

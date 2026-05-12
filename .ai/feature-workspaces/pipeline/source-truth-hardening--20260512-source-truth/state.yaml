@@ -2,6 +2,8 @@ artifact_contract_version: 0.1.0
 feature_key: pipeline/source-truth-hardening
 run_id: 20260512-source-truth
 current_step: promote
+lifecycle: promoted-readonly
+read_only: true
 worktree:
   branch: feature/pipeline-source-truth-hardening-20260512-source-truth
   path: ../worktrees/pipeline-source-truth-hardening-20260512-source-truth

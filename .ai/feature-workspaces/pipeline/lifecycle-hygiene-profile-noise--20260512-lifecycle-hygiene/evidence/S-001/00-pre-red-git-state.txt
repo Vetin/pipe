@@ -1,0 +1,3 @@
+## feature/pipeline-lifecycle-hygiene-profile-noise-20260512-lifecycle-hygiene
+ M .agents/pipeline-core/scripts/featurectl.py
+ M tests/feature_pipeline/test_finish_promote.py

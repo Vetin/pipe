@@ -89,8 +89,15 @@ class FinishPromoteTests(unittest.TestCase):
         self.assertEqual(index["features"][0]["path"], ".ai/features/auth/reset-password")
         self.assertIn("auth/reset-password", overview)
         self.assertEqual(yaml.safe_load((canonical / "feature.yaml").read_text(encoding="utf-8"))["status"], "complete")
+        source_feature = yaml.safe_load((workspace / "feature.yaml").read_text(encoding="utf-8"))
+        source_state = yaml.safe_load((workspace / "state.yaml").read_text(encoding="utf-8"))
+        self.assertEqual(source_feature["status"], "promoted-readonly")
+        self.assertEqual(source_state["lifecycle"], "promoted-readonly")
+        self.assertTrue(source_state["read_only"])
         validation = run([sys.executable, str(SCRIPT), "validate", "--workspace", str(canonical)], self.repo)
         self.assertIn("validation: pass", validation.stdout)
+        workspace_validation = run([sys.executable, str(SCRIPT), "validate", "--workspace", str(workspace)], self.repo)
+        self.assertIn("validation: pass", workspace_validation.stdout)
 
     def test_validate_rejects_stale_canonical_overview(self):
         workspace = self.completed_workspace("run-stale-overview")
@@ -134,7 +141,21 @@ class FinishPromoteTests(unittest.TestCase):
         result = run([sys.executable, str(SCRIPT), "validate", "--workspace", str(active)], self.repo, check=False)
 
         self.assertNotEqual(result.returncode, 0)
-        self.assertIn("active workspace auth/reset-password duplicates complete canonical feature", result.stdout)
+        self.assertIn("active workspace auth/reset-password duplicates complete canonical feature without inactive lifecycle", result.stdout)
+
+    def test_validate_rejects_legacy_promoted_workspace_without_readonly_lifecycle(self):
+        workspace = self.completed_workspace("run-active-legacy-promoted")
+        run([sys.executable, str(SCRIPT), "promote", "--workspace", str(workspace)], self.repo)
+        active = self.completed_workspace("run-legacy-promoted-conflict")
+        feature_path = active / "feature.yaml"
+        feature = yaml.safe_load(feature_path.read_text(encoding="utf-8"))
+        feature["status"] = "promoted"
+        feature_path.write_text(yaml.safe_dump(feature, sort_keys=False), encoding="utf-8")
+
+        result = run([sys.executable, str(SCRIPT), "validate", "--workspace", str(active)], self.repo, check=False)
+
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("active workspace auth/reset-password duplicates complete canonical feature without inactive lifecycle", result.stdout)
 
     def test_validate_rejects_stale_latest_status(self):
         workspace = self.completed_workspace("run-stale-latest-status")
@@ -158,7 +179,7 @@ class FinishPromoteTests(unittest.TestCase):
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("canonical feature already exists", result.stderr)
 
-    def test_promote_archive_as_variant_archives_existing_canonical(self):
+    def test_promote_archive_as_variant_archives_incoming_workspace(self):
         first = self.completed_workspace("run-promote-archive-first")
         run([sys.executable, str(SCRIPT), "promote", "--workspace", str(first)], self.repo)
         second = self.completed_workspace("run-promote-archive-second")
@@ -171,8 +192,13 @@ class FinishPromoteTests(unittest.TestCase):
         self.assertIn("promotion: archived-variant", result.stdout)
         archived = self.repo / ".ai/features-archive/auth/reset-password/run-promote-archive-second"
         canonical = yaml.safe_load((self.repo / ".ai/features/auth/reset-password/feature.yaml").read_text(encoding="utf-8"))
+        source_feature = yaml.safe_load((second / "feature.yaml").read_text(encoding="utf-8"))
+        source_state = yaml.safe_load((second / "state.yaml").read_text(encoding="utf-8"))
         self.assertTrue((archived / "feature.yaml").exists())
         self.assertEqual(canonical["run_id"], "run-promote-archive-first")
+        self.assertEqual(source_feature["status"], "archived")
+        self.assertEqual(source_state["lifecycle"], "archived")
+        self.assertTrue(source_state["read_only"])
 
     def completed_workspace(self, run_id="run-finish"):
         workspace = self.create_workspace(run_id)

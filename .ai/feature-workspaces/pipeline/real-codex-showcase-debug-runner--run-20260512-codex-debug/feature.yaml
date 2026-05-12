@@ -3,7 +3,7 @@ feature_key: pipeline/real-codex-showcase-debug-runner
 domain: pipeline
 slug: real-codex-showcase-debug-runner
 title: Real Codex Showcase Debug Runner
-status: promoted
+status: promoted-readonly
 run_id: run-20260512-codex-debug
 branch: feature/pipeline-real-codex-showcase-debug-runner-run-20260512-codex-debug
 worktree: ../worktrees/pipeline-real-codex-showcase-debug-runner-run-20260512-codex-debug

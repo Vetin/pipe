@@ -1,0 +1,1 @@
+Red run failed as expected: promotion still wrote status promoted, archive-as-variant left the source workspace draft, and validation accepted legacy promoted workspaces. Summary: 4 failed, 12 passed.

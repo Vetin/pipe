@@ -70,6 +70,8 @@ VALID_GATE_STATES = {
     "stale",
     "complete",
 }
+INACTIVE_WORKSPACE_LIFECYCLES = {"promoted-readonly", "archived", "abandoned"}
+VALID_WORKSPACE_LIFECYCLES = {"active", "canonical", *INACTIVE_WORKSPACE_LIFECYCLES}
 FEATURE_REQUIRED_HEADINGS = (
     "## Intent",
     "## Motivation",
@@ -269,6 +271,8 @@ def cmd_new(args: argparse.Namespace) -> None:
             "feature_key": feature_key,
             "run_id": run_id,
             "current_step": "context",
+            "lifecycle": "active",
+            "read_only": False,
             "worktree": {
                 "branch": branch,
                 "path": worktree_value,
@@ -516,8 +520,9 @@ def cmd_promote(args: argparse.Namespace) -> None:
             raise FeatureCtlError(f"archive variant already exists: {archive}")
         archive.parent.mkdir(parents=True, exist_ok=True)
         shutil.copytree(workspace, archive)
-        update_feature_status(archive, "archived", current_step="promote")
+        update_feature_status(archive, "archived", current_step="promote", lifecycle="archived", read_only=True)
         append_execution_event(archive, "Summary", f"- {utc_now()} archived incoming variant for {feature['canonical_path']}")
+        update_feature_status(workspace, "archived", current_step="promote", lifecycle="archived", read_only=True)
         regenerate_feature_index(root)
         print("promotion: archived-variant")
         print(f"archive_path: {archive.relative_to(root).as_posix()}")
@@ -537,13 +542,15 @@ def cmd_promote(args: argparse.Namespace) -> None:
     promoted_state_path = canonical / "state.yaml"
     promoted_state = read_yaml(promoted_state_path)
     promoted_state["current_step"] = "promote"
+    promoted_state["lifecycle"] = "canonical"
+    promoted_state["read_only"] = True
     promoted_state.setdefault("gates", {})["finish"] = "complete"
     promoted_state.setdefault("stale", {})["canonical_docs"] = False
     promoted_state.setdefault("stale", {})["index"] = False
     write_yaml(promoted_state_path, promoted_state)
     write_latest_status(canonical, "promote")
 
-    update_feature_status(workspace, "promoted", current_step="promote")
+    update_feature_status(workspace, "promoted-readonly", current_step="promote", lifecycle="promoted-readonly", read_only=True)
     regenerate_feature_index(root)
     append_execution_event(canonical, "Summary", f"- {utc_now()} promoted feature memory to {feature['canonical_path']}")
     print("promotion: complete")
@@ -1518,6 +1525,8 @@ def status_blockers(root: Path, workspace: Path, feature: dict[str, Any], state:
     current_step = state.get("current_step")
     if current_step not in VALID_STEPS:
         blockers.append(f"invalid current_step: {current_step}")
+    if workspace_inactive_lifecycle(feature, state):
+        return blockers
     try:
         workspace.relative_to(root / ".ai/features")
         is_canonical_memory = current_step == "promote"
@@ -1620,6 +1629,11 @@ def validate_state_shape(state: dict[str, Any]) -> list[str]:
     stale = state.get("stale")
     if not isinstance(stale, dict):
         blockers.append("state.yaml stale must be a mapping")
+    lifecycle = state.get("lifecycle")
+    if lifecycle is not None and lifecycle not in VALID_WORKSPACE_LIFECYCLES:
+        blockers.append(f"state.yaml invalid lifecycle: {lifecycle}")
+    if state.get("read_only") is not None and not isinstance(state.get("read_only"), bool):
+        blockers.append("state.yaml read_only must be boolean")
     return blockers
 
 
@@ -1803,11 +1817,15 @@ def validate_repository_source_truth(root: Path, workspace: Path, feature: dict[
             continue
         active_state_path = active_workspace / "state.yaml"
         active_state = read_yaml(active_state_path) if active_state_path.exists() else {}
-        status = active_feature.get("status")
-        current_step = active_state.get("current_step")
-        if status not in {"promoted", "archived"} and current_step != "promote":
-            blockers.append(f"active workspace {active_key} duplicates complete canonical feature without promoted or archived state")
+        if not workspace_inactive_lifecycle(active_feature, active_state):
+            blockers.append(f"active workspace {active_key} duplicates complete canonical feature without inactive lifecycle")
     return blockers
+
+
+def workspace_inactive_lifecycle(feature: dict[str, Any], state: dict[str, Any]) -> bool:
+    status = str(feature.get("status") or "")
+    lifecycle = str(state.get("lifecycle") or "")
+    return status in INACTIVE_WORKSPACE_LIFECYCLES and lifecycle in INACTIVE_WORKSPACE_LIFECYCLES and state.get("read_only") is True
 
 
 def is_active_workspace(root: Path, workspace: Path) -> bool:
@@ -2581,7 +2599,14 @@ def render_feature_memory_overview(features: list[dict[str, Any]]) -> str:
     return "\n".join(lines)
 
 
-def update_feature_status(workspace: Path, status: str, *, current_step: str | None = None) -> None:
+def update_feature_status(
+    workspace: Path,
+    status: str,
+    *,
+    current_step: str | None = None,
+    lifecycle: str | None = None,
+    read_only: bool | None = None,
+) -> None:
     feature_path = workspace / "feature.yaml"
     state_path = workspace / "state.yaml"
     if feature_path.exists():
@@ -2592,6 +2617,10 @@ def update_feature_status(workspace: Path, status: str, *, current_step: str | N
     if state_path.exists() and current_step:
         state = read_yaml(state_path)
         state["current_step"] = current_step
+        if lifecycle is not None:
+            state["lifecycle"] = lifecycle
+        if read_only is not None:
+            state["read_only"] = read_only
         state.setdefault("stale", {})["index"] = False
         if current_step == "promote":
             state.setdefault("stale", {})["canonical_docs"] = False
