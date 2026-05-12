@@ -1,6 +1,6 @@
 artifact_contract_version: 0.1.0
 generated_by: featurectl.py init --profile-project
-generated_at: '2026-05-12T19:27:45Z'
+generated_at: '2026-05-12T19:49:48Z'
 contract_examples:
 - .agents/pipeline-core/references/native-skill-protocol.md
 - .agents/pipeline-core/scripts/schemas/.gitkeep
@@ -59,7 +59,11 @@ integration_examples:
 - .ai/knowledge/integration-map.md
 source_examples:
 - .agents/pipeline-core/scripts/featurectl.py
+- .agents/pipeline-core/scripts/featurectl_core/__init__.py
+- .agents/pipeline-core/scripts/featurectl_core/cli.py
 - .agents/pipeline-core/scripts/pipelinebench.py
+- .agents/pipeline-core/scripts/pipelinebench_core/__init__.py
+- .agents/pipeline-core/scripts/pipelinebench_core/cli.py
 test_examples:
 - tests/feature_pipeline/.gitkeep
 - tests/feature_pipeline/plan_test_helpers.py

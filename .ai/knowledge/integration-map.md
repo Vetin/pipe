@@ -10,13 +10,15 @@ Last reviewed: 2026-05-12
 The primary integration is file-based and repository-local:
 
 ```text
-user request -> nfp skills -> featurectl.py -> feature workspace -> canonical feature memory -> .ai/knowledge
+user request -> nfp skills -> featurectl.py wrapper -> featurectl_core -> feature workspace -> canonical feature memory -> .ai/knowledge
 ```
 
-`featurectl.py` mutates machine-readable artifacts and validation status.
-`nfp-*` skills write the narrative planning, review, and finish artifacts around
-those files. `pipelinebench.py` reads completed feature workspaces or canonical
-features and writes benchmark score artifacts.
+`featurectl.py` is a stable wrapper; `featurectl_core/cli.py` mutates
+machine-readable artifacts and validation status. `nfp-*` skills write the
+narrative planning, review, and finish artifacts around those files.
+`pipelinebench.py` is a stable wrapper; `pipelinebench_core/cli.py` reads
+completed feature workspaces or canonical features and writes benchmark score
+artifacts.
 
 ## Runtime Boundaries
 
@@ -31,6 +33,8 @@ features and writes benchmark score artifacts.
 - Benchmark score -> skill iteration: hard checks catch structural regressions;
   manual soft scores capture architecture clarity, module communication, reuse,
   ADR usefulness, and review quality.
+- CLI wrapper -> core module: top-level scripts stay small and stable while
+  implementation details move under `featurectl_core` and `pipelinebench_core`.
 
 ## External Integrations
 

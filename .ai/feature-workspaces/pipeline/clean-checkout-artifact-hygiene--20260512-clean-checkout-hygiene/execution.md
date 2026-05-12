@@ -115,6 +115,8 @@ None yet.
 - 2026-05-12T19:23:47Z gate=slicing_readiness old_status=pending new_status=approved by=codex note=slices created
 - 2026-05-12T19:28:47Z event_type=slice_completed slice=S-001 attempt=1 reason=initial
 - 2026-05-12T19:32:30Z event_type=slice_completed slice=S-002 attempt=1 reason=initial
+- 2026-05-12T19:45:49Z event_type=slice_completed slice=S-003 attempt=1 reason=initial
+- 2026-05-12T19:51:23Z event_type=slice_retry_completed slice=S-003 attempt=2 reason=curated-knowledge-sidecar-fix supersedes=attempt-1
 
 ## History
 

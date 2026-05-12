@@ -79,6 +79,7 @@ class ArtifactFormattingTests(unittest.TestCase):
                 self.assertEqual(long_lines, [])
 
     def test_source_controlled_pipeline_artifacts_have_readable_line_lengths(self):
+        self.assertEqual(sorted((ROOT / ".ai/knowledge").glob("*.generated.md")), [])
         paths = [
             ROOT / ".gitignore",
             ROOT / ".ai/knowledge/discovered-signals.md",
@@ -101,14 +102,33 @@ class ArtifactFormattingTests(unittest.TestCase):
         paths = [
             ROOT / ".agents/pipeline-core/scripts/featurectl.py",
             ROOT / ".agents/pipeline-core/scripts/pipelinebench.py",
+            *sorted((ROOT / ".agents/pipeline-core/scripts/featurectl_core").glob("*.py")),
+            *sorted((ROOT / ".agents/pipeline-core/scripts/pipelinebench_core").glob("*.py")),
             *sorted((ROOT / "tests/feature_pipeline").glob("*.py")),
         ]
         for path in paths:
+            if path.name == "__init__.py":
+                continue
             with self.subTest(path=path.relative_to(ROOT).as_posix()):
                 content = path.read_text(encoding="utf-8")
-                self.assertGreater(content.count("\n"), 10)
+                minimum_newlines = 5 if path.parent.name == "scripts" else 10
+                self.assertGreater(content.count("\n"), minimum_newlines)
                 long_lines = [f"{index}: {len(line)}" for index, line in enumerate(content.splitlines(), start=1) if len(line) > 220]
                 self.assertEqual(long_lines, [])
+
+    def test_pipeline_cli_scripts_are_thin_wrappers(self):
+        wrappers = {
+            ROOT / ".agents/pipeline-core/scripts/featurectl.py": "featurectl_core.cli",
+            ROOT / ".agents/pipeline-core/scripts/pipelinebench.py": "pipelinebench_core.cli",
+        }
+        for path, import_target in wrappers.items():
+            with self.subTest(path=path.relative_to(ROOT).as_posix()):
+                content = path.read_text(encoding="utf-8")
+                self.assertLess(content.count("\n"), 40)
+                self.assertIn(import_target, content)
+                self.assertIn("raise SystemExit(main())", content)
+        self.assertTrue((ROOT / ".agents/pipeline-core/scripts/featurectl_core/cli.py").exists())
+        self.assertTrue((ROOT / ".agents/pipeline-core/scripts/pipelinebench_core/cli.py").exists())
 
     def test_change_label_only_manifests_declare_identity_policy(self):
         manifests = [
@@ -148,8 +168,11 @@ class ArtifactFormattingTests(unittest.TestCase):
             self.assertIn(expected, architecture)
         self.assertIn("## Pipeline Control Modules", module_map)
         self.assertIn(".agents/pipeline-core/scripts/featurectl.py", module_map)
+        self.assertIn(".agents/pipeline-core/scripts/featurectl_core/cli.py", module_map)
         self.assertIn(".agents/pipeline-core/scripts/pipelinebench.py", module_map)
+        self.assertIn(".agents/pipeline-core/scripts/pipelinebench_core/cli.py", module_map)
         self.assertIn("## Pipeline Artifact Flow", integration_map)
+        self.assertIn("featurectl.py wrapper -> featurectl_core", integration_map)
         self.assertIn("feature workspace -> canonical feature memory", integration_map)
         for adr in (
             "ADR-001 Promoted Readonly Workspaces",

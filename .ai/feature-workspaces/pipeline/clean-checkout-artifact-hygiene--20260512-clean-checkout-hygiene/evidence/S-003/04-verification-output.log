@@ -1,0 +1,32 @@
+feature_key: pipeline/portable-artifact-consistency
+worktree: ../worktrees/pipeline-portable-artifact-consistency-20260512-portable-consistency
+current_step: promote
+gates:
+  feature_contract: approved
+  architecture: approved
+  tech_design: approved
+  slicing_readiness: approved
+  implementation: approved
+  review: complete
+  verification: complete
+  finish: complete
+stale:
+  feature: false
+  architecture: false
+  tech_design: false
+  slices: false
+  evidence: false
+  review: false
+  feature_card: false
+  canonical_docs: false
+  index: false
+blocking_issues:
+  none
+next_step: nfp-12-promote
+auth-reset-password
+frontend-settings
+webhook-integration
+........................................................................... [ 51%]
+........................................................ [ 89%]
+...............                                                          [100%]
+146 passed, 157 subtests passed in 44.33s

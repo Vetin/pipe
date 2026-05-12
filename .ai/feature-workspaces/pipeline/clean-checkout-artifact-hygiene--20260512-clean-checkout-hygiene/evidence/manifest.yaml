@@ -39,6 +39,30 @@ slices:
       timestamp: '2026-05-12T19:32:18Z'
       summary_file: S-002/05-review-summary.md
     diff_hash: 5d9f3ed77998c6aed568ba6346cddd39c262acc8266ed2589f2fb32ba24964f4
+  S-003:
+    red:
+      timestamp: '2026-05-12T19:33:46Z'
+      command_file: S-003/01-red-command.txt
+      output_file: S-003/01-red-output.log
+      git_state_file: S-003/00-pre-red-git-state.txt
+    green:
+      timestamp: '2026-05-12T19:50:38Z'
+      command_file: S-003/03-green-command.txt
+      output_file: S-003/03-green-output.log
+      git_state_file: S-003/02-pre-green-git-state.txt
+    verification:
+      timestamp: '2026-05-12T19:51:23Z'
+      command_file: S-003/04-verification-command.txt
+      output_file: S-003/04-verification-output.log
+    review:
+      timestamp: '2026-05-12T19:51:23Z'
+      summary_file: S-003/05-review-summary.md
+    diff_hash: c83016be672ee3879ad9e34097c39641d761ad806c4fd7e883ea41cd8a32cb55
+    retries:
+    - timestamp: '2026-05-12T19:51:23Z'
+      attempt: 2
+      reason: curated-knowledge-sidecar-fix
+      diff_hash: a833b4a2c35613812aecb5239fa66ff2c9591a676ff729469b1afe64e3d753ec
 completion_identity_policy:
   diff_hash: hexadecimal git diff or commit-derived hash when available
   change_label: semantic completion label when a real diff hash is unavailable

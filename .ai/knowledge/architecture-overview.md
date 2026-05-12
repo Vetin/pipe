@@ -7,15 +7,18 @@ Last reviewed: 2026-05-12
 
 ## Control Plane
 
-The Native Feature Pipeline control plane is centered on
-`.agents/pipeline-core/scripts/featurectl.py`. It creates feature workspaces,
-tracks gates, records evidence, validates source-of-truth consistency, updates
-current run state, and promotes completed feature memory.
+The Native Feature Pipeline control plane exposes a stable wrapper at
+`.agents/pipeline-core/scripts/featurectl.py`. The implementation lives in
+`.agents/pipeline-core/scripts/featurectl_core/cli.py`. It creates feature
+workspaces, tracks gates, records evidence, validates source-of-truth
+consistency, updates current run state, and promotes completed feature memory.
 
-`.agents/pipeline-core/scripts/pipelinebench.py` is the benchmark control plane.
-It scores completed workspaces with deterministic hard checks and optional
-manual soft scores for skill-quality comparison. Soft-score YAML is local
-reviewer input and is never executed.
+`.agents/pipeline-core/scripts/pipelinebench.py` is the stable benchmark
+wrapper. The implementation lives in
+`.agents/pipeline-core/scripts/pipelinebench_core/cli.py`. It scores completed
+workspaces with deterministic hard checks and optional manual soft scores for
+skill-quality comparison. Soft-score YAML is local reviewer input and is never
+executed.
 
 ## Artifact Lifecycle
 
@@ -35,7 +38,9 @@ flowchart LR
   Finish --> Canonical[canonical feature memory]
   Canonical --> Knowledge[.ai/knowledge retrieval layer]
   Workspace --> Readonly[promoted-readonly run evidence]
-  Bench[pipelinebench.py] --> Score[hard checks plus manual soft scores]
+  FeatureCtl[featurectl.py wrapper] --> FeatureCtlCore[featurectl_core cli]
+  Bench[pipelinebench.py wrapper] --> BenchCore[pipelinebench_core cli]
+  BenchCore --> Score[hard checks plus manual soft scores]
 ```
 
 ## Evidence Lifecycle
@@ -64,7 +69,9 @@ benchmark, showcase, or validation-tooling work.
 ## Source Anchors
 
 - `.agents/pipeline-core/scripts/featurectl.py`
+- `.agents/pipeline-core/scripts/featurectl_core/cli.py`
 - `.agents/pipeline-core/scripts/pipelinebench.py`
+- `.agents/pipeline-core/scripts/pipelinebench_core/cli.py`
 - `.agents/skills/nfp-01-context/SKILL.md`
 - `.ai/features/pipeline/lifecycle-hygiene-profile-noise/architecture.md`
 - `.ai/feature-workspaces/pipeline/artifact-readability-execution-semantics--20260512-readability-exec/architecture.md`

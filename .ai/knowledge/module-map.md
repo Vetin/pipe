@@ -7,11 +7,15 @@ Last reviewed: 2026-05-12
 
 ## Pipeline Control Modules
 
-- `.agents/pipeline-core/scripts/featurectl.py`: deterministic workspace,
-  gate, evidence, validation, promotion, and project-profile CLI.
-- `.agents/pipeline-core/scripts/pipelinebench.py`: offline benchmark scoring,
-  candidate isolation checks, showcase comparison, and manual soft-score report
-  generation.
+- `.agents/pipeline-core/scripts/featurectl.py`: stable command-line entrypoint
+  for the deterministic pipeline control plane.
+- `.agents/pipeline-core/scripts/featurectl_core/cli.py`: workspace, gate,
+  evidence, validation, promotion, and project-profile implementation.
+- `.agents/pipeline-core/scripts/pipelinebench.py`: stable command-line
+  entrypoint for benchmark scoring and reports.
+- `.agents/pipeline-core/scripts/pipelinebench_core/cli.py`: offline benchmark
+  scoring, candidate isolation checks, showcase comparison, and manual
+  soft-score report generation.
 - `.agents/skills/nfp-00-intake` through `.agents/skills/nfp-12-promote`: skill
   prompts that define the human/agent workflow around the deterministic scripts.
 - `.agents/skills/project-init`: repository bootstrap/profile skill, separate
