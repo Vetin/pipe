@@ -136,6 +136,21 @@ None yet.
   - Decision or pattern reused: run full feature-pipeline suite after last implementation change.
   - Confidence: high.
 
+## Docs Consulted: Finish
+
+- `.agents/pipeline-core/references/artifact-model.md`
+  - Used for: feature-card memory and canonical promotion readiness.
+  - Decision or pattern reused: feature memory includes claim provenance and rollback guidance.
+  - Confidence: high.
+- `.agents/pipeline-core/references/generated-templates/feature-card-template.md`
+  - Used for: final feature-card section structure.
+  - Decision or pattern reused: include manual validation, verification debt, and shared knowledge updates.
+  - Confidence: high.
+- `.ai/knowledge/architecture-overview.md`
+  - Used for: shared knowledge update decisions.
+  - Decision or pattern reused: wrapper/core control-plane topology is reusable architecture memory.
+  - Confidence: high.
+
 ## Event Log
 
 - 2026-05-12T19:19:25Z event_type=run_initialized step=context next=nfp-01-context
@@ -150,6 +165,7 @@ None yet.
 - 2026-05-12T19:52:36Z gate=implementation old_status=approved new_status=complete by=codex note=all slices complete with retry evidence
 - 2026-05-12T19:54:06Z gate=review old_status=pending new_status=complete by=codex note=strict review found no blocking findings
 - 2026-05-12T19:57:30Z gate=verification old_status=pending new_status=complete by=codex note=final unittest pytest goal validation and diff check passed
+- 2026-05-12T19:58:44Z gate=finish old_status=pending new_status=complete by=codex note=feature card and shared knowledge updates complete
 
 ## History
 
@@ -158,7 +174,7 @@ None yet.
 
 ## Current Run State
 
-Current step: verification
+Current step: finish
 Next recommended skill: nfp-11-finish
 Blocking issues: none
-Last updated: 2026-05-12T19:57:33Z
+Last updated: 2026-05-12T19:58:44Z
