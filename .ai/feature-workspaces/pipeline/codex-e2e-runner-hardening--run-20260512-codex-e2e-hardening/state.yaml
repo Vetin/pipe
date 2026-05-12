@@ -1,7 +1,7 @@
 artifact_contract_version: 0.1.0
 feature_key: pipeline/codex-e2e-runner-hardening
 run_id: run-20260512-codex-e2e-hardening
-current_step: finish
+current_step: promote
 worktree:
   branch: feature/pipeline-codex-e2e-runner-hardening-run-20260512-codex-e2e-hardening
   path: ../worktrees/pipeline-codex-e2e-runner-hardening-run-20260512-codex-e2e-hardening
@@ -10,8 +10,8 @@ gates:
   architecture: approved
   tech_design: approved
   slicing_readiness: approved
-  implementation: approved
-  review: approved
+  implementation: complete
+  review: complete
   verification: complete
   finish: complete
 stale:

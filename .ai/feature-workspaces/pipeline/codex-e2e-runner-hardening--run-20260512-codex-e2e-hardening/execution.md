@@ -236,3 +236,10 @@ iteration_id: I-002
 - 2026-05-12T11:41:09Z gate=review old_status=pending new_status=approved by=codex note=Structured review REV-001 has no blocking findings.
 - 2026-05-12T11:41:09Z gate=verification old_status=pending new_status=approved by=codex note=Focused tests and pipeline goal validation passed.
 - 2026-05-12T11:41:09Z gate=finish old_status=pending new_status=approved by=codex note=Feature-card and shared knowledge update plan completed.
+
+## Latest Status
+
+Current step: promote
+Next recommended skill: nfp-12-promote
+Blocking issues: none
+Last updated: 2026-05-12T12:55:00Z

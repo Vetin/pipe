@@ -506,6 +506,7 @@ def cmd_promote(args: argparse.Namespace) -> None:
             raise FeatureCtlError(f"archive variant already exists: {archive}")
         archive.parent.mkdir(parents=True, exist_ok=True)
         shutil.copytree(workspace, archive)
+        update_feature_status(archive, "archived", current_step="promote")
         append_execution_event(archive, "Summary", f"- {utc_now()} archived incoming variant for {feature['canonical_path']}")
         regenerate_feature_index(root)
         print("promotion: archived-variant")
@@ -530,7 +531,9 @@ def cmd_promote(args: argparse.Namespace) -> None:
     promoted_state.setdefault("stale", {})["canonical_docs"] = False
     promoted_state.setdefault("stale", {})["index"] = False
     write_yaml(promoted_state_path, promoted_state)
+    write_latest_status(canonical, "promote")
 
+    update_feature_status(workspace, "promoted", current_step="promote")
     regenerate_feature_index(root)
     append_execution_event(canonical, "Summary", f"- {utc_now()} promoted feature memory to {feature['canonical_path']}")
     print("promotion: complete")
@@ -1536,6 +1539,8 @@ def validate_workspace(
     blockers.extend(validate_architecture_if_started(workspace, state))
     blockers.extend(validate_tech_design_if_started(workspace, state))
     blockers.extend(validate_slices_if_started(workspace, state))
+    blockers.extend(validate_execution_latest_status(workspace, state))
+    blockers.extend(validate_repository_source_truth(root, workspace, feature, state))
 
     if readiness:
         blockers.extend(validate_readiness_minimum(workspace, state))
@@ -1669,6 +1674,120 @@ def validate_docs_consulted(workspace: Path, step_label: str) -> list[str]:
     if marker not in execution:
         return [f"execution.md missing {marker}"]
     return []
+
+
+def validate_execution_latest_status(workspace: Path, state: dict[str, Any]) -> list[str]:
+    current_step = state.get("current_step")
+    gates = state.get("gates") or {}
+    if current_step not in {"readiness", "worktree", "tdd_implementation", "review", "verification", "finish", "promote"} and gates.get("finish") != "complete":
+        return []
+    execution_path = workspace / "execution.md"
+    if not execution_path.exists():
+        return ["execution.md missing"]
+    execution = execution_path.read_text(encoding="utf-8")
+    marker = "## Latest Status"
+    if marker not in execution:
+        return ["execution.md missing ## Latest Status"]
+    latest = execution.split(marker, 1)[1]
+    next_heading = re.search(r"\n##\s+", latest)
+    if next_heading:
+        latest = latest[: next_heading.start()]
+    blockers: list[str] = []
+    fields = {
+        "Current step": None,
+        "Next recommended skill": None,
+        "Blocking issues": None,
+        "Last updated": None,
+    }
+    for line in latest.splitlines():
+        for field in fields:
+            prefix = f"{field}:"
+            if line.startswith(prefix):
+                fields[field] = line[len(prefix) :].strip()
+    for field, value in fields.items():
+        if not value:
+            blockers.append(f"execution.md Latest Status missing {field}")
+    latest_step = fields.get("Current step")
+    if latest_step and latest_step != current_step:
+        blockers.append(f"execution.md Latest Status current step {latest_step} does not match state.yaml current_step {current_step}")
+    return blockers
+
+
+def validate_repository_source_truth(root: Path, workspace: Path, feature: dict[str, Any], state: dict[str, Any]) -> list[str]:
+    blockers: list[str] = []
+    index_path = root / ".ai/features/index.yaml"
+    if not index_path.exists():
+        return blockers
+    try:
+        index = read_yaml(index_path)
+    except FeatureCtlError as exc:
+        return [str(exc)]
+    features = index.get("features") or []
+    if not isinstance(features, list):
+        return ["features index features must be a list"]
+
+    overview_path = root / ".ai/features/overview.md"
+    overview = overview_path.read_text(encoding="utf-8") if overview_path.exists() else ""
+    complete_keys: set[str] = set()
+    for item in features:
+        if not isinstance(item, dict):
+            blockers.append("features index entries must be mappings")
+            continue
+        feature_key = str(item.get("feature_key") or "")
+        status = item.get("status")
+        path = str(item.get("path") or "")
+        if not feature_key:
+            blockers.append("features index entry missing feature_key")
+            continue
+        if status == "complete":
+            complete_keys.add(feature_key)
+            if feature_key not in overview:
+                blockers.append(f".ai/features/overview.md missing canonical feature {feature_key}")
+            canonical_dir = root / path if path else root / ".ai/features" / feature_key
+            canonical_feature_path = canonical_dir / "feature.yaml"
+            if not canonical_feature_path.exists():
+                blockers.append(f"canonical feature {feature_key} missing feature.yaml")
+                continue
+            canonical_feature = read_yaml(canonical_feature_path)
+            if canonical_feature.get("status") == "draft":
+                blockers.append(f"canonical feature {feature_key} is indexed complete but feature.yaml status is draft")
+
+    active_workspaces = sorted((root / ".ai/feature-workspaces").glob("*/*/feature.yaml"))
+    if is_active_workspace(root, workspace):
+        active_workspaces.append(workspace / "feature.yaml")
+    seen_active_paths: set[Path] = set()
+    for active_feature_path in active_workspaces:
+        active_feature_path = active_feature_path.resolve()
+        if active_feature_path in seen_active_paths or not active_feature_path.exists():
+            continue
+        seen_active_paths.add(active_feature_path)
+        active_workspace = active_feature_path.parent
+        active_feature = read_yaml(active_feature_path)
+        active_key = active_feature.get("feature_key")
+        if active_key not in complete_keys:
+            continue
+        active_state_path = active_workspace / "state.yaml"
+        active_state = read_yaml(active_state_path) if active_state_path.exists() else {}
+        status = active_feature.get("status")
+        current_step = active_state.get("current_step")
+        if status not in {"promoted", "archived"} and current_step != "promote":
+            blockers.append(f"active workspace {active_key} duplicates complete canonical feature without promoted or archived state")
+    return blockers
+
+
+def is_active_workspace(root: Path, workspace: Path) -> bool:
+    resolved = workspace.resolve()
+    for inactive_root in (root / ".ai/features", root / ".ai/features-archive"):
+        try:
+            resolved.relative_to(inactive_root.resolve())
+            return False
+        except ValueError:
+            pass
+    try:
+        resolved.relative_to((root / ".ai/feature-workspaces").resolve())
+    except ValueError:
+        return (workspace / "feature.yaml").exists() and (workspace / "state.yaml").exists()
+    return True
 
 
 def validate_slices_file(path: Path, workspace: Path | None = None) -> list[str]:
@@ -2405,6 +2524,67 @@ def regenerate_feature_index(root: Path) -> None:
             "features": features,
         },
     )
+    write_text(root / ".ai/features/overview.md", render_feature_memory_overview(features))
+
+
+def render_feature_memory_overview(features: list[dict[str, Any]]) -> str:
+    lines = [
+        "# Feature Overview",
+        "",
+        "Status: generated",
+        f"Generated at: {utc_now()}",
+        "",
+        "## Canonical Features",
+        "",
+    ]
+    if not features:
+        lines.append("No canonical features have been promoted yet.")
+    else:
+        for feature in features:
+            lines.append(
+                f"- `{feature.get('feature_key')}` ({feature.get('status') or 'unknown'}) from `{feature.get('path')}`; run `{feature.get('run_id')}`"
+            )
+    lines.append("")
+    return "\n".join(lines)
+
+
+def update_feature_status(workspace: Path, status: str, *, current_step: str | None = None) -> None:
+    feature_path = workspace / "feature.yaml"
+    state_path = workspace / "state.yaml"
+    if feature_path.exists():
+        feature = read_yaml(feature_path)
+        feature["status"] = status
+        feature["updated_at"] = utc_now()
+        write_yaml(feature_path, feature)
+    if state_path.exists() and current_step:
+        state = read_yaml(state_path)
+        state["current_step"] = current_step
+        state.setdefault("stale", {})["index"] = False
+        if current_step == "promote":
+            state.setdefault("stale", {})["canonical_docs"] = False
+        write_yaml(state_path, state)
+        write_latest_status(workspace, current_step)
+
+
+def write_latest_status(workspace: Path, current_step: str) -> None:
+    execution_path = workspace / "execution.md"
+    if not execution_path.exists():
+        return
+    execution = execution_path.read_text(encoding="utf-8")
+    latest = (
+        "## Latest Status\n\n"
+        f"Current step: {current_step}\n"
+        f"Next recommended skill: {next_skill_for_step(current_step)}\n"
+        "Blocking issues: none\n"
+        f"Last updated: {utc_now()}\n"
+    )
+    if "## Latest Status" in execution:
+        prefix, rest = execution.split("## Latest Status", 1)
+        next_heading = re.search(r"\n##\s+", rest)
+        suffix = rest[next_heading.start() :] if next_heading else ""
+        write_text(execution_path, prefix.rstrip() + "\n\n" + latest + suffix)
+    else:
+        write_text(execution_path, execution.rstrip() + "\n\n" + latest)
 
 
 if __name__ == "__main__":

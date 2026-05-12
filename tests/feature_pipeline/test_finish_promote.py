@@ -82,13 +82,71 @@ class FinishPromoteTests(unittest.TestCase):
 
         canonical = self.repo / ".ai/features/auth/reset-password"
         index = yaml.safe_load((self.repo / ".ai/features/index.yaml").read_text(encoding="utf-8"))
+        overview = (self.repo / ".ai/features/overview.md").read_text(encoding="utf-8")
         self.assertIn("promotion: complete", result.stdout)
         self.assertTrue((canonical / "feature-card.md").exists())
         self.assertEqual(index["features"][0]["feature_key"], "auth/reset-password")
         self.assertEqual(index["features"][0]["path"], ".ai/features/auth/reset-password")
+        self.assertIn("auth/reset-password", overview)
         self.assertEqual(yaml.safe_load((canonical / "feature.yaml").read_text(encoding="utf-8"))["status"], "complete")
         validation = run([sys.executable, str(SCRIPT), "validate", "--workspace", str(canonical)], self.repo)
         self.assertIn("validation: pass", validation.stdout)
+
+    def test_validate_rejects_stale_canonical_overview(self):
+        workspace = self.completed_workspace("run-stale-overview")
+        run([sys.executable, str(SCRIPT), "promote", "--workspace", str(workspace)], self.repo)
+        (self.repo / ".ai/features/overview.md").write_text(
+            "# Feature Overview\n\nNo canonical features have been promoted yet.\n",
+            encoding="utf-8",
+        )
+
+        result = run(
+            [sys.executable, str(SCRIPT), "validate", "--workspace", str(self.repo / ".ai/features/auth/reset-password")],
+            self.repo,
+            check=False,
+        )
+
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn(".ai/features/overview.md missing canonical feature auth/reset-password", result.stdout)
+
+    def test_validate_rejects_complete_canonical_feature_with_draft_status(self):
+        workspace = self.completed_workspace("run-draft-canonical")
+        run([sys.executable, str(SCRIPT), "promote", "--workspace", str(workspace)], self.repo)
+        canonical_feature_path = self.repo / ".ai/features/auth/reset-password/feature.yaml"
+        canonical_feature = yaml.safe_load(canonical_feature_path.read_text(encoding="utf-8"))
+        canonical_feature["status"] = "draft"
+        canonical_feature_path.write_text(yaml.safe_dump(canonical_feature, sort_keys=False), encoding="utf-8")
+
+        result = run(
+            [sys.executable, str(SCRIPT), "validate", "--workspace", str(self.repo / ".ai/features/auth/reset-password")],
+            self.repo,
+            check=False,
+        )
+
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("canonical feature auth/reset-password is indexed complete but feature.yaml status is draft", result.stdout)
+
+    def test_validate_rejects_active_workspace_for_complete_canonical_feature(self):
+        workspace = self.completed_workspace("run-active-complete")
+        run([sys.executable, str(SCRIPT), "promote", "--workspace", str(workspace)], self.repo)
+        active = self.completed_workspace("run-active-conflict")
+
+        result = run([sys.executable, str(SCRIPT), "validate", "--workspace", str(active)], self.repo, check=False)
+
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("active workspace auth/reset-password duplicates complete canonical feature", result.stdout)
+
+    def test_validate_rejects_stale_latest_status(self):
+        workspace = self.completed_workspace("run-stale-latest-status")
+        execution_path = workspace / "execution.md"
+        execution = execution_path.read_text(encoding="utf-8")
+        execution = execution.replace("Current step: finish", "Current step: slicing")
+        execution_path.write_text(execution, encoding="utf-8")
+
+        result = run([sys.executable, str(SCRIPT), "validate", "--workspace", str(workspace)], self.repo, check=False)
+
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("execution.md Latest Status current step slicing does not match state.yaml current_step finish", result.stdout)
 
     def test_promote_conflict_aborts_by_default(self):
         first = self.completed_workspace("run-promote-first")
@@ -191,6 +249,17 @@ Disable reset endpoints and preserve existing login behavior.
         state["stale"]["feature_card"] = False
         state["stale"]["canonical_docs"] = False
         state_path.write_text(yaml.safe_dump(state, sort_keys=False), encoding="utf-8")
+        with (workspace / "execution.md").open("a", encoding="utf-8") as handle:
+            handle.write(
+                """
+## Latest Status
+
+Current step: finish
+Next recommended skill: nfp-12-promote
+Blocking issues: none
+Last updated: 2026-05-12T12:00:00Z
+"""
+            )
         return workspace
 
     def create_workspace(self, run_id):

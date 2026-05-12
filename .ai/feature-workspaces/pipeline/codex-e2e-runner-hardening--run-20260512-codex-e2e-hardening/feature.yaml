@@ -3,7 +3,7 @@ feature_key: pipeline/codex-e2e-runner-hardening
 domain: pipeline
 slug: codex-e2e-runner-hardening
 title: Codex E2E Runner Hardening
-status: draft
+status: promoted
 run_id: run-20260512-codex-e2e-hardening
 branch: feature/pipeline-codex-e2e-runner-hardening-run-20260512-codex-e2e-hardening
 worktree: ../worktrees/pipeline-codex-e2e-runner-hardening-run-20260512-codex-e2e-hardening
