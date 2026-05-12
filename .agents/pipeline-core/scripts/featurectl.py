@@ -1361,10 +1361,15 @@ def feature_catalog_lines(items: list[dict[str, Any]], *, empty: str) -> str:
     lines = []
     for item in items:
         sources = ", ".join(f"`{source}`" for source in item.get("sources", [])[:3] if source) or "`unknown`"
-        lines.append(
-            f"- {item.get('name', 'unknown')} ({item.get('kind', 'detected')}, "
-            f"{item.get('confidence', 'low')} confidence, {item.get('source_count', 0)} sources): "
-            f"{item.get('description', 'Inspect cited sources before using this feature signal.')} Sources: {sources}"
+        lines.extend(
+            [
+                f"- Signal: {item.get('name', 'unknown')}",
+                f"  - Kind: {item.get('kind', 'detected')}",
+                f"  - Confidence: {item.get('confidence', 'low')}",
+                f"  - Source count: {item.get('source_count', 0)}",
+                f"  - Why not canonical: {item.get('description', 'Inspect cited sources before using this feature signal.')}",
+                f"  - Sources: {sources}",
+            ]
         )
     return "\n".join(lines)
 
@@ -2317,7 +2322,7 @@ def read_yaml(path: Path) -> dict[str, Any]:
 def write_yaml(path: Path, data: dict[str, Any]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", encoding="utf-8") as handle:
-        yaml.safe_dump(data, handle, sort_keys=False, allow_unicode=False)
+        yaml.safe_dump(data, handle, sort_keys=False, allow_unicode=False, default_flow_style=False, width=100)
 
 
 def write_text(path: Path, content: str) -> None:
