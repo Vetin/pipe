@@ -318,8 +318,12 @@ Case:
 Native pipeline expectations:
 - Treat this as a normal user feature request and discover local instructions from `AGENTS.md`, `.agents`, `.ai/pipeline-docs`, `skills`, and repository docs.
 - Do not ask the user to manually invoke internal pipeline skills by name.
-- Keep the implementation bounded: create the necessary feature artifacts, make the smallest working change, run focused tests or explain blocked validation, and commit the result on `{branch}`.
-- Record decisions and evidence in the pipeline artifacts that the local docs identify.
+- This current worktree is already provisioned for the bounded completion smoke case; do not create another worktree and do not perform exhaustive pipeline expansion.
+- Keep the pipeline work minimal: produce a debug artifact set under `.ai/feature-workspaces/debug/{case_id}` with `feature.md`, `architecture.md`, `tech-design.md`, and `slices.yaml`.
+- Implement the smallest code and test change that satisfies the feature request.
+- Run focused validation for that change, or explain blocked validation with the exact command and reason.
+- Commit the result on `{branch}`.
+- Record concise decisions and evidence in the debug artifacts and final response.
 - Final response must include branch, commit, changed files, artifact paths, tests run, and known limitations.
 """
 
