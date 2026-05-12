@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import copy
 import datetime as dt
 import json
 import os
@@ -435,17 +436,21 @@ def cmd_complete_slice(args: argparse.Namespace) -> None:
     ensure_known_slice(workspace, args.slice_id)
     if not args.commit and not args.diff_hash:
         raise FeatureCtlError("complete-slice requires --commit or --diff-hash")
-    add_slice_commit_metadata(workspace, args.slice_id, commit=args.commit, diff_hash=args.diff_hash)
-    blockers = validate_slice_evidence(workspace, args.slice_id)
+    manifest_path = workspace / "evidence/manifest.yaml"
+    if not manifest_path.exists():
+        blockers = ["missing evidence/manifest.yaml"]
+    else:
+        manifest = read_yaml(manifest_path)
+        proposed_manifest = copy.deepcopy(manifest)
+        add_slice_commit_metadata(proposed_manifest, args.slice_id, commit=args.commit, diff_hash=args.diff_hash)
+        blockers = validate_slice_evidence(workspace, args.slice_id, manifest=proposed_manifest)
     if blockers:
         print("slice_evidence: fail")
         for blocker in blockers:
             print(f"- {blocker}")
         raise FeatureCtlError("slice evidence validation failed")
 
-    manifest_path = workspace / "evidence/manifest.yaml"
-    manifest = read_yaml(manifest_path)
-    write_yaml(manifest_path, manifest)
+    write_yaml(manifest_path, proposed_manifest)
     mark_slice_complete(workspace / "slices.yaml", args.slice_id)
     append_execution_event(
         workspace,
@@ -2374,11 +2379,12 @@ def validate_completed_slices_have_manifest(workspace: Path, manifest_slices: di
     return blockers
 
 
-def validate_slice_evidence(workspace: Path, slice_id: str) -> list[str]:
+def validate_slice_evidence(workspace: Path, slice_id: str, manifest: dict[str, Any] | None = None) -> list[str]:
     manifest_path = workspace / "evidence/manifest.yaml"
-    if not manifest_path.exists():
+    if manifest is None and not manifest_path.exists():
         return ["missing evidence/manifest.yaml"]
-    manifest = read_yaml(manifest_path)
+    if manifest is None:
+        manifest = read_yaml(manifest_path)
     slice_entry = (manifest.get("slices") or {}).get(slice_id)
     if not isinstance(slice_entry, dict):
         return [f"missing evidence for slice {slice_id}"]
@@ -2462,15 +2468,12 @@ def ensure_known_slice(workspace: Path, slice_id: str) -> None:
         raise FeatureCtlError(f"unknown slice id: {slice_id}")
 
 
-def add_slice_commit_metadata(workspace: Path, slice_id: str, *, commit: str | None, diff_hash: str | None) -> None:
-    manifest_path = workspace / "evidence/manifest.yaml"
-    manifest = read_yaml(manifest_path)
+def add_slice_commit_metadata(manifest: dict[str, Any], slice_id: str, *, commit: str | None, diff_hash: str | None) -> None:
     entry = manifest.setdefault("slices", {}).setdefault(slice_id, {})
     if commit:
         entry["commit"] = commit
     if diff_hash:
         entry["diff_hash"] = diff_hash
-    write_yaml(manifest_path, manifest)
 
 
 def evidence_path_blocker(workspace: Path, rel: str) -> bool:
