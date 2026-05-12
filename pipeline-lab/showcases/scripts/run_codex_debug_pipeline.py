@@ -124,7 +124,7 @@ print(json.dumps({
     "repo": str(repo),
     "branch": branch,
     "commit": commit,
-    "has_native_pipeline": "normal user feature request" in prompt and "Progress through these outcomes" in prompt,
+    "has_native_pipeline": "normal user feature request" in prompt and ("Progress through these outcomes" in prompt or "bounded completion smoke case" in prompt),
     "no_direct_skill_invocations": "nfp-00-intake" not in prompt and "nfp-12-promote" not in prompt,
     "fresh_worktree": "fresh feature worktree" in prompt and "do not implement in the base checkout" in prompt,
     "generated_artifacts": sorted(artifacts),
@@ -162,6 +162,10 @@ def e2e_command(args: argparse.Namespace, run_dir: Path, codex_bin: str) -> list
         cmd.append("--allow-dirty")
     if args.reset_to_base:
         cmd.append("--reset-to-base")
+    if args.prompt_profile:
+        cmd.extend(["--prompt-profile", args.prompt_profile])
+    if args.replace_existing_worktree or args.clean:
+        cmd.append("--replace-existing-worktree")
     if args.mode == "dry-run":
         cmd.append("--dry-run")
     return cmd
@@ -223,8 +227,15 @@ def validate_run(manifest: dict[str, Any], expected_mode: str) -> dict[str, Any]
         failures.append(f"Codex return code is {manifest.get('returncode')}")
     if manifest.get("timed_out"):
         failures.append("Codex invocation timed out")
-    if "normal user feature request" not in prompt or "Progress through these outcomes" not in prompt:
+    prompt_profile = manifest.get("prompt_profile")
+    if prompt_profile not in {"full-native", "outcome-smoke"}:
+        failures.append(f"prompt_profile is {prompt_profile}, expected full-native or outcome-smoke")
+    if "normal user feature request" not in prompt:
         failures.append("prompt does not emulate a native user feature request")
+    if prompt_profile == "full-native" and "Progress through these outcomes" not in prompt:
+        failures.append("full-native prompt is missing native outcome progression")
+    if prompt_profile == "outcome-smoke" and "bounded completion smoke case" not in prompt:
+        failures.append("outcome-smoke prompt is missing bounded smoke framing")
     forbidden = [token for token in FORBIDDEN_PROMPT_TOKENS if token in prompt]
     if forbidden:
         failures.append("prompt contains direct internal skill invocation tokens: " + ", ".join(forbidden))
@@ -261,6 +272,7 @@ def validate_run(manifest: dict[str, Any], expected_mode: str) -> dict[str, Any]
         "artifacts": artifacts,
         "failures": failures,
         "warnings": warnings,
+        "source_repo": manifest.get("source_repo"),
     }
 
 
@@ -327,6 +339,65 @@ def render_commands(cmd: list[str]) -> str:
     return " ".join(shlex.quote(part) for part in cmd) + "\n"
 
 
+def portable_replacements(run_dir: Path, summary: dict[str, Any]) -> list[tuple[str, str]]:
+    work_paths: list[Path] = []
+    for result in summary.get("results") or []:
+        for key in ("repo", "source_repo"):
+            value = result.get(key)
+            if value:
+                work_paths.append(Path(value).expanduser())
+        for paths in (result.get("artifacts") or {}).values():
+            work_paths.extend(Path(value).expanduser() for value in paths)
+
+    work_root: Path | None = None
+    if work_paths:
+        try:
+            work_root = Path(os.path.commonpath([str(path) for path in work_paths]))
+        except ValueError:
+            work_root = None
+        if work_root and work_root.is_file():
+            work_root = work_root.parent
+
+    replacements = [
+        (str(run_dir), "$RUN_DIR"),
+        (str(run_dir.resolve()), "$RUN_DIR"),
+        (str(ROOT), "$ROOT"),
+        (str(ROOT.resolve()), "$ROOT"),
+    ]
+    if work_root:
+        replacements.extend(
+            [
+                (str(work_root), "$WORK_ROOT"),
+                (str(work_root.resolve()), "$WORK_ROOT"),
+            ]
+        )
+    replacements = sorted(set(replacements), key=lambda item: len(item[0]), reverse=True)
+    return [(actual, token) for actual, token in replacements if actual and actual != "/"]
+
+
+def normalize_value(value: Any, replacements: list[tuple[str, str]]) -> Any:
+    if isinstance(value, str):
+        for actual, token in replacements:
+            value = value.replace(actual, token)
+        return value
+    if isinstance(value, list):
+        return [normalize_value(item, replacements) for item in value]
+    if isinstance(value, dict):
+        return {key: normalize_value(item, replacements) for key, item in value.items()}
+    return value
+
+
+def normalize_text_artifacts(run_dir: Path, replacements: list[tuple[str, str]]) -> None:
+    suffixes = {".json", ".log", ".md", ".sh", ".txt", ".yaml", ".yml"}
+    for path in sorted(run_dir.rglob("*")):
+        if not path.is_file() or path.suffix not in suffixes:
+            continue
+        text = path.read_text(encoding="utf-8", errors="replace")
+        normalized = normalize_value(text, replacements)
+        if normalized != text:
+            path.write_text(normalized, encoding="utf-8")
+
+
 def run_debug(args: argparse.Namespace) -> dict[str, Any]:
     output_dir = resolve_output_dir(args.output_dir)
     run_dir = output_dir / args.run_id
@@ -360,6 +431,7 @@ def run_debug(args: argparse.Namespace) -> dict[str, Any]:
         "run_id": args.run_id,
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "mode": args.mode,
+        "path_mode": "actual",
         "uses_real_codex": args.mode == "real",
         "codex_bin": codex_bin,
         "case_count": len(results),
@@ -370,9 +442,15 @@ def run_debug(args: argparse.Namespace) -> dict[str, Any]:
         "results": results,
         "weaknesses": weaknesses,
     }
+    if args.portable_output:
+        replacements = portable_replacements(run_dir, summary)
+        summary = normalize_value(summary, replacements)
+        summary["path_mode"] = "portable"
     write_text(run_dir / "summary.yaml", yaml.safe_dump(summary, sort_keys=False))
     write_text(run_dir / "validation.md", render_validation_md(summary))
     write_text(run_dir / "comparison.md", render_comparison_md(summary))
+    if args.portable_output:
+        normalize_text_artifacts(run_dir, replacements)
     return summary
 
 
@@ -390,6 +468,9 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--allow-dirty", action="store_true", help="Allow dirty source repositories")
     parser.add_argument("--reset-to-base", action="store_true", help="Reset source repository to case base_ref first")
     parser.add_argument("--clean", action="store_true", help="Remove existing debug run directory before running")
+    parser.add_argument("--replace-existing-worktree", action="store_true", help="Forward replacement permission to the E2E runner")
+    parser.add_argument("--prompt-profile", choices=("full-native", "outcome-smoke"), default=None, help="Forward prompt profile to the E2E runner")
+    parser.add_argument("--portable-output", action="store_true", help="Normalize generated text artifacts with stable path tokens")
     args = parser.parse_args(argv)
 
     try:

@@ -110,8 +110,8 @@ slices:
   - validation consumes actual paths before portable rewriting
   - real mode is not confused with fake Codex unit tests
   - committed showcase artifacts do not leak machine-local paths
-  evidence_status: pending
-  status: pending
+  evidence_status: complete
+  status: complete
   iteration_budget: 10
   rollback_point: pre-slice git state
   independent_verification: Inspect portable summary and comparison output for absence

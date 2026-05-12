@@ -173,3 +173,29 @@ iteration_id: I-001
 - subagent note: this host session did not expose a subagent execution tool, so implementation and review evidence were produced directly in-session.
 - next action: commit S-001 and mark the slice complete.
 - 2026-05-12T10:07:27Z completed slice S-001 with evidence
+
+## Implementation Checkpoint: S-002
+
+Docs Consulted: TDD Implementation
+- `.agents/pipeline-core/references/native-skill-protocol.md`
+- `.agents/pipeline-core/references/methodology-lenses.md`
+- `skills/native-feature-pipeline/references/upstream-pattern-map.md`
+- `skills/native-feature-pipeline/references/workflow-and-gates.md`
+- `skills/native-feature-pipeline/references/review-and-verification.md`
+- `skills/native-feature-pipeline/references/evaluation-patterns.md`
+- `.ai/pipeline-docs/steps/tdd-implementation/overview.md`
+- `.ai/pipeline-docs/steps/tdd-implementation/checklist.md`
+
+iteration_id: I-002
+- slice: S-002
+- pre-red state: worktree had project knowledge refresh changes from `featurectl.py init --profile-project`; these `.ai/knowledge/*` changes were left untouched and unstaged.
+- red command: `python -m pytest tests/feature_pipeline/test_codex_debug_runner.py tests/feature_pipeline/test_pipeline_goal_validation.py`
+- red result: `test_expected`; new tests failed for missing `--prompt-profile`, missing `--portable-output`, and missing portable-output goal validation.
+- green command: `python -m pytest tests/feature_pipeline/test_codex_debug_runner.py tests/feature_pipeline/test_pipeline_goal_validation.py`
+- green result: pass, 7 tests.
+- verification: `python .agents/pipeline-core/scripts/featurectl.py validate --workspace .ai/feature-workspaces/pipeline/codex-e2e-runner-hardening--run-20260512-codex-e2e-hardening --implementation` passed.
+- files changed: debug runner, pipeline goal validator, focused debug/goal tests, S-002 evidence.
+- review: spec compliance pass and code quality pass recorded in `evidence/S-002/05-review-summary.md`.
+- subagent note: this host session did not expose a subagent execution tool, so implementation and review evidence were produced directly in-session.
+- next action: commit S-002 and mark the slice complete.
+- 2026-05-12T11:05:08Z completed slice S-002 with evidence

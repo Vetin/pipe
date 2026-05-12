@@ -1,0 +1,9 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.11.13, pytest-9.0.3, pluggy-1.6.0
+rootdir: /Users/egormasnankin/work/worktrees/pipeline-codex-e2e-runner-hardening-run-20260512-codex-e2e-hardening
+collected 7 items
+
+tests/feature_pipeline/test_codex_debug_runner.py .....                  [ 71%]
+tests/feature_pipeline/test_pipeline_goal_validation.py ..               [100%]
+
+============================== 7 passed in 3.80s ===============================

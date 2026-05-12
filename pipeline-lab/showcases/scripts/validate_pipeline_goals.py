@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import re
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -292,6 +293,7 @@ def validate_codex_debug_run(run_dir: Path) -> list[dict[str, str]]:
     comparison_text = read_text(comparison_path) if comparison_path.exists() else ""
     validation_text = read_text(validation_path) if validation_path.exists() else ""
     real_diagnostic = read_text(real_diagnostic_path) if real_diagnostic_path.exists() else ""
+    portability = validate_portable_codex_debug_output(run_dir, summary)
     return [
         check("codex_debug_summary_exists", summary_path.exists(), "codex debug summary exists"),
         check("codex_debug_status_pass", summary.get("status") == "pass", f"status: {summary.get('status')}"),
@@ -309,7 +311,33 @@ def validate_codex_debug_run(run_dir: Path) -> list[dict[str, str]]:
             "uses_real_codex: true" in real_diagnostic and "missing field" in real_diagnostic,
             "real mode diagnostic records real Codex attempt and loader fix",
         ),
+        portability,
     ]
+
+
+ABSOLUTE_PATH_RE = re.compile(r"(?<![$A-Z_])/(?:Users|home|private|tmp|var|Volumes)/[^\s)`'\"\\]+")
+
+
+def validate_portable_codex_debug_output(run_dir: Path, summary: dict[str, Any]) -> dict[str, str]:
+    if summary.get("path_mode") != "portable":
+        return check("codex_debug_portable_output", True, "portable mode not requested")
+    leaks: list[str] = []
+    token_seen = False
+    for path in sorted(run_dir.rglob("*")):
+        if not path.is_file() or path.suffix not in {".json", ".log", ".md", ".sh", ".txt", ".yaml", ".yml"}:
+            continue
+        content = read_text(path)
+        if any(token in content for token in ("$ROOT", "$RUN_DIR", "$WORK_ROOT")):
+            token_seen = True
+        if ABSOLUTE_PATH_RE.search(content):
+            leaks.append(str(path.relative_to(run_dir)))
+    if leaks:
+        return check("codex_debug_portable_output", False, "absolute path leaks: " + ", ".join(leaks[:8]))
+    return check(
+        "codex_debug_portable_output",
+        token_seen,
+        "portable path tokens present" if token_seen else "portable mode set but no stable path tokens found",
+    )
 
 
 def validate_web_best_practices() -> list[dict[str, str]]:

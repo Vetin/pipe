@@ -1,0 +1,1 @@
+.ai/feature-workspaces/pipeline/codex-e2e-runner-hardening--run-20260512-codex-e2e-hardening/evidence/S-002/02-pre-green-git-state.txt
