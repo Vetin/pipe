@@ -1,0 +1,15 @@
+artifact_contract_version: '0.1.0'
+description: Self-contained Codex E2E smoke cases backed by local fixtures.
+defaults:
+  require_clean_git: true
+cases:
+  toy-greeting-smoke:
+    title: Toy Greeting Smoke Feature
+    domain: toy
+    original_codebase:
+      template_path: pipeline-lab/showcases/fixtures/toy-greeting
+      base_ref: HEAD
+    target_branch: nfp/toy-greeting-smoke
+    prompt_profile: outcome-smoke
+    feature_request: Add a CLI entry point that prints the greeting for a provided name while keeping the existing greeting test green.
+    expected_result: A bounded Native Feature Pipeline run with artifacts, a focused test, implementation, verification notes, and a commit.

@@ -1,0 +1,18 @@
+$ python -m pytest tests/feature_pipeline/test_codex_e2e_runner.py
+============================= test session starts ==============================
+platform darwin -- Python 3.11.13, pytest-9.0.3, pluggy-1.6.0
+rootdir: /Users/egormasnankin/work/worktrees/pipeline-codex-e2e-runner-hardening-run-20260512-codex-e2e-hardening
+collected 9 items
+
+tests/feature_pipeline/test_codex_e2e_runner.py .........                [100%]
+
+============================== 9 passed in 1.98s ===============================
+
+$ python .agents/pipeline-core/scripts/featurectl.py validate --workspace .ai/feature-workspaces/pipeline/codex-e2e-runner-hardening--run-20260512-codex-e2e-hardening
+validation: pass
+
+$ python pipeline-lab/showcases/scripts/run_codex_e2e_case.py --config pipeline-lab/showcases/codex-real-smoke-cases.yaml --case toy-greeting-smoke --run-id s001-smoke-combined --output-dir /tmp/codex-e2e-s001-smoke-combined --codex-bin /tmp/missing-codex --dry-run
+case: toy-greeting-smoke
+run_dir: /tmp/codex-e2e-s001-smoke-combined/toy-greeting-smoke/s001-smoke-combined
+returncode: 0
+summary: /tmp/codex-e2e-s001-smoke-combined/summary-s001-smoke-combined.yaml

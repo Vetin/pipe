@@ -1,0 +1,16 @@
+## feature/pipeline-codex-e2e-runner-hardening-run-20260512-codex-e2e-hardening
+ M .ai/feature-workspaces/pipeline/codex-e2e-runner-hardening--run-20260512-codex-e2e-hardening/execution.md
+ M .ai/knowledge/architecture-overview.md
+ M .ai/knowledge/contracts-overview.md
+ M .ai/knowledge/features-overview.md
+ M .ai/knowledge/integration-map.md
+ M .ai/knowledge/module-map.md
+ M .ai/knowledge/project-index.yaml
+ M .ai/knowledge/project-overview.md
+ M .ai/knowledge/project-snapshot.md
+ M .ai/knowledge/testing-overview.md
+ M pipeline-lab/showcases/scripts/run_codex_e2e_case.py
+ M tests/feature_pipeline/test_codex_e2e_runner.py
+?? .ai/feature-workspaces/pipeline/codex-e2e-runner-hardening--run-20260512-codex-e2e-hardening/evidence/
+?? pipeline-lab/showcases/codex-real-smoke-cases.yaml
+?? pipeline-lab/showcases/fixtures/

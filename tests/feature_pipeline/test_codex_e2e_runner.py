@@ -67,6 +67,37 @@ class CodexE2ERunnerTests(unittest.TestCase):
         )
         return config
 
+    def write_template_case_config(self, prompt_profile=None):
+        template = self.tempdir / "toy-template"
+        template.mkdir()
+        (template / "README.md").write_text("# Toy Template\n", encoding="utf-8")
+        (template / "app.py").write_text('def greeting():\n    return "hello"\n', encoding="utf-8")
+        case = {
+            "title": "Toy Template Feature",
+            "domain": "toy",
+            "original_codebase": {
+                "template_path": "toy-template",
+                "base_ref": "HEAD",
+            },
+            "target_branch": "nfp/toy-template-feature",
+            "feature_request": "Add a stable greeting feature to the template repository.",
+            "expected_result": "Artifacts, implementation notes, tests, and final summary are produced.",
+        }
+        if prompt_profile:
+            case["prompt_profile"] = prompt_profile
+        config = self.tempdir / "template-cases.yaml"
+        config.write_text(
+            yaml.safe_dump(
+                {
+                    "artifact_contract_version": "0.1.0",
+                    "cases": {"toy-template-feature": case},
+                },
+                sort_keys=False,
+            ),
+            encoding="utf-8",
+        )
+        return config, template
+
     def write_fake_codex(self):
         fake = self.tempdir / "fake-codex.py"
         fake.write_text(
@@ -140,6 +171,9 @@ print(json.dumps({
         self.assertEqual(manifest["timeout_seconds"], 1800)
         self.assertTrue(Path(manifest["repo"]).is_dir())
         self.assertEqual(manifest["source_repo"], str(self.repo.resolve()))
+        self.assertEqual(manifest["source_repo_kind"], "repo_path")
+        self.assertEqual(manifest["prompt_profile"], "full-native")
+        self.assertEqual(manifest["path_mode"], "actual")
         self.assertIn("/worktrees/", manifest["repo"])
         self.assertIn(str(self.fake_codex), command[0])
         self.assertIn("--dangerously-bypass-approvals-and-sandbox", command)
@@ -160,6 +194,154 @@ print(json.dumps({
         self.assertTrue((Path(manifest["repo"]) / "skills/native-feature-pipeline/references").exists())
         self.assertTrue((self.output_dir / "summary-stable-test.yaml").exists())
         self.assertTrue((self.output_dir / "commands-stable-test.sh").exists())
+
+    def test_template_source_is_materialized_as_clean_git_repo(self):
+        config, template = self.write_template_case_config(prompt_profile="outcome-smoke")
+
+        run(
+            [
+                sys.executable,
+                str(RUNNER),
+                "--config",
+                str(config),
+                "--case",
+                "toy-template-feature",
+                "--run-id",
+                "template-run",
+                "--output-dir",
+                str(self.output_dir),
+                "--codex-bin",
+                str(self.fake_codex),
+                "--dry-run",
+            ],
+            ROOT,
+        )
+
+        run_dir = self.output_dir / "toy-template-feature/template-run"
+        manifest = yaml.safe_load((run_dir / "run.yaml").read_text(encoding="utf-8"))
+        source_repo = self.output_dir / "_source-repos/toy-template-feature/template-run"
+        prompt = (run_dir / "prompt.md").read_text(encoding="utf-8")
+
+        self.assertEqual(manifest["source_repo"], str(source_repo.resolve()))
+        self.assertEqual(manifest["source_repo_kind"], "template_path")
+        self.assertEqual(manifest["prompt_profile"], "outcome-smoke")
+        self.assertEqual(manifest["path_mode"], "actual")
+        self.assertTrue((source_repo / ".git").exists())
+        self.assertEqual((source_repo / "README.md").read_text(encoding="utf-8"), "# Toy Template\n")
+        self.assertEqual(run(["git", "status", "--short"], source_repo).stdout.strip(), "")
+        self.assertTrue(run(["git", "rev-parse", "HEAD"], source_repo).stdout.strip())
+        self.assertIn("bounded completion", prompt)
+        self.assertIn("AGENTS.md", prompt)
+        self.assertIn(".agents", prompt)
+        self.assertIn(".ai/pipeline-docs", prompt)
+        self.assertNotIn("Progress through these outcomes", prompt)
+        self.assertNotIn("nfp-00-intake", prompt)
+        self.assertNotIn("nfp-12-promote", prompt)
+        self.assertEqual((template / "README.md").read_text(encoding="utf-8"), "# Toy Template\n")
+
+    def test_case_source_must_define_exactly_one_repo_or_template(self):
+        invalid_config = self.tempdir / "invalid-cases.yaml"
+        invalid_config.write_text(
+            yaml.safe_dump(
+                {
+                    "artifact_contract_version": "0.1.0",
+                    "cases": {
+                        "both": {
+                            "original_codebase": {
+                                "repo_path": "toy-repo",
+                                "template_path": "toy-template",
+                            },
+                            "feature_request": "Do a thing.",
+                        },
+                        "neither": {
+                            "original_codebase": {},
+                            "feature_request": "Do a thing.",
+                        },
+                    },
+                },
+                sort_keys=False,
+            ),
+            encoding="utf-8",
+        )
+
+        for case_id in ("both", "neither"):
+            result = run(
+                [
+                    sys.executable,
+                    str(RUNNER),
+                    "--config",
+                    str(invalid_config),
+                    "--case",
+                    case_id,
+                    "--run-id",
+                    f"invalid-{case_id}",
+                    "--output-dir",
+                    str(self.output_dir),
+                    "--dry-run",
+                ],
+                ROOT,
+                check=False,
+            )
+
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn("exactly one of original_codebase.repo_path or original_codebase.template_path", result.stderr)
+
+    def test_repeated_run_requires_explicit_worktree_replacement(self):
+        base_args = [
+            sys.executable,
+            str(RUNNER),
+            "--config",
+            str(self.config),
+            "--case",
+            "toy-feature",
+            "--run-id",
+            "repeat",
+            "--output-dir",
+            str(self.output_dir),
+            "--codex-bin",
+            str(self.fake_codex),
+            "--dry-run",
+        ]
+        run(base_args, ROOT)
+
+        result = run(base_args, ROOT, check=False)
+
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("--replace-existing-worktree", result.stderr)
+
+        replaced = run([*base_args, "--replace-existing-worktree"], ROOT)
+        self.assertIn("returncode: 0", replaced.stdout)
+
+    def test_prompt_profile_cli_override_wins_over_case_profile(self):
+        config, _template = self.write_template_case_config(prompt_profile="full-native")
+
+        run(
+            [
+                sys.executable,
+                str(RUNNER),
+                "--config",
+                str(config),
+                "--case",
+                "toy-template-feature",
+                "--run-id",
+                "profile-override",
+                "--output-dir",
+                str(self.output_dir),
+                "--codex-bin",
+                str(self.fake_codex),
+                "--prompt-profile",
+                "outcome-smoke",
+                "--dry-run",
+            ],
+            ROOT,
+        )
+
+        run_dir = self.output_dir / "toy-template-feature/profile-override"
+        manifest = yaml.safe_load((run_dir / "run.yaml").read_text(encoding="utf-8"))
+        prompt = (run_dir / "prompt.md").read_text(encoding="utf-8")
+        self.assertEqual(manifest["prompt_profile"], "outcome-smoke")
+        self.assertIn("bounded completion", prompt)
+        self.assertNotIn("Progress through these outcomes", prompt)
 
     def test_dry_run_writes_prompt_without_invoking_codex(self):
         result = run(

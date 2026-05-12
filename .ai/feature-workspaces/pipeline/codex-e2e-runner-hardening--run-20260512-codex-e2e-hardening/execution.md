@@ -145,3 +145,31 @@ a.
 - 2026-05-12T09:49:00Z gate=tech_design old_status=pending new_status=approved by=codex note=Technical design defines runner contracts, tests, and validation commands.
 - 2026-05-12T09:49:00Z gate=slicing_readiness old_status=pending new_status=approved by=codex note=Slices are dependency ordered and mapped to focused validation.
 - 2026-05-12T09:49:00Z gate=implementation old_status=blocked new_status=approved by=codex note=Implementation authorized after approved planning gates.
+
+## Implementation Checkpoint: S-001
+
+Docs Consulted: TDD Implementation
+- `.agents/pipeline-core/references/native-skill-protocol.md`
+- `.agents/pipeline-core/references/methodology-lenses.md`
+- `skills/native-feature-pipeline/references/upstream-pattern-map.md`
+- `skills/native-feature-pipeline/references/workflow-and-gates.md`
+- `skills/native-feature-pipeline/references/review-and-verification.md`
+- `skills/native-feature-pipeline/references/evaluation-patterns.md`
+- `.ai/pipeline-docs/steps/tdd-implementation/overview.md`
+- `.ai/pipeline-docs/steps/tdd-implementation/checklist.md`
+
+iteration_id: I-001
+- slice: S-001
+- pre-red state: worktree had project knowledge refresh changes from `featurectl.py init --profile-project`.
+- red command: `python -m pytest tests/feature_pipeline/test_codex_e2e_runner.py`
+- red result: `environment_failure` because pytest was not installed; installed pytest with `python -m pip install --user pytest`.
+- fallback red command: `python -m unittest tests.feature_pipeline.test_codex_e2e_runner`
+- fallback red result: `test_expected`; new tests failed for missing template source support, manifest metadata, prompt profile CLI, replacement guard, and source contract validation.
+- green command: `python -m pytest tests/feature_pipeline/test_codex_e2e_runner.py`
+- green result: pass, 9 tests.
+- verification: `python .agents/pipeline-core/scripts/featurectl.py validate --workspace .ai/feature-workspaces/pipeline/codex-e2e-runner-hardening--run-20260512-codex-e2e-hardening` passed.
+- additional verification: dry-run self-contained `codex-real-smoke-cases.yaml` fixture produced a manifest with `source_repo_kind: template_path`, `prompt_profile: outcome-smoke`, and `path_mode: actual`.
+- files changed: runner, focused tests, toy-greeting fixture, real smoke case config, S-001 evidence.
+- subagent note: this host session did not expose a subagent execution tool, so implementation and review evidence were produced directly in-session.
+- next action: commit S-001 and mark the slice complete.
+- 2026-05-12T10:07:27Z completed slice S-001 with evidence

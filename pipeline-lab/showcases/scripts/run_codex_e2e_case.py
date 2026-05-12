@@ -22,6 +22,7 @@ ROOT = Path(__file__).resolve().parents[3]
 DEFAULT_CONFIG = ROOT / "pipeline-lab/showcases/codex-e2e-cases.yaml"
 DEFAULT_OUTPUT_DIR = ROOT / "pipeline-lab/showcases/codex-e2e-runs"
 EXECUTION_MODES = {"mock", "dry-run", "real"}
+PROMPT_PROFILES = {"full-native", "outcome-smoke"}
 NATIVE_PHASES = [
     "intake and repository context discovery",
     "feature contract with measurable requirements and acceptance criteria",
@@ -66,12 +67,56 @@ def resolve_path(path: str, config_path: Path) -> Path:
     return (ROOT / candidate).resolve()
 
 
-def case_repo(case: dict[str, Any], config_path: Path) -> Path:
+def case_source_spec(case: dict[str, Any]) -> tuple[str, str]:
     codebase = case.get("original_codebase") or {}
     repo_path = codebase.get("repo_path") or case.get("repo_path")
-    if not repo_path:
-        raise RuntimeError("case must define original_codebase.repo_path or repo_path")
-    return resolve_path(str(repo_path), config_path)
+    template_path = codebase.get("template_path") or case.get("template_path")
+    if bool(repo_path) == bool(template_path):
+        raise RuntimeError("case must define exactly one of original_codebase.repo_path or original_codebase.template_path")
+    if repo_path:
+        return "repo_path", str(repo_path)
+    return "template_path", str(template_path)
+
+
+def init_template_repo(template_path: Path, source_repo: Path, replace_existing: bool) -> None:
+    if source_repo.exists():
+        if not replace_existing:
+            raise RuntimeError(
+                f"materialized source repo already exists: {source_repo}; "
+                "rerun with --replace-existing-worktree"
+            )
+        shutil.rmtree(source_repo)
+    source_repo.parent.mkdir(parents=True, exist_ok=True)
+    ignore = shutil.ignore_patterns(".git", "__pycache__", ".pytest_cache")
+    shutil.copytree(template_path, source_repo, ignore=ignore)
+    run(["git", "init", "-b", "main"], source_repo, check=True)
+    run(["git", "config", "user.email", "codex-e2e@example.invalid"], source_repo, check=True)
+    run(["git", "config", "user.name", "Codex E2E Runner"], source_repo, check=True)
+    run(["git", "add", "."], source_repo, check=True)
+    status = git_status(source_repo)
+    if status:
+        run(["git", "commit", "-m", "seed template source"], source_repo, check=True)
+    else:
+        run(["git", "commit", "--allow-empty", "-m", "seed template source"], source_repo, check=True)
+
+
+def case_repo(
+    case_id: str,
+    case: dict[str, Any],
+    config_path: Path,
+    output_dir: Path,
+    run_id: str,
+    replace_existing: bool,
+) -> tuple[Path, str]:
+    source_kind, source_path = case_source_spec(case)
+    if source_kind == "repo_path":
+        return resolve_path(source_path, config_path), source_kind
+    template_path = resolve_path(source_path, config_path)
+    if not template_path.is_dir():
+        raise RuntimeError(f"missing template source directory: {template_path}")
+    source_repo = output_dir / "_source-repos" / case_id / run_id
+    init_template_repo(template_path, source_repo, replace_existing=replace_existing)
+    return source_repo.resolve(), source_kind
 
 
 def case_base_ref(case: dict[str, Any]) -> str | None:
@@ -129,17 +174,32 @@ def prepared_worktree_path(repo: Path, case_id: str, run_id: str) -> Path:
     return repo.parent / "worktrees" / name
 
 
-def prepare_worktree(repo: Path, case_id: str, case: dict[str, Any], run_id: str) -> tuple[Path, str]:
+def branch_exists(repo: Path, branch: str) -> bool:
+    return bool(run(["git", "branch", "--list", branch], repo, check=True).stdout.strip())
+
+
+def prepare_worktree(
+    repo: Path,
+    case_id: str,
+    case: dict[str, Any],
+    run_id: str,
+    replace_existing: bool = False,
+) -> tuple[Path, str]:
     base_ref = case_base_ref(case) or "HEAD"
     branch = prepared_branch(case_id, case, run_id)
     worktree = prepared_worktree_path(repo, case_id, run_id)
     worktree.parent.mkdir(parents=True, exist_ok=True)
+    if worktree.exists() and not replace_existing:
+        raise RuntimeError(f"target worktree already exists: {worktree}; rerun with --replace-existing-worktree")
+    if branch_exists(repo, branch) and not replace_existing:
+        raise RuntimeError(f"target branch already exists: {branch}; rerun with --replace-existing-worktree")
     if worktree.exists():
         run(["git", "worktree", "remove", "--force", str(worktree)], repo)
     if worktree.exists():
         shutil.rmtree(worktree)
     run(["git", "worktree", "prune"], repo)
-    run(["git", "branch", "-D", branch], repo)
+    if branch_exists(repo, branch):
+        run(["git", "branch", "-D", branch], repo)
     run(["git", "worktree", "add", "-b", branch, str(worktree), base_ref], repo, check=True)
     return worktree.resolve(), branch
 
@@ -159,7 +219,28 @@ def install_pipeline_context(worktree: Path) -> None:
     shutil.copy2(ROOT / ".ai/constitution.md", worktree / ".ai/constitution.md")
 
 
-def build_prompt(case_id: str, case: dict[str, Any], source_repo: Path, worktree: Path, branch: str, config_path: Path) -> str:
+def selected_prompt_profile(case: dict[str, Any], override: str | None) -> str:
+    profile = override or case.get("prompt_profile") or "full-native"
+    if profile not in PROMPT_PROFILES:
+        raise RuntimeError(f"unknown prompt profile: {profile}")
+    return profile
+
+
+def build_prompt(
+    case_id: str,
+    case: dict[str, Any],
+    source_repo: Path,
+    worktree: Path,
+    branch: str,
+    config_path: Path,
+    prompt_profile: str,
+) -> str:
+    if prompt_profile == "outcome-smoke":
+        return build_outcome_smoke_prompt(case_id, case, source_repo, worktree, branch, config_path)
+    return build_full_native_prompt(case_id, case, source_repo, worktree, branch, config_path)
+
+
+def build_full_native_prompt(case_id: str, case: dict[str, Any], source_repo: Path, worktree: Path, branch: str, config_path: Path) -> str:
     phases = case.get("workflow_phases") or NATIVE_PHASES
     phase_list = "\n".join(f"  - {phase}" for phase in phases)
     codebase = case.get("original_codebase") or {}
@@ -204,6 +285,42 @@ Implementation expectations:
 - Record red/green evidence and any blocked validation with exact commands and reasons.
 - Commit the finished implementation on `{branch}`.
 - Final response must include branch, commit, changed files, NFP artifact paths, tests run, and known limitations.
+"""
+
+
+def build_outcome_smoke_prompt(case_id: str, case: dict[str, Any], source_repo: Path, worktree: Path, branch: str, config_path: Path) -> str:
+    base_ref = case_base_ref(case) or "current HEAD"
+    expected_result = case.get("expected_result", "Implement the requested feature with focused evidence and a final summary.")
+    title = case.get("title", case_id)
+    feature_request = case.get("feature_request")
+    if not feature_request:
+        raise RuntimeError(f"case {case_id} is missing feature_request")
+
+    return f"""You are a nested Codex worker running a bounded completion smoke case.
+
+Repository ownership:
+- Work only inside this fresh feature worktree: {worktree}
+- Original codebase checkout: {source_repo}
+- This repository represents the original codebase from case file: {config_path}
+- Original codebase base ref: {base_ref}
+- Target branch name: {branch}
+- Do not modify sibling repositories or harness files.
+- The worktree already exists; do not implement in the base checkout.
+- Preserve unrelated user changes. If unexpected dirty files are present, stop and report them.
+
+Case:
+- Case id: {case_id}
+- Title: {title}
+- Domain: {case.get('domain', 'unknown')}
+- Feature request: {feature_request}
+- Expected result: {expected_result}
+
+Native pipeline expectations:
+- Treat this as a normal user feature request and discover local instructions from `AGENTS.md`, `.agents`, `.ai/pipeline-docs`, `skills`, and repository docs.
+- Do not ask the user to manually invoke internal pipeline skills by name.
+- Keep the implementation bounded: create the necessary feature artifacts, make the smallest working change, run focused tests or explain blocked validation, and commit the result on `{branch}`.
+- Record decisions and evidence in the pipeline artifacts that the local docs identify.
+- Final response must include branch, commit, changed files, artifact paths, tests run, and known limitations.
 """
 
 
@@ -268,19 +385,35 @@ def run_case(
     execution_mode: str,
     timeout_seconds: int | None,
     reset_base: bool,
+    replace_existing_worktree: bool,
+    prompt_profile_override: str | None,
 ) -> dict[str, Any]:
-    source_repo = case_repo(case, config_path)
+    prompt_profile = selected_prompt_profile(case, prompt_profile_override)
+    source_repo, source_repo_kind = case_repo(
+        case_id,
+        case,
+        config_path,
+        output_dir,
+        run_id,
+        replace_existing=replace_existing_worktree,
+    )
     ensure_git_repo(source_repo)
     if reset_base:
         reset_to_base(source_repo, case_base_ref(case))
     ensure_clean_repo(source_repo, allow_dirty=allow_dirty)
-    worktree, branch = prepare_worktree(source_repo, case_id, case, run_id)
+    worktree, branch = prepare_worktree(
+        source_repo,
+        case_id,
+        case,
+        run_id,
+        replace_existing=replace_existing_worktree,
+    )
     install_pipeline_context(worktree)
 
     run_dir = output_dir / case_id / run_id
     run_dir.mkdir(parents=True, exist_ok=True)
     final_path = run_dir / "codex-final.txt"
-    prompt = build_prompt(case_id, case, source_repo, worktree, branch, config_path)
+    prompt = build_prompt(case_id, case, source_repo, worktree, branch, config_path, prompt_profile)
     command = codex_command(codex_bin, worktree, final_path, prompt, extra_args)
     started_at = datetime.now(timezone.utc).isoformat()
 
@@ -325,6 +458,9 @@ def run_case(
         "title": case.get("title", case_id),
         "repo": str(worktree),
         "source_repo": str(source_repo),
+        "source_repo_kind": source_repo_kind,
+        "prompt_profile": prompt_profile,
+        "path_mode": "actual",
         "feature_request": case.get("feature_request", ""),
         "expected_result": case.get("expected_result", ""),
         "target_branch": branch,
@@ -428,6 +564,12 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--allow-dirty", action="store_true", help="Allow running when target repo has a dirty working tree")
     parser.add_argument("--dry-run", action="store_true", help="Write prompt/command/report without invoking codex")
     parser.add_argument("--reset-to-base", action="store_true", help="Reset target repo to case base_ref before running")
+    parser.add_argument(
+        "--replace-existing-worktree",
+        action="store_true",
+        help="Allow removing an existing target worktree or branch before preparing the run",
+    )
+    parser.add_argument("--prompt-profile", choices=sorted(PROMPT_PROFILES), default=None, help="Override case prompt profile")
     args = parser.parse_args(argv)
 
     config_path = Path(args.config).expanduser().resolve()
@@ -454,6 +596,8 @@ def main(argv: list[str] | None = None) -> int:
                 execution_mode=execution_mode,
                 timeout_seconds=timeout_seconds,
                 reset_base=args.reset_to_base,
+                replace_existing_worktree=args.replace_existing_worktree,
+                prompt_profile_override=args.prompt_profile,
             )
             for case_id, case in selected_cases(config, args.case, args.all)
         ]
