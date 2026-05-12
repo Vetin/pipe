@@ -87,32 +87,16 @@ None currently recorded.
   - Decision or pattern reused: each slice carries TDD commands, ownership, dependency notes, and verification commands.
   - Confidence: high.
 
-## Gate Events
-
-None yet.
-
-## Scope Changes
-
-None.
-
-## History: Initial Current Step
-
-context
-
-## History: Initial Next Step
-
-nfp-01-context
-
-## Latest Status
+## Current Run State
 
 Current step: promote
 Next recommended skill: nfp-12-promote
 Blocking issues: none
 Last updated: 2026-05-12T14:13:29Z
 
-## Summary
+## Event Log
 
-Feature run initialized at 2026-05-12T13:36:17Z. Planning artifacts are drafted for lifecycle, execution, profile, and policy cleanup.
+- 2026-05-12T13:36:17Z event_type=run_initialized detail=migrated-legacy-summary
 - 2026-05-12T13:47:38Z completed slice S-001 with evidence
 - 2026-05-12T13:55:46Z completed slice S-002 with evidence
 - 2026-05-12T14:02:11Z completed slice S-003 with evidence
@@ -121,3 +105,9 @@ Feature run initialized at 2026-05-12T13:36:17Z. Planning artifacts are drafted 
 - 2026-05-12T14:10:14Z gate=review old_status=pending new_status=complete by=codex note=quality review recorded with no blocking findings
 - 2026-05-12T14:10:14Z gate=verification old_status=pending new_status=complete by=codex note=full tests passed: 128 passed
 - 2026-05-12T14:10:14Z gate=finish old_status=pending new_status=complete by=codex note=feature card and shared knowledge updates prepared
+
+## History
+
+- Migrated from legacy execution sections on 2026-05-12.
+- Initial current step: promote
+- Initial next step: nfp-12-promote

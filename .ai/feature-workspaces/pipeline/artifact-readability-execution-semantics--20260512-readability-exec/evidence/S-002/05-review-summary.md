@@ -1,0 +1,1 @@
+Review passed: event appenders now write only to Event Log, Current Run State replaces deprecated Latest Status, legacy active Current/Next headings remain rejected, duplicate slice completion stays blocked, and retries require explicit attempt/reason semantics.

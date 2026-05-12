@@ -157,8 +157,8 @@ class FinishPromoteTests(unittest.TestCase):
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("active workspace auth/reset-password duplicates complete canonical feature without inactive lifecycle", result.stdout)
 
-    def test_validate_rejects_stale_latest_status(self):
-        workspace = self.completed_workspace("run-stale-latest-status")
+    def test_validate_rejects_stale_current_run_state(self):
+        workspace = self.completed_workspace("run-stale-current-run-state")
         execution_path = workspace / "execution.md"
         execution = execution_path.read_text(encoding="utf-8")
         execution = execution.replace("Current step: finish", "Current step: slicing")
@@ -167,10 +167,10 @@ class FinishPromoteTests(unittest.TestCase):
         result = run([sys.executable, str(SCRIPT), "validate", "--workspace", str(workspace)], self.repo, check=False)
 
         self.assertNotEqual(result.returncode, 0)
-        self.assertIn("execution.md Latest Status current step slicing does not match state.yaml current_step finish", result.stdout)
+        self.assertIn("execution.md Current Run State current step slicing does not match state.yaml current_step finish", result.stdout)
 
-    def test_validate_rejects_multiple_latest_status_sections(self):
-        workspace = self.completed_workspace("run-duplicate-latest-status")
+    def test_validate_rejects_deprecated_latest_status_sections(self):
+        workspace = self.completed_workspace("run-deprecated-latest-status")
         execution_path = workspace / "execution.md"
         execution_path.write_text(
             execution_path.read_text(encoding="utf-8")
@@ -181,7 +181,7 @@ class FinishPromoteTests(unittest.TestCase):
         result = run([sys.executable, str(SCRIPT), "validate", "--workspace", str(workspace)], self.repo, check=False)
 
         self.assertNotEqual(result.returncode, 0)
-        self.assertIn("execution.md must contain exactly one active ## Latest Status section", result.stdout)
+        self.assertIn("execution.md must not contain deprecated ## Latest Status section", result.stdout)
 
     def test_validate_rejects_active_legacy_current_next_sections(self):
         workspace = self.completed_workspace("run-legacy-current-step")
@@ -200,13 +200,33 @@ class FinishPromoteTests(unittest.TestCase):
 
     def test_validate_rejects_duplicate_completed_slice_events(self):
         workspace = self.completed_workspace("run-duplicate-slice-complete")
-        with (workspace / "execution.md").open("a", encoding="utf-8") as handle:
-            handle.write("\n- 2026-05-12T13:01:00Z completed slice S-001 with evidence\n")
+        execution_path = workspace / "execution.md"
+        execution = execution_path.read_text(encoding="utf-8")
+        execution = execution.replace(
+            "\n## History",
+            "\n- 2026-05-12T13:01:00Z event_type=slice_completed slice=S-001 attempt=1\n\n## History",
+        )
+        execution_path.write_text(execution, encoding="utf-8")
 
         result = run([sys.executable, str(SCRIPT), "validate", "--workspace", str(workspace)], self.repo, check=False)
 
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("execution.md duplicate completed slice event for S-001", result.stdout)
+
+    def test_validate_rejects_retry_without_attempt_or_reason(self):
+        workspace = self.completed_workspace("run-retry-without-semantics")
+        execution_path = workspace / "execution.md"
+        execution = execution_path.read_text(encoding="utf-8")
+        execution = execution.replace(
+            "\n## History",
+            "\n- 2026-05-12T13:01:00Z completed slice S-001 with evidence retry\n\n## History",
+        )
+        execution_path.write_text(execution, encoding="utf-8")
+
+        result = run([sys.executable, str(SCRIPT), "validate", "--workspace", str(workspace)], self.repo, check=False)
+
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("execution.md retry completed slice event for S-001 missing attempt and reason", result.stdout)
 
     def test_promote_conflict_aborts_by_default(self):
         first = self.completed_workspace("run-promote-first")
@@ -316,21 +336,26 @@ Disable reset endpoints and preserve existing login behavior.
         state_path.write_text(yaml.safe_dump(state, sort_keys=False), encoding="utf-8")
         execution_path = workspace / "execution.md"
         execution = execution_path.read_text(encoding="utf-8")
-        latest = """
-## Latest Status
+        current_state = """
+## Current Run State
 
 Current step: finish
 Next recommended skill: nfp-12-promote
 Blocking issues: none
 Last updated: 2026-05-12T12:00:00Z
 """
-        if "## Latest Status" in execution:
+        if "## Current Run State" in execution:
+            prefix, rest = execution.split("## Current Run State", 1)
+            next_heading = rest.find("\n## ")
+            suffix = rest[next_heading:] if next_heading != -1 else ""
+            execution_path.write_text(prefix.rstrip() + "\n\n" + current_state + suffix, encoding="utf-8")
+        elif "## Latest Status" in execution:
             prefix, rest = execution.split("## Latest Status", 1)
             next_heading = rest.find("\n## ")
             suffix = rest[next_heading:] if next_heading != -1 else ""
-            execution_path.write_text(prefix.rstrip() + "\n\n" + latest + suffix, encoding="utf-8")
+            execution_path.write_text(prefix.rstrip() + "\n\n" + current_state + suffix, encoding="utf-8")
         else:
-            execution_path.write_text(execution.rstrip() + "\n\n" + latest, encoding="utf-8")
+            execution_path.write_text(execution.rstrip() + "\n\n" + current_state, encoding="utf-8")
         return workspace
 
     def create_workspace(self, run_id):

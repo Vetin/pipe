@@ -89,8 +89,8 @@ slices:
   review_focus:
   - status and events cannot drift
   - retries are semantically clear
-  evidence_status: pending
-  status: pending
+  evidence_status: complete
+  status: complete
   iteration_budget: 6
   rollback_point: pre-slice git state
   independent_verification: python -m pytest tests/feature_pipeline/test_finish_promote.py

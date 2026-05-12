@@ -103,30 +103,21 @@ None currently recorded.
   - Decision or pattern reused: each slice links requirements, verification, ownership, rollback, and review focus.
   - Confidence: high.
 
-## Gate Events
-
-None yet.
-
-## Scope Changes
-
-None.
-
-## History: Initial Current Step
-
-context
-
-## History: Initial Next Step
-
-nfp-01-context
-
-## Latest Status
+## Current Run State
 
 Current step: readiness
 Next recommended skill: nfp-06-readiness
 Blocking issues: none
 Last updated: 2026-05-12T15:05:00Z
 
-## Summary
+## Event Log
 
-Feature run initialized at 2026-05-12T15:00:16Z. Planning artifacts are drafted for artifact readability, execution semantics, profile categorization, benchmark soft scoring, and ADR/knowledge updates.
+- 2026-05-12T15:00:16Z event_type=run_initialized detail=migrated-legacy-summary
 - 2026-05-12T15:09:01Z completed slice S-001 with evidence
+- 2026-05-12T15:26:37Z event_type=slice_completed slice=S-002 attempt=1
+
+## History
+
+- Migrated from legacy execution sections on 2026-05-12.
+- Initial current step: readiness
+- Initial next step: nfp-06-readiness

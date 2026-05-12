@@ -55,27 +55,17 @@ None currently recorded.
 - Docs Consulted: Slicing - split timeout metadata, debug wrapper, and
   regenerated comparison artifacts.
 
-## Gate Events
+## Current Run State
 
-None yet.
+Current step: promote
+Next recommended skill: nfp-12-promote
+Blocking issues: none
+Last updated: 2026-05-12T12:55:00Z
 
-## Scope Changes
+## Event Log
 
+- 2026-05-12T00:13:24Z event_type=run_initialized detail=migrated-legacy-summary
 - 2026-05-12T00:16:00Z scope set to harness tooling and debug artifacts; no
-  cloned showcase repo mutation in tests.
-
-## History: Initial Current Step
-
-slicing
-
-## History: Initial Next Step
-
-nfp-06-readiness
-
-## Summary
-
-Feature run initialized at 2026-05-12T00:13:24Z. Contract, architecture,
-technical design, and slices are drafted for readiness validation.
 - 2026-05-12T00:18:03Z gate=feature_contract old_status=pending new_status=approved by=codex note=contract clarifies mock tests vs real Codex debug path
 - 2026-05-12T00:18:03Z gate=architecture old_status=pending new_status=approved by=codex note=architecture reuses existing e2e runner with explicit modes
 - 2026-05-12T00:18:03Z gate=tech_design old_status=pending new_status=approved by=codex note=technical design defines mode, timeout, validation contracts
@@ -83,17 +73,16 @@ technical design, and slices are drafted for readiness validation.
 - 2026-05-12T00:18:03Z gate=implementation old_status=blocked new_status=delegated by=codex note=implementation may proceed in feature worktree
 - 2026-05-12T00:26:42Z completed slice S-001 with evidence
 - 2026-05-12T00:26:42Z completed slice S-002 with evidence
-- 2026-05-12T00:26:54Z completed slice S-001 with evidence retry
-- 2026-05-12T00:26:54Z completed slice S-002 with evidence retry
+- 2026-05-12T00:26:54Z event_type=slice_retry_completed slice=S-001 attempt=2 reason=historical-retry
+- 2026-05-12T00:26:54Z event_type=slice_retry_completed slice=S-002 attempt=2 reason=historical-retry
 - 2026-05-12T00:38:38Z completed slice S-003 with evidence
 - 2026-05-12T00:39:02Z gate=implementation old_status=delegated new_status=complete by=codex note=all slices complete
 - 2026-05-12T00:40:16Z gate=review old_status=pending new_status=complete by=codex note=review artifacts recorded
 - 2026-05-12T00:40:17Z gate=verification old_status=pending new_status=complete by=codex note=final verification output recorded
 - 2026-05-12T00:40:17Z gate=finish old_status=pending new_status=complete by=codex note=feature card complete
 
-## Latest Status
+## History
 
-Current step: promote
-Next recommended skill: nfp-12-promote
-Blocking issues: none
-Last updated: 2026-05-12T12:55:00Z
+- Migrated from legacy execution sections on 2026-05-12.
+- Initial current step: promote
+- Initial next step: nfp-12-promote

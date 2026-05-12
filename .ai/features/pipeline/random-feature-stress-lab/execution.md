@@ -54,27 +54,17 @@ None currently recorded.
 - Docs Consulted: Slicing - used slice validation requirements and iteration
   ledger policy to define implementation slices.
 
-## Gate Events
+## Current Run State
 
-None yet.
+Current step: promote
+Next recommended skill: nfp-12-promote
+Blocking issues: none
+Last updated: 2026-05-12T14:05:00Z
 
-## Scope Changes
+## Event Log
 
+- 2026-05-12T00:00:03Z event_type=run_initialized detail=migrated-legacy-summary
 - 2026-05-12T00:00:00Z scope confirmed as harness-local random feature stress
-  validation, not external repository mutation.
-
-## History: Initial Current Step
-
-slicing
-
-## History: Initial Next Step
-
-nfp-06-readiness
-
-## Summary
-
-Feature run initialized at 2026-05-12T00:00:03Z. Contract, architecture,
-technical design, and slices are drafted for implementation readiness.
 - 2026-05-12T00:03:06Z gate=feature_contract old_status=pending new_status=approved by=codex note=feature contract drafted and self-approved for deterministic harness-local lab
 - 2026-05-12T00:03:06Z gate=architecture old_status=pending new_status=approved by=codex note=architecture includes Mermaid topology and shared knowledge decision table
 - 2026-05-12T00:03:06Z gate=tech_design old_status=pending new_status=approved by=codex note=technical design scoped to offline deterministic runner and tests
@@ -88,9 +78,8 @@ technical design, and slices are drafted for implementation readiness.
 - 2026-05-12T00:09:44Z gate=finish old_status=pending new_status=complete by=codex note=feature card and shared knowledge decision table completed
 - 2026-05-12T00:10:09Z promoted feature memory to .ai/features/pipeline/random-feature-stress-lab
 
-## Latest Status
+## History
 
-Current step: promote
-Next recommended skill: nfp-12-promote
-Blocking issues: none
-Last updated: 2026-05-12T14:05:00Z
+- Migrated from legacy execution sections on 2026-05-12.
+- Initial current step: promote
+- Initial next step: nfp-12-promote

@@ -172,6 +172,7 @@ class FeatureCtlCoreTests(unittest.TestCase):
 
         feature = yaml.safe_load((workspace / "feature.yaml").read_text(encoding="utf-8"))
         state = yaml.safe_load((workspace / "state.yaml").read_text(encoding="utf-8"))
+        execution = (workspace / "execution.md").read_text(encoding="utf-8")
         self.assertEqual(feature["artifact_contract_version"], "0.1.0")
         self.assertEqual(feature["feature_key"], "auth/reset-password")
         self.assertEqual(feature["domain"], "auth")
@@ -184,6 +185,11 @@ class FeatureCtlCoreTests(unittest.TestCase):
         self.assertEqual(state["current_step"], "context")
         self.assertNotIn("next_skill", state)
         self.assertEqual(state["gates"]["implementation"], "blocked")
+        self.assertIn("## Current Run State", execution)
+        self.assertIn("## Event Log", execution)
+        self.assertIn("## History", execution)
+        self.assertNotIn("## Latest Status", execution)
+        self.assertIn("event_type=run_initialized", execution)
 
         main_branch = run(["git", "rev-parse", "--abbrev-ref", "HEAD"], self.repo)
         feature_branch = run(

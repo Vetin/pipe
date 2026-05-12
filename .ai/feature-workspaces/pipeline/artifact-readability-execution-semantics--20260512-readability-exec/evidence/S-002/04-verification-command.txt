@@ -1,0 +1,1 @@
+for d in .ai/features/pipeline/* .ai/feature-workspaces/pipeline/*; do featurectl.py validate --workspace ; done

@@ -164,6 +164,68 @@ class GatesAndEvidenceTests(unittest.TestCase):
         self.assertIn("slice S-001 is already complete; use --append-retry to record an explicit retry", result.stderr)
         self.assertEqual((workspace / "evidence/manifest.yaml").read_text(encoding="utf-8"), manifest_before)
 
+    def test_complete_slice_retry_requires_reason_and_records_attempt(self):
+        workspace = self.ready_workspace("run-retry-complete")
+
+        self.record_full_evidence(workspace)
+        run(
+            [
+                sys.executable,
+                str(SCRIPT),
+                "complete-slice",
+                "--workspace",
+                str(workspace),
+                "--slice",
+                "S-001",
+                "--diff-hash",
+                "abc123",
+            ],
+            self.repo,
+        )
+        missing_reason = run(
+            [
+                sys.executable,
+                str(SCRIPT),
+                "complete-slice",
+                "--workspace",
+                str(workspace),
+                "--slice",
+                "S-001",
+                "--diff-hash",
+                "changed456",
+                "--append-retry",
+            ],
+            self.repo,
+            check=False,
+        )
+        self.assertNotEqual(missing_reason.returncode, 0)
+        self.assertIn("--append-retry requires --retry-reason", missing_reason.stderr)
+
+        retry = run(
+            [
+                sys.executable,
+                str(SCRIPT),
+                "complete-slice",
+                "--workspace",
+                str(workspace),
+                "--slice",
+                "S-001",
+                "--diff-hash",
+                "changed456",
+                "--append-retry",
+                "--retry-reason",
+                "rerun-after-review",
+            ],
+            self.repo,
+        )
+
+        self.assertIn("slice_complete: S-001", retry.stdout)
+        manifest = yaml.safe_load((workspace / "evidence/manifest.yaml").read_text(encoding="utf-8"))
+        execution = (workspace / "execution.md").read_text(encoding="utf-8")
+        self.assertEqual(manifest["slices"]["S-001"]["retries"][0]["attempt"], 2)
+        self.assertEqual(manifest["slices"]["S-001"]["retries"][0]["reason"], "rerun-after-review")
+        self.assertIn("event_type=slice_retry_completed slice=S-001 attempt=2 reason=rerun-after-review", execution)
+
     def test_complete_slice_fails_when_green_is_before_red(self):
         workspace = self.ready_workspace("run-bad-order")
         self.record_full_evidence(workspace, red_ts="2026-05-11T10:00:00Z", green_ts="2026-05-11T09:00:00Z")

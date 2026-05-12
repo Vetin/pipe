@@ -174,6 +174,7 @@ def main(argv: list[str] | None = None) -> int:
     complete_slice_parser.add_argument("--commit")
     complete_slice_parser.add_argument("--diff-hash")
     complete_slice_parser.add_argument("--append-retry", action="store_true", help="record an explicit retry for an already-complete slice")
+    complete_slice_parser.add_argument("--retry-reason", help="required reason when --append-retry is used")
     complete_slice_parser.set_defaults(func=cmd_complete_slice)
 
     worktree_status_parser = subparsers.add_parser("worktree-status", help="verify feature worktree readiness")
@@ -446,15 +447,29 @@ def cmd_complete_slice(args: argparse.Namespace) -> None:
     ensure_known_slice(workspace, args.slice_id)
     if not args.commit and not args.diff_hash:
         raise FeatureCtlError("complete-slice requires --commit or --diff-hash")
-    if slice_completion_status(workspace / "slices.yaml", args.slice_id) == "complete" and not args.append_retry:
+    slice_status = slice_completion_status(workspace / "slices.yaml", args.slice_id)
+    if slice_status == "complete" and not args.append_retry:
         raise FeatureCtlError(f"slice {args.slice_id} is already complete; use --append-retry to record an explicit retry")
+    if args.append_retry and slice_status != "complete":
+        raise FeatureCtlError(f"slice {args.slice_id} retry requires an already-complete slice")
+    if args.append_retry and not str(args.retry_reason or "").strip():
+        raise FeatureCtlError("--append-retry requires --retry-reason")
     manifest_path = workspace / "evidence/manifest.yaml"
     if not manifest_path.exists():
         blockers = ["missing evidence/manifest.yaml"]
     else:
         manifest = read_yaml(manifest_path)
         proposed_manifest = copy.deepcopy(manifest)
-        add_slice_commit_metadata(proposed_manifest, args.slice_id, commit=args.commit, diff_hash=args.diff_hash, retry=args.append_retry)
+        attempt = next_slice_attempt(proposed_manifest, args.slice_id) if args.append_retry else 1
+        add_slice_commit_metadata(
+            proposed_manifest,
+            args.slice_id,
+            commit=args.commit,
+            diff_hash=args.diff_hash,
+            retry=args.append_retry,
+            retry_reason=args.retry_reason,
+            attempt=attempt,
+        )
         blockers = validate_slice_evidence(workspace, args.slice_id, manifest=proposed_manifest)
     if blockers:
         print("slice_evidence: fail")
@@ -467,7 +482,7 @@ def cmd_complete_slice(args: argparse.Namespace) -> None:
     append_execution_event(
         workspace,
         "Summary",
-        f"- {utc_now()} completed slice {args.slice_id} with evidence" + (" retry" if args.append_retry else ""),
+        render_slice_completion_event(args.slice_id, retry=args.append_retry, attempt=attempt, reason=args.retry_reason),
     )
     print(f"slice_complete: {args.slice_id}")
 
@@ -1466,32 +1481,21 @@ None currently recorded.
 
 None yet.
 
-## Gate Events
-
-None yet.
-
-## Scope Changes
-
-None.
-
-## History: Initial Current Step
-
-context
-
-## History: Initial Next Step
-
-nfp-01-context
-
-## Latest Status
+## Current Run State
 
 Current step: context
 Next recommended skill: nfp-01-context
 Blocking issues: none
 Last updated: {now}
 
-## Summary
+## Event Log
 
-Feature run initialized at {now}. The next step is context discovery.
+- {now} event_type=run_initialized step=context next=nfp-01-context
+
+## History
+
+- Initial current step: context
+- Initial next step: nfp-01-context
 """
 
 
@@ -1748,36 +1752,44 @@ def validate_execution_latest_status(workspace: Path, state: dict[str, Any]) -> 
     if not execution_path.exists():
         return ["execution.md missing"]
     execution = execution_path.read_text(encoding="utf-8")
-    latest_matches = list(re.finditer(r"^## Latest Status\s*$", execution, flags=re.MULTILINE))
-    marker_count = len(latest_matches)
-    if marker_count == 0:
-        return ["execution.md missing ## Latest Status"]
     blockers: list[str] = []
-    if marker_count != 1:
-        blockers.append("execution.md must contain exactly one active ## Latest Status section")
+    current_matches = list(re.finditer(r"^## Current Run State\s*$", execution, flags=re.MULTILINE))
+    if len(current_matches) != 1:
+        blockers.append("execution.md must contain exactly one active ## Current Run State section")
+    if re.search(r"^## Latest Status\s*$", execution, flags=re.MULTILINE):
+        blockers.append("execution.md must not contain deprecated ## Latest Status section")
+    if not re.search(r"^## Event Log\s*$", execution, flags=re.MULTILINE):
+        blockers.append("execution.md missing ## Event Log")
+    if not re.search(r"^## History\s*$", execution, flags=re.MULTILINE):
+        blockers.append("execution.md missing ## History")
     blockers.extend(validate_no_active_legacy_execution_sections(execution))
+    blockers.extend(validate_events_are_in_event_log(execution))
     blockers.extend(validate_execution_completion_events(execution))
-    latest = execution[latest_matches[0].end() :]
-    next_heading = re.search(r"\n##\s+", latest)
+    if not current_matches:
+        return blockers
+    current_state = execution[current_matches[0].end() :]
+    next_heading = re.search(r"\n##\s+", current_state)
     if next_heading:
-        latest = latest[: next_heading.start()]
+        current_state = current_state[: next_heading.start()]
     fields = {
         "Current step": None,
         "Next recommended skill": None,
         "Blocking issues": None,
         "Last updated": None,
     }
-    for line in latest.splitlines():
+    for line in current_state.splitlines():
         for field in fields:
             prefix = f"{field}:"
             if line.startswith(prefix):
                 fields[field] = line[len(prefix) :].strip()
     for field, value in fields.items():
         if not value:
-            blockers.append(f"execution.md Latest Status missing {field}")
-    latest_step = fields.get("Current step")
-    if latest_step and latest_step != current_step:
-        blockers.append(f"execution.md Latest Status current step {latest_step} does not match state.yaml current_step {current_step}")
+            blockers.append(f"execution.md Current Run State missing {field}")
+    current_state_step = fields.get("Current step")
+    if current_state_step and current_state_step != current_step:
+        blockers.append(
+            f"execution.md Current Run State current step {current_state_step} does not match state.yaml current_step {current_step}"
+        )
     return blockers
 
 
@@ -1789,15 +1801,58 @@ def validate_no_active_legacy_execution_sections(execution: str) -> list[str]:
     return blockers
 
 
+def validate_events_are_in_event_log(execution: str) -> list[str]:
+    blockers: list[str] = []
+    event_log = extract_markdown_section(execution, "Event Log")
+    if event_log is None:
+        return blockers
+    outside = execution.replace(event_log, "")
+    for line in outside.splitlines():
+        if re.match(r"^-\s+\d{4}-.*(?:gate=|event_type=|completed slice)", line):
+            blockers.append("execution.md contains event entry outside ## Event Log")
+            break
+    return blockers
+
+
+def extract_markdown_section(markdown: str, heading: str) -> str | None:
+    match = re.search(rf"^## {re.escape(heading)}\s*$", markdown, flags=re.MULTILINE)
+    if not match:
+        return None
+    rest = markdown[match.start() :]
+    next_heading = re.search(r"\n##\s+", rest[1:])
+    if next_heading:
+        return rest[: next_heading.start() + 1]
+    return rest
+
+
 def validate_execution_completion_events(execution: str) -> list[str]:
     blockers: list[str] = []
     seen: set[str] = set()
     for line in execution.splitlines():
+        structured = re.search(r"\bevent_type=(slice_completed|slice_retry_completed)\b.*\bslice=(S-[0-9]{3})\b", line)
+        if structured:
+            event_type = structured.group(1)
+            slice_id = structured.group(2)
+            if event_type == "slice_completed" and slice_id in seen:
+                blockers.append(f"execution.md duplicate completed slice event for {slice_id}")
+            if event_type == "slice_retry_completed":
+                attempt_match = re.search(r"\battempt=([0-9]+)\b", line)
+                reason_match = re.search(r"\breason=([^\s]+)\b", line)
+                if not attempt_match or int(attempt_match.group(1)) < 2:
+                    blockers.append(f"execution.md retry completed slice event for {slice_id} missing attempt>=2")
+                if not reason_match:
+                    blockers.append(f"execution.md retry completed slice event for {slice_id} missing reason")
+            seen.add(slice_id)
+            continue
         match = re.search(r"\bcompleted slice (S-[0-9]{3})\b", line)
         if not match:
             continue
         slice_id = match.group(1)
-        if slice_id in seen and "retry" not in line.lower():
+        is_retry = "retry" in line.lower()
+        if is_retry:
+            if not (re.search(r"\battempt=([2-9][0-9]*)\b", line) and re.search(r"\breason=([^\s]+)\b", line)):
+                blockers.append(f"execution.md retry completed slice event for {slice_id} missing attempt and reason")
+        elif slice_id in seen:
             blockers.append(f"execution.md duplicate completed slice event for {slice_id}")
         seen.add(slice_id)
     return blockers
@@ -2338,11 +2393,33 @@ def write_if_missing(path: Path, content: str) -> None:
 def append_execution_event(workspace: Path, section: str, line: str) -> None:
     path = workspace / "execution.md"
     existing = path.read_text(encoding="utf-8") if path.exists() else ""
-    heading = f"## {section}"
-    if heading not in existing:
-        existing = existing.rstrip() + f"\n\n{heading}\n\n"
-    existing = existing.rstrip() + "\n" + line + "\n"
-    path.write_text(existing, encoding="utf-8")
+    event_line = normalize_execution_event_line(section, line)
+    if "## Event Log" not in existing:
+        insert_at = existing.find("\n## History")
+        event_section = "\n\n## Event Log\n\n"
+        if insert_at == -1:
+            existing = existing.rstrip() + event_section
+        else:
+            existing = existing[:insert_at].rstrip() + event_section + existing[insert_at:]
+    event_match = re.search(r"^## Event Log\s*$", existing, flags=re.MULTILINE)
+    if not event_match:
+        write_text(path, existing.rstrip() + "\n" + event_line + "\n")
+        return
+    after_heading = existing[event_match.end() :]
+    next_heading = re.search(r"\n##\s+", after_heading)
+    if next_heading:
+        insert_at = event_match.end() + next_heading.start()
+        updated = existing[:insert_at].rstrip() + "\n" + event_line + "\n" + existing[insert_at:]
+    else:
+        updated = existing.rstrip() + "\n" + event_line + "\n"
+    path.write_text(updated, encoding="utf-8")
+
+
+def normalize_execution_event_line(section: str, line: str) -> str:
+    stripped = line.strip()
+    if stripped.startswith("- "):
+        return stripped
+    return f"- {utc_now()} event_type={slugify_event_value(section)} detail={slugify_event_value(stripped)}"
 
 
 def staleness_targets(artifact: str) -> list[str]:
@@ -2570,7 +2647,21 @@ def ensure_known_slice(workspace: Path, slice_id: str) -> None:
         raise FeatureCtlError(f"unknown slice id: {slice_id}")
 
 
-def add_slice_commit_metadata(manifest: dict[str, Any], slice_id: str, *, commit: str | None, diff_hash: str | None, retry: bool = False) -> None:
+def next_slice_attempt(manifest: dict[str, Any], slice_id: str) -> int:
+    entry = manifest.setdefault("slices", {}).setdefault(slice_id, {})
+    return 2 + len(entry.get("retries") or [])
+
+
+def add_slice_commit_metadata(
+    manifest: dict[str, Any],
+    slice_id: str,
+    *,
+    commit: str | None,
+    diff_hash: str | None,
+    retry: bool = False,
+    retry_reason: str | None = None,
+    attempt: int = 1,
+) -> None:
     entry = manifest.setdefault("slices", {}).setdefault(slice_id, {})
     if commit:
         entry["commit"] = commit
@@ -2578,7 +2669,27 @@ def add_slice_commit_metadata(manifest: dict[str, Any], slice_id: str, *, commit
         entry["diff_hash"] = diff_hash
     if retry:
         retries = entry.setdefault("retries", [])
-        retries.append({"timestamp": utc_now(), "commit": commit, "diff_hash": diff_hash})
+        retries.append(
+            {
+                "timestamp": utc_now(),
+                "attempt": attempt,
+                "reason": retry_reason,
+                "commit": commit,
+                "diff_hash": diff_hash,
+            }
+        )
+
+
+def render_slice_completion_event(slice_id: str, *, retry: bool, attempt: int, reason: str | None) -> str:
+    timestamp = utc_now()
+    if retry:
+        reason_value = slugify_event_value(reason or "unspecified")
+        return f"- {timestamp} event_type=slice_retry_completed slice={slice_id} attempt={attempt} reason={reason_value}"
+    return f"- {timestamp} event_type=slice_completed slice={slice_id} attempt=1"
+
+
+def slugify_event_value(value: str) -> str:
+    return re.sub(r"[^A-Za-z0-9_.-]+", "-", value.strip()).strip("-") or "unspecified"
 
 
 def evidence_path_blocker(workspace: Path, rel: str) -> bool:
@@ -2690,22 +2801,30 @@ def write_latest_status(workspace: Path, current_step: str) -> None:
     if not execution_path.exists():
         return
     execution = execution_path.read_text(encoding="utf-8")
-    latest = (
-        "## Latest Status\n\n"
+    current_state = (
+        "## Current Run State\n\n"
         f"Current step: {current_step}\n"
         f"Next recommended skill: {next_skill_for_step(current_step)}\n"
         "Blocking issues: none\n"
         f"Last updated: {utc_now()}\n"
     )
-    latest_match = re.search(r"^## Latest Status\s*$", execution, flags=re.MULTILINE)
-    if latest_match:
-        prefix = execution[: latest_match.start()]
-        rest = execution[latest_match.end() :]
+    current_match = re.search(r"^## Current Run State\s*$", execution, flags=re.MULTILINE)
+    if current_match:
+        prefix = execution[: current_match.start()]
+        rest = execution[current_match.end() :]
         next_heading = re.search(r"\n##\s+", rest)
         suffix = rest[next_heading.start() :] if next_heading else ""
-        write_text(execution_path, prefix.rstrip() + "\n\n" + latest + suffix)
+        write_text(execution_path, prefix.rstrip() + "\n\n" + current_state + suffix)
+    elif re.search(r"^## Latest Status\s*$", execution, flags=re.MULTILINE):
+        legacy_match = re.search(r"^## Latest Status\s*$", execution, flags=re.MULTILINE)
+        assert legacy_match is not None
+        prefix = execution[: legacy_match.start()]
+        rest = execution[legacy_match.end() :]
+        next_heading = re.search(r"\n##\s+", rest)
+        suffix = rest[next_heading.start() :] if next_heading else ""
+        write_text(execution_path, prefix.rstrip() + "\n\n" + current_state + suffix)
     else:
-        write_text(execution_path, execution.rstrip() + "\n\n" + latest)
+        write_text(execution_path, execution.rstrip() + "\n\n" + current_state)
 
 
 if __name__ == "__main__":

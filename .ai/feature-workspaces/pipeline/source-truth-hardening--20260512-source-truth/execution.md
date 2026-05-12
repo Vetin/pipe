@@ -92,32 +92,16 @@ None currently recorded.
     implementation begins.
   - Confidence: medium.
 
-## Gate Events
-
-None yet.
-
-## Scope Changes
-
-None.
-
-## History: Initial Current Step
-
-context
-
-## History: Initial Next Step
-
-nfp-01-context
-
-## Latest Status
+## Current Run State
 
 Current step: promote
 Next recommended skill: nfp-12-promote
 Blocking issues: none
 Last updated: 2026-05-12T13:09:41Z
 
-## Summary
+## Event Log
 
-Feature run initialized at 2026-05-12T12:32:35Z. The next step is context discovery.
+- 2026-05-12T12:32:35Z event_type=run_initialized detail=migrated-legacy-summary
 - 2026-05-12T12:40:55Z gate=tech_design old_status=pending new_status=approved by=codex note=tech design written with validation and evidence contracts
 - 2026-05-12T12:40:55Z gate=feature_contract old_status=pending new_status=approved by=codex note=feature contract written from review findings
 - 2026-05-12T12:41:21Z gate=architecture old_status=pending new_status=approved by=codex note=architecture written with source truth topology
@@ -131,3 +115,9 @@ Feature run initialized at 2026-05-12T12:32:35Z. The next step is context discov
 - 2026-05-12T13:00:55Z gate=review old_status=pending new_status=complete by=codex note=REV-001 has no blocking findings
 - 2026-05-12T13:00:55Z gate=verification old_status=pending new_status=complete by=codex note=focused tests and evidence validation passed
 - 2026-05-12T13:00:56Z gate=finish old_status=pending new_status=complete by=codex note=feature card and shared knowledge update plan complete
+
+## History
+
+- Migrated from legacy execution sections on 2026-05-12.
+- Initial current step: promote
+- Initial next step: nfp-12-promote

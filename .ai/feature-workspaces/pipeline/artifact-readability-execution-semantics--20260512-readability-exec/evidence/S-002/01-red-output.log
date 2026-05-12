@@ -1,0 +1,1 @@
+Red run failed as expected before implementation: new tests exposed missing Current Run State/Event Log/History semantics, deprecated Latest Status fixture behavior, and retry events without required retry reasons.

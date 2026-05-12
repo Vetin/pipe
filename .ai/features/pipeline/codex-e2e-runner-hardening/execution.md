@@ -112,39 +112,12 @@ Docs Consulted: Slicing
 - `.ai/pipeline-docs/steps/slicing/overview.md`
 - `.ai/pipeline-docs/steps/slicing/checklist.md`
 
-## Gate Events
-
-None yet.
-
-## Scope Changes
-
-None.
-
-## History: Initial Current Step
-
-context
-
-## History: Initial Next Step
-
-nfp-01-context
-
 ## Checkpoint: Planning Artifacts
 
 - Feature contract, architecture, technical design, and slices were authored
   from the current review findings.
 - Implementation remains blocked until gates are approved through
   `featurectl.py gate set`.
-
-## Summary
-
-Feature run initialized at 2026-05-12T09:41:15Z. The next step is context discovery.
-- 2026-05-12T09:46:50Z gate=implementation old_status=blocked new_status=approved by=codex note=Implementation authorized after approved planning gates.
-- 2026-05-12T09:46:50Z gate=slicing_readiness old_status=pending new_status=approved by=codex note=Slices are dependency ordered and mapped to focused validation.
-a.
-- 2026-05-12T09:49:00Z gate=architecture old_status=pending new_status=approved by=codex note=Architecture includes source-grounded topology and shared knowledge impact.
-- 2026-05-12T09:49:00Z gate=tech_design old_status=pending new_status=approved by=codex note=Technical design defines runner contracts, tests, and validation commands.
-- 2026-05-12T09:49:00Z gate=slicing_readiness old_status=pending new_status=approved by=codex note=Slices are dependency ordered and mapped to focused validation.
-- 2026-05-12T09:49:00Z gate=implementation old_status=blocked new_status=approved by=codex note=Implementation authorized after approved planning gates.
 
 ## Implementation Checkpoint: S-001
 
@@ -172,7 +145,6 @@ iteration_id: I-001
 - files changed: runner, focused tests, toy-greeting fixture, real smoke case config, S-001 evidence.
 - subagent note: this host session did not expose a subagent execution tool, so implementation and review evidence were produced directly in-session.
 - next action: commit S-001 and mark the slice complete.
-- 2026-05-12T10:07:27Z completed slice S-001 with evidence
 
 ## Review Verification Finish Checkpoint
 
@@ -231,6 +203,25 @@ iteration_id: I-002
 - review: spec compliance pass and code quality pass recorded in `evidence/S-002/05-review-summary.md`.
 - subagent note: this host session did not expose a subagent execution tool, so implementation and review evidence were produced directly in-session.
 - next action: commit S-002 and mark the slice complete.
+- 2026-05-12T11:42:49Z promoted feature memory to .ai/features/pipeline/codex-e2e-runner-hardening
+
+## Current Run State
+
+Current step: promote
+Next recommended skill: nfp-12-promote
+Blocking issues: none
+Last updated: 2026-05-12T14:05:00Z
+
+## Event Log
+
+- 2026-05-12T09:41:15Z event_type=run_initialized detail=migrated-legacy-summary
+- 2026-05-12T09:46:50Z gate=implementation old_status=blocked new_status=approved by=codex note=Implementation authorized after approved planning gates.
+- 2026-05-12T09:46:50Z gate=slicing_readiness old_status=pending new_status=approved by=codex note=Slices are dependency ordered and mapped to focused validation.
+- 2026-05-12T09:49:00Z gate=architecture old_status=pending new_status=approved by=codex note=Architecture includes source-grounded topology and shared knowledge impact.
+- 2026-05-12T09:49:00Z gate=tech_design old_status=pending new_status=approved by=codex note=Technical design defines runner contracts, tests, and validation commands.
+- 2026-05-12T09:49:00Z gate=slicing_readiness old_status=pending new_status=approved by=codex note=Slices are dependency ordered and mapped to focused validation.
+- 2026-05-12T09:49:00Z gate=implementation old_status=blocked new_status=approved by=codex note=Implementation authorized after approved planning gates.
+- 2026-05-12T10:07:27Z completed slice S-001 with evidence
 - 2026-05-12T11:05:08Z completed slice S-002 with evidence
 - 2026-05-12T11:38:00Z completed slice S-003 with evidence
 - 2026-05-12T11:41:09Z gate=review old_status=pending new_status=approved by=codex note=Structured review REV-001 has no blocking findings.
@@ -238,9 +229,8 @@ iteration_id: I-002
 - 2026-05-12T11:41:09Z gate=finish old_status=pending new_status=approved by=codex note=Feature-card and shared knowledge update plan completed.
 - 2026-05-12T11:42:49Z promoted feature memory to .ai/features/pipeline/codex-e2e-runner-hardening
 
-## Latest Status
+## History
 
-Current step: promote
-Next recommended skill: nfp-12-promote
-Blocking issues: none
-Last updated: 2026-05-12T14:05:00Z
+- Migrated from legacy execution sections on 2026-05-12.
+- Initial current step: promote
+- Initial next step: nfp-12-promote
