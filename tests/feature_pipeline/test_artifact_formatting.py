@@ -4,6 +4,8 @@ import tempfile
 import unittest
 from pathlib import Path
 
+import yaml
+
 
 ROOT = Path(__file__).resolve().parents[2]
 SCRIPT = ROOT / ".agents/pipeline-core/scripts/featurectl.py"
@@ -78,10 +80,15 @@ class ArtifactFormattingTests(unittest.TestCase):
 
     def test_source_controlled_pipeline_artifacts_have_readable_line_lengths(self):
         paths = [
+            ROOT / ".gitignore",
             ROOT / ".ai/knowledge/discovered-signals.md",
             ROOT / ".ai/knowledge/project-overview.md",
+            ROOT / ".ai/knowledge/profile-examples.yaml",
             ROOT / ".ai/features/index.yaml",
             ROOT / ".ai/features/overview.md",
+            ROOT / ".ai/features/pipeline/portable-artifact-consistency/feature-card.md",
+            ROOT / ".ai/features/pipeline/portable-artifact-consistency/execution.md",
+            ROOT / ".ai/features/pipeline/portable-artifact-consistency/evidence/manifest.yaml",
         ]
         for path in paths:
             with self.subTest(path=path.relative_to(ROOT).as_posix()):
@@ -102,6 +109,26 @@ class ArtifactFormattingTests(unittest.TestCase):
                 self.assertGreater(content.count("\n"), 10)
                 long_lines = [f"{index}: {len(line)}" for index, line in enumerate(content.splitlines(), start=1) if len(line) > 220]
                 self.assertEqual(long_lines, [])
+
+    def test_change_label_only_manifests_declare_identity_policy(self):
+        manifests = [
+            *sorted((ROOT / ".ai/features").glob("*/*/evidence/manifest.yaml")),
+            *sorted((ROOT / ".ai/feature-workspaces").glob("*/*/evidence/manifest.yaml")),
+        ]
+        self.assertTrue(manifests)
+        for path in manifests:
+            manifest = yaml.safe_load(path.read_text(encoding="utf-8"))
+            slices = manifest.get("slices") or {}
+            has_change_label_only = any(
+                isinstance(entry, dict) and "change_label" in entry and "diff_hash" not in entry
+                for entry in slices.values()
+            )
+            if has_change_label_only:
+                with self.subTest(path=path.relative_to(ROOT).as_posix()):
+                    self.assertIn("completion_identity_policy", manifest)
+                    self.assertTrue(
+                        manifest.get("legacy_tolerance", {}).get("missing_diff_hash_when_change_label_present")
+                    )
 
     def test_source_controlled_knowledge_docs_capture_pipeline_lifecycle(self):
         architecture = (ROOT / ".ai/knowledge/architecture-overview.md").read_text(encoding="utf-8")

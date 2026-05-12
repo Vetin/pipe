@@ -84,8 +84,8 @@ slices:
   review_focus:
   - no fake hashes introduced
   - generated artifacts remain line-based
-  evidence_status: pending
-  status: pending
+  evidence_status: complete
+  status: complete
   iteration_budget: 3
   rollback_point: pre-slice git state
   independent_verification: rg for semantic diff_hash and line-length violations

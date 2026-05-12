@@ -1,0 +1,1 @@
+Reviewed S-002: no fake hashes were added; existing semantic labels remain change_label, legacy manifests declare tolerance, generated manifests include completion identity policy, and source-controlled readability paths now include .gitignore/profile examples/current feature card/execution/manifest.

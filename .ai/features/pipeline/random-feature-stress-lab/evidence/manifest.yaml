@@ -58,3 +58,8 @@ slices:
       command_file: S-003/03-green-command.txt
       output_file: S-003/03-green-output.log
       git_state_file: S-003/02-pre-green-git-state.txt
+completion_identity_policy:
+  diff_hash: hexadecimal git diff or commit-derived hash when available
+  change_label: semantic completion label when a real diff hash is unavailable
+legacy_tolerance:
+  missing_diff_hash_when_change_label_present: true

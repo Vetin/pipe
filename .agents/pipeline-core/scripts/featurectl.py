@@ -2614,12 +2614,21 @@ def read_manifest_or_default(path: Path, feature_key: str | None) -> dict[str, A
         manifest = {
             "artifact_contract_version": CONTRACT_VERSION,
             "feature_key": feature_key,
+            "completion_identity_policy": completion_identity_policy(),
             "slices": {},
         }
     manifest.setdefault("artifact_contract_version", CONTRACT_VERSION)
     manifest.setdefault("feature_key", feature_key)
+    manifest.setdefault("completion_identity_policy", completion_identity_policy())
     manifest.setdefault("slices", {})
     return manifest
+
+
+def completion_identity_policy() -> dict[str, str]:
+    return {
+        "diff_hash": "hexadecimal git diff or commit-derived hash when available",
+        "change_label": "semantic completion label when a real diff hash is unavailable",
+    }
 
 
 def evidence_phase_files(slice_id: str, phase: str) -> dict[str, str]:
@@ -2683,6 +2692,9 @@ def validate_evidence_manifest(workspace: Path) -> list[str]:
     slices = manifest.get("slices")
     if not isinstance(slices, dict):
         return blockers + ["evidence manifest slices must be a mapping"]
+    if manifest_has_change_label_without_diff_hash(slices):
+        if "completion_identity_policy" not in manifest:
+            blockers.append("evidence manifest change_label entries require completion_identity_policy")
     known_slices = known_slice_ids(workspace)
     for slice_id in slices:
         if known_slices and slice_id not in known_slices:
@@ -2690,6 +2702,16 @@ def validate_evidence_manifest(workspace: Path) -> list[str]:
         blockers.extend(validate_slice_evidence(workspace, slice_id))
     blockers.extend(validate_completed_slices_have_manifest(workspace, slices))
     return blockers
+
+
+def manifest_has_change_label_without_diff_hash(slices: dict[str, Any]) -> bool:
+    for entry in slices.values():
+        if isinstance(entry, dict) and "change_label" in entry and "diff_hash" not in entry:
+            return True
+        for retry in (entry or {}).get("retries") or [] if isinstance(entry, dict) else []:
+            if isinstance(retry, dict) and "change_label" in retry and "diff_hash" not in retry:
+                return True
+    return False
 
 
 def validate_completed_slices_have_manifest(workspace: Path, manifest_slices: dict[str, Any]) -> list[str]:

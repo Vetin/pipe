@@ -120,6 +120,7 @@ class GatesAndEvidenceTests(unittest.TestCase):
         self.assertIn("slice_complete: S-001", result.stdout)
         manifest = yaml.safe_load((workspace / "evidence/manifest.yaml").read_text(encoding="utf-8"))
         slices = yaml.safe_load((workspace / "slices.yaml").read_text(encoding="utf-8"))
+        self.assertIn("completion_identity_policy", manifest)
         self.assertEqual(manifest["slices"]["S-001"]["diff_hash"], "abc123")
         self.assertEqual(slices["slices"][0]["status"], "complete")
         self.assertEqual(slices["slices"][0]["evidence_status"], "complete")
