@@ -12,6 +12,11 @@ profiling, a project feature map, or brownfield context before feature work.
 It accepts raw ideas, executive research notes, business analysis, or detailed
 requirements by first grounding the repository itself.
 
+project-init is a repository bootstrap/profile skill, not an `nfp-*` feature-run step.
+Use it to refresh reusable project knowledge before or
+between feature runs; do not treat it as a replacement for `nfp-00-intake`
+through `nfp-12-promote`.
+
 Purpose:
 
 - create or refresh `.ai/knowledge` from real repository files
@@ -45,7 +50,8 @@ Workflow:
 
 3. Read `.ai/knowledge/project-index.yaml` and
    `.ai/knowledge/project-snapshot.md`.
-4. Read `.ai/knowledge/features-overview.md`, `.ai/knowledge/module-map.md`,
+4. Read `.ai/knowledge/features-overview.md`,
+   `.ai/knowledge/discovered-signals.md`, `.ai/knowledge/module-map.md`,
    `.ai/knowledge/testing-overview.md`, `.ai/knowledge/contracts-overview.md`,
    and `.ai/knowledge/integration-map.md`.
 5. Build a reuse map before feature work:
@@ -74,7 +80,9 @@ Quality checks:
 - `.ai/knowledge/project-index.yaml` exists and has non-zero source or doc
   counts for a non-empty repository.
 - `.ai/knowledge/project-index.yaml` contains `feature_catalog`.
-- `.ai/knowledge/features-overview.md` contains `Current Feature Picture`.
+- `.ai/knowledge/features-overview.md` contains canonical feature memory.
+- `.ai/knowledge/discovered-signals.md` contains `Current Feature Picture`
+  when detected non-canonical signals exist.
 - The briefing separates source-backed facts from generated hypotheses.
 - The briefing includes at least one reuse opportunity or an explicit
   no-existing-solution finding.

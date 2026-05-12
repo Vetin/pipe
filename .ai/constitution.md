@@ -8,6 +8,13 @@ The repository follows the Native Feature Pipeline for substantial feature work.
 
 - `python -m unittest discover -s tests/feature_pipeline`
 
+## Review Defaults
+
+```yaml
+default_review_tier: strict_review
+security_sensitive_review_tier: enterprise_review
+```
+
 ## Safety Rules
 
 - Keep feature work isolated in git worktrees.

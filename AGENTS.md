@@ -1,44 +1,49 @@
 # Repository Agent Instructions
 
-The Native Feature Pipeline is mandatory for feature-building work in this
-repository. A Codex session must automatically enter or resume the pipeline when
-the user asks to build, implement, add, change, or improve behavior.
+Use the Native Feature Pipeline for substantial feature-building work in this
+repository. A Codex session should automatically enter or resume the pipeline
+when the request affects product behavior, architecture, security, public
+contracts, validation flow, or generated pipeline artifacts.
 
 ## Automatic Pipeline Trigger
 
-Treat the request as pipeline work when it involves any of these:
+Treat the request as full pipeline work when it involves any of these:
 
 - new product or platform features
-- changes to `.agents`, `.ai/pipeline-docs`, `skills`, `featurectl.py`,
-  `pipelinebench.py`, showcase runners, validators, or pipeline tests
 - cross-module behavior changes
 - security-sensitive behavior
 - public API, schema, event, contract, migration, or integration changes
 - architecture-affecting documentation or implementation
-- behavior-linked refactors, even when framed as "cleanup" or "improvement"
+- behavior-linked refactors, even when framed as cleanup or improvement
 
-The pipeline is also required when this repository is improving the pipeline
-itself. Use our own technology while changing it.
+Use the pipeline for pipeline self-modification when the change affects behavior, architecture, validation, generated artifacts, or user-facing workflow.
+Use our own technology while changing it.
 
-Skip the full pipeline only for truly trivial non-behavioral edits such as
-typos, formatting, comment-only cleanup, or a one-line local test fixture fix.
-If there is doubt, use the pipeline.
+Use lightweight repair mode for narrow, low-risk work such as:
+
+- one-file script bugfixes
+- test-only fixes
+- formatting
+- typo fixes
+- comment-only cleanup
+- small fixture updates
+
+Lightweight repair mode should still inspect relevant files, run focused tests,
+and avoid touching unrelated artifacts. Escalate to the full pipeline if the
+repair grows into behavior, architecture, contract, security, or generated
+knowledge changes.
 
 ## Required Start Or Resume Sequence
 
 For every pipeline-triggering request:
 
-1. Refresh project knowledge first:
-
-   ```bash
-   python .agents/pipeline-core/scripts/featurectl.py init --profile-project
-   ```
-
+1. Run `featurectl.py init --profile-project` only when `.ai/knowledge` is missing, stale, or explicitly requested.
 2. Inspect `.ai/knowledge/project-index.yaml`,
-   `.ai/knowledge/features-overview.md`, `.ai/knowledge/module-map.md`,
-   `.ai/knowledge/architecture-overview.md`, `.ai/knowledge/testing-overview.md`,
-   `.ai/knowledge/contracts-overview.md`, and `.ai/knowledge/integration-map.md`
-   before planning.
+   `.ai/knowledge/features-overview.md`, `.ai/knowledge/discovered-signals.md`,
+   `.ai/knowledge/module-map.md`, `.ai/knowledge/architecture-overview.md`,
+   `.ai/knowledge/testing-overview.md`,
+   `.ai/knowledge/contracts-overview.md`, and
+   `.ai/knowledge/integration-map.md` before planning.
 3. If a matching active feature workspace exists, continue it from
    `apex.md`, `feature.yaml`, `state.yaml`, and `execution.md`.
 4. If no matching workspace exists, create one with `featurectl.py new` and a
@@ -50,18 +55,17 @@ For every pipeline-triggering request:
 7. Mutate machine state only through `featurectl.py`; record narrative work in
    `execution.md`.
 8. Run `featurectl.py validate --workspace <workspace>` after each checkpoint.
-9. For implementation slices, use the mandatory subagent flow described in
-   `nfp-08-tdd-implementation`.
-10. Finish with fresh verification, `feature-card.md`, shared knowledge updates,
-    promotion or archived-variant promotion, and a commit.
+9. For implementation slices, use the subagent-first flow described in
+   `nfp-08-tdd-implementation`; if subagents are unavailable, record the
+   fallback reason in `execution.md`.
+10. Finish with fresh verification, `feature-card.md`, shared knowledge
+    updates, promotion or archived-variant promotion, and a commit.
 
 ## Guardrails
 
 - Do not write implementation code until feature contract, architecture,
   technical design, and slicing readiness gates are approved or explicitly
   delegated in `state.yaml`.
-- Do not bypass the pipeline because a change is "internal" or "just pipeline
-  tooling"; internal pipeline changes are first-class feature work here.
 - If `featurectl.py` or required pipeline files are broken, repair only the
   minimum needed to run `init`, `new`, and `validate`, then re-enter the
   pipeline and record the repair in `execution.md`.

@@ -1,0 +1,1 @@
+Review focus checked: AGENTS preserves full pipeline for substantial work, defines lightweight repair mode for small fixes, project-init is documented as bootstrap, legacy references are archived, and review tier defaults are declared.
