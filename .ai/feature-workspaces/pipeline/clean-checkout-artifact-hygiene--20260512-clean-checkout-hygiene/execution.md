@@ -106,6 +106,21 @@ None yet.
   - Decision or pattern reused: red/green/verification/review per slice.
   - Confidence: high.
 
+## Docs Consulted: Review
+
+- `.agents/pipeline-core/references/review-and-verification.md`
+  - Used for: strict review lenses and blocking/nonblocking finding policy.
+  - Decision or pattern reused: critical findings block verification.
+  - Confidence: high.
+- `.agents/pipeline-core/references/quality-rubric.md`
+  - Used for: code quality, test quality, and architecture compliance review.
+  - Decision or pattern reused: note-level zero-blocker review with evidence.
+  - Confidence: high.
+- `.ai/feature-workspaces/pipeline/clean-checkout-artifact-hygiene--20260512-clean-checkout-hygiene/evidence/manifest.yaml`
+  - Used for: evidence order and retry completion review.
+  - Decision or pattern reused: S-003 retry records reason and superseded attempt.
+  - Confidence: high.
+
 ## Event Log
 
 - 2026-05-12T19:19:25Z event_type=run_initialized step=context next=nfp-01-context
@@ -117,6 +132,8 @@ None yet.
 - 2026-05-12T19:32:30Z event_type=slice_completed slice=S-002 attempt=1 reason=initial
 - 2026-05-12T19:45:49Z event_type=slice_completed slice=S-003 attempt=1 reason=initial
 - 2026-05-12T19:51:23Z event_type=slice_retry_completed slice=S-003 attempt=2 reason=curated-knowledge-sidecar-fix supersedes=attempt-1
+- 2026-05-12T19:52:36Z gate=implementation old_status=approved new_status=complete by=codex note=all slices complete with retry evidence
+- 2026-05-12T19:54:06Z gate=review old_status=pending new_status=complete by=codex note=strict review found no blocking findings
 
 ## History
 
@@ -125,7 +142,7 @@ None yet.
 
 ## Current Run State
 
-Current step: readiness
-Next recommended skill: nfp-06-readiness
+Current step: verification
+Next recommended skill: nfp-10-verification
 Blocking issues: none
-Last updated: 2026-05-12T19:23:00Z
+Last updated: 2026-05-12T19:54:12Z
