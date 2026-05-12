@@ -41,6 +41,8 @@ class PipelineGoalValidationTests(unittest.TestCase):
         self.assertIn("failures: 0", result.stdout)
         content = report.read_text(encoding="utf-8")
         self.assertIn("Pipeline Goal Validation", content)
+        self.assertIn("$ROOT/pipeline-lab/showcases/native-emulation-runs/20260512-native-debug", content)
+        self.assertNotIn(str(ROOT), content)
         self.assertIn("Skill Side By Side", content)
         self.assertIn("| `nfp-01-context` | pass |", content)
         self.assertIn("| `project-init` | pass |", content)

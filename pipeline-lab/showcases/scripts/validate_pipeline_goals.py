@@ -372,9 +372,9 @@ def render_report(results: list[dict[str, Any]], native_run: Path, init_run: Pat
     lines = [
         "# Pipeline Goal Validation",
         "",
-        f"- Native run: `{native_run}`",
-        f"- Init profile run: `{init_run}`",
-        f"- Codex debug run: `{codex_debug_run}`",
+        f"- Native run: `{display_path(native_run)}`",
+        f"- Init profile run: `{display_path(init_run)}`",
+        f"- Codex debug run: `{display_path(codex_debug_run)}`",
         f"- Repeated passes: `{len(results)}`",
         f"- Generated at: `{datetime.now(timezone.utc).isoformat()}`",
         "",
@@ -398,6 +398,13 @@ def render_report(results: list[dict[str, Any]], native_run: Path, init_run: Pat
             lines.append(f"- `{item['status']}` `{item['name']}`: {item['detail']}")
         lines.append("")
     return "\n".join(lines)
+
+
+def display_path(path: Path) -> str:
+    try:
+        return f"$ROOT/{path.resolve().relative_to(ROOT.resolve()).as_posix()}"
+    except ValueError:
+        return str(path)
 
 
 def main(argv: list[str] | None = None) -> int:
