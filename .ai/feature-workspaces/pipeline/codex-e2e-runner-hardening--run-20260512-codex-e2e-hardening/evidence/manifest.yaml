@@ -39,3 +39,22 @@ slices:
       timestamp: '2026-05-12T11:04:26Z'
       summary_file: S-002/05-review-summary.md
     diff_hash: c3de57c40575fb914c95065c311ada83960f49e73521ce5281007df0c30c4f99
+  S-003:
+    red:
+      timestamp: '2026-05-12T11:40:00Z'
+      command_file: S-003/01-red-command.txt
+      output_file: S-003/01-red-output.log
+      git_state_file: S-003/00-pre-red-git-state.txt
+    green:
+      timestamp: '2026-05-12T11:41:00Z'
+      command_file: S-003/03-green-command.txt
+      output_file: S-003/03-green-output.log
+      git_state_file: S-003/02-pre-green-git-state.txt
+    verification:
+      timestamp: '2026-05-12T11:42:00Z'
+      command_file: S-003/04-verification-command.txt
+      output_file: S-003/04-verification-output.log
+    review:
+      timestamp: '2026-05-12T11:43:00Z'
+      summary_file: S-003/05-review-summary.md
+    commit: 1ddad951c6ebddf405efe551bf8fc875d3f1e7c1

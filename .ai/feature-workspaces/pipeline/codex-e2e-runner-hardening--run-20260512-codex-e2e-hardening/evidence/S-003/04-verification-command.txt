@@ -1,0 +1,1 @@
+python pipeline-lab/showcases/scripts/validate_pipeline_goals.py --passes 3 --report pipeline-lab/showcases/pipeline-goal-validation-report.md

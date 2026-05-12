@@ -1,0 +1,12 @@
+ M .ai/feature-workspaces/pipeline/codex-e2e-runner-hardening--run-20260512-codex-e2e-hardening/evidence/manifest.yaml
+ M .ai/knowledge/architecture-overview.md
+ M .ai/knowledge/contracts-overview.md
+ M .ai/knowledge/features-overview.md
+ M .ai/knowledge/integration-map.md
+ M .ai/knowledge/module-map.md
+ M .ai/knowledge/project-index.yaml
+ M .ai/knowledge/project-overview.md
+ M .ai/knowledge/project-snapshot.md
+ M .ai/knowledge/testing-overview.md
+ M pipeline-lab/showcases/pipeline-goal-validation-report.md
+?? .ai/feature-workspaces/pipeline/codex-e2e-runner-hardening--run-20260512-codex-e2e-hardening/evidence/S-003/

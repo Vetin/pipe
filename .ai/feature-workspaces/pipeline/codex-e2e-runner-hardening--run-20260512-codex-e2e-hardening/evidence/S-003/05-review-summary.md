@@ -1,0 +1,1 @@
+Review passed. Portable debug showcase contains no local absolute paths. Real Codex fixture smoke passed with uses_real_codex: true, returncode: 0, timed_out: false when run with --codex-arg=-m --codex-arg=gpt-5.3-codex-spark. Implementation commit: 1ddad951c6ebddf405efe551bf8fc875d3f1e7c1.

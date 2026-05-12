@@ -167,8 +167,8 @@ slices:
   - deterministic validation passes three times
   - feature-card and shared knowledge updates are present
   - final artifacts match the implementation
-  evidence_status: pending
-  status: pending
+  evidence_status: complete
+  status: complete
   iteration_budget: 10
   rollback_point: pre-slice git state
   independent_verification: Check `git diff --stat` and pipeline goal validation report

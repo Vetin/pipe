@@ -1,0 +1,1 @@
+validation: fail\nfailures: 3\nroot cause: regenerated debug run removed real-mode-diagnostic.md, causing codex_debug_real_mode_diagnostic to fail in all three passes.
