@@ -2,7 +2,7 @@ artifact_contract_version: 0.1.0
 feature_key: pipeline/public-raw-artifact-guardrails
 run_id: 20260512-public-raw-guardrails
 current_step: promote
-lifecycle: promoted-readonly
+lifecycle: canonical
 read_only: true
 worktree:
   branch: feature/pipeline-public-raw-artifact-guardrails-20260512-public-raw-guardrails

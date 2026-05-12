@@ -1,0 +1,40 @@
+artifact_contract_version: 0.1.0
+review_id: REV-001
+tier: strict_review
+severity: note
+finding: Public raw artifact guardrails are ready for final verification.
+artifact: workspace
+evidence: >
+  Focused tests passed for wrapper execution, canonical artifact readability,
+  compact project-index output, goal validation alignment, and structured
+  event generation.
+recommendation: Run final verification, write feature memory, and promote.
+blocking: false
+linked_requirement_ids:
+- FR-001
+- FR-002
+- FR-003
+- FR-004
+- FR-005
+- FR-006
+- FR-007
+linked_slice_ids:
+- S-001
+- S-002
+- S-003
+file_refs:
+- .agents/pipeline-core/scripts/featurectl_core/cli.py
+- tests/feature_pipeline/test_artifact_formatting.py
+- tests/feature_pipeline/test_featurectl_core.py
+- tests/feature_pipeline/test_gates_and_evidence.py
+- tests/feature_pipeline/test_finish_promote.py
+- pipeline-lab/showcases/scripts/validate_pipeline_goals.py
+- pipeline-lab/showcases/scripts/run_init_profile_showcases.py
+reproduction_or_reasoning: >
+  Review checked stale public raw claims against executable wrapper tests,
+  verified line-based .gitignore expectations, reviewed compact project memory
+  separation across goal validation and init-profile showcase runners, and
+  confirmed event_type records for gate, stale, archive, slice, retry, and
+  promotion events.
+fix_verification_command: python -m pytest tests/feature_pipeline -q
+re_review_required: false

@@ -1,0 +1,1 @@
+Retry review: init-profile showcase runner now reads discovered-signals.md after project-index compaction. Targeted tests passed: python -m pytest tests/feature_pipeline/test_init_profile_showcases.py tests/feature_pipeline/test_pipeline_goal_validation.py tests/feature_pipeline/test_featurectl_core.py -q. No blocking review findings remain.

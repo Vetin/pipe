@@ -1,6 +1,6 @@
 artifact_contract_version: 0.1.0
-generated_by: featurectl.py init --profile-project
-generated_at: '2026-05-12T20:41:06Z'
+generated_by: featurectl.py promote canonical sync
+generated_at: '2026-05-12T20:57:57Z'
 contract_examples:
 - .agents/pipeline-core/references/native-skill-protocol.md
 - .agents/pipeline-core/scripts/schemas/.gitkeep

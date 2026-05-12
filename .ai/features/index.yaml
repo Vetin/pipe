@@ -25,6 +25,11 @@ features:
   status: complete
   path: .ai/features/pipeline/portable-artifact-consistency
   run_id: 20260512-portable-consistency
+- feature_key: pipeline/public-raw-artifact-guardrails
+  title: Public Raw Artifact Guardrails
+  status: complete
+  path: .ai/features/pipeline/public-raw-artifact-guardrails
+  run_id: 20260512-public-raw-guardrails
 - feature_key: pipeline/random-feature-stress-lab
   title: Random Feature Stress Lab
   status: complete

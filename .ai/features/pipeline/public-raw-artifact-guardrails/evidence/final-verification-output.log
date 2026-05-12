@@ -1,0 +1,67 @@
+## public raw artifact guardrails final verification
+timestamp=2026-05-12T20:52:12Z
+
+$ python .agents/pipeline-core/scripts/featurectl.py --help
+usage: featurectl.py [-h]
+                     {init,new,status,validate,load-docset,gate,mark-stale,record-evidence,complete-slice,worktree-status,promote}
+                     ...
+
+positional arguments:
+  {init,new,status,validate,load-docset,gate,mark-stale,record-evidence,complete-slice,worktree-status,promote}
+    init                initialize pipeline directories
+    new                 create a feature worktree and workspace
+    status              print workspace status
+    validate            validate pipeline workspace
+    load-docset         list docs for a pipeline step
+    gate                manage gate state
+    mark-stale          mark downstream artifacts stale
+    record-evidence     record raw slice evidence
+    complete-slice      mark a slice complete after evidence validation
+    worktree-status     verify feature worktree readiness
+    promote             promote feature workspace to canonical memory
+
+options:
+  -h, --help            show this help message and exit
+
+$ python .agents/pipeline-core/scripts/pipelinebench.py --help
+usage: pipelinebench.py [-h]
+                        {init-lab,list-scenarios,score-run,compare-runs,generate-report,add-regression,run-showcases}
+                        ...
+
+positional arguments:
+  {init-lab,list-scenarios,score-run,compare-runs,generate-report,add-regression,run-showcases}
+    init-lab            create benchmark MVP files
+    list-scenarios      list benchmark scenarios
+    score-run           score an existing run
+    compare-runs        compare scored runs
+    generate-report     generate a Markdown report from scores
+    add-regression      record a regression note
+    run-showcases       score 10 showcase scenarios side by side
+
+options:
+  -h, --help            show this help message and exit
+
+$ python .agents/pipeline-core/scripts/pipelinebench.py list-scenarios
+auth-reset-password
+frontend-settings
+webhook-integration
+
+$ python -m unittest discover -s tests/feature_pipeline
+.....................................................................................................................................................
+----------------------------------------------------------------------
+Ran 149 tests in 47.990s
+
+OK
+
+$ python -m pytest tests/feature_pipeline -q
+............................................................................ [ 51%]
+........................................................ [ 88%]
+.................                                                        [100%]
+149 passed, 228 subtests passed in 48.58s
+
+$ python pipeline-lab/showcases/scripts/validate_pipeline_goals.py --passes 3 --report /tmp/pipeline-goal-validation-public-raw.md
+report: /tmp/pipeline-goal-validation-public-raw.md
+passes: 3
+failures: 0
+
+$ git diff --check

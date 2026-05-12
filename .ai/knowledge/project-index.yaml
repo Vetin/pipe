@@ -1,12 +1,12 @@
 artifact_contract_version: 0.1.0
-generated_by: featurectl.py init --profile-project
-generated_at: '2026-05-12T20:41:06Z'
+generated_by: featurectl.py promote canonical sync
+generated_at: '2026-05-12T20:57:57Z'
 project:
   name: pipe
   root: .
   remote: git@github.com:Vetin/pipe.git
 counts:
-  tracked_files: 1899
+  tracked_files: 1921
   profiled_files: 191
   source_files: 6
   test_files: 37
@@ -35,6 +35,8 @@ canonical_features:
   path: .ai/features/pipeline/lifecycle-hygiene-profile-noise
 - feature_key: pipeline/portable-artifact-consistency
   path: .ai/features/pipeline/portable-artifact-consistency
+- feature_key: pipeline/public-raw-artifact-guardrails
+  path: .ai/features/pipeline/public-raw-artifact-guardrails
 - feature_key: pipeline/random-feature-stress-lab
   path: .ai/features/pipeline/random-feature-stress-lab
 - feature_key: pipeline/real-codex-showcase-debug-runner

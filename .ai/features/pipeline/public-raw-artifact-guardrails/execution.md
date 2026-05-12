@@ -183,6 +183,7 @@ None yet.
 - 2026-05-12T20:54:01Z event_type=gate_status_changed gate=verification old_status=pending new_status=complete by=codex note=full-suite-and-goal-validation-passed
 - 2026-05-12T20:56:23Z event_type=feature_card_created path=feature-card.md
 - 2026-05-12T20:56:23Z event_type=gate_status_changed gate=finish old_status=pending new_status=complete by=codex note=feature-card-and-shared-knowledge-updates-complete
+- 2026-05-12T20:57:57Z event_type=feature_promoted canonical_path=.ai/features/pipeline/public-raw-artifact-guardrails
 
 ## History
 

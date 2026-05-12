@@ -1,0 +1,1 @@
+python .agents/pipeline-core/scripts/featurectl.py --help && python .agents/pipeline-core/scripts/pipelinebench.py --help && python .agents/pipeline-core/scripts/pipelinebench.py list-scenarios && python -m pytest tests/feature_pipeline/test_artifact_formatting.py -q
