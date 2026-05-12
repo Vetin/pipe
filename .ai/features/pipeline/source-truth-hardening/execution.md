@@ -131,3 +131,4 @@ Feature run initialized at 2026-05-12T12:32:35Z. The next step is context discov
 - 2026-05-12T13:00:55Z gate=review old_status=pending new_status=complete by=codex note=REV-001 has no blocking findings
 - 2026-05-12T13:00:55Z gate=verification old_status=pending new_status=complete by=codex note=focused tests and evidence validation passed
 - 2026-05-12T13:00:56Z gate=finish old_status=pending new_status=complete by=codex note=feature card and shared knowledge update plan complete
+- 2026-05-12T13:09:41Z promoted feature memory to .ai/features/pipeline/source-truth-hardening

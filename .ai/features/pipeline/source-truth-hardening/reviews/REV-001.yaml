@@ -1,0 +1,36 @@
+artifact_contract_version: 0.1.0
+review_id: REV-001
+tier: strict_review
+severity: note
+finding: No blocking findings remain after source-truth hardening.
+artifact: workspace
+evidence: evidence/manifest.yaml, focused pytest runs, and featurectl validation.
+recommendation: Proceed to final verification and promotion.
+blocking: false
+linked_requirement_ids:
+  - FR-001
+  - FR-002
+  - FR-003
+  - FR-004
+  - FR-005
+  - FR-006
+  - FR-007
+  - FR-008
+  - FR-009
+linked_slice_ids:
+  - S-001
+  - S-002
+  - S-003
+  - S-004
+file_refs:
+  - .agents/pipeline-core/scripts/featurectl.py
+  - .agents/skills/nfp-08-tdd-implementation/SKILL.md
+  - .agents/skills/nfp-09-review/SKILL.md
+  - .agents/skills/nfp-12-promote/SKILL.md
+  - tests/feature_pipeline/test_finish_promote.py
+  - tests/feature_pipeline/test_evidence_order.py
+  - tests/feature_pipeline/test_methodology_contract.py
+  - tests/feature_pipeline/test_featurectl_core.py
+reproduction_or_reasoning: Focused tests cover stale canonical overview, draft canonical status, active workspace drift, stale latest status, atomic evidence completion, reference-root consolidation, fallback policy, promotion wording, and generated-output filtering.
+fix_verification_command: python -m pytest tests/feature_pipeline/test_finish_promote.py tests/feature_pipeline/test_evidence_order.py tests/feature_pipeline/test_methodology_contract.py tests/feature_pipeline/test_featurectl_core.py tests/feature_pipeline/test_codex_e2e_runner.py
+re_review_required: false

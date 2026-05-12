@@ -1,0 +1,1 @@
+rg -n 'skills/native-feature-pipeline/references' .agents/skills .agents/pipeline-core .ai/pipeline-docs pipeline-lab/showcases/scripts
