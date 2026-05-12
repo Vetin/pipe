@@ -1,25 +1,25 @@
 artifact_contract_version: 0.1.0
 generated_by: featurectl.py init --profile-project
-generated_at: '2026-05-12T09:40:21Z'
+generated_at: '2026-05-12T11:45:27Z'
 project:
   name: harness-pipeline
   root: /Users/egormasnankin/work/harness-pipeline
   branch: main
-  head: 8304ef5
+  head: '4392776'
   remote: none
 counts:
-  tracked_files: 1283
-  profiled_files: 430
-  source_files: 18
+  tracked_files: 1385
+  profiled_files: 434
+  source_files: 20
   test_files: 36
-  doc_files: 165
+  doc_files: 166
   contract_files: 20
   integration_files: 4
 package_manifests: []
 scripts: []
 module_dirs:
 - path: pipeline-lab
-  tracked_files: 263
+  tracked_files: 267
 - path: .agents
   tracked_files: 68
 - path: .ai
@@ -30,6 +30,8 @@ source_examples:
 - .agents/pipeline-core/scripts/featurectl.py
 - .agents/pipeline-core/scripts/pipelinebench.py
 - pipeline-lab/showcases/codex-debug-runs/20260512-debug/fake-codex.py
+- pipeline-lab/showcases/fixtures/toy-greeting/greeting.py
+- pipeline-lab/showcases/fixtures/toy-greeting/test_greeting.py
 - pipeline-lab/showcases/scripts/aggregate_implementation_runs.py
 - pipeline-lab/showcases/scripts/aggregate_real_showcases.py
 - pipeline-lab/showcases/scripts/collect_nfp_real_runs.py
@@ -134,6 +136,8 @@ integration_examples:
 - pipeline-lab/benchmarks/scenarios/webhook-integration.yaml
 - pipeline-lab/showcases/scenarios/02-webhook-integration.yaml
 canonical_features:
+- feature_key: pipeline/codex-e2e-runner-hardening
+  path: .ai/features/pipeline/codex-e2e-runner-hardening
 - feature_key: pipeline/random-feature-stress-lab
   path: .ai/features/pipeline/random-feature-stress-lab
 - feature_key: pipeline/real-codex-showcase-debug-runner
@@ -220,6 +224,13 @@ feature_signals:
 - source: pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/07-guided-shared-knowledge-coverage-gate/artifacts/feature-card.md
   signal: 'Feature Card: 07-guided-shared-knowledge-coverage-gate'
 feature_catalog:
+- name: pipeline/codex-e2e-runner-hardening
+  kind: canonical
+  confidence: high
+  description: Promoted feature memory recorded by the Native Feature Pipeline.
+  source_count: 1
+  sources:
+  - .ai/features/pipeline/codex-e2e-runner-hardening
 - name: pipeline/random-feature-stress-lab
   kind: canonical
   confidence: high
@@ -465,12 +476,3 @@ feature_catalog:
   source_count: 1
   sources:
   - pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/09-bounded-gate-autoresume-hints/artifacts/feature-card.md
-- name: Feature Card 10 Traceable Review Finding Deduplicator
-  kind: detected
-  confidence: medium
-  description: Feature Card 10 Traceable Review Finding Deduplicator appears in 1
-    documentation signal; inspect the listed files before relying on this as architecture
-    truth.
-  source_count: 1
-  sources:
-  - pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/10-traceable-review-finding-deduplicator/artifacts/feature-card.md
