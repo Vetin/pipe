@@ -12,7 +12,7 @@ Use this skill to run final verification.
 Methodology:
 
 - Read `.agents/pipeline-core/references/native-skill-protocol.md`.
-- Apply `skills/native-feature-pipeline/references/upstream-pattern-map.md` as the behavioral synthesis of cloned upstream methodologies; cite patterns in `Docs Consulted:` when they influence a decision.
+- Apply `.agents/pipeline-core/references/upstream-pattern-map.md` as the behavioral synthesis of cloned upstream methodologies; cite patterns in `Docs Consulted:` when they influence a decision.
 - Apply `.agents/pipeline-core/references/methodology-lenses.md` for evidence
   before claims, manual/UAT validation, verification debt, and fresh final
   verification.
@@ -22,7 +22,7 @@ Methodology:
   `reviews/*.yaml`.
 - Load the verification docset with
   `featurectl.py load-docset --step verification`.
-- Use `skills/native-feature-pipeline/references/review-and-verification.md`,
+- Use `.agents/pipeline-core/references/review-and-verification.md`,
   `.agents/pipeline-core/references/quality-rubric.md`, and
   `.agents/pipeline-core/references/gate-policy.md`.
 - Record `Docs Consulted: Verification` in `execution.md`.

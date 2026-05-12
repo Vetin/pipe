@@ -3,10 +3,10 @@ step: finish
 required_docs:
   - .agents/pipeline-core/references/native-skill-protocol.md
   - .agents/pipeline-core/references/methodology-lenses.md
-  - skills/native-feature-pipeline/references/upstream-pattern-map.md
-  - skills/native-feature-pipeline/references/artifact-model.md
-  - skills/native-feature-pipeline/references/review-and-verification.md
-  - skills/native-feature-pipeline/references/evaluation-patterns.md
+  - .agents/pipeline-core/references/upstream-pattern-map.md
+  - .agents/pipeline-core/references/artifact-model.md
+  - .agents/pipeline-core/references/review-and-verification.md
+  - .agents/pipeline-core/references/evaluation-patterns.md
   - .agents/pipeline-core/references/generated-templates/feature-card-template.md
   - .ai/constitution.md
   - .ai/pipeline-docs/steps/finish/overview.md

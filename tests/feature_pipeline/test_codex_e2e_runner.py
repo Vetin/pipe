@@ -191,7 +191,7 @@ print(json.dumps({
         self.assertNotIn("nfp-00-intake", prompt)
         self.assertNotIn("nfp-12-promote", prompt)
         self.assertTrue((Path(manifest["repo"]) / "AGENTS.md").exists())
-        self.assertTrue((Path(manifest["repo"]) / "skills/native-feature-pipeline/references").exists())
+        self.assertTrue((Path(manifest["repo"]) / ".agents/pipeline-core/references").exists())
         self.assertTrue((self.output_dir / "summary-stable-test.yaml").exists())
         self.assertTrue((self.output_dir / "commands-stable-test.sh").exists())
 

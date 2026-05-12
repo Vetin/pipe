@@ -25,7 +25,7 @@ REQUIRED_CONTEXT_PATHS = (
     "AGENTS.md",
     ".agents/pipeline-core",
     ".ai/pipeline-docs",
-    "skills/native-feature-pipeline/references",
+    ".agents/pipeline-core/references",
 )
 REQUIRED_ARTIFACT_NAMES = ("feature.md", "architecture.md", "tech-design.md", "slices.yaml")
 FORBIDDEN_PROMPT_TOKENS = (

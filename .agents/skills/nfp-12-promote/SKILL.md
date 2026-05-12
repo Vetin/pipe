@@ -12,14 +12,14 @@ Use this skill to promote a completed workspace into canonical feature memory.
 Methodology:
 
 - Read `.agents/pipeline-core/references/native-skill-protocol.md`.
-- Apply `skills/native-feature-pipeline/references/upstream-pattern-map.md` as the behavioral synthesis of cloned upstream methodologies; cite patterns in `Docs Consulted:` when they influence a decision.
+- Apply `.agents/pipeline-core/references/upstream-pattern-map.md` as the behavioral synthesis of cloned upstream methodologies; cite patterns in `Docs Consulted:` when they influence a decision.
 - Apply `.agents/pipeline-core/references/methodology-lenses.md` for fresh
   verification, promotion memory, source revision, and conflict safety.
 - Confirm the current directory is the feature worktree.
 - Read `apex.md`, `feature.yaml`, `state.yaml`, `execution.md`, and
   `feature-card.md`.
 - Load the promote docset with `featurectl.py load-docset --step promote`.
-- Use `skills/native-feature-pipeline/references/artifact-model.md`,
+- Use `.agents/pipeline-core/references/artifact-model.md`,
   `.agents/pipeline-core/references/context-reuse-policy.md`, and
   `.agents/pipeline-core/references/feature-identity-policy.md`.
 - Record `Docs Consulted: Promote` in `execution.md`.
@@ -34,7 +34,7 @@ Responsibilities:
   provenance, source revision, and rollback guidance
 - promote the workspace to `.ai/features/<domain>/<slug>/`
 - regenerate `.ai/features/index.yaml`
-- archive conflicting variants only when explicitly requested
+- archive incoming conflicting variants only when explicitly requested
 
 Workflow:
 
@@ -63,7 +63,8 @@ Workflow:
 
 6. If a canonical feature already exists, stop by default.
 7. Use `--conflict archive-as-variant` only when the user explicitly approves
-   archiving the existing canonical feature as a variant.
+   archiving the incoming workspace as a variant. This never moves or modifies
+   the existing canonical feature.
 8. Confirm `.ai/features/index.yaml` contains the promoted feature key.
 
 Do not implement merge or replace conflict behavior in v1.

@@ -3,9 +3,9 @@ step: feature-contract
 required_docs:
   - .agents/pipeline-core/references/native-skill-protocol.md
   - .agents/pipeline-core/references/methodology-lenses.md
-  - skills/native-feature-pipeline/references/upstream-pattern-map.md
-  - skills/native-feature-pipeline/references/methodology-summary.md
-  - skills/native-feature-pipeline/references/artifact-model.md
+  - .agents/pipeline-core/references/upstream-pattern-map.md
+  - .agents/pipeline-core/references/methodology-summary.md
+  - .agents/pipeline-core/references/artifact-model.md
   - .agents/pipeline-core/references/artifact-requirements.md
   - .agents/pipeline-core/references/feature-identity-policy.md
   - .agents/pipeline-core/references/generated-templates/feature-template.md

@@ -12,7 +12,7 @@ Use this skill to create `tech-design.md` and feature contracts.
 Methodology:
 
 - Read `.agents/pipeline-core/references/native-skill-protocol.md`.
-- Apply `skills/native-feature-pipeline/references/upstream-pattern-map.md` as the behavioral synthesis of cloned upstream methodologies; cite patterns in `Docs Consulted:` when they influence a decision.
+- Apply `.agents/pipeline-core/references/upstream-pattern-map.md` as the behavioral synthesis of cloned upstream methodologies; cite patterns in `Docs Consulted:` when they influence a decision.
 - Apply `.agents/pipeline-core/references/methodology-lenses.md` for
   task-graph metadata, source provenance, design alternatives, and
   completeness/correctness/coherence checks.
@@ -20,7 +20,7 @@ Methodology:
 - Read `apex.md`, `feature.yaml`, `state.yaml`, `execution.md`,
   `feature.md`, and `architecture.md`.
 - Load the tech-design docset with `featurectl.py load-docset --step tech-design`.
-- Use `skills/native-feature-pipeline/references/artifact-model.md` and generated technical design,
+- Use `.agents/pipeline-core/references/artifact-model.md` and generated technical design,
   ADR, and contract templates as shape references.
 - Record `Docs Consulted: Technical Design` in `execution.md`.
 

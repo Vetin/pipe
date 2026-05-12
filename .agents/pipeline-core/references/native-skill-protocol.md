@@ -7,7 +7,7 @@ Every production `nfp-*` skill follows the same operating contract:
 2. Read `apex.md`, `feature.yaml`, `state.yaml`, and `execution.md`.
 3. Load the step docset with `featurectl.py load-docset`.
 4. Read required docs first, including local runtime skill references and
-   `skills/native-feature-pipeline/references/upstream-pattern-map.md`.
+   `.agents/pipeline-core/references/upstream-pattern-map.md`.
 5. Record the docs actually used in `execution.md` under
    `Docs Consulted: <Step>`.
 6. Update only artifacts owned by the current skill.

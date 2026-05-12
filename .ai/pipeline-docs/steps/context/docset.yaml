@@ -3,8 +3,8 @@ step: context
 required_docs:
   - .agents/pipeline-core/references/native-skill-protocol.md
   - .agents/pipeline-core/references/methodology-lenses.md
-  - skills/native-feature-pipeline/references/upstream-pattern-map.md
-  - skills/native-feature-pipeline/references/context-and-doc-loading.md
+  - .agents/pipeline-core/references/upstream-pattern-map.md
+  - .agents/pipeline-core/references/context-and-doc-loading.md
   - .agents/pipeline-core/references/context-reuse-policy.md
   - .ai/constitution.md
   - .ai/knowledge/project-overview.md
@@ -15,7 +15,7 @@ required_docs:
   - .ai/pipeline-docs/steps/context/overview.md
   - .ai/pipeline-docs/steps/context/checklist.md
 optional_docs:
-  - skills/native-feature-pipeline/references/methodology-summary.md
+  - .agents/pipeline-core/references/methodology-summary.md
   - .ai/knowledge/module-map.md
   - .ai/knowledge/architecture-overview.md
   - .ai/knowledge/testing-overview.md

@@ -3,8 +3,8 @@ step: verification
 required_docs:
   - .agents/pipeline-core/references/native-skill-protocol.md
   - .agents/pipeline-core/references/methodology-lenses.md
-  - skills/native-feature-pipeline/references/upstream-pattern-map.md
-  - skills/native-feature-pipeline/references/review-and-verification.md
+  - .agents/pipeline-core/references/upstream-pattern-map.md
+  - .agents/pipeline-core/references/review-and-verification.md
   - .agents/pipeline-core/references/gate-policy.md
   - .agents/pipeline-core/references/quality-rubric.md
   - .ai/constitution.md

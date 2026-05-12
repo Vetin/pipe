@@ -12,13 +12,13 @@ Use this skill to start a new Native Feature Pipeline run.
 Methodology:
 
 - Read `.agents/pipeline-core/references/native-skill-protocol.md`.
-- Apply `skills/native-feature-pipeline/references/upstream-pattern-map.md` as the behavioral synthesis of cloned upstream methodologies; cite patterns in `Docs Consulted:` when they influence a decision.
+- Apply `.agents/pipeline-core/references/upstream-pattern-map.md` as the behavioral synthesis of cloned upstream methodologies; cite patterns in `Docs Consulted:` when they influence a decision.
 - Apply `.agents/pipeline-core/references/methodology-lenses.md` for adaptive
   rigor, ambiguity scoring, bounded clarification, and eval-style state.
 - Load the intake docset with `featurectl.py load-docset --step intake` after
   the workspace exists.
-- Use `skills/native-feature-pipeline/references/methodology-summary.md`,
-  `skills/native-feature-pipeline/references/workflow-and-gates.md`, and
+- Use `.agents/pipeline-core/references/methodology-summary.md`,
+  `.agents/pipeline-core/references/workflow-and-gates.md`, and
   `.agents/pipeline-core/references/feature-identity-policy.md` to decide
   whether the request is safe to start.
 - Record `Docs Consulted: Intake` in `execution.md`.

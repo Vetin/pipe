@@ -13,7 +13,7 @@ execution, red-green-refactor evidence, and two-stage review.
 Methodology:
 
 - Read `.agents/pipeline-core/references/native-skill-protocol.md`.
-- Apply `skills/native-feature-pipeline/references/upstream-pattern-map.md` as the behavioral synthesis of cloned upstream methodologies; cite patterns in `Docs Consulted:` when they influence a decision.
+- Apply `.agents/pipeline-core/references/upstream-pattern-map.md` as the behavioral synthesis of cloned upstream methodologies; cite patterns in `Docs Consulted:` when they influence a decision.
 - Apply `.agents/pipeline-core/references/methodology-lenses.md` for the TDD
   law, evidence order, failure triage, claim provenance, and eval run metadata.
 - Apply `skills/superpowers/subagent-driven-development/SKILL.md`,
@@ -26,8 +26,8 @@ Methodology:
   `slices.yaml`.
 - Load the TDD implementation docset with
   `featurectl.py load-docset --step tdd-implementation`.
-- Use `skills/native-feature-pipeline/references/review-and-verification.md`,
-  `skills/native-feature-pipeline/references/evaluation-patterns.md`, and
+- Use `.agents/pipeline-core/references/review-and-verification.md`,
+  `.agents/pipeline-core/references/evaluation-patterns.md`, and
   `.agents/pipeline-core/references/skill-power-validation-policy.md`.
 - Record `Docs Consulted: TDD Implementation` in `execution.md`.
 
@@ -56,15 +56,23 @@ Responsibilities:
 - update future slices when implementation changes dependencies, ownership,
   conflict risk, or test strategy
 
-Subagent Flow Is Mandatory:
+Subagent Flow Policy:
 
 - If the host agent supports subagents, use them for every implementation and
-  review task. There is no local/direct implementation fallback.
-- If subagents are unavailable, stop and record a blocker in `execution.md`
-  instead of implementing the slice directly.
+  review task. This is the required primary path.
+- If subagents are unavailable in the current Codex host, use the practical
+  sequential fallback: the main agent performs the implementer/reviewer roles
+  one at a time, preserves the same red/green/review evidence requirements, and
+  records `subagent_fallback_reason` plus the substituted roles in
+  `execution.md`.
+- The fallback is not permission to skip review. The main agent must run a
+  separate spec-compliance pass followed by a separate code-quality pass, record
+  both outcomes, and re-run them after fixes.
 - The controller may inspect files, run status/validation commands, and update
-  pipeline metadata, but production code and tests must be authored by the
-  slice implementer subagent.
+  pipeline metadata. In the primary path, production code and tests are authored
+  by the slice implementer subagent. In fallback path, production code and tests
+  may be authored by the main agent only after recording the unavailable
+  subagent reason.
 - Each implementer prompt must include the complete slice text from
   `slices.yaml`; do not tell an implementer to read the whole plan and infer its
   task.

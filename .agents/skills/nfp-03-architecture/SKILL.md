@@ -12,7 +12,7 @@ Use this skill to create `architecture.md`, significant ADRs, and diagrams.
 Methodology:
 
 - Read `.agents/pipeline-core/references/native-skill-protocol.md`.
-- Apply `skills/native-feature-pipeline/references/upstream-pattern-map.md` as the behavioral synthesis of cloned upstream methodologies; cite patterns in `Docs Consulted:` when they influence a decision.
+- Apply `.agents/pipeline-core/references/upstream-pattern-map.md` as the behavioral synthesis of cloned upstream methodologies; cite patterns in `Docs Consulted:` when they influence a decision.
 - Apply `.agents/pipeline-core/references/methodology-lenses.md` for
   brownfield research, elicitation lenses, change-delta thinking, and
   completeness/correctness/coherence checks.
@@ -20,8 +20,8 @@ Methodology:
 - Read `apex.md`, `feature.yaml`, `state.yaml`, `execution.md`, and
   `feature.md`.
 - Load the architecture docset with `featurectl.py load-docset --step architecture`.
-- Use `skills/native-feature-pipeline/references/artifact-model.md`,
-  `skills/native-feature-pipeline/references/context-and-doc-loading.md`, and
+- Use `.agents/pipeline-core/references/artifact-model.md`,
+  `.agents/pipeline-core/references/context-and-doc-loading.md`, and
   `.agents/pipeline-core/references/generated-templates/architecture-template.md`.
 - Write architecture from inspected repository context, not generic invention.
 - Record `Docs Consulted: Architecture` in `execution.md`.

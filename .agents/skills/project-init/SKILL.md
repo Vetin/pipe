@@ -23,12 +23,12 @@ Methodology:
 
 - Use OpenAI skill guidance: keep this as a focused repeatable workflow with a
   clear output and final checks.
-- Use `skills/native-feature-pipeline/references/upstream-pattern-map.md` for brownfield bootstrap
+- Use `.agents/pipeline-core/references/upstream-pattern-map.md` for brownfield bootstrap
   rules and context-grounded phase behavior.
 - Use `.agents/pipeline-core/references/methodology-lenses.md` for brownfield
   research, existing-solution scan, claim provenance, and eval-style profile
   validation.
-- Use `skills/native-feature-pipeline/references/web-best-practices-20260512.md` for repository
+- Use `.agents/pipeline-core/references/web-best-practices-20260512.md` for repository
   indexing, living specs, and validation-loop expectations.
 - Treat generated repository indexes as maps to inspect, not as final product
   or architecture truth.

@@ -171,7 +171,7 @@ def validate_skill_matrix() -> list[dict[str, str]]:
             "description:",
             "pipeline_contract_version: '0.1.0'",
             ".agents/pipeline-core/references/native-skill-protocol.md",
-            "skills/native-feature-pipeline/references/upstream-pattern-map.md",
+            ".agents/pipeline-core/references/upstream-pattern-map.md",
             "featurectl.py load-docset",
             "Docs Consulted:",
             "featurectl.py validate",
@@ -341,7 +341,7 @@ def validate_portable_codex_debug_output(run_dir: Path, summary: dict[str, Any])
 
 
 def validate_web_best_practices() -> list[dict[str, str]]:
-    path = ROOT / "skills/native-feature-pipeline/references/web-best-practices-20260512.md"
+    path = ROOT / ".agents/pipeline-core/references/web-best-practices-20260512.md"
     content = read_text(path) if path.exists() else ""
     checks = [check("web_best_practices_doc", path.exists(), "web best-practices synthesis exists")]
     for source in REQUIRED_WEB_SOURCES:

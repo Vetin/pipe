@@ -3,15 +3,15 @@ step: slicing
 required_docs:
   - .agents/pipeline-core/references/native-skill-protocol.md
   - .agents/pipeline-core/references/methodology-lenses.md
-  - skills/native-feature-pipeline/references/upstream-pattern-map.md
-  - skills/native-feature-pipeline/references/workflow-and-gates.md
+  - .agents/pipeline-core/references/upstream-pattern-map.md
+  - .agents/pipeline-core/references/workflow-and-gates.md
   - .agents/pipeline-core/references/generated-templates/slice-template.yaml
   - .ai/constitution.md
   - .ai/pipeline-docs/global/testing-standards.md
   - .ai/pipeline-docs/steps/slicing/overview.md
   - .ai/pipeline-docs/steps/slicing/checklist.md
 optional_docs:
-  - skills/native-feature-pipeline/references/evaluation-patterns.md
+  - .agents/pipeline-core/references/evaluation-patterns.md
   - .ai/knowledge/testing-overview.md
 selected_alternatives: []
 suggested_related_files:

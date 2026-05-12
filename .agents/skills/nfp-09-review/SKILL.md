@@ -12,7 +12,7 @@ Use this skill to run deterministic and agentic review.
 Methodology:
 
 - Read `.agents/pipeline-core/references/native-skill-protocol.md`.
-- Apply `skills/native-feature-pipeline/references/upstream-pattern-map.md` as the behavioral synthesis of cloned upstream methodologies; cite patterns in `Docs Consulted:` when they influence a decision.
+- Apply `.agents/pipeline-core/references/upstream-pattern-map.md` as the behavioral synthesis of cloned upstream methodologies; cite patterns in `Docs Consulted:` when they influence a decision.
 - Apply `.agents/pipeline-core/references/methodology-lenses.md` for
   adversarial review, hard/soft findings, zero-finding justification, and claim
   provenance.
@@ -20,8 +20,8 @@ Methodology:
 - Read `apex.md`, `feature.yaml`, `state.yaml`, `execution.md`,
   `feature.md`, `architecture.md`, `tech-design.md`, and `slices.yaml`.
 - Load the review docset with `featurectl.py load-docset --step review`.
-- Use `skills/native-feature-pipeline/references/review-and-verification.md`,
-  `skills/native-feature-pipeline/references/evaluation-patterns.md`,
+- Use `.agents/pipeline-core/references/review-and-verification.md`,
+  `.agents/pipeline-core/references/evaluation-patterns.md`,
   `.agents/pipeline-core/references/subagent-review-policy.md`, and
   `.agents/pipeline-core/references/quality-rubric.md`.
 - Record `Docs Consulted: Review` in `execution.md`.
@@ -38,6 +38,18 @@ Responsibilities:
   lenses used
 - write review files under `reviews/`
 - block verification for critical findings
+
+Subagent Review Policy:
+
+- If subagents are available, delegate strict or enterprise review lenses to
+  review subagents with focused packets.
+- If subagents are unavailable, use sequential main-agent fallback: run each
+  review lens as a distinct pass, record `subagent_fallback_reason` in
+  `execution.md`, and write the same structured review artifacts that a
+  delegated reviewer would have produced.
+- Fallback review must not rely on memory of implementation work. Re-read the
+  relevant requirements, changed files, evidence, and verification commands
+  before each pass.
 
 Workflow:
 

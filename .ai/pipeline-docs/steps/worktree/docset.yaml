@@ -2,8 +2,8 @@ artifact_contract_version: '0.1.0'
 step: worktree
 required_docs:
   - .agents/pipeline-core/references/native-skill-protocol.md
-  - skills/native-feature-pipeline/references/upstream-pattern-map.md
-  - skills/native-feature-pipeline/references/workflow-and-gates.md
+  - .agents/pipeline-core/references/upstream-pattern-map.md
+  - .agents/pipeline-core/references/workflow-and-gates.md
   - .agents/pipeline-core/references/gate-policy.md
   - .ai/constitution.md
   - .ai/pipeline-docs/steps/worktree/overview.md

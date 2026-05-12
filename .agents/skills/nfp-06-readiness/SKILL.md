@@ -12,14 +12,14 @@ Use this skill to validate planning readiness before implementation.
 Methodology:
 
 - Read `.agents/pipeline-core/references/native-skill-protocol.md`.
-- Apply `skills/native-feature-pipeline/references/upstream-pattern-map.md` as the behavioral synthesis of cloned upstream methodologies; cite patterns in `Docs Consulted:` when they influence a decision.
+- Apply `.agents/pipeline-core/references/upstream-pattern-map.md` as the behavioral synthesis of cloned upstream methodologies; cite patterns in `Docs Consulted:` when they influence a decision.
 - Apply `.agents/pipeline-core/references/methodology-lenses.md` for
   cross-artifact analysis, task graph integrity, and
   completeness/correctness/coherence checks.
 - Confirm the current directory is the feature worktree.
 - Read `apex.md`, `feature.yaml`, `state.yaml`, and `execution.md`.
 - Load the readiness docset with `featurectl.py load-docset --step readiness`.
-- Use `skills/native-feature-pipeline/references/workflow-and-gates.md` and
+- Use `.agents/pipeline-core/references/workflow-and-gates.md` and
   `.agents/pipeline-core/references/gate-policy.md`.
 - Record `Docs Consulted: Readiness` in `execution.md`.
 

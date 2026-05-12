@@ -179,7 +179,12 @@ def main(argv: list[str] | None = None) -> int:
 
     promote_parser = subparsers.add_parser("promote", help="promote feature workspace to canonical memory")
     promote_parser.add_argument("--workspace", required=True)
-    promote_parser.add_argument("--conflict", choices=["abort", "archive-as-variant"], default="abort")
+    promote_parser.add_argument(
+        "--conflict",
+        choices=["abort", "archive-as-variant"],
+        default="abort",
+        help="on conflict, abort or archive the incoming workspace as a variant without modifying existing canonical memory",
+    )
     promote_parser.set_defaults(func=cmd_promote)
 
     try:
@@ -559,7 +564,6 @@ def ensure_init_tree(root: Path) -> None:
         ".agents/skill-lab/quarantine",
         ".agents/skill-lab/accepted",
         ".agents/skill-lab/rejected",
-        "skills/native-feature-pipeline/references",
         "skills/superpowers/subagent-driven-development",
         "methodology/upstream",
         "methodology/docs-snapshots",

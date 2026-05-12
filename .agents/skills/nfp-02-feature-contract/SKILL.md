@@ -12,7 +12,7 @@ Use this skill to create `feature.md`.
 Methodology:
 
 - Read `.agents/pipeline-core/references/native-skill-protocol.md`.
-- Apply `skills/native-feature-pipeline/references/upstream-pattern-map.md` as the behavioral synthesis of cloned upstream methodologies; cite patterns in `Docs Consulted:` when they influence a decision.
+- Apply `.agents/pipeline-core/references/upstream-pattern-map.md` as the behavioral synthesis of cloned upstream methodologies; cite patterns in `Docs Consulted:` when they influence a decision.
 - Apply `.agents/pipeline-core/references/methodology-lenses.md` for ambiguity
   taxonomy, clarification limits, elicitation lenses, source-backed claims, and
   adaptive rigor.
@@ -20,7 +20,7 @@ Methodology:
 - Read `apex.md`, `feature.yaml`, `state.yaml`, and `execution.md`.
 - Load the feature-contract docset with
   `featurectl.py load-docset --step feature-contract`.
-- Use `skills/native-feature-pipeline/references/artifact-model.md`,
+- Use `.agents/pipeline-core/references/artifact-model.md`,
   `.agents/pipeline-core/references/feature-identity-policy.md`, and
   `.agents/pipeline-core/references/generated-templates/feature-template.md`.
 - Record `Docs Consulted: Feature Contract` in `execution.md`.

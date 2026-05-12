@@ -13,13 +13,13 @@ worktree.
 Methodology:
 
 - Read `.agents/pipeline-core/references/native-skill-protocol.md`.
-- Apply `skills/native-feature-pipeline/references/upstream-pattern-map.md` as the behavioral synthesis of cloned upstream methodologies; cite patterns in `Docs Consulted:` when they influence a decision.
+- Apply `.agents/pipeline-core/references/upstream-pattern-map.md` as the behavioral synthesis of cloned upstream methodologies; cite patterns in `Docs Consulted:` when they influence a decision.
 - Confirm the current directory is the feature worktree from
   `state.yaml.worktree.path`.
 - Read `apex.md`, `feature.yaml`, `state.yaml`, `execution.md`, and
   `slices.yaml`.
 - Load the worktree docset with `featurectl.py load-docset --step worktree`.
-- Use `skills/native-feature-pipeline/references/workflow-and-gates.md` and
+- Use `.agents/pipeline-core/references/workflow-and-gates.md` and
   `.agents/pipeline-core/references/gate-policy.md`.
 - Record `Docs Consulted: Worktree` in `execution.md`.
 

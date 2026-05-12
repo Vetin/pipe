@@ -11,14 +11,14 @@ ROOT = Path(__file__).resolve().parents[2]
 SCRIPT = ROOT / ".agents/pipeline-core/scripts/featurectl.py"
 
 RUNTIME_REFERENCE_FILES = [
-    "skills/native-feature-pipeline/references/methodology-summary.md",
-    "skills/native-feature-pipeline/references/upstream-pattern-map.md",
-    "skills/native-feature-pipeline/references/artifact-model.md",
-    "skills/native-feature-pipeline/references/workflow-and-gates.md",
-    "skills/native-feature-pipeline/references/context-and-doc-loading.md",
-    "skills/native-feature-pipeline/references/review-and-verification.md",
-    "skills/native-feature-pipeline/references/evaluation-patterns.md",
-    "skills/native-feature-pipeline/references/web-best-practices-20260512.md",
+    ".agents/pipeline-core/references/methodology-summary.md",
+    ".agents/pipeline-core/references/upstream-pattern-map.md",
+    ".agents/pipeline-core/references/artifact-model.md",
+    ".agents/pipeline-core/references/workflow-and-gates.md",
+    ".agents/pipeline-core/references/context-and-doc-loading.md",
+    ".agents/pipeline-core/references/review-and-verification.md",
+    ".agents/pipeline-core/references/evaluation-patterns.md",
+    ".agents/pipeline-core/references/web-best-practices-20260512.md",
 ]
 
 SUPERPOWERS_SUBAGENT_FILES = [
@@ -154,7 +154,7 @@ class MethodologyContractTests(unittest.TestCase):
                     self.assertEqual(docset["step"], step)
                     self.assertIn(".agents/pipeline-core/references/native-skill-protocol.md", docset["required_docs"])
                     self.assertTrue(
-                        any(doc.startswith("skills/native-feature-pipeline/references/") for doc in docset["required_docs"] + docset.get("optional_docs", [])),
+                        any(doc.startswith(".agents/pipeline-core/references/") for doc in docset["required_docs"] + docset.get("optional_docs", [])),
                         f"{step} docset must reference runtime skill references",
                     )
                     for doc in docset["required_docs"]:
@@ -198,26 +198,45 @@ class MethodologyContractTests(unittest.TestCase):
                 self.assertIn("pipeline_contract_version: '0.1.0'", content)
                 self.assertIn("Methodology:", content)
                 self.assertIn(".agents/pipeline-core/references/native-skill-protocol.md", content)
-                self.assertIn("skills/native-feature-pipeline/references/upstream-pattern-map.md", content)
+                self.assertIn(".agents/pipeline-core/references/upstream-pattern-map.md", content)
                 self.assertIn("featurectl.py load-docset", content)
                 self.assertIn("Docs Consulted:", content)
-                self.assertIn("skills/native-feature-pipeline/references/", content)
+                self.assertIn(".agents/pipeline-core/references/", content)
                 for artifact in ("apex.md", "feature.yaml", "state.yaml", "execution.md"):
                     self.assertIn(artifact, content)
                 self.assertIn("featurectl.py validate", content)
+                self.assertNotIn("skills/native-feature-pipeline/references", content)
 
     def test_tdd_implementation_requires_superpowers_subagent_loop(self):
         content = (ROOT / ".agents/skills/nfp-08-tdd-implementation/SKILL.md").read_text(encoding="utf-8")
         for token in (
-            "Subagent Flow Is Mandatory",
+            "Subagent Flow Policy",
             "skills/superpowers/subagent-driven-development/SKILL.md",
             "fresh implementer subagent",
             "spec-compliance reviewer subagent",
             "code-quality reviewer subagent",
-            "There is no local/direct implementation fallback",
+            "sequential fallback",
+            "subagent_fallback_reason",
             "never dispatch implementation subagents in parallel",
         ):
             self.assertIn(token, content)
+
+    def test_review_skill_defines_subagent_fallback(self):
+        content = (ROOT / ".agents/skills/nfp-09-review/SKILL.md").read_text(encoding="utf-8")
+        for token in (
+            "Subagent Review Policy",
+            "sequential main-agent fallback",
+            "subagent_fallback_reason",
+            "write the same structured review artifacts",
+        ):
+            self.assertIn(token, content)
+
+    def test_promote_skill_archives_incoming_variant_only(self):
+        content = (ROOT / ".agents/skills/nfp-12-promote/SKILL.md").read_text(encoding="utf-8")
+        self.assertIn("archiving the incoming workspace as a variant", content)
+        self.assertIn("This never moves or modifies", content)
+        self.assertIn("the existing canonical feature", content)
+        self.assertNotIn("archiving the existing canonical feature as a variant", content)
 
     def test_architecture_and_finish_require_topology_and_shared_knowledge(self):
         architecture = (ROOT / ".agents/skills/nfp-03-architecture/SKILL.md").read_text(encoding="utf-8")

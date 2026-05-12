@@ -3,9 +3,9 @@ step: intake
 required_docs:
   - .agents/pipeline-core/references/native-skill-protocol.md
   - .agents/pipeline-core/references/methodology-lenses.md
-  - skills/native-feature-pipeline/references/upstream-pattern-map.md
-  - skills/native-feature-pipeline/references/methodology-summary.md
-  - skills/native-feature-pipeline/references/workflow-and-gates.md
+  - .agents/pipeline-core/references/upstream-pattern-map.md
+  - .agents/pipeline-core/references/methodology-summary.md
+  - .agents/pipeline-core/references/workflow-and-gates.md
   - .agents/pipeline-core/references/feature-identity-policy.md
   - .agents/pipeline-core/references/workflow-state-machine.md
   - .agents/pipeline-core/references/gate-policy.md
