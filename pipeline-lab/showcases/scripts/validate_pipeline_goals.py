@@ -35,6 +35,20 @@ def read_yaml(path: Path) -> dict[str, Any]:
     return yaml.safe_load(read_text(path)) or {}
 
 
+def resolve_artifact_path(path_text: str | None) -> Path:
+    if not path_text:
+        return Path("")
+    path = Path(path_text)
+    if path.is_absolute() and path.exists():
+        return path
+    normalized = str(path_text)
+    if normalized.startswith("/pipeline-lab/") or normalized.startswith("/.ai/") or normalized.startswith("/.agents/"):
+        return ROOT / normalized.lstrip("/")
+    if path.is_absolute():
+        return path
+    return ROOT / path
+
+
 def validate_once(native_run: Path, init_run: Path, codex_debug_run: Path) -> list[dict[str, str]]:
     checks: list[dict[str, str]] = []
     checks.extend(validate_agents_policy())
@@ -111,7 +125,7 @@ def validate_best_three(native_run: Path) -> list[dict[str, str]]:
         checks.append(check(f"{case}_production_score", bool(scores) and scores[-1] >= 0.92, f"final score: {scores[-1] if scores else 'missing'}"))
         if 3 in rounds:
             artifacts = rounds[3].get("artifacts") or {}
-            checks.append(check(f"{case}_round3_artifacts", all(Path(path).exists() for path in artifacts.values()), "round 3 artifacts exist"))
+            checks.append(check(f"{case}_round3_artifacts", all(resolve_artifact_path(path).exists() for path in artifacts.values()), "round 3 artifacts exist"))
     return checks
 
 
@@ -220,7 +234,6 @@ def validate_skill_matrix() -> list[dict[str, str]]:
     missing_subagent_tokens = [
         token
         for token in (
-            "Subagent Flow Is Mandatory",
             "skills/superpowers/subagent-driven-development/SKILL.md",
             "fresh implementer subagent",
             "spec-compliance reviewer subagent",
@@ -228,6 +241,8 @@ def validate_skill_matrix() -> list[dict[str, str]]:
         )
         if token not in tdd_content
     ]
+    if "Subagent Flow Is Mandatory" not in tdd_content and "Subagent Flow Policy" not in tdd_content:
+        missing_subagent_tokens.append("Subagent Flow Policy")
     checks.append(
         check(
             "skill_tdd_superpowers_subagent_flow",

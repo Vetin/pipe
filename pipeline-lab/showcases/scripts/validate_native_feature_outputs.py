@@ -46,6 +46,20 @@ def read_text(path: Path) -> str:
     return path.read_text(encoding="utf-8")
 
 
+def resolve_artifact_path(path_text: str | None) -> Path:
+    if not path_text:
+        return Path("")
+    path = Path(path_text)
+    if path.is_absolute() and path.exists():
+        return path
+    normalized = str(path_text)
+    if normalized.startswith("/pipeline-lab/") or normalized.startswith("/.ai/") or normalized.startswith("/.agents/"):
+        return ROOT / normalized.lstrip("/")
+    if path.is_absolute():
+        return path
+    return ROOT / path
+
+
 def validate_run(run_dir: Path, min_final_score: float) -> list[dict[str, Any]]:
     summary_path = run_dir / "summary.yaml"
     if not summary_path.exists():
@@ -90,7 +104,7 @@ def validate_card(card: dict[str, Any], min_final_score: float) -> list[dict[str
     round_number = int(card.get("round", 0))
     artifacts = card.get("artifacts") or {}
 
-    feature_path = Path(artifacts.get("feature", ""))
+    feature_path = resolve_artifact_path(artifacts.get("feature"))
     run_dir = feature_path.parents[1] if feature_path.parts else Path(".")
     prompt_path = run_dir / "prompt.md"
     if not prompt_path.exists():
@@ -108,7 +122,7 @@ def validate_card(card: dict[str, Any], min_final_score: float) -> list[dict[str
         if not path_text:
             findings.append({"status": "fail", "case": case, "message": f"missing artifact path: {artifact_name}"})
             continue
-        path = Path(path_text)
+        path = resolve_artifact_path(path_text)
         if not path.exists():
             findings.append({"status": "fail", "case": case, "message": f"artifact does not exist: {path}"})
             continue
@@ -117,8 +131,8 @@ def validate_card(card: dict[str, Any], min_final_score: float) -> list[dict[str
             if section not in content:
                 findings.append({"status": "fail", "case": case, "message": f"{artifact_name} missing {section}"})
 
-    findings.extend(validate_slices(case, Path(artifacts.get("slices", ""))))
-    findings.extend(validate_evidence(case, Path(artifacts.get("evidence", ""))))
+    findings.extend(validate_slices(case, resolve_artifact_path(artifacts.get("slices"))))
+    findings.extend(validate_evidence(case, resolve_artifact_path(artifacts.get("evidence"))))
     findings.extend(validate_domain_signals(case, source, artifacts))
 
     if round_number == 3 and float(card.get("overall", 0.0)) < min_final_score:
@@ -166,8 +180,9 @@ def validate_domain_signals(case: str, source: str, artifacts: dict[str, str]) -
     corpus = ""
     for key in ("feature", "architecture", "tech_design", "review", "feature_card"):
         path_text = artifacts.get(key)
-        if path_text and Path(path_text).exists():
-            corpus += "\n" + read_text(Path(path_text)).lower()
+        path = resolve_artifact_path(path_text)
+        if path_text and path.exists():
+            corpus += "\n" + read_text(path).lower()
     return [
         {"status": "fail", "case": case, "message": f"missing domain signal: {signal}"}
         for signal in expected

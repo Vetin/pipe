@@ -249,9 +249,9 @@ Disable reset endpoints and preserve existing login behavior.
         state["stale"]["feature_card"] = False
         state["stale"]["canonical_docs"] = False
         state_path.write_text(yaml.safe_dump(state, sort_keys=False), encoding="utf-8")
-        with (workspace / "execution.md").open("a", encoding="utf-8") as handle:
-            handle.write(
-                """
+        execution_path = workspace / "execution.md"
+        execution = execution_path.read_text(encoding="utf-8")
+        latest = """
 ## Latest Status
 
 Current step: finish
@@ -259,7 +259,13 @@ Next recommended skill: nfp-12-promote
 Blocking issues: none
 Last updated: 2026-05-12T12:00:00Z
 """
-            )
+        if "## Latest Status" in execution:
+            prefix, rest = execution.split("## Latest Status", 1)
+            next_heading = rest.find("\n## ")
+            suffix = rest[next_heading:] if next_heading != -1 else ""
+            execution_path.write_text(prefix.rstrip() + "\n\n" + latest + suffix, encoding="utf-8")
+        else:
+            execution_path.write_text(execution.rstrip() + "\n\n" + latest, encoding="utf-8")
         return workspace
 
     def create_workspace(self, run_id):

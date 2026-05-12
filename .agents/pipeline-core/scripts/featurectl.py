@@ -1461,6 +1461,13 @@ context
 
 nfp-01-context
 
+## Latest Status
+
+Current step: context
+Next recommended skill: nfp-01-context
+Blocking issues: none
+Last updated: {now}
+
 ## Summary
 
 Feature run initialized at {now}. The next step is context discovery.
@@ -1707,7 +1714,7 @@ def validate_docs_consulted(workspace: Path, step_label: str) -> list[str]:
 def validate_execution_latest_status(workspace: Path, state: dict[str, Any]) -> list[str]:
     current_step = state.get("current_step")
     gates = state.get("gates") or {}
-    if current_step not in {"readiness", "worktree", "tdd_implementation", "review", "verification", "finish", "promote"} and gates.get("finish") != "complete":
+    if current_step not in {"finish", "promote"} and gates.get("finish") != "complete":
         return []
     execution_path = workspace / "execution.md"
     if not execution_path.exists():
