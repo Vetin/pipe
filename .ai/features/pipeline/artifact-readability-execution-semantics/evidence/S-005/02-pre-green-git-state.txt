@@ -1,0 +1,1 @@
+S-005 curated knowledge, ADRs, and final docs present

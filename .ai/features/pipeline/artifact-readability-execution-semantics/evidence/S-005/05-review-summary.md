@@ -1,0 +1,1 @@
+Review passed: ADRs record promoted-readonly lifecycle, canonical-vs-lab-signal retrieval, execution event semantics, and manual soft scoring. Shared knowledge now has source-linked control-plane, lifecycle, module, and integration sections.

@@ -122,6 +122,7 @@ Last updated: 2026-05-12T15:47:24Z
 - 2026-05-12T15:44:17Z gate=review old_status=pending new_status=complete by=codex note=manual quality review recorded with no blocking findings
 - 2026-05-12T15:44:24Z gate=verification old_status=pending new_status=complete by=codex note=full feature-pipeline suite and goal validation passed
 - 2026-05-12T15:44:31Z gate=finish old_status=pending new_status=complete by=codex note=feature card and shared knowledge updates prepared
+- 2026-05-12T15:47:24Z promoted feature memory to .ai/features/pipeline/artifact-readability-execution-semantics
 
 ## History
 

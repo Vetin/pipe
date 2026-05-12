@@ -1,0 +1,1 @@
+Red run failed as expected: generated project-overview/discovered-signals contained long one-line catalog entries and empty feature index fixture had weak line-break expectations. Summary: 5 failed, 2 passed, 11 subtests passed.

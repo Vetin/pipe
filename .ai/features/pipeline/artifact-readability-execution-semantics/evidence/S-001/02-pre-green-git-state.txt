@@ -1,0 +1,14 @@
+## feature/pipeline-artifact-readability-execution-semantics-20260512-readability-exec
+ M .agents/pipeline-core/scripts/featurectl.py
+ M .ai/knowledge/architecture-overview.md
+ M .ai/knowledge/contracts-overview.md
+ M .ai/knowledge/discovered-signals.md
+ M .ai/knowledge/features-overview.md
+ M .ai/knowledge/integration-map.md
+ M .ai/knowledge/module-map.md
+ M .ai/knowledge/project-index.yaml
+ M .ai/knowledge/project-overview.md
+ M .ai/knowledge/project-snapshot.md
+ M .ai/knowledge/testing-overview.md
+?? .ai/feature-workspaces/pipeline/artifact-readability-execution-semantics--20260512-readability-exec/evidence/
+?? tests/feature_pipeline/test_artifact_formatting.py

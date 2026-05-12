@@ -1,0 +1,1 @@
+pipelinebench.py score-run --soft-score-file /tmp/pipelinebench-manual-score.yaml && pipelinebench.py generate-report

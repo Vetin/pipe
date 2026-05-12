@@ -1,0 +1,1 @@
+Review passed: soft-score files are data-only YAML, hard checks remain deterministic, placeholder soft scores remain the default, and reports expose totals plus reviewer comments for side-by-side comparison.

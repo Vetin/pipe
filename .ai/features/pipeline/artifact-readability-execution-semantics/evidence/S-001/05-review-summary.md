@@ -1,0 +1,1 @@
+Review focus checked: write_yaml uses block-style readable dump; generated Markdown catalog entries are multi-line; checked-in knowledge docs have no lines over 220 chars in targeted formatting test.

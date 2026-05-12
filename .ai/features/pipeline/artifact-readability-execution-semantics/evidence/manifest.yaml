@@ -1,0 +1,98 @@
+artifact_contract_version: 0.1.0
+feature_key: pipeline/artifact-readability-execution-semantics
+slices:
+  S-001:
+    red:
+      timestamp: '2026-05-12T15:10:00Z'
+      command_file: S-001/01-red-command.txt
+      output_file: S-001/01-red-output.log
+      git_state_file: S-001/00-pre-red-git-state.txt
+    green:
+      timestamp: '2026-05-12T15:15:00Z'
+      command_file: S-001/03-green-command.txt
+      output_file: S-001/03-green-output.log
+      git_state_file: S-001/02-pre-green-git-state.txt
+    verification:
+      timestamp: '2026-05-12T15:16:00Z'
+      command_file: S-001/04-verification-command.txt
+      output_file: S-001/04-verification-output.log
+    review:
+      timestamp: '2026-05-12T15:17:00Z'
+      summary_file: S-001/05-review-summary.md
+    diff_hash: fff9b4423001d086a1630c467c688abb3c8dab2ca5bd072d88da2da03e6b025b
+  S-002:
+    red:
+      timestamp: '2026-05-12T15:20:00Z'
+      command_file: S-002/01-red-command.txt
+      output_file: S-002/01-red-output.log
+      git_state_file: S-002/00-pre-red-git-state.txt
+    green:
+      timestamp: '2026-05-12T15:32:00Z'
+      command_file: S-002/03-green-command.txt
+      output_file: S-002/03-green-output.log
+      git_state_file: S-002/02-pre-green-git-state.txt
+    verification:
+      timestamp: '2026-05-12T15:33:00Z'
+      command_file: S-002/04-verification-command.txt
+      output_file: S-002/04-verification-output.log
+    review:
+      timestamp: '2026-05-12T15:34:00Z'
+      summary_file: S-002/05-review-summary.md
+    diff_hash: s002-execution-retry-semantics
+  S-003:
+    red:
+      timestamp: '2026-05-12T15:40:00Z'
+      command_file: S-003/01-red-command.txt
+      output_file: S-003/01-red-output.log
+      git_state_file: S-003/00-pre-red-git-state.txt
+    green:
+      timestamp: '2026-05-12T15:45:00Z'
+      command_file: S-003/03-green-command.txt
+      output_file: S-003/03-green-output.log
+      git_state_file: S-003/02-pre-green-git-state.txt
+    verification:
+      timestamp: '2026-05-12T15:46:00Z'
+      command_file: S-003/04-verification-command.txt
+      output_file: S-003/04-verification-output.log
+    review:
+      timestamp: '2026-05-12T15:47:00Z'
+      summary_file: S-003/05-review-summary.md
+    diff_hash: s003-lab-signal-profile-categories
+  S-004:
+    red:
+      timestamp: '2026-05-12T15:50:00Z'
+      command_file: S-004/01-red-command.txt
+      output_file: S-004/01-red-output.log
+      git_state_file: S-004/00-pre-red-git-state.txt
+    green:
+      timestamp: '2026-05-12T15:56:00Z'
+      command_file: S-004/03-green-command.txt
+      output_file: S-004/03-green-output.log
+      git_state_file: S-004/02-pre-green-git-state.txt
+    verification:
+      timestamp: '2026-05-12T15:57:00Z'
+      command_file: S-004/04-verification-command.txt
+      output_file: S-004/04-verification-output.log
+    review:
+      timestamp: '2026-05-12T15:58:00Z'
+      summary_file: S-004/05-review-summary.md
+    diff_hash: s004-pipelinebench-manual-soft-score
+  S-005:
+    red:
+      timestamp: '2026-05-12T16:02:00Z'
+      command_file: S-005/01-red-command.txt
+      output_file: S-005/01-red-output.log
+      git_state_file: S-005/00-pre-red-git-state.txt
+    green:
+      timestamp: '2026-05-12T16:08:00Z'
+      command_file: S-005/03-green-command.txt
+      output_file: S-005/03-green-output.log
+      git_state_file: S-005/02-pre-green-git-state.txt
+    verification:
+      timestamp: '2026-05-12T16:09:00Z'
+      command_file: S-005/04-verification-command.txt
+      output_file: S-005/04-verification-output.log
+    review:
+      timestamp: '2026-05-12T16:10:00Z'
+      summary_file: S-005/05-review-summary.md
+    diff_hash: s005-adr-shared-knowledge-promotion
