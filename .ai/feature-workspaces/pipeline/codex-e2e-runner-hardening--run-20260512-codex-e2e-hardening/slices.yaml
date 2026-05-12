@@ -1,0 +1,70 @@
+artifact_contract_version: 0.1.0
+slices:
+  - id: S-001
+    title: Harden E2E source, worktree, and prompt contracts
+    status: pending
+    dependencies: []
+    requirements:
+      - R-001
+      - R-003
+      - R-004
+      - R-005
+    ownership:
+      - pipeline-lab/showcases/scripts/run_codex_e2e_case.py
+      - tests/feature_pipeline/test_codex_e2e_runner.py
+      - pipeline-lab/showcases/fixtures/toy-greeting/**
+      - pipeline-lab/showcases/codex-real-smoke-cases.yaml
+    tdd:
+      red_command: python -m pytest tests/feature_pipeline/test_codex_e2e_runner.py
+      green_command: python -m pytest tests/feature_pipeline/test_codex_e2e_runner.py
+      expected_red: tests fail for missing template source support, replacement guard, or prompt profile handling
+    review_focus:
+      - no silent destructive branch or worktree replacement
+      - fixture repos are initialized cleanly and deterministically
+      - native prompt rule remains enforced
+
+  - id: S-002
+    title: Harden debug wrapper validation and portable reports
+    status: pending
+    dependencies:
+      - S-001
+    requirements:
+      - R-002
+      - R-005
+      - R-006
+    ownership:
+      - pipeline-lab/showcases/scripts/run_codex_debug_pipeline.py
+      - pipeline-lab/showcases/scripts/validate_pipeline_goals.py
+      - tests/feature_pipeline/test_codex_debug_runner.py
+      - tests/feature_pipeline/test_pipeline_goal_validation.py
+    tdd:
+      red_command: python -m pytest tests/feature_pipeline/test_codex_debug_runner.py tests/feature_pipeline/test_pipeline_goal_validation.py
+      green_command: python -m pytest tests/feature_pipeline/test_codex_debug_runner.py tests/feature_pipeline/test_pipeline_goal_validation.py
+      expected_red: tests fail for missing portable-output option or missing real-mode smoke completion support
+    review_focus:
+      - validation consumes actual paths before portable rewriting
+      - real mode is not confused with fake Codex unit tests
+      - committed showcase artifacts do not leak machine-local paths
+
+  - id: S-003
+    title: Regenerate showcase outputs and promote memory
+    status: pending
+    dependencies:
+      - S-001
+      - S-002
+    requirements:
+      - R-007
+    ownership:
+      - pipeline-lab/showcases/codex-debug-runs/20260512-debug/**
+      - pipeline-lab/showcases/pipeline-goal-validation-report.md
+      - .ai/feature-workspaces/pipeline/codex-e2e-runner-hardening--run-20260512-codex-e2e-hardening/**
+      - .ai/features/pipeline/codex-e2e-runner-hardening/**
+    tdd:
+      red_command: python pipeline-lab/showcases/scripts/validate_pipeline_goals.py --passes 3
+      green_command: python pipeline-lab/showcases/scripts/validate_pipeline_goals.py --passes 3
+      expected_red: validation fails until regenerated debug run and promoted feature memory are present
+    review_focus:
+      - deterministic validation passes three times
+      - feature-card and shared knowledge updates are present
+      - final artifacts match the implementation
+
