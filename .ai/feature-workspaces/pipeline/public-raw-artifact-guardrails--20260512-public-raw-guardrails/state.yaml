@@ -1,7 +1,7 @@
 artifact_contract_version: 0.1.0
 feature_key: pipeline/public-raw-artifact-guardrails
 run_id: 20260512-public-raw-guardrails
-current_step: readiness
+current_step: review
 lifecycle: active
 read_only: false
 worktree:
@@ -12,8 +12,8 @@ gates:
   architecture: approved
   tech_design: approved
   slicing_readiness: approved
-  implementation: approved
-  review: pending
+  implementation: complete
+  review: complete
   verification: pending
   finish: pending
 stale:

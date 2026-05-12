@@ -106,17 +106,30 @@ None yet.
   - Decision or pattern reused: red/green/verification/review evidence per slice.
   - Confidence: high.
 
+## Docs Consulted: Review
+
+- `.agents/pipeline-core/references/review-and-verification.md`
+  - Used for: strict review lenses and blocking-finding policy.
+  - Decision or pattern reused: note-level review with evidence when no blockers remain.
+  - Confidence: high.
+- `.agents/pipeline-core/references/quality-rubric.md`
+  - Used for: maintainability and source-truth review criteria.
+  - Decision or pattern reused: validate tests cover stale claims and real regressions.
+  - Confidence: high.
+
 ## Event Log
 
 - 2026-05-12T20:33:38Z event_type=run_initialized step=context next=nfp-01-context
-- 2026-05-12T20:36:02Z gate=feature_contract old_status=pending new_status=approved by=codex note=review findings converted to requirements
-- 2026-05-12T20:36:02Z gate=architecture old_status=pending new_status=approved by=codex note=source-backed architecture created
-- 2026-05-12T20:36:02Z gate=tech_design old_status=pending new_status=approved by=codex note=technical design created
-- 2026-05-12T20:36:02Z gate=slicing_readiness old_status=pending new_status=approved by=codex note=implementation slices created
-- 2026-05-12T20:36:02Z gate=implementation old_status=blocked new_status=approved by=codex note=ready to implement guarded repair slices
+- 2026-05-12T20:36:02Z event_type=gate_status_changed gate=feature_contract old_status=pending new_status=approved by=codex note=review-findings-converted-to-requirements
+- 2026-05-12T20:36:02Z event_type=gate_status_changed gate=architecture old_status=pending new_status=approved by=codex note=source-backed-architecture-created
+- 2026-05-12T20:36:02Z event_type=gate_status_changed gate=tech_design old_status=pending new_status=approved by=codex note=technical-design-created
+- 2026-05-12T20:36:02Z event_type=gate_status_changed gate=slicing_readiness old_status=pending new_status=approved by=codex note=implementation-slices-created
+- 2026-05-12T20:36:02Z event_type=gate_status_changed gate=implementation old_status=blocked new_status=approved by=codex note=ready-to-implement-guarded-repair-slices
 - 2026-05-12T20:39:03Z event_type=slice_completed slice=S-001 attempt=1 reason=initial
 - 2026-05-12T20:41:10Z event_type=slice_completed slice=S-002 attempt=1 reason=initial
 - 2026-05-12T20:43:59Z event_type=slice_completed slice=S-003 attempt=1 reason=initial
+- 2026-05-12T20:44:16Z event_type=gate_status_changed gate=implementation old_status=approved new_status=complete by=codex note=all-guardrail-slices-complete
+- 2026-05-12T20:45:31Z event_type=gate_status_changed gate=review old_status=pending new_status=complete by=codex note=strict-review-found-no-blockers
 
 ## History
 
@@ -125,7 +138,7 @@ None yet.
 
 ## Current Run State
 
-Current step: readiness
-Next recommended skill: nfp-06-readiness
+Current step: review
+Next recommended skill: nfp-09-review
 Blocking issues: none
-Last updated: 2026-05-12T20:36:06Z
+Last updated: 2026-05-12T20:44:20Z
