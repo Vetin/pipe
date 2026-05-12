@@ -667,9 +667,11 @@ def generated_or_vendor_path(path: str) -> bool:
         "methodology",
         "pipeline-lab/showcases/native-emulation-runs",
         "pipeline-lab/showcases/codex-e2e-runs",
+        "pipeline-lab/showcases/codex-debug-runs",
         "pipeline-lab/showcases/nfp-real-runs",
         "pipeline-lab/showcases/implementation-runs",
         "pipeline-lab/showcases/materialized-runs",
+        "pipeline-lab/showcases/random-feature-stress-runs",
         "pipeline-lab/showcases/real-runs",
     )
     normalized = "/".join(parts)
@@ -805,6 +807,8 @@ def collect_feature_signals(root: Path, files: list[str], doc_files: list[str]) 
 def feature_signal_candidate_path(path: str) -> bool:
     if Path(path).name in {"AGENTS.md"}:
         return False
+    if generated_showcase_report_path(path):
+        return False
     blocked_prefixes = (
         ".ai/knowledge/",
         ".ai/feature-workspaces/",
@@ -821,8 +825,23 @@ def feature_signal_candidate_path(path: str) -> bool:
         "pipeline-lab/showcases/native-emulation-runs/",
         "pipeline-lab/showcases/native-implementation-runs/",
         "pipeline-lab/showcases/init-profile-runs/",
+        "pipeline-lab/showcases/codex-debug-runs/",
+        "pipeline-lab/showcases/random-feature-stress-runs/",
     )
     return not any(path.startswith(prefix) for prefix in blocked_prefixes)
+
+
+def generated_showcase_report_path(path: str) -> bool:
+    if not path.startswith("pipeline-lab/showcases/"):
+        return False
+    name = Path(path).name
+    return name.endswith("-report.md") or name in {
+        "validation.md",
+        "native-emulation-validation-report.md",
+        "native-emulation-judge-report.md",
+        "pipeline-goal-validation-report.md",
+        "init-profile-report.md",
+    }
 
 
 def feature_signal_text(text: str) -> bool:

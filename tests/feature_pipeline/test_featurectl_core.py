@@ -101,6 +101,31 @@ class FeatureCtlCoreTests(unittest.TestCase):
         self.assertIn("Current Feature Picture", features)
         self.assertIn("Reset Password", features)
 
+    def test_init_profile_filters_generated_showcase_feature_signals(self):
+        (self.repo / "docs").mkdir()
+        (self.repo / "docs/features.md").write_text("# Feature: Real Billing Dashboard\n", encoding="utf-8")
+        generated = self.repo / "pipeline-lab/showcases/random-feature-stress-runs/20260512/features/01-noisy/artifacts"
+        generated.mkdir(parents=True)
+        (generated / "feature.md").write_text("# Feature: Generated Stress Artifact\n", encoding="utf-8")
+        report = self.repo / "pipeline-lab/showcases/native-emulation-report.md"
+        report.parent.mkdir(parents=True, exist_ok=True)
+        report.write_text("# Native Feature Emulation Report\n", encoding="utf-8")
+        run(["git", "add", "."], self.repo)
+        run(["git", "commit", "-m", "add real and generated feature docs"], self.repo)
+
+        run([sys.executable, str(SCRIPT), "init", "--profile-project"], self.repo)
+
+        index = yaml.safe_load((self.repo / ".ai/knowledge/project-index.yaml").read_text(encoding="utf-8"))
+        signals = {item["signal"] for item in index["feature_signals"]}
+        sources = {item["source"] for item in index["feature_signals"]}
+        catalog_names = {item["name"] for item in index["feature_catalog"]}
+        self.assertIn("Feature: Real Billing Dashboard", signals)
+        self.assertIn("Real Billing Dashboard", catalog_names)
+        self.assertNotIn("Feature: Generated Stress Artifact", signals)
+        self.assertNotIn("Generated Stress Artifact", catalog_names)
+        self.assertNotIn("Native Feature Emulation Report", signals)
+        self.assertFalse(any(source.startswith("pipeline-lab/showcases/random-feature-stress-runs/") for source in sources))
+
     def test_init_outside_git_fails_clearly(self):
         outside = self.tempdir / "outside"
         outside.mkdir()
