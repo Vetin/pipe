@@ -89,6 +89,10 @@ class FinishPromoteTests(unittest.TestCase):
         self.assertEqual(index["features"][0]["path"], ".ai/features/auth/reset-password")
         self.assertIn("auth/reset-password", overview)
         self.assertEqual(yaml.safe_load((canonical / "feature.yaml").read_text(encoding="utf-8"))["status"], "complete")
+        knowledge_features = (self.repo / ".ai/knowledge/features-overview.md").read_text(encoding="utf-8")
+        project_index = yaml.safe_load((self.repo / ".ai/knowledge/project-index.yaml").read_text(encoding="utf-8"))
+        self.assertIn("auth/reset-password", knowledge_features)
+        self.assertIn("auth/reset-password", {item["feature_key"] for item in project_index["canonical_features"]})
         source_feature = yaml.safe_load((workspace / "feature.yaml").read_text(encoding="utf-8"))
         source_state = yaml.safe_load((workspace / "state.yaml").read_text(encoding="utf-8"))
         self.assertEqual(source_feature["status"], "promoted-readonly")
@@ -115,6 +119,23 @@ class FinishPromoteTests(unittest.TestCase):
 
         self.assertNotEqual(result.returncode, 0)
         self.assertIn(".ai/features/overview.md missing canonical feature auth/reset-password", result.stdout)
+
+    def test_validate_rejects_stale_knowledge_canonical_memory(self):
+        workspace = self.completed_workspace("run-stale-knowledge")
+        run([sys.executable, str(SCRIPT), "promote", "--workspace", str(workspace)], self.repo)
+        (self.repo / ".ai/knowledge/features-overview.md").write_text(
+            "# Features Overview\n\n## Canonical Feature Memory\n\nNo canonical features have been promoted yet.\n",
+            encoding="utf-8",
+        )
+
+        result = run(
+            [sys.executable, str(SCRIPT), "validate", "--workspace", str(self.repo / ".ai/features/auth/reset-password")],
+            self.repo,
+            check=False,
+        )
+
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn(".ai/knowledge/features-overview.md missing canonical feature auth/reset-password", result.stdout)
 
     def test_validate_rejects_complete_canonical_feature_with_draft_status(self):
         workspace = self.completed_workspace("run-draft-canonical")

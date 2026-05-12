@@ -1,14 +1,14 @@
 artifact_contract_version: 0.1.0
 generated_by: featurectl.py init --profile-project
-generated_at: '2026-05-12T15:31:05Z'
+generated_at: '2026-05-12T17:33:55Z'
 project:
-  name: pipeline-artifact-readability-execution-semantics-20260512-readability-exec
-  root: /Users/egormasnankin/work/harness-pipeline/worktrees/pipeline-artifact-readability-execution-semantics-20260512-readability-exec
-  branch: feature/pipeline-artifact-readability-execution-semantics-20260512-readability-exec
-  head: 949558a
+  name: pipe
+  root: .
+  branch: feature/pipeline-portable-artifact-consistency-20260512-portable-consistency
+  head: 4c1482d
   remote: git@github.com:Vetin/pipe.git
 counts:
-  tracked_files: 1619
+  tracked_files: 1724
   profiled_files: 186
   source_files: 2
   test_files: 37
@@ -117,6 +117,8 @@ integration_examples:
 - .agents/pipeline-core/references/workflow-state-machine.md
 - .ai/knowledge/integration-map.md
 canonical_features:
+- feature_key: pipeline/artifact-readability-execution-semantics
+  path: .ai/features/pipeline/artifact-readability-execution-semantics
 - feature_key: pipeline/codex-e2e-runner-hardening
   path: .ai/features/pipeline/codex-e2e-runner-hardening
 - feature_key: pipeline/lifecycle-hygiene-profile-noise
@@ -135,6 +137,13 @@ feature_signals:
   signal: Native Feature Pipeline Validation
   kind: lab_signal
 feature_catalog:
+- name: pipeline/artifact-readability-execution-semantics
+  kind: canonical
+  confidence: high
+  description: Promoted feature memory recorded by the Native Feature Pipeline.
+  source_count: 1
+  sources:
+  - .ai/features/pipeline/artifact-readability-execution-semantics
 - name: pipeline/codex-e2e-runner-hardening
   kind: canonical
   confidence: high

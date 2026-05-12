@@ -1,0 +1,1 @@
+Reviewed S-001 diff: promotion now syncs canonical features into .ai/knowledge, init profile uses repository-relative root and remote-derived project name fallback, canonical catalog entries no longer use contradictory Why not canonical label, and validation rejects stale knowledge feature/project-index memory. No unrelated user files touched.

@@ -1,0 +1,1 @@
+PASSED after implementation: project root is repository-relative, remote repo name is used before worktree directory fallback, canonical discovered signals use Canonical reason, promotion refreshes .ai/knowledge canonical memory, and validation rejects stale knowledge canonical memory.

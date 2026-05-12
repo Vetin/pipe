@@ -3,8 +3,14 @@ feature_key: pipeline/portable-artifact-consistency
 slices:
 - id: S-001
   title: Canonical knowledge portability
-  linked_requirements: [FR-001, FR-002, FR-003]
-  linked_acceptance_criteria: [AC-001, AC-002, AC-003]
+  linked_requirements:
+  - FR-001
+  - FR-002
+  - FR-003
+  linked_acceptance_criteria:
+  - AC-001
+  - AC-002
+  - AC-003
   linked_adrs: []
   linked_contracts: []
   dependencies: []
@@ -34,19 +40,26 @@ slices:
   review_focus:
   - canonical memory cannot drift
   - profile output is portable
-  evidence_status: pending
-  status: pending
+  evidence_status: complete
+  status: complete
   iteration_budget: 4
   rollback_point: pre-slice git state
   independent_verification: python -m pytest tests/feature_pipeline/test_featurectl_core.py
   failure_triage_notes: classify failures as profile rendering, validation, or fixture drift
 - id: S-002
   title: Structured execution and evidence metadata
-  linked_requirements: [FR-004, FR-005, FR-007]
-  linked_acceptance_criteria: [AC-004, AC-005, AC-007]
+  linked_requirements:
+  - FR-004
+  - FR-005
+  - FR-007
+  linked_acceptance_criteria:
+  - AC-004
+  - AC-005
+  - AC-007
   linked_adrs: []
   linked_contracts: []
-  dependencies: [S-001]
+  dependencies:
+  - S-001
   priority: 2
   complexity: 6
   critical_path: true
@@ -82,11 +95,15 @@ slices:
   failure_triage_notes: classify failures as event migration, metadata migration, or path convention drift
 - id: S-003
   title: Readability guards and promotion
-  linked_requirements: [FR-006]
-  linked_acceptance_criteria: [AC-006]
+  linked_requirements:
+  - FR-006
+  linked_acceptance_criteria:
+  - AC-006
   linked_adrs: []
   linked_contracts: []
-  dependencies: [S-001, S-002]
+  dependencies:
+  - S-001
+  - S-002
   priority: 3
   complexity: 4
   critical_path: false

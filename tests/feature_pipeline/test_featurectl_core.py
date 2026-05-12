@@ -80,6 +80,8 @@ class FeatureCtlCoreTests(unittest.TestCase):
         self.assertIn("detected_feature_catalog_items:", result.stdout)
         index = yaml.safe_load((self.repo / ".ai/knowledge/project-index.yaml").read_text(encoding="utf-8"))
         self.assertEqual(index["project"]["name"], "profiled-toy-app")
+        self.assertEqual(index["project"]["root"], ".")
+        self.assertNotIn(str(self.repo), (self.repo / ".ai/knowledge/project-index.yaml").read_text(encoding="utf-8"))
         self.assertGreaterEqual(index["counts"]["source_files"], 1)
         self.assertGreaterEqual(index["counts"]["test_files"], 1)
         self.assertGreaterEqual(len(index["feature_catalog"]), 1)
@@ -157,6 +159,62 @@ class FeatureCtlCoreTests(unittest.TestCase):
         self.assertIn("Use lab_signal only for pipeline-lab or benchmark work.", discovered)
         self.assertNotIn("Generated Stress Artifact", discovered)
         self.assertNotIn("Root Spec Noise", discovered)
+
+    def test_init_profile_uses_canonical_reason_for_canonical_catalog_entries(self):
+        canonical = self.repo / ".ai/features/billing/invoices"
+        canonical.mkdir(parents=True)
+        (self.repo / ".ai/features/index.yaml").parent.mkdir(parents=True, exist_ok=True)
+        (self.repo / ".ai/features/index.yaml").write_text(
+            yaml.safe_dump(
+                {
+                    "artifact_contract_version": "0.1.0",
+                    "features": [
+                        {
+                            "feature_key": "billing/invoices",
+                            "title": "Invoices",
+                            "status": "complete",
+                            "path": ".ai/features/billing/invoices",
+                            "run_id": "run-invoices",
+                        }
+                    ],
+                },
+                sort_keys=False,
+            ),
+            encoding="utf-8",
+        )
+        (canonical / "feature.yaml").write_text(
+            yaml.safe_dump(
+                {
+                    "artifact_contract_version": "0.1.0",
+                    "feature_key": "billing/invoices",
+                    "title": "Invoices",
+                    "status": "complete",
+                    "run_id": "run-invoices",
+                    "canonical_path": ".ai/features/billing/invoices",
+                },
+                sort_keys=False,
+            ),
+            encoding="utf-8",
+        )
+        run(["git", "add", "."], self.repo)
+        run(["git", "commit", "-m", "add canonical feature"], self.repo)
+
+        run([sys.executable, str(SCRIPT), "init", "--profile-project"], self.repo)
+
+        discovered = (self.repo / ".ai/knowledge/discovered-signals.md").read_text(encoding="utf-8")
+        self.assertIn("Signal: billing/invoices", discovered)
+        self.assertIn("Kind: canonical", discovered)
+        self.assertIn("Canonical reason: Promoted feature memory recorded by the Native Feature Pipeline.", discovered)
+        canonical_section = discovered.split("Signal: billing/invoices", 1)[1].split("- Signal:", 1)[0]
+        self.assertNotIn("Why not canonical", canonical_section)
+
+    def test_init_profile_uses_remote_name_before_worktree_directory_name(self):
+        run(["git", "remote", "add", "origin", "git@github.com:Vetin/pipe.git"], self.repo)
+
+        run([sys.executable, str(SCRIPT), "init", "--profile-project"], self.repo)
+
+        index = yaml.safe_load((self.repo / ".ai/knowledge/project-index.yaml").read_text(encoding="utf-8"))
+        self.assertEqual(index["project"]["name"], "pipe")
 
     def test_init_outside_git_fails_clearly(self):
         outside = self.tempdir / "outside"
