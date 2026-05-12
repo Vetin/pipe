@@ -75,6 +75,7 @@ Docs Consulted: Slicing
 - 2026-05-12T17:52:54Z gate=review old_status=pending new_status=complete by=codex note=strict review passed
 - 2026-05-12T17:52:54Z gate=verification old_status=pending new_status=complete by=codex note=full feature pipeline suite passed
 - 2026-05-12T17:52:54Z gate=finish old_status=pending new_status=complete by=codex note=feature card and shared knowledge updates prepared
+- 2026-05-12T17:53:58Z promoted feature memory to .ai/features/pipeline/portable-artifact-consistency
 
 ## History
 

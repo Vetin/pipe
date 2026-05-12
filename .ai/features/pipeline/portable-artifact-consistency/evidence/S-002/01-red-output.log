@@ -1,0 +1,1 @@
+FAILED as expected before implementation: complete-slice events lack reason=initial, semantic labels are stored as diff_hash, validation accepts semantic diff_hash values, and unstructured completed-slice event lines are not rejected consistently.

@@ -1,0 +1,60 @@
+artifact_contract_version: 0.1.0
+feature_key: pipeline/portable-artifact-consistency
+slices:
+  S-001:
+    red:
+      timestamp: '2026-05-12T17:29:08Z'
+      command_file: S-001/01-red-command.txt
+      output_file: S-001/01-red-output.log
+      git_state_file: S-001/00-pre-red-git-state.txt
+    green:
+      timestamp: '2026-05-12T17:34:08Z'
+      command_file: S-001/03-green-command.txt
+      output_file: S-001/03-green-output.log
+      git_state_file: S-001/02-pre-green-git-state.txt
+    verification:
+      timestamp: '2026-05-12T17:35:08Z'
+      command_file: S-001/04-verification-command.txt
+      output_file: S-001/04-verification-output.log
+    review:
+      timestamp: '2026-05-12T17:35:08Z'
+      summary_file: S-001/05-review-summary.md
+    diff_hash: 0c194457394bd38dff479e3161a4e8776b977735a0c9cb955ac5bc88b72b73fc
+  S-002:
+    red:
+      timestamp: '2026-05-12T17:39:33Z'
+      command_file: S-002/01-red-command.txt
+      output_file: S-002/01-red-output.log
+      git_state_file: S-002/00-pre-red-git-state.txt
+    green:
+      timestamp: '2026-05-12T17:47:26Z'
+      command_file: S-002/03-green-command.txt
+      output_file: S-002/03-green-output.log
+      git_state_file: S-002/02-pre-green-git-state.txt
+    verification:
+      timestamp: '2026-05-12T17:47:26Z'
+      command_file: S-002/04-verification-command.txt
+      output_file: S-002/04-verification-output.log
+    review:
+      timestamp: '2026-05-12T17:47:26Z'
+      summary_file: S-002/05-review-summary.md
+    diff_hash: 29e8c080d14e4a01bccb62bc60d82a8233d5fdb891283485c05af368d00bfeb3
+  S-003:
+    red:
+      timestamp: '2026-05-12T17:49:46Z'
+      command_file: S-003/01-red-command.txt
+      output_file: S-003/01-red-output.log
+      git_state_file: S-003/00-pre-red-git-state.txt
+    green:
+      timestamp: '2026-05-12T17:51:17Z'
+      command_file: S-003/03-green-command.txt
+      output_file: S-003/03-green-output.log
+      git_state_file: S-003/02-pre-green-git-state.txt
+    verification:
+      timestamp: '2026-05-12T17:51:17Z'
+      command_file: S-003/04-verification-command.txt
+      output_file: S-003/04-verification-output.log
+    review:
+      timestamp: '2026-05-12T17:51:17Z'
+      summary_file: S-003/05-review-summary.md
+    diff_hash: 7aa9c462a1141f6e80dad30b9a475a324c6c5774bc987f14b8946707305205ba

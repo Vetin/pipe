@@ -1,0 +1,1 @@
+PASSED: test_gates_and_evidence.py 9 passed, test_finish_promote.py 26 passed, test_featurectl_core.py 10 passed; canonical feature validation passed for artifact-readability-execution-semantics, real-codex-showcase-debug-runner, source-truth-hardening, lifecycle-hygiene-profile-noise, random-feature-stress-lab, and codex-e2e-runner-hardening.

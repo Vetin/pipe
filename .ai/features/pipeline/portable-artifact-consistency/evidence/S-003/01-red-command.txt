@@ -1,0 +1,1 @@
+python .agents/pipeline-core/scripts/featurectl.py complete-slice --workspace .ai/feature-workspaces/pipeline/portable-artifact-consistency--20260512-portable-consistency --slice S-003 --diff-hash s003-readability-guard

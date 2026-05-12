@@ -1,0 +1,1 @@
+Reviewed S-002 diff: complete-slice preserves actual hexadecimal diff hashes, moves semantic labels to change_label, records retry supersedes metadata, validation rejects legacy active completed-slice lines, and existing canonical/workspace execution logs and manifests were migrated. Worktree paths now use ../worktrees consistently.

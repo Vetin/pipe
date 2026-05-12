@@ -3,7 +3,7 @@ feature_key: pipeline/portable-artifact-consistency
 domain: pipeline
 slug: portable-artifact-consistency
 title: Portable Artifact Consistency
-status: promoted-readonly
+status: complete
 run_id: 20260512-portable-consistency
 branch: feature/pipeline-portable-artifact-consistency-20260512-portable-consistency
 worktree: ../worktrees/pipeline-portable-artifact-consistency-20260512-portable-consistency
@@ -14,4 +14,4 @@ keywords:
 - pipeline
 - portable-artifact-consistency
 created_at: '2026-05-12T17:17:48Z'
-updated_at: '2026-05-12T17:53:58Z'
+updated_at: '2026-05-12T17:17:48Z'
