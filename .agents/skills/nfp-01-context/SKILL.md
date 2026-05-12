@@ -47,6 +47,12 @@ Project init profile:
 
 - Read `.ai/knowledge/project-index.yaml` and `.ai/knowledge/project-snapshot.md`
   after the profile is generated.
+- Read `.ai/knowledge/features-overview.md` before `.ai/knowledge/discovered-signals.md`.
+  Canonical feature memory is the first retrieval layer; discovered signals are
+  only source leads until verified.
+- Treat `kind: lab_signal` entries as pipeline-lab or benchmark context only.
+  Do not use lab signals as product architecture evidence unless the requested
+  work is itself pipeline-lab, benchmark, showcase, or validation tooling.
 - Treat generated knowledge as a map of sources to inspect, not as final truth.
 - Before using a generated claim in feature, architecture, or design artifacts,
   verify it by reading the cited source path.

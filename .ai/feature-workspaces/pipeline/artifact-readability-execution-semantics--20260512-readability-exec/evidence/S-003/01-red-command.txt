@@ -1,0 +1,1 @@
+python -m pytest tests/feature_pipeline/test_featurectl_core.py::FeatureCtlCoreTests::test_init_profile_filters_generated_showcase_feature_signals -q

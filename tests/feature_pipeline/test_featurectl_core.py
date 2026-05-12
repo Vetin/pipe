@@ -119,6 +119,9 @@ class FeatureCtlCoreTests(unittest.TestCase):
         (self.repo / "features.md").write_text("# Feature: Root Spec Noise\n", encoding="utf-8")
         (self.repo / "plan.md").write_text("# Pipeline Lab Feature Plan\n", encoding="utf-8")
         (self.repo / "vision.md").write_text("# Service Architecture Vision\n", encoding="utf-8")
+        benchmark = self.repo / "pipeline-lab/benchmarks/suites/feature-quality.md"
+        benchmark.parent.mkdir(parents=True, exist_ok=True)
+        benchmark.write_text("# Feature: Pipeline Quality Benchmark\n", encoding="utf-8")
         run_dir = self.repo / "pipeline-lab/runs/20260512/generated"
         run_dir.mkdir(parents=True)
         (run_dir / "feature.md").write_text("# Feature: Generated Run Artifact\n", encoding="utf-8")
@@ -130,9 +133,15 @@ class FeatureCtlCoreTests(unittest.TestCase):
         index = yaml.safe_load((self.repo / ".ai/knowledge/project-index.yaml").read_text(encoding="utf-8"))
         signals = {item["signal"] for item in index["feature_signals"]}
         sources = {item["source"] for item in index["feature_signals"]}
+        signal_by_source = {item["source"]: item for item in index["feature_signals"]}
+        catalog_by_name = {item["name"]: item for item in index["feature_catalog"]}
         catalog_names = {item["name"] for item in index["feature_catalog"]}
         self.assertIn("Feature: Real Billing Dashboard", signals)
         self.assertIn("Real Billing Dashboard", catalog_names)
+        self.assertEqual(catalog_by_name["Real Billing Dashboard"]["kind"], "detected")
+        self.assertIn("Feature: Pipeline Quality Benchmark", signals)
+        self.assertEqual(signal_by_source["pipeline-lab/benchmarks/suites/feature-quality.md"]["kind"], "lab_signal")
+        self.assertEqual(catalog_by_name["Pipeline Quality Benchmark"]["kind"], "lab_signal")
         self.assertNotIn("Feature: Generated Stress Artifact", signals)
         self.assertNotIn("Generated Stress Artifact", catalog_names)
         self.assertNotIn("Native Feature Emulation Report", signals)
@@ -144,6 +153,8 @@ class FeatureCtlCoreTests(unittest.TestCase):
         self.assertFalse(any(source.startswith("pipeline-lab/runs/") for source in sources))
         discovered = (self.repo / ".ai/knowledge/discovered-signals.md").read_text(encoding="utf-8")
         self.assertIn("Real Billing Dashboard", discovered)
+        self.assertIn("Kind: lab_signal", discovered)
+        self.assertIn("Use lab_signal only for pipeline-lab or benchmark work.", discovered)
         self.assertNotIn("Generated Stress Artifact", discovered)
         self.assertNotIn("Root Spec Noise", discovered)
 

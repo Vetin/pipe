@@ -1,0 +1,1 @@
+Review passed: canonical feature memory remains in features-overview, discovered lab signals are explicitly marked lab_signal, and nfp-01-context now instructs agents to use lab_signal only for pipeline-lab, benchmark, showcase, or validation tooling.

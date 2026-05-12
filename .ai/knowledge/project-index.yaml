@@ -1,17 +1,17 @@
 artifact_contract_version: 0.1.0
 generated_by: featurectl.py init --profile-project
-generated_at: '2026-05-12T15:08:29Z'
+generated_at: '2026-05-12T15:31:05Z'
 project:
   name: pipeline-artifact-readability-execution-semantics-20260512-readability-exec
   root: /Users/egormasnankin/work/harness-pipeline/worktrees/pipeline-artifact-readability-execution-semantics-20260512-readability-exec
   branch: feature/pipeline-artifact-readability-execution-semantics-20260512-readability-exec
-  head: fafd645
+  head: 949558a
   remote: git@github.com:Vetin/pipe.git
 counts:
-  tracked_files: 1599
-  profiled_files: 185
+  tracked_files: 1619
+  profiled_files: 186
   source_files: 2
-  test_files: 36
+  test_files: 37
   doc_files: 92
   contract_files: 20
   integration_files: 3
@@ -23,7 +23,7 @@ module_dirs:
 - path: .ai
   tracked_files: 59
 - path: tests
-  tracked_files: 36
+  tracked_files: 37
 - path: pipeline-lab
   tracked_files: 9
 source_examples:
@@ -33,6 +33,7 @@ test_examples:
 - tests/feature_pipeline/.gitkeep
 - tests/feature_pipeline/plan_test_helpers.py
 - tests/feature_pipeline/test_agents_policy.py
+- tests/feature_pipeline/test_artifact_formatting.py
 - tests/feature_pipeline/test_codex_debug_runner.py
 - tests/feature_pipeline/test_codex_e2e_runner.py
 - tests/feature_pipeline/test_context_skill_contract.py
@@ -59,7 +60,6 @@ test_examples:
 - tests/feature_pipeline/test_review_blocking.py
 - tests/feature_pipeline/test_review_verification.py
 - tests/feature_pipeline/test_showcases.py
-- tests/feature_pipeline/test_skill_candidate_isolation.py
 doc_examples:
 - .agents/pipeline-core/references/README.md
 - .agents/pipeline-core/references/artifact-model.md
@@ -130,8 +130,10 @@ canonical_features:
 feature_signals:
 - source: pipeline-lab/README.md
   signal: Pipeline Lab
+  kind: lab_signal
 - source: pipeline-lab/VALIDATION.md
   signal: Native Feature Pipeline Validation
+  kind: lab_signal
 feature_catalog:
 - name: pipeline/codex-e2e-runner-hardening
   kind: canonical
@@ -169,18 +171,18 @@ feature_catalog:
   sources:
   - .ai/features/pipeline/source-truth-hardening
 - name: Native Feature Pipeline Validation
-  kind: detected
+  kind: lab_signal
   confidence: medium
-  description: Native Feature Pipeline Validation appears in 1 documentation signal; inspect the listed
-    files before relying on this as architecture truth.
+  description: Native Feature Pipeline Validation appears only in 1 pipeline-lab signal; use lab_signal
+    only for pipeline-lab or benchmark work.
   source_count: 1
   sources:
   - pipeline-lab/VALIDATION.md
 - name: Pipeline Lab
-  kind: detected
+  kind: lab_signal
   confidence: medium
-  description: Pipeline Lab appears in 1 documentation signal; inspect the listed files before relying
-    on this as architecture truth.
+  description: Pipeline Lab appears only in 1 pipeline-lab signal; use lab_signal only for pipeline-lab
+    or benchmark work.
   source_count: 1
   sources:
   - pipeline-lab/README.md

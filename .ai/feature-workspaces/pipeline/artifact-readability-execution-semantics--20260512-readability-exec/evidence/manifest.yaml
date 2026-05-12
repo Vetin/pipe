@@ -39,3 +39,22 @@ slices:
       timestamp: '2026-05-12T15:34:00Z'
       summary_file: S-002/05-review-summary.md
     diff_hash: s002-execution-retry-semantics
+  S-003:
+    red:
+      timestamp: '2026-05-12T15:40:00Z'
+      command_file: S-003/01-red-command.txt
+      output_file: S-003/01-red-output.log
+      git_state_file: S-003/00-pre-red-git-state.txt
+    green:
+      timestamp: '2026-05-12T15:45:00Z'
+      command_file: S-003/03-green-command.txt
+      output_file: S-003/03-green-output.log
+      git_state_file: S-003/02-pre-green-git-state.txt
+    verification:
+      timestamp: '2026-05-12T15:46:00Z'
+      command_file: S-003/04-verification-command.txt
+      output_file: S-003/04-verification-output.log
+    review:
+      timestamp: '2026-05-12T15:47:00Z'
+      summary_file: S-003/05-review-summary.md
+    diff_hash: s003-lab-signal-profile-categories

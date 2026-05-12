@@ -1,0 +1,1 @@
+Red run failed as expected: pipeline-lab benchmark feature signals were present but lacked kind=lab_signal, so project-index.yaml could still mix lab signals with product detected features.
