@@ -134,6 +134,10 @@ print(json.dumps({
 
         self.assertIn("returncode: 0", result.stdout)
         self.assertEqual(manifest["returncode"], 0)
+        self.assertEqual(manifest["execution_mode"], "mock")
+        self.assertFalse(manifest["uses_real_codex"])
+        self.assertFalse(manifest["timed_out"])
+        self.assertEqual(manifest["timeout_seconds"], 1800)
         self.assertTrue(Path(manifest["repo"]).is_dir())
         self.assertEqual(manifest["source_repo"], str(self.repo.resolve()))
         self.assertIn("/worktrees/", manifest["repo"])
@@ -181,6 +185,8 @@ print(json.dumps({
         manifest = yaml.safe_load((run_dir / "run.yaml").read_text(encoding="utf-8"))
         self.assertIn("dry run: codex was not invoked", (run_dir / "codex-output.log").read_text(encoding="utf-8"))
         self.assertEqual(manifest["returncode"], 0)
+        self.assertEqual(manifest["execution_mode"], "dry-run")
+        self.assertFalse(manifest["uses_real_codex"])
         self.assertIn("summary:", result.stdout)
 
     def test_dirty_repo_is_rejected_before_codex_invocation(self):

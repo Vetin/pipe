@@ -21,6 +21,7 @@ import yaml
 ROOT = Path(__file__).resolve().parents[3]
 DEFAULT_CONFIG = ROOT / "pipeline-lab/showcases/codex-e2e-cases.yaml"
 DEFAULT_OUTPUT_DIR = ROOT / "pipeline-lab/showcases/codex-e2e-runs"
+EXECUTION_MODES = {"mock", "dry-run", "real"}
 NATIVE_PHASES = [
     "intake and repository context discovery",
     "feature contract with measurable requirements and acceptance criteria",
@@ -220,6 +221,35 @@ def codex_command(codex_bin: str, repo: Path, final_path: Path, prompt: str, ext
     ]
 
 
+def infer_execution_mode(codex_bin: str, dry_run: bool, requested_mode: str | None) -> str:
+    if requested_mode:
+        if requested_mode not in EXECUTION_MODES:
+            raise RuntimeError(f"unknown execution mode: {requested_mode}")
+        if dry_run and requested_mode != "dry-run":
+            raise RuntimeError("--dry-run requires --execution-mode dry-run")
+        return requested_mode
+    if dry_run:
+        return "dry-run"
+    codex_name = Path(codex_bin).name.lower()
+    if "fake" in codex_name or "mock" in codex_name:
+        return "mock"
+    return "real"
+
+
+def normalize_timeout(seconds: int | None) -> int | None:
+    if seconds is None or seconds <= 0:
+        return None
+    return seconds
+
+
+def timeout_output(value: str | bytes | None) -> str:
+    if value is None:
+        return ""
+    if isinstance(value, bytes):
+        return value.decode("utf-8", errors="replace")
+    return value
+
+
 def write_text(path: Path, text: str) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(text, encoding="utf-8")
@@ -235,6 +265,8 @@ def run_case(
     run_id: str,
     allow_dirty: bool,
     dry_run: bool,
+    execution_mode: str,
+    timeout_seconds: int | None,
     reset_base: bool,
 ) -> dict[str, Any]:
     source_repo = case_repo(case, config_path)
@@ -260,10 +292,28 @@ def run_case(
     if dry_run:
         returncode = 0
         stdout = "dry run: codex was not invoked\n"
+        timed_out = False
     else:
-        result = subprocess.run(command, cwd=worktree, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-        returncode = result.returncode
-        stdout = result.stdout
+        try:
+            result = subprocess.run(
+                command,
+                cwd=worktree,
+                text=True,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT,
+                timeout=timeout_seconds,
+            )
+            returncode = result.returncode
+            stdout = result.stdout
+            timed_out = False
+        except subprocess.TimeoutExpired as exc:
+            returncode = 124
+            timed_out = True
+            stdout = (
+                timeout_output(exc.stdout)
+                + timeout_output(exc.stderr)
+                + f"\nTimed out after {timeout_seconds} seconds while running Codex.\n"
+            )
     finished_at = datetime.now(timezone.utc).isoformat()
 
     after_head = git_head(worktree)
@@ -281,6 +331,11 @@ def run_case(
         "base_ref": case_base_ref(case),
         "run_id": run_id,
         "dry_run": dry_run,
+        "execution_mode": execution_mode,
+        "uses_real_codex": execution_mode == "real",
+        "codex_bin": codex_bin,
+        "timeout_seconds": timeout_seconds,
+        "timed_out": timed_out,
         "returncode": returncode,
         "started_at": started_at,
         "finished_at": finished_at,
@@ -310,6 +365,10 @@ def render_report(manifest: dict[str, Any], final_text: str, stdout: str) -> str
         f"- Target branch: `{manifest['target_branch']}`",
         f"- Base ref: `{manifest.get('base_ref') or 'current HEAD'}`",
         f"- Run id: `{manifest['run_id']}`",
+        f"- Execution mode: `{manifest['execution_mode']}`",
+        f"- Uses real Codex: `{str(manifest['uses_real_codex']).lower()}`",
+        f"- Timeout seconds: `{manifest.get('timeout_seconds') or 'none'}`",
+        f"- Timed out: `{str(manifest.get('timed_out')).lower()}`",
         f"- Dry run: `{str(manifest['dry_run']).lower()}`",
         f"- Return code: `{manifest['returncode']}`",
         f"- Before HEAD: `{manifest['before_head']}`",
@@ -364,6 +423,8 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--run-id", default=None, help="Stable run id. Defaults to UTC timestamp")
     parser.add_argument("--codex-bin", default=os.environ.get("CODEX_BIN", "codex"), help="Codex executable")
     parser.add_argument("--codex-arg", action="append", default=[], help="Extra argument passed to codex exec before sandbox flags")
+    parser.add_argument("--execution-mode", choices=sorted(EXECUTION_MODES), default=None, help="Label this run as mock, dry-run, or real")
+    parser.add_argument("--timeout-seconds", type=int, default=1800, help="Codex invocation timeout; use 0 to disable")
     parser.add_argument("--allow-dirty", action="store_true", help="Allow running when target repo has a dirty working tree")
     parser.add_argument("--dry-run", action="store_true", help="Write prompt/command/report without invoking codex")
     parser.add_argument("--reset-to-base", action="store_true", help="Reset target repo to case base_ref before running")
@@ -375,6 +436,8 @@ def main(argv: list[str] | None = None) -> int:
     if not output_dir.is_absolute():
         output_dir = (ROOT / output_dir).resolve()
     run_id = args.run_id or datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+    execution_mode = infer_execution_mode(args.codex_bin, dry_run=args.dry_run, requested_mode=args.execution_mode)
+    timeout_seconds = normalize_timeout(args.timeout_seconds)
 
     try:
         manifests = [
@@ -388,6 +451,8 @@ def main(argv: list[str] | None = None) -> int:
                 run_id=run_id,
                 allow_dirty=args.allow_dirty,
                 dry_run=args.dry_run,
+                execution_mode=execution_mode,
+                timeout_seconds=timeout_seconds,
                 reset_base=args.reset_to_base,
             )
             for case_id, case in selected_cases(config, args.case, args.all)
@@ -397,7 +462,18 @@ def main(argv: list[str] | None = None) -> int:
         return 1
 
     summary_path = output_dir / f"summary-{run_id}.yaml"
-    write_text(summary_path, yaml.safe_dump({"runs": manifests}, sort_keys=False))
+    write_text(
+        summary_path,
+        yaml.safe_dump(
+            {
+                "run_id": run_id,
+                "execution_modes": sorted({manifest["execution_mode"] for manifest in manifests}),
+                "uses_real_codex": any(manifest["uses_real_codex"] for manifest in manifests),
+                "runs": manifests,
+            },
+            sort_keys=False,
+        ),
+    )
     shell_commands = [
         " ".join(shlex.quote(part) for part in json.loads(Path(manifest["command"]).read_text(encoding="utf-8")))
         for manifest in manifests

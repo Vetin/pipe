@@ -44,6 +44,7 @@ class PipelineGoalValidationTests(unittest.TestCase):
         self.assertIn("vision_native_workflow", content)
         self.assertIn("init_showcase_three_passes", content)
         self.assertIn("init_showcase_feature_catalogs", content)
+        self.assertIn("codex_debug_status_pass", content)
         self.assertIn("web_best_practices_doc", content)
 
 

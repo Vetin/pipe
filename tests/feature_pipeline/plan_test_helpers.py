@@ -24,6 +24,7 @@ def ignore_generated_pipeline_lab(_src, names):
         "materialized-runs",
         "nfp-real-runs",
         "codex-e2e-runs",
+        "codex-debug-runs",
     }
     return [name for name in names if name in ignored]
 

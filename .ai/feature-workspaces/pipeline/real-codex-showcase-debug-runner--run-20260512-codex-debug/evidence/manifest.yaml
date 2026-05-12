@@ -1,0 +1,41 @@
+artifact_contract_version: 0.1.0
+feature_key: pipeline/real-codex-showcase-debug-runner
+slices:
+  S-001:
+    verification:
+      timestamp: '2026-05-12T09:20:00Z'
+      command_file: S-001/04-verification-command.txt
+      output_file: S-001/04-verification-output.log
+    review:
+      timestamp: '2026-05-12T09:30:00Z'
+      summary_file: S-001/05-review-summary.md
+    red:
+      timestamp: '2026-05-12T09:00:00Z'
+      command_file: S-001/01-red-command.txt
+      output_file: S-001/01-red-output.log
+      git_state_file: S-001/00-pre-red-git-state.txt
+    green:
+      timestamp: '2026-05-12T09:10:00Z'
+      command_file: S-001/03-green-command.txt
+      output_file: S-001/03-green-output.log
+      git_state_file: S-001/02-pre-green-git-state.txt
+    diff_hash: 5651867973c26662f854ab9592b8d5a1a4d7f2d3ec5fb5d799d4aab032b96cf8
+  S-002:
+    verification:
+      timestamp: '2026-05-12T09:20:00Z'
+      command_file: S-002/04-verification-command.txt
+      output_file: S-002/04-verification-output.log
+    review:
+      timestamp: '2026-05-12T09:30:00Z'
+      summary_file: S-002/05-review-summary.md
+    red:
+      timestamp: '2026-05-12T09:00:00Z'
+      command_file: S-002/01-red-command.txt
+      output_file: S-002/01-red-output.log
+      git_state_file: S-002/00-pre-red-git-state.txt
+    green:
+      timestamp: '2026-05-12T09:10:00Z'
+      command_file: S-002/03-green-command.txt
+      output_file: S-002/03-green-output.log
+      git_state_file: S-002/02-pre-green-git-state.txt
+    diff_hash: 5651867973c26662f854ab9592b8d5a1a4d7f2d3ec5fb5d799d4aab032b96cf8

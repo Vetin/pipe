@@ -1,0 +1,9 @@
+## feature/pipeline-real-codex-showcase-debug-runner-run-20260512-codex-debug
+ M pipeline-lab/showcases/scripts/run_codex_e2e_case.py
+ M pipeline-lab/showcases/scripts/validate_pipeline_goals.py
+ M tests/feature_pipeline/plan_test_helpers.py
+ M tests/feature_pipeline/test_codex_e2e_runner.py
+ M tests/feature_pipeline/test_pipeline_goal_validation.py
+?? .ai/feature-workspaces/
+?? pipeline-lab/showcases/scripts/run_codex_debug_pipeline.py
+?? tests/feature_pipeline/test_codex_debug_runner.py

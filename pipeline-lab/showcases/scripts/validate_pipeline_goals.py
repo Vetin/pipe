@@ -15,6 +15,7 @@ ROOT = Path(__file__).resolve().parents[3]
 DEFAULT_NATIVE_RUN = ROOT / "pipeline-lab/showcases/native-emulation-runs/20260512-native-debug"
 DEFAULT_INIT_RUN = ROOT / "pipeline-lab/showcases/init-profile-runs/20260512-init-profile"
 DEFAULT_RANDOM_STRESS_RUN = ROOT / "pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress"
+DEFAULT_CODEX_DEBUG_RUN = ROOT / "pipeline-lab/showcases/codex-debug-runs/20260512-debug"
 DEFAULT_REPORT = ROOT / "pipeline-lab/showcases/pipeline-goal-validation-report.md"
 REQUIRED_WEB_SOURCES = (
     "https://academy.openai.com/public/resources/skills",
@@ -33,7 +34,7 @@ def read_yaml(path: Path) -> dict[str, Any]:
     return yaml.safe_load(read_text(path)) or {}
 
 
-def validate_once(native_run: Path, init_run: Path) -> list[dict[str, str]]:
+def validate_once(native_run: Path, init_run: Path, codex_debug_run: Path) -> list[dict[str, str]]:
     checks: list[dict[str, str]] = []
     checks.extend(validate_agents_policy())
     checks.extend(validate_vision_and_plan())
@@ -42,6 +43,7 @@ def validate_once(native_run: Path, init_run: Path) -> list[dict[str, str]]:
     checks.extend(validate_init_showcases(init_run))
     checks.extend(validate_skill_matrix())
     checks.extend(validate_random_feature_stress(DEFAULT_RANDOM_STRESS_RUN))
+    checks.extend(validate_codex_debug_run(codex_debug_run))
     checks.extend(validate_web_best_practices())
     return checks
 
@@ -271,6 +273,37 @@ def validate_random_feature_stress(run_dir: Path) -> list[dict[str, str]]:
     ]
 
 
+def validate_codex_debug_run(run_dir: Path) -> list[dict[str, str]]:
+    summary_path = run_dir / "summary.yaml"
+    validation_path = run_dir / "validation.md"
+    comparison_path = run_dir / "comparison.md"
+    if not summary_path.exists():
+        return [check("codex_debug_summary_exists", False, f"missing {summary_path}")]
+    summary = read_yaml(summary_path)
+    comparison = summary.get("comparison") or {}
+    results = summary.get("results") or []
+    artifact_results = [
+        all((item.get("artifacts") or {}).get(name) for name in ("feature.md", "architecture.md", "tech-design.md", "slices.yaml"))
+        for item in results
+        if item.get("mode") != "dry-run"
+    ]
+    comparison_text = read_text(comparison_path) if comparison_path.exists() else ""
+    validation_text = read_text(validation_path) if validation_path.exists() else ""
+    return [
+        check("codex_debug_summary_exists", summary_path.exists(), "codex debug summary exists"),
+        check("codex_debug_status_pass", summary.get("status") == "pass", f"status: {summary.get('status')}"),
+        check("codex_debug_explicit_mode", summary.get("mode") in {"mock", "dry-run", "real"}, f"mode: {summary.get('mode')}"),
+        check("codex_debug_real_flag", isinstance(summary.get("uses_real_codex"), bool), "uses_real_codex is explicit"),
+        check(
+            "codex_debug_compares_current_tests",
+            comparison.get("current_unit_tests_use_fake_codex") is True and "Uses fake Codex" in comparison_text,
+            "comparison proves current unit tests use fake Codex",
+        ),
+        check("codex_debug_artifacts_validated", bool(results) and all(artifact_results), "generated NFP artifacts validated"),
+        check("codex_debug_validation_report", "Codex Debug Pipeline Validation" in validation_text, "validation report exists"),
+    ]
+
+
 def validate_web_best_practices() -> list[dict[str, str]]:
     path = ROOT / "skills/native-feature-pipeline/references/web-best-practices-20260512.md"
     content = read_text(path) if path.exists() else ""
@@ -290,21 +323,22 @@ def validate_web_best_practices() -> list[dict[str, str]]:
     return checks
 
 
-def repeated_validate(native_run: Path, init_run: Path, passes: int) -> list[dict[str, Any]]:
+def repeated_validate(native_run: Path, init_run: Path, codex_debug_run: Path, passes: int) -> list[dict[str, Any]]:
     results = []
     for pass_number in range(1, passes + 1):
-        checks = validate_once(native_run, init_run)
+        checks = validate_once(native_run, init_run, codex_debug_run)
         failures = [item for item in checks if item["status"] == "fail"]
         results.append({"pass": pass_number, "status": "fail" if failures else "pass", "checks": checks})
     return results
 
 
-def render_report(results: list[dict[str, Any]], native_run: Path, init_run: Path) -> str:
+def render_report(results: list[dict[str, Any]], native_run: Path, init_run: Path, codex_debug_run: Path) -> str:
     lines = [
         "# Pipeline Goal Validation",
         "",
         f"- Native run: `{native_run}`",
         f"- Init profile run: `{init_run}`",
+        f"- Codex debug run: `{codex_debug_run}`",
         f"- Repeated passes: `{len(results)}`",
         f"- Generated at: `{datetime.now(timezone.utc).isoformat()}`",
         "",
@@ -334,6 +368,7 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--native-run", default=str(DEFAULT_NATIVE_RUN), help="Native emulation run directory")
     parser.add_argument("--init-run", default=str(DEFAULT_INIT_RUN), help="Init profile run directory")
+    parser.add_argument("--codex-debug-run", default=str(DEFAULT_CODEX_DEBUG_RUN), help="Codex debug run directory")
     parser.add_argument("--report", default=str(DEFAULT_REPORT), help="Report path")
     parser.add_argument("--passes", type=int, default=3, help="Repeated validation passes")
     args = parser.parse_args(argv)
@@ -344,12 +379,15 @@ def main(argv: list[str] | None = None) -> int:
     init_run = Path(args.init_run).expanduser()
     if not init_run.is_absolute():
         init_run = (ROOT / init_run).resolve()
+    codex_debug_run = Path(args.codex_debug_run).expanduser()
+    if not codex_debug_run.is_absolute():
+        codex_debug_run = (ROOT / codex_debug_run).resolve()
     report = Path(args.report).expanduser()
     if not report.is_absolute():
         report = (ROOT / report).resolve()
-    results = repeated_validate(native_run, init_run, args.passes)
+    results = repeated_validate(native_run, init_run, codex_debug_run, args.passes)
     report.parent.mkdir(parents=True, exist_ok=True)
-    report.write_text(render_report(results, native_run, init_run), encoding="utf-8")
+    report.write_text(render_report(results, native_run, init_run, codex_debug_run), encoding="utf-8")
     failures = [item for result in results for item in result["checks"] if item["status"] == "fail"]
     print(f"report: {report}")
     print(f"passes: {args.passes}")
