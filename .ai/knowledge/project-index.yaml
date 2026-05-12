@@ -1,14 +1,14 @@
 artifact_contract_version: 0.1.0
 generated_by: featurectl.py init --profile-project
-generated_at: '2026-05-12T00:40:48Z'
+generated_at: '2026-05-12T09:40:21Z'
 project:
-  name: pipeline-real-codex-showcase-debug-runner-run-20260512-codex-debug
-  root: /Users/egormasnankin/work/worktrees/pipeline-real-codex-showcase-debug-runner-run-20260512-codex-debug
-  branch: feature/pipeline-real-codex-showcase-debug-runner-run-20260512-codex-debug
-  head: 6a0720c
+  name: harness-pipeline
+  root: /Users/egormasnankin/work/harness-pipeline
+  branch: main
+  head: 8304ef5
   remote: none
 counts:
-  tracked_files: 1239
+  tracked_files: 1283
   profiled_files: 430
   source_files: 18
   test_files: 36
