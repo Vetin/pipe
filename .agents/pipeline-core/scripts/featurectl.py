@@ -1743,8 +1743,8 @@ def validate_execution_latest_status(workspace: Path, state: dict[str, Any]) -> 
     if not execution_path.exists():
         return ["execution.md missing"]
     execution = execution_path.read_text(encoding="utf-8")
-    marker = "## Latest Status"
-    marker_count = len(re.findall(r"^## Latest Status\s*$", execution, flags=re.MULTILINE))
+    latest_matches = list(re.finditer(r"^## Latest Status\s*$", execution, flags=re.MULTILINE))
+    marker_count = len(latest_matches)
     if marker_count == 0:
         return ["execution.md missing ## Latest Status"]
     blockers: list[str] = []
@@ -1752,7 +1752,7 @@ def validate_execution_latest_status(workspace: Path, state: dict[str, Any]) -> 
         blockers.append("execution.md must contain exactly one active ## Latest Status section")
     blockers.extend(validate_no_active_legacy_execution_sections(execution))
     blockers.extend(validate_execution_completion_events(execution))
-    latest = execution.split(marker, 1)[1]
+    latest = execution[latest_matches[0].end() :]
     next_heading = re.search(r"\n##\s+", latest)
     if next_heading:
         latest = latest[: next_heading.start()]

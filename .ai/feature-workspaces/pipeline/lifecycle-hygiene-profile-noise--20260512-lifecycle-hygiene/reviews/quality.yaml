@@ -1,0 +1,35 @@
+artifact_contract_version: 0.1.0
+review_id: REV-001
+tier: strict_review
+severity: note
+finding: Lifecycle, execution, profile, and policy fixes are implemented with focused and full-suite validation.
+artifact: workspace
+evidence: Full feature pipeline test suite passed with 128 tests, and canonical/promoted pipeline artifacts validated after lifecycle and execution migration.
+recommendation: Proceed to promotion.
+blocking: false
+linked_requirement_ids:
+  - FR-001
+  - FR-002
+  - FR-003
+  - FR-004
+  - FR-005
+  - FR-006
+  - FR-007
+  - FR-008
+linked_slice_ids:
+  - S-001
+  - S-002
+  - S-003
+  - S-004
+file_refs:
+  - .agents/pipeline-core/scripts/featurectl.py
+  - AGENTS.md
+  - .agents/skills/project-init/SKILL.md
+  - pipeline-lab/showcases/scripts/validate_pipeline_goals.py
+  - tests/feature_pipeline/test_finish_promote.py
+  - tests/feature_pipeline/test_gates_and_evidence.py
+  - tests/feature_pipeline/test_featurectl_core.py
+  - tests/feature_pipeline/test_agents_policy.py
+reproduction_or_reasoning: The implementation adds deterministic validation for promoted-readonly workspaces, execution latest-status hygiene, duplicate completion events, explicit complete-slice retry behavior, profile signal splitting, and selective agent policy. Focused tests and the full suite passed.
+fix_verification_command: python -m pytest tests/feature_pipeline
+re_review_required: false
