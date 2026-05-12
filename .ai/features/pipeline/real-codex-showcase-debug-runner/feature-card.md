@@ -13,7 +13,11 @@ Make showcase E2E execution explicit about whether it uses mock, dry-run, or rea
 
 ## Architecture
 
-`run_codex_debug_pipeline.py` wraps `run_codex_e2e_case.py`. The E2E runner prepares a fresh worktree and installs `AGENTS.md`, `.agents`, `.ai/pipeline-docs`, and `skills`. The debug runner selects mock/dry-run/real mode, executes E2E, then validates prompt, command, mode metadata, context files, and artifacts changed between `before_head` and `after_head`.
+`run_codex_debug_pipeline.py` wraps `run_codex_e2e_case.py`. The E2E runner
+prepares a fresh worktree and installs `AGENTS.md`, `.agents`,
+`.ai/pipeline-docs`, and `skills`. The debug runner selects mock, dry-run, or
+real mode, executes E2E, then validates prompt, command, mode metadata, context
+files, and artifacts changed between `before_head` and `after_head`.
 
 ## Contracts
 
@@ -33,7 +37,16 @@ Make showcase E2E execution explicit about whether it uses mock, dry-run, or rea
 - `python -m unittest tests.feature_pipeline.test_codex_e2e_runner tests.feature_pipeline.test_codex_debug_runner tests.feature_pipeline.test_pipeline_goal_validation`
 - `python -m unittest discover tests/feature_pipeline`
 - `python pipeline-lab/showcases/scripts/validate_pipeline_goals.py --passes 3 --report /tmp/pipeline-goal-validation-codex-debug.md`
-- `python pipeline-lab/showcases/scripts/run_codex_debug_pipeline.py --config pipeline-lab/showcases/codex-debug-cases.yaml --case harness-codex-debug-smoke --run-id 20260512-debug --output-dir pipeline-lab/showcases/codex-debug-runs --mode mock --clean --allow-dirty`
+```bash
+python pipeline-lab/showcases/scripts/run_codex_debug_pipeline.py \
+  --config pipeline-lab/showcases/codex-debug-cases.yaml \
+  --case harness-codex-debug-smoke \
+  --run-id 20260512-debug \
+  --output-dir pipeline-lab/showcases/codex-debug-runs \
+  --mode mock \
+  --clean \
+  --allow-dirty
+```
 
 ## Manual Validation
 
@@ -66,7 +79,10 @@ Make showcase E2E execution explicit about whether it uses mock, dry-run, or rea
 
 ## Shared Knowledge Updates
 
-The promoted memory should update `.ai/knowledge/features-overview.md`, `.ai/knowledge/module-map.md`, and `.ai/knowledge/integration-map.md` so future agents know that Codex showcase tests have both a fast mock path and an explicit real-mode operator diagnostic path.
+The promoted memory should update `.ai/knowledge/features-overview.md`,
+`.ai/knowledge/module-map.md`, and `.ai/knowledge/integration-map.md`.
+Future agents should know that Codex showcase tests have both a fast mock path
+and an explicit real-mode operator diagnostic path.
 
 ### Shared Knowledge Decision Table
 

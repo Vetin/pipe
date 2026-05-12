@@ -2,6 +2,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+import py_compile
 from pathlib import Path
 
 import yaml
@@ -9,6 +10,7 @@ import yaml
 
 ROOT = Path(__file__).resolve().parents[2]
 SCRIPT = ROOT / ".agents/pipeline-core/scripts/featurectl.py"
+PIPELINEBENCH = ROOT / ".agents/pipeline-core/scripts/pipelinebench.py"
 
 
 def run(cmd, cwd, check=True):
@@ -98,6 +100,44 @@ class ArtifactFormattingTests(unittest.TestCase):
                 long_lines = [line for line in content.splitlines() if len(line) > 220]
                 self.assertEqual(long_lines, [])
 
+    def test_canonical_and_knowledge_artifacts_are_readable(self):
+        paths = [
+            ROOT / ".ai/features/index.yaml",
+            ROOT / ".ai/features/overview.md",
+            *sorted((ROOT / ".ai/knowledge").glob("*.md")),
+            *sorted((ROOT / ".ai/knowledge").glob("*.yaml")),
+            *sorted((ROOT / ".ai/features").glob("*/*/feature.yaml")),
+            *sorted((ROOT / ".ai/features").glob("*/*/state.yaml")),
+            *sorted((ROOT / ".ai/features").glob("*/*/feature-card.md")),
+            *sorted((ROOT / ".ai/features").glob("*/*/execution.md")),
+            *sorted((ROOT / ".ai/features").glob("*/*/evidence/manifest.yaml")),
+            *sorted((ROOT / ".ai/features").glob("*/*/reviews/*.yaml")),
+            *sorted((ROOT / ".ai/features").glob("*/*/reviews/*.md")),
+        ]
+        for path in paths:
+            with self.subTest(path=path.relative_to(ROOT).as_posix()):
+                content = path.read_text(encoding="utf-8")
+                self.assertGreater(content.count("\n"), 4)
+                long_lines = [
+                    f"{index}: {len(line)}"
+                    for index, line in enumerate(content.splitlines(), start=1)
+                    if len(line) > 220
+                ]
+                self.assertEqual(long_lines, [])
+
+    def test_gitignore_is_line_based(self):
+        lines = (ROOT / ".gitignore").read_text(encoding="utf-8").splitlines()
+        required = {
+            "pipeline-lab/runs/",
+            "pipeline-lab/showcases/repos/",
+            "worktrees/",
+            ".ai/logs/",
+            "__pycache__/",
+            ".pytest_cache/",
+        }
+        self.assertTrue(required.issubset(set(lines)))
+        self.assertFalse(any(" " in line and not line.startswith("#") for line in lines if line.strip()))
+
     def test_source_controlled_python_files_are_readable(self):
         paths = [
             ROOT / ".agents/pipeline-core/scripts/featurectl.py",
@@ -113,8 +153,20 @@ class ArtifactFormattingTests(unittest.TestCase):
                 content = path.read_text(encoding="utf-8")
                 minimum_newlines = 5 if path.parent.name == "scripts" else 10
                 self.assertGreater(content.count("\n"), minimum_newlines)
+                py_compile.compile(str(path), doraise=True)
                 long_lines = [f"{index}: {len(line)}" for index, line in enumerate(content.splitlines(), start=1) if len(line) > 220]
                 self.assertEqual(long_lines, [])
+
+    def test_pipeline_cli_wrappers_execute_real_commands(self):
+        featurectl_help = run([sys.executable, str(SCRIPT), "--help"], ROOT)
+        pipelinebench_help = run([sys.executable, str(PIPELINEBENCH), "--help"], ROOT)
+        scenarios = run([sys.executable, str(PIPELINEBENCH), "list-scenarios"], ROOT)
+
+        self.assertIn("usage: featurectl.py", featurectl_help.stdout)
+        self.assertIn("status", featurectl_help.stdout)
+        self.assertIn("usage: pipelinebench.py", pipelinebench_help.stdout)
+        self.assertIn("score-run", pipelinebench_help.stdout)
+        self.assertIn("auth-reset-password", scenarios.stdout)
 
     def test_pipeline_cli_scripts_are_thin_wrappers(self):
         wrappers = {

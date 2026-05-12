@@ -1,0 +1,3 @@
+Spec review: pass. S-001 adds real wrapper command execution, line-based .gitignore checks, Python compile/readability checks, and broad canonical artifact readability scans. The stale public raw wrapper findings are now disproved by execution tests.
+
+Code-quality review: pass. The guard scopes curated/canonical artifacts and excludes raw evidence command/output logs. Older canonical feature cards and review files were mechanically wrapped without changing feature semantics.

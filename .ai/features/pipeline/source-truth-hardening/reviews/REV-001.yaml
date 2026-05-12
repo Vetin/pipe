@@ -31,6 +31,15 @@ file_refs:
   - tests/feature_pipeline/test_evidence_order.py
   - tests/feature_pipeline/test_methodology_contract.py
   - tests/feature_pipeline/test_featurectl_core.py
-reproduction_or_reasoning: Focused tests cover stale canonical overview, draft canonical status, active workspace drift, stale latest status, atomic evidence completion, reference-root consolidation, fallback policy, promotion wording, and generated-output filtering.
-fix_verification_command: python -m pytest tests/feature_pipeline/test_finish_promote.py tests/feature_pipeline/test_evidence_order.py tests/feature_pipeline/test_methodology_contract.py tests/feature_pipeline/test_featurectl_core.py tests/feature_pipeline/test_codex_e2e_runner.py
+reproduction_or_reasoning: >
+  Focused tests cover stale canonical overview, draft canonical status, active
+  workspace drift, stale latest status, atomic evidence completion,
+  reference-root consolidation, fallback policy, promotion wording, and
+  generated-output filtering.
+fix_verification_command: >
+  python -m pytest tests/feature_pipeline/test_finish_promote.py
+  tests/feature_pipeline/test_evidence_order.py
+  tests/feature_pipeline/test_methodology_contract.py
+  tests/feature_pipeline/test_featurectl_core.py
+  tests/feature_pipeline/test_codex_e2e_runner.py
 re_review_required: false

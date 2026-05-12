@@ -21,7 +21,14 @@ None for the implemented scope. Future maintainability work should split `featur
 
 ## Rollback Guidance
 
-Revert the feature commits if the stricter lifecycle validation blocks an urgent unrelated change. If reverting only the profile split, restore `render_features_overview` and remove `discovered-signals.md`; if reverting only idempotency, remove the duplicate-complete guard and retry event logic.
+Revert the feature commits if stricter lifecycle validation blocks an urgent
+unrelated change.
+
+If reverting only the profile split, restore `render_features_overview` and
+remove `discovered-signals.md`.
+
+If reverting only idempotency, remove the duplicate-complete guard and retry
+event logic.
 
 ## Shared Knowledge Updates
 

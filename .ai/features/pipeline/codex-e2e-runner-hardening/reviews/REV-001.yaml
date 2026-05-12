@@ -29,6 +29,10 @@ file_refs:
   - pipeline-lab/showcases/codex-debug-runs/20260512-debug/summary.yaml
   - pipeline-lab/showcases/codex-debug-runs/20260512-debug/real-mode-diagnostic.md
 reproduction_or_reasoning: The branch blocks implicit worktree replacement, supports fixture-backed source repos, validates prompt profiles, normalizes committed debug output, and captures real Codex completion evidence.
-fix_verification_command: python -m pytest tests/feature_pipeline/test_codex_e2e_runner.py tests/feature_pipeline/test_codex_debug_runner.py tests/feature_pipeline/test_pipeline_goal_validation.py && python pipeline-lab/showcases/scripts/validate_pipeline_goals.py --passes 3 --report pipeline-lab/showcases/pipeline-goal-validation-report.md
+fix_verification_command: >
+  python -m pytest tests/feature_pipeline/test_codex_e2e_runner.py
+  tests/feature_pipeline/test_codex_debug_runner.py
+  tests/feature_pipeline/test_pipeline_goal_validation.py &&
+  python pipeline-lab/showcases/scripts/validate_pipeline_goals.py --passes 3
+  --report pipeline-lab/showcases/pipeline-goal-validation-report.md
 re_review_required: false
-

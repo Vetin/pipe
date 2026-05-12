@@ -75,8 +75,8 @@ revert the runner, tests, and skill/template wording to roll back this feature.
 
 | Knowledge file | Decision | Evidence | Future reuse |
 | --- | --- | --- | --- |
-| `.ai/knowledge/features-overview.md` | confirm unchanged before final main-branch `/init`; stress outputs remain lab artifacts, not product feature memory | final stress summary and this feature card | future agents find generated cases through showcase reports |
-| `.ai/knowledge/architecture-overview.md` | refresh with `/init` after merge to account for the new runner and skill/template source changes | `featurectl.py init --profile-project` | future architecture work sees stress lab boundaries |
+| `.ai/knowledge/features-overview.md` | confirm unchanged; stress outputs remain lab artifacts | final stress summary and this card | future agents find cases through showcase reports |
+| `.ai/knowledge/architecture-overview.md` | refresh after merge for new runner and skill/template source changes | `featurectl.py init --profile-project` | future architecture work sees stress lab boundaries |
 | `.ai/knowledge/module-map.md` | refresh with `/init` after merge to account for new script and test files | `featurectl.py init --profile-project` | future slicing sees `pipeline-lab` and `tests` ownership |
 | `.ai/knowledge/integration-map.md` | confirm unchanged; no external integration or target repo mutation was added | rollback plan and tech design | future agents do not infer network or cloned-repo changes |
 

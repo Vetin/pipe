@@ -30,6 +30,10 @@ file_refs:
   - tests/feature_pipeline/test_gates_and_evidence.py
   - tests/feature_pipeline/test_featurectl_core.py
   - tests/feature_pipeline/test_agents_policy.py
-reproduction_or_reasoning: The implementation adds deterministic validation for promoted-readonly workspaces, execution latest-status hygiene, duplicate completion events, explicit complete-slice retry behavior, profile signal splitting, and selective agent policy. Focused tests and the full suite passed.
+reproduction_or_reasoning: >
+  The implementation adds deterministic validation for promoted-readonly
+  workspaces, execution latest-status hygiene, duplicate completion events,
+  explicit complete-slice retry behavior, profile signal splitting, and
+  selective agent policy. Focused tests and the full suite passed.
 fix_verification_command: python -m pytest tests/feature_pipeline
 re_review_required: false

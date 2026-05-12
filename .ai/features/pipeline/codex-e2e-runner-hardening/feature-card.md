@@ -79,7 +79,7 @@ runner behavior and committed showcase output.
 | Knowledge file | Decision | Evidence | Future reuse |
 | --- | --- | --- | --- |
 | `.ai/knowledge/features-overview.md` | updated | This feature card and promoted memory. | Future agents can find the hardened Codex E2E/debug runner capability. |
-| `.ai/knowledge/architecture-overview.md` | updated | Architecture topology and regenerated debug artifacts. | Future changes can reuse the source resolver, worktree guard, prompt profile, and portable writer topology. |
+| `.ai/knowledge/architecture-overview.md` | updated | Architecture topology and regenerated debug artifacts. | Reuse source resolver, worktree guard, prompt profile, and portable writer topology. |
 | `.ai/knowledge/module-map.md` | updated | Changed files and tests under `pipeline-lab/showcases/scripts` and `tests/feature_pipeline`. | Future runner work can identify ownership quickly. |
 | `.ai/knowledge/integration-map.md` | updated | Real-mode diagnostic and Codex CLI invocation contracts. | Future validation can distinguish mock, dry-run, real shim, and real Codex runs. |
 
@@ -100,4 +100,3 @@ and covered by `test_clean_rerun_forwards_replacement_and_prompt_profile`.
 - Consider a documented `--real-smoke-fast` wrapper profile if real-mode smoke
   becomes part of CI.
 - Keep portable-output validation enabled for committed debug artifacts.
-

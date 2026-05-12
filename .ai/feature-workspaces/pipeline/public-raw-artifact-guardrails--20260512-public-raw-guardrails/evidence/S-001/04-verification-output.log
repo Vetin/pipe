@@ -1,0 +1,42 @@
+usage: featurectl.py [-h]
+                     {init,new,status,validate,load-docset,gate,mark-stale,record-evidence,complete-slice,worktree-status,promote}
+                     ...
+
+positional arguments:
+  {init,new,status,validate,load-docset,gate,mark-stale,record-evidence,complete-slice,worktree-status,promote}
+    init                initialize pipeline directories
+    new                 create a feature worktree and workspace
+    status              print workspace status
+    validate            validate pipeline workspace
+    load-docset         list docs for a pipeline step
+    gate                manage gate state
+    mark-stale          mark downstream artifacts stale
+    record-evidence     record raw slice evidence
+    complete-slice      mark a slice complete after evidence validation
+    worktree-status     verify feature worktree readiness
+    promote             promote feature workspace to canonical memory
+
+options:
+  -h, --help            show this help message and exit
+usage: pipelinebench.py [-h]
+                        {init-lab,list-scenarios,score-run,compare-runs,generate-report,add-regression,run-showcases}
+                        ...
+
+positional arguments:
+  {init-lab,list-scenarios,score-run,compare-runs,generate-report,add-regression,run-showcases}
+    init-lab            create benchmark MVP files
+    list-scenarios      list benchmark scenarios
+    score-run           score an existing run
+    compare-runs        compare scored runs
+    generate-report     generate a Markdown report from scores
+    add-regression      record a regression note
+    run-showcases       score 10 showcase scenarios side by side
+
+options:
+  -h, --help            show this help message and exit
+auth-reset-password
+frontend-settings
+webhook-integration
+. [ 11%]
+........ [100%]
+9 passed, 137 subtests passed in 1.02s

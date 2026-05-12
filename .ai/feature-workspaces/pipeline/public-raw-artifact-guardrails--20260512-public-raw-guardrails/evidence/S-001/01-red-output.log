@@ -1,0 +1,357 @@
+. [ 11%]
+........ [100%]
+=================================== FAILURES ===================================
+_ ArtifactFormattingTests.test_canonical_and_knowledge_artifacts_are_readable (path='.ai/features/pipeline/codex-e2e-runner-hardening/feature-card.md') _
+
+self = <test_artifact_formatting.ArtifactFormattingTests testMethod=test_canonical_and_knowledge_artifacts_are_readable>
+
+    def test_canonical_and_knowledge_artifacts_are_readable(self):
+        paths = [
+            ROOT / ".ai/features/index.yaml",
+            ROOT / ".ai/features/overview.md",
+            *sorted((ROOT / ".ai/knowledge").glob("*.md")),
+            *sorted((ROOT / ".ai/knowledge").glob("*.yaml")),
+            *sorted((ROOT / ".ai/features").glob("*/*/feature.yaml")),
+            *sorted((ROOT / ".ai/features").glob("*/*/state.yaml")),
+            *sorted((ROOT / ".ai/features").glob("*/*/feature-card.md")),
+            *sorted((ROOT / ".ai/features").glob("*/*/execution.md")),
+            *sorted((ROOT / ".ai/features").glob("*/*/evidence/manifest.yaml")),
+            *sorted((ROOT / ".ai/features").glob("*/*/reviews/*.yaml")),
+            *sorted((ROOT / ".ai/features").glob("*/*/reviews/*.md")),
+        ]
+        for path in paths:
+            with self.subTest(path=path.relative_to(ROOT).as_posix()):
+                content = path.read_text(encoding="utf-8")
+                self.assertGreater(content.count("\n"), 4)
+                long_lines = [
+                    f"{index}: {len(line)}"
+                    for index, line in enumerate(content.splitlines(), start=1)
+                    if len(line) > 220
+                ]
+>               self.assertEqual(long_lines, [])
+E               AssertionError: Lists differ: ['82: 221'] != []
+E               
+E               First list contains 1 additional elements.
+E               First extra element 0:
+E               '82: 221'
+E               
+E               - ['82: 221']
+E               + []
+
+tests/feature_pipeline/test_artifact_formatting.py:126: AssertionError
+_ ArtifactFormattingTests.test_canonical_and_knowledge_artifacts_are_readable (path='.ai/features/pipeline/lifecycle-hygiene-profile-noise/feature-card.md') _
+
+self = <test_artifact_formatting.ArtifactFormattingTests testMethod=test_canonical_and_knowledge_artifacts_are_readable>
+
+    def test_canonical_and_knowledge_artifacts_are_readable(self):
+        paths = [
+            ROOT / ".ai/features/index.yaml",
+            ROOT / ".ai/features/overview.md",
+            *sorted((ROOT / ".ai/knowledge").glob("*.md")),
+            *sorted((ROOT / ".ai/knowledge").glob("*.yaml")),
+            *sorted((ROOT / ".ai/features").glob("*/*/feature.yaml")),
+            *sorted((ROOT / ".ai/features").glob("*/*/state.yaml")),
+            *sorted((ROOT / ".ai/features").glob("*/*/feature-card.md")),
+            *sorted((ROOT / ".ai/features").glob("*/*/execution.md")),
+            *sorted((ROOT / ".ai/features").glob("*/*/evidence/manifest.yaml")),
+            *sorted((ROOT / ".ai/features").glob("*/*/reviews/*.yaml")),
+            *sorted((ROOT / ".ai/features").glob("*/*/reviews/*.md")),
+        ]
+        for path in paths:
+            with self.subTest(path=path.relative_to(ROOT).as_posix()):
+                content = path.read_text(encoding="utf-8")
+                self.assertGreater(content.count("\n"), 4)
+                long_lines = [
+                    f"{index}: {len(line)}"
+                    for index, line in enumerate(content.splitlines(), start=1)
+                    if len(line) > 220
+                ]
+>               self.assertEqual(long_lines, [])
+E               AssertionError: Lists differ: ['24: 296'] != []
+E               
+E               First list contains 1 additional elements.
+E               First extra element 0:
+E               '24: 296'
+E               
+E               - ['24: 296']
+E               + []
+
+tests/feature_pipeline/test_artifact_formatting.py:126: AssertionError
+_ ArtifactFormattingTests.test_canonical_and_knowledge_artifacts_are_readable (path='.ai/features/pipeline/random-feature-stress-lab/feature-card.md') _
+
+self = <test_artifact_formatting.ArtifactFormattingTests testMethod=test_canonical_and_knowledge_artifacts_are_readable>
+
+    def test_canonical_and_knowledge_artifacts_are_readable(self):
+        paths = [
+            ROOT / ".ai/features/index.yaml",
+            ROOT / ".ai/features/overview.md",
+            *sorted((ROOT / ".ai/knowledge").glob("*.md")),
+            *sorted((ROOT / ".ai/knowledge").glob("*.yaml")),
+            *sorted((ROOT / ".ai/features").glob("*/*/feature.yaml")),
+            *sorted((ROOT / ".ai/features").glob("*/*/state.yaml")),
+            *sorted((ROOT / ".ai/features").glob("*/*/feature-card.md")),
+            *sorted((ROOT / ".ai/features").glob("*/*/execution.md")),
+            *sorted((ROOT / ".ai/features").glob("*/*/evidence/manifest.yaml")),
+            *sorted((ROOT / ".ai/features").glob("*/*/reviews/*.yaml")),
+            *sorted((ROOT / ".ai/features").glob("*/*/reviews/*.md")),
+        ]
+        for path in paths:
+            with self.subTest(path=path.relative_to(ROOT).as_posix()):
+                content = path.read_text(encoding="utf-8")
+                self.assertGreater(content.count("\n"), 4)
+                long_lines = [
+                    f"{index}: {len(line)}"
+                    for index, line in enumerate(content.splitlines(), start=1)
+                    if len(line) > 220
+                ]
+>               self.assertEqual(long_lines, [])
+E               AssertionError: Lists differ: ['78: 265', '79: 238'] != []
+E               
+E               First list contains 2 additional elements.
+E               First extra element 0:
+E               '78: 265'
+E               
+E               - ['78: 265', '79: 238']
+E               + []
+
+tests/feature_pipeline/test_artifact_formatting.py:126: AssertionError
+_ ArtifactFormattingTests.test_canonical_and_knowledge_artifacts_are_readable (path='.ai/features/pipeline/real-codex-showcase-debug-runner/feature-card.md') _
+
+self = <test_artifact_formatting.ArtifactFormattingTests testMethod=test_canonical_and_knowledge_artifacts_are_readable>
+
+    def test_canonical_and_knowledge_artifacts_are_readable(self):
+        paths = [
+            ROOT / ".ai/features/index.yaml",
+            ROOT / ".ai/features/overview.md",
+            *sorted((ROOT / ".ai/knowledge").glob("*.md")),
+            *sorted((ROOT / ".ai/knowledge").glob("*.yaml")),
+            *sorted((ROOT / ".ai/features").glob("*/*/feature.yaml")),
+            *sorted((ROOT / ".ai/features").glob("*/*/state.yaml")),
+            *sorted((ROOT / ".ai/features").glob("*/*/feature-card.md")),
+            *sorted((ROOT / ".ai/features").glob("*/*/execution.md")),
+            *sorted((ROOT / ".ai/features").glob("*/*/evidence/manifest.yaml")),
+            *sorted((ROOT / ".ai/features").glob("*/*/reviews/*.yaml")),
+            *sorted((ROOT / ".ai/features").glob("*/*/reviews/*.md")),
+        ]
+        for path in paths:
+            with self.subTest(path=path.relative_to(ROOT).as_posix()):
+                content = path.read_text(encoding="utf-8")
+                self.assertGreater(content.count("\n"), 4)
+                long_lines = [
+                    f"{index}: {len(line)}"
+                    for index, line in enumerate(content.splitlines(), start=1)
+                    if len(line) > 220
+                ]
+>               self.assertEqual(long_lines, [])
+E               AssertionError: Lists differ: ['16: 360', '36: 268', '69: 268'] != []
+E               
+E               First list contains 3 additional elements.
+E               First extra element 0:
+E               '16: 360'
+E               
+E               - ['16: 360', '36: 268', '69: 268']
+E               + []
+
+tests/feature_pipeline/test_artifact_formatting.py:126: AssertionError
+_ ArtifactFormattingTests.test_canonical_and_knowledge_artifacts_are_readable (path='.ai/features/pipeline/codex-e2e-runner-hardening/reviews/REV-001.yaml') _
+
+self = <test_artifact_formatting.ArtifactFormattingTests testMethod=test_canonical_and_knowledge_artifacts_are_readable>
+
+    def test_canonical_and_knowledge_artifacts_are_readable(self):
+        paths = [
+            ROOT / ".ai/features/index.yaml",
+            ROOT / ".ai/features/overview.md",
+            *sorted((ROOT / ".ai/knowledge").glob("*.md")),
+            *sorted((ROOT / ".ai/knowledge").glob("*.yaml")),
+            *sorted((ROOT / ".ai/features").glob("*/*/feature.yaml")),
+            *sorted((ROOT / ".ai/features").glob("*/*/state.yaml")),
+            *sorted((ROOT / ".ai/features").glob("*/*/feature-card.md")),
+            *sorted((ROOT / ".ai/features").glob("*/*/execution.md")),
+            *sorted((ROOT / ".ai/features").glob("*/*/evidence/manifest.yaml")),
+            *sorted((ROOT / ".ai/features").glob("*/*/reviews/*.yaml")),
+            *sorted((ROOT / ".ai/features").glob("*/*/reviews/*.md")),
+        ]
+        for path in paths:
+            with self.subTest(path=path.relative_to(ROOT).as_posix()):
+                content = path.read_text(encoding="utf-8")
+                self.assertGreater(content.count("\n"), 4)
+                long_lines = [
+                    f"{index}: {len(line)}"
+                    for index, line in enumerate(content.splitlines(), start=1)
+                    if len(line) > 220
+                ]
+>               self.assertEqual(long_lines, [])
+E               AssertionError: Lists differ: ['32: 342'] != []
+E               
+E               First list contains 1 additional elements.
+E               First extra element 0:
+E               '32: 342'
+E               
+E               - ['32: 342']
+E               + []
+
+tests/feature_pipeline/test_artifact_formatting.py:126: AssertionError
+_ ArtifactFormattingTests.test_canonical_and_knowledge_artifacts_are_readable (path='.ai/features/pipeline/lifecycle-hygiene-profile-noise/reviews/quality.yaml') _
+
+self = <test_artifact_formatting.ArtifactFormattingTests testMethod=test_canonical_and_knowledge_artifacts_are_readable>
+
+    def test_canonical_and_knowledge_artifacts_are_readable(self):
+        paths = [
+            ROOT / ".ai/features/index.yaml",
+            ROOT / ".ai/features/overview.md",
+            *sorted((ROOT / ".ai/knowledge").glob("*.md")),
+            *sorted((ROOT / ".ai/knowledge").glob("*.yaml")),
+            *sorted((ROOT / ".ai/features").glob("*/*/feature.yaml")),
+            *sorted((ROOT / ".ai/features").glob("*/*/state.yaml")),
+            *sorted((ROOT / ".ai/features").glob("*/*/feature-card.md")),
+            *sorted((ROOT / ".ai/features").glob("*/*/execution.md")),
+            *sorted((ROOT / ".ai/features").glob("*/*/evidence/manifest.yaml")),
+            *sorted((ROOT / ".ai/features").glob("*/*/reviews/*.yaml")),
+            *sorted((ROOT / ".ai/features").glob("*/*/reviews/*.md")),
+        ]
+        for path in paths:
+            with self.subTest(path=path.relative_to(ROOT).as_posix()):
+                content = path.read_text(encoding="utf-8")
+                self.assertGreater(content.count("\n"), 4)
+                long_lines = [
+                    f"{index}: {len(line)}"
+                    for index, line in enumerate(content.splitlines(), start=1)
+                    if len(line) > 220
+                ]
+>               self.assertEqual(long_lines, [])
+E               AssertionError: Lists differ: ['33: 306'] != []
+E               
+E               First list contains 1 additional elements.
+E               First extra element 0:
+E               '33: 306'
+E               
+E               - ['33: 306']
+E               + []
+
+tests/feature_pipeline/test_artifact_formatting.py:126: AssertionError
+_ ArtifactFormattingTests.test_canonical_and_knowledge_artifacts_are_readable (path='.ai/features/pipeline/real-codex-showcase-debug-runner/reviews/debug-runner-review.yaml') _
+
+self = <test_artifact_formatting.ArtifactFormattingTests testMethod=test_canonical_and_knowledge_artifacts_are_readable>
+
+    def test_canonical_and_knowledge_artifacts_are_readable(self):
+        paths = [
+            ROOT / ".ai/features/index.yaml",
+            ROOT / ".ai/features/overview.md",
+            *sorted((ROOT / ".ai/knowledge").glob("*.md")),
+            *sorted((ROOT / ".ai/knowledge").glob("*.yaml")),
+            *sorted((ROOT / ".ai/features").glob("*/*/feature.yaml")),
+            *sorted((ROOT / ".ai/features").glob("*/*/state.yaml")),
+            *sorted((ROOT / ".ai/features").glob("*/*/feature-card.md")),
+            *sorted((ROOT / ".ai/features").glob("*/*/execution.md")),
+            *sorted((ROOT / ".ai/features").glob("*/*/evidence/manifest.yaml")),
+            *sorted((ROOT / ".ai/features").glob("*/*/reviews/*.yaml")),
+            *sorted((ROOT / ".ai/features").glob("*/*/reviews/*.md")),
+        ]
+        for path in paths:
+            with self.subTest(path=path.relative_to(ROOT).as_posix()):
+                content = path.read_text(encoding="utf-8")
+                self.assertGreater(content.count("\n"), 4)
+                long_lines = [
+                    f"{index}: {len(line)}"
+                    for index, line in enumerate(content.splitlines(), start=1)
+                    if len(line) > 220
+                ]
+>               self.assertEqual(long_lines, [])
+E               AssertionError: Lists differ: ['25: 260'] != []
+E               
+E               First list contains 1 additional elements.
+E               First extra element 0:
+E               '25: 260'
+E               
+E               - ['25: 260']
+E               + []
+
+tests/feature_pipeline/test_artifact_formatting.py:126: AssertionError
+_ ArtifactFormattingTests.test_canonical_and_knowledge_artifacts_are_readable (path='.ai/features/pipeline/source-truth-hardening/reviews/REV-001.yaml') _
+
+self = <test_artifact_formatting.ArtifactFormattingTests testMethod=test_canonical_and_knowledge_artifacts_are_readable>
+
+    def test_canonical_and_knowledge_artifacts_are_readable(self):
+        paths = [
+            ROOT / ".ai/features/index.yaml",
+            ROOT / ".ai/features/overview.md",
+            *sorted((ROOT / ".ai/knowledge").glob("*.md")),
+            *sorted((ROOT / ".ai/knowledge").glob("*.yaml")),
+            *sorted((ROOT / ".ai/features").glob("*/*/feature.yaml")),
+            *sorted((ROOT / ".ai/features").glob("*/*/state.yaml")),
+            *sorted((ROOT / ".ai/features").glob("*/*/feature-card.md")),
+            *sorted((ROOT / ".ai/features").glob("*/*/execution.md")),
+            *sorted((ROOT / ".ai/features").glob("*/*/evidence/manifest.yaml")),
+            *sorted((ROOT / ".ai/features").glob("*/*/reviews/*.yaml")),
+            *sorted((ROOT / ".ai/features").glob("*/*/reviews/*.md")),
+        ]
+        for path in paths:
+            with self.subTest(path=path.relative_to(ROOT).as_posix()):
+                content = path.read_text(encoding="utf-8")
+                self.assertGreater(content.count("\n"), 4)
+                long_lines = [
+                    f"{index}: {len(line)}"
+                    for index, line in enumerate(content.splitlines(), start=1)
+                    if len(line) > 220
+                ]
+>               self.assertEqual(long_lines, [])
+E               AssertionError: Lists differ: ['34: 267', '35: 281'] != []
+E               
+E               First list contains 2 additional elements.
+E               First extra element 0:
+E               '34: 267'
+E               
+E               - ['34: 267', '35: 281']
+E               + []
+
+tests/feature_pipeline/test_artifact_formatting.py:126: AssertionError
+_ ArtifactFormattingTests.test_canonical_and_knowledge_artifacts_are_readable (path='.ai/features/pipeline/real-codex-showcase-debug-runner/reviews/verification-review.md') _
+
+self = <test_artifact_formatting.ArtifactFormattingTests testMethod=test_canonical_and_knowledge_artifacts_are_readable>
+
+    def test_canonical_and_knowledge_artifacts_are_readable(self):
+        paths = [
+            ROOT / ".ai/features/index.yaml",
+            ROOT / ".ai/features/overview.md",
+            *sorted((ROOT / ".ai/knowledge").glob("*.md")),
+            *sorted((ROOT / ".ai/knowledge").glob("*.yaml")),
+            *sorted((ROOT / ".ai/features").glob("*/*/feature.yaml")),
+            *sorted((ROOT / ".ai/features").glob("*/*/state.yaml")),
+            *sorted((ROOT / ".ai/features").glob("*/*/feature-card.md")),
+            *sorted((ROOT / ".ai/features").glob("*/*/execution.md")),
+            *sorted((ROOT / ".ai/features").glob("*/*/evidence/manifest.yaml")),
+            *sorted((ROOT / ".ai/features").glob("*/*/reviews/*.yaml")),
+            *sorted((ROOT / ".ai/features").glob("*/*/reviews/*.md")),
+        ]
+        for path in paths:
+            with self.subTest(path=path.relative_to(ROOT).as_posix()):
+                content = path.read_text(encoding="utf-8")
+                self.assertGreater(content.count("\n"), 4)
+                long_lines = [
+                    f"{index}: {len(line)}"
+                    for index, line in enumerate(content.splitlines(), start=1)
+                    if len(line) > 220
+                ]
+>               self.assertEqual(long_lines, [])
+E               AssertionError: Lists differ: ['9: 221'] != []
+E               
+E               First list contains 1 additional elements.
+E               First extra element 0:
+E               '9: 221'
+E               
+E               - ['9: 221']
+E               + []
+
+tests/feature_pipeline/test_artifact_formatting.py:126: AssertionError
+=========================== short test summary info ============================
+SUBFAILED(path='.ai/features/pipeline/codex-e2e-runner-hardening/feature-card.md') tests/feature_pipeline/test_artifact_formatting.py::ArtifactFormattingTests::test_canonical_and_knowledge_artifacts_are_readable
+SUBFAILED(path='.ai/features/pipeline/lifecycle-hygiene-profile-noise/feature-card.md') tests/feature_pipeline/test_artifact_formatting.py::ArtifactFormattingTests::test_canonical_and_knowledge_artifacts_are_readable
+SUBFAILED(path='.ai/features/pipeline/random-feature-stress-lab/feature-card.md') tests/feature_pipeline/test_artifact_formatting.py::ArtifactFormattingTests::test_canonical_and_knowledge_artifacts_are_readable
+SUBFAILED(path='.ai/features/pipeline/real-codex-showcase-debug-runner/feature-card.md') tests/feature_pipeline/test_artifact_formatting.py::ArtifactFormattingTests::test_canonical_and_knowledge_artifacts_are_readable
+SUBFAILED(path='.ai/features/pipeline/codex-e2e-runner-hardening/reviews/REV-001.yaml') tests/feature_pipeline/test_artifact_formatting.py::ArtifactFormattingTests::test_canonical_and_knowledge_artifacts_are_readable
+SUBFAILED(path='.ai/features/pipeline/lifecycle-hygiene-profile-noise/reviews/quality.yaml') tests/feature_pipeline/test_artifact_formatting.py::ArtifactFormattingTests::test_canonical_and_knowledge_artifacts_are_readable
+SUBFAILED(path='.ai/features/pipeline/real-codex-showcase-debug-runner/reviews/debug-runner-review.yaml') tests/feature_pipeline/test_artifact_formatting.py::ArtifactFormattingTests::test_canonical_and_knowledge_artifacts_are_readable
+SUBFAILED(path='.ai/features/pipeline/source-truth-hardening/reviews/REV-001.yaml') tests/feature_pipeline/test_artifact_formatting.py::ArtifactFormattingTests::test_canonical_and_knowledge_artifacts_are_readable
+SUBFAILED(path='.ai/features/pipeline/real-codex-showcase-debug-runner/reviews/verification-review.md') tests/feature_pipeline/test_artifact_formatting.py::ArtifactFormattingTests::test_canonical_and_knowledge_artifacts_are_readable
+9 failed, 9 passed, 128 subtests passed in 1.07s
+exit=1

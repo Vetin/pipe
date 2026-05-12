@@ -36,8 +36,8 @@ slices:
   review_focus:
   - wrapper commands produce output
   - broad scans skip raw evidence command/output logs
-  evidence_status: pending
-  status: pending
+  evidence_status: complete
+  status: complete
   iteration_budget: 3
   rollback_point: pre-slice git state
   independent_verification: direct wrapper command execution
@@ -78,11 +78,14 @@ slices:
   - .ai/knowledge/discovered-signals.md
   test_strategy: Add failing tests that project-index excludes feature signals and catalog.
   tdd_commands:
-    red: python -m pytest tests/feature_pipeline/test_featurectl_core.py tests/feature_pipeline/test_pipeline_goal_validation.py -q
-    green: python -m pytest tests/feature_pipeline/test_featurectl_core.py tests/feature_pipeline/test_pipeline_goal_validation.py -q
+    red: python -m pytest tests/feature_pipeline/test_featurectl_core.py tests/feature_pipeline/test_pipeline_goal_validation.py
+      -q
+    green: python -m pytest tests/feature_pipeline/test_featurectl_core.py tests/feature_pipeline/test_pipeline_goal_validation.py
+      -q
   verification_commands:
   - python .agents/pipeline-core/scripts/featurectl.py init --profile-project
-  - python -m pytest tests/feature_pipeline/test_featurectl_core.py tests/feature_pipeline/test_pipeline_goal_validation.py -q
+  - python -m pytest tests/feature_pipeline/test_featurectl_core.py tests/feature_pipeline/test_pipeline_goal_validation.py
+    -q
   review_focus:
   - canonical memory remains discoverable
   - lab signals stay in discovered-signals only
@@ -101,9 +104,11 @@ slices:
   scope_confidence: high
   tdd:
     failing_test_file: tests/feature_pipeline/test_featurectl_core.py
-    red_command: python -m pytest tests/feature_pipeline/test_featurectl_core.py tests/feature_pipeline/test_pipeline_goal_validation.py -q
+    red_command: python -m pytest tests/feature_pipeline/test_featurectl_core.py tests/feature_pipeline/test_pipeline_goal_validation.py
+      -q
     expected_failure: project-index still contains signal/catalog keys
-    green_command: python -m pytest tests/feature_pipeline/test_featurectl_core.py tests/feature_pipeline/test_pipeline_goal_validation.py -q
+    green_command: python -m pytest tests/feature_pipeline/test_featurectl_core.py tests/feature_pipeline/test_pipeline_goal_validation.py
+      -q
 - id: S-003
   title: Structured execution event generation
   linked_requirements:
@@ -128,10 +133,13 @@ slices:
   - .ai/features/pipeline/public-raw-artifact-guardrails/execution.md
   test_strategy: Add failing tests for gate and promotion event_type records.
   tdd_commands:
-    red: python -m pytest tests/feature_pipeline/test_gates_and_evidence.py tests/feature_pipeline/test_finish_promote.py -q
-    green: python -m pytest tests/feature_pipeline/test_gates_and_evidence.py tests/feature_pipeline/test_finish_promote.py -q
+    red: python -m pytest tests/feature_pipeline/test_gates_and_evidence.py tests/feature_pipeline/test_finish_promote.py
+      -q
+    green: python -m pytest tests/feature_pipeline/test_gates_and_evidence.py tests/feature_pipeline/test_finish_promote.py
+      -q
   verification_commands:
-  - python -m pytest tests/feature_pipeline/test_gates_and_evidence.py tests/feature_pipeline/test_finish_promote.py -q
+  - python -m pytest tests/feature_pipeline/test_gates_and_evidence.py tests/feature_pipeline/test_finish_promote.py
+    -q
   review_focus:
   - old slice validation remains compatible
   - new gate/promotion events use event_type
@@ -149,6 +157,8 @@ slices:
   scope_confidence: high
   tdd:
     failing_test_file: tests/feature_pipeline/test_gates_and_evidence.py
-    red_command: python -m pytest tests/feature_pipeline/test_gates_and_evidence.py tests/feature_pipeline/test_finish_promote.py -q
+    red_command: python -m pytest tests/feature_pipeline/test_gates_and_evidence.py tests/feature_pipeline/test_finish_promote.py
+      -q
     expected_failure: gate/promotion event shape not standardized
-    green_command: python -m pytest tests/feature_pipeline/test_gates_and_evidence.py tests/feature_pipeline/test_finish_promote.py -q
+    green_command: python -m pytest tests/feature_pipeline/test_gates_and_evidence.py tests/feature_pipeline/test_finish_promote.py
+      -q
