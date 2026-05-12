@@ -1,0 +1,204 @@
+artifact_contract_version: 0.1.0
+feature_key: pipeline/artifact-readability-execution-semantics
+slices:
+  - id: S-001
+    title: Generated artifact readability
+    linked_requirements: [FR-001, FR-002]
+    linked_acceptance_criteria: [AC-001]
+    linked_adrs: []
+    linked_contracts: []
+    dependencies: []
+    priority: 1
+    complexity: 4
+    critical_path: true
+    parallelizable: false
+    file_ownership:
+      - .agents/pipeline-core/scripts/featurectl.py
+      - tests/feature_pipeline/test_artifact_formatting.py
+      - tests/feature_pipeline/test_featurectl_core.py
+    conflict_risk: medium
+    dependency_notes: Formatting helper should land before artifact rewrites.
+    expected_touchpoints:
+      - .agents/pipeline-core/scripts/featurectl.py
+      - tests/feature_pipeline
+    scope_confidence: high
+    test_strategy: Add readability tests over generated YAML/Markdown and source-controlled pipeline artifacts.
+    tdd:
+      failing_test_file: tests/feature_pipeline/test_artifact_formatting.py
+      red_command: python -m pytest tests/feature_pipeline/test_artifact_formatting.py
+      expected_failure: no formatting test exists and generated artifacts can collapse into long lines
+      green_command: python -m pytest tests/feature_pipeline/test_artifact_formatting.py
+    verification_commands:
+      - python -m pytest tests/feature_pipeline/test_artifact_formatting.py tests/feature_pipeline/test_featurectl_core.py
+    review_focus:
+      - YAML writes use readable block style
+      - Markdown sections remain separated
+    evidence_status: pending
+    status: pending
+    iteration_budget: 4
+    rollback_point: pre-slice git state
+    independent_verification: python -m pytest tests/feature_pipeline/test_artifact_formatting.py
+    failure_triage_notes: classify failures as formatter gap, fixture issue, scan scope bug, or generated artifact drift
+  - id: S-002
+    title: Execution log structure and retry semantics
+    linked_requirements: [FR-003, FR-004, FR-005, FR-006]
+    linked_acceptance_criteria: [AC-002, AC-003, AC-004, AC-005]
+    linked_adrs: []
+    linked_contracts: []
+    dependencies: [S-001]
+    priority: 2
+    complexity: 7
+    critical_path: true
+    parallelizable: false
+    file_ownership:
+      - .agents/pipeline-core/scripts/featurectl.py
+      - tests/feature_pipeline/test_finish_promote.py
+      - tests/feature_pipeline/test_gates_and_evidence.py
+      - .ai/features/pipeline/*/execution.md
+      - .ai/feature-workspaces/pipeline/*/execution.md
+    conflict_risk: high
+    dependency_notes: Execution rewrite relies on readable Markdown helpers and must migrate current artifacts.
+    expected_touchpoints:
+      - .agents/pipeline-core/scripts/featurectl.py
+      - tests/feature_pipeline/test_finish_promote.py
+      - tests/feature_pipeline/test_gates_and_evidence.py
+      - .ai/features/pipeline
+      - .ai/feature-workspaces/pipeline
+    scope_confidence: medium
+    test_strategy: Add tests for current-state/event-log/history structure, event placement, and retry attempt/reason.
+    tdd:
+      failing_test_file: tests/feature_pipeline/test_gates_and_evidence.py
+      red_command: python -m pytest tests/feature_pipeline/test_gates_and_evidence.py tests/feature_pipeline/test_finish_promote.py
+      expected_failure: retry reason is not required and execution logs do not enforce canonical event structure
+      green_command: python -m pytest tests/feature_pipeline/test_gates_and_evidence.py tests/feature_pipeline/test_finish_promote.py
+    verification_commands:
+      - python -m pytest tests/feature_pipeline/test_gates_and_evidence.py tests/feature_pipeline/test_finish_promote.py
+    review_focus:
+      - status and events cannot drift
+      - retries are semantically clear
+    evidence_status: pending
+    status: pending
+    iteration_budget: 6
+    rollback_point: pre-slice git state
+    independent_verification: python -m pytest tests/feature_pipeline/test_finish_promote.py
+    failure_triage_notes: classify failures as event parser bug, migration miss, retry schema bug, or test fixture drift
+  - id: S-003
+    title: Profile lab signal categories
+    linked_requirements: [FR-007, FR-008]
+    linked_acceptance_criteria: [AC-006, AC-007]
+    linked_adrs: []
+    linked_contracts: []
+    dependencies: [S-001]
+    priority: 3
+    complexity: 4
+    critical_path: false
+    parallelizable: true
+    file_ownership:
+      - .agents/pipeline-core/scripts/featurectl.py
+      - .agents/skills/nfp-01-context/SKILL.md
+      - tests/feature_pipeline/test_featurectl_core.py
+      - .ai/knowledge
+    conflict_risk: medium
+    dependency_notes: Profile category changes should be reflected in context skill guidance.
+    expected_touchpoints:
+      - .agents/pipeline-core/scripts/featurectl.py
+      - .agents/skills/nfp-01-context/SKILL.md
+      - tests/feature_pipeline/test_featurectl_core.py
+      - .ai/knowledge
+    scope_confidence: high
+    test_strategy: Assert pipeline-lab signals are lab_signal and discovered-signals has structured rows or explicit no-signal output.
+    tdd:
+      failing_test_file: tests/feature_pipeline/test_featurectl_core.py
+      red_command: python -m pytest tests/feature_pipeline/test_featurectl_core.py
+      expected_failure: pipeline-lab docs are generic detected signals and discovered-signals lacks structured signal rows
+      green_command: python -m pytest tests/feature_pipeline/test_featurectl_core.py
+    verification_commands:
+      - python -m pytest tests/feature_pipeline/test_featurectl_core.py
+      - python .agents/pipeline-core/scripts/featurectl.py init --profile-project
+    review_focus:
+      - agents prefer canonical features over lab signals
+      - discovered-signals remains useful when no signals exist
+    evidence_status: pending
+    status: pending
+    iteration_budget: 4
+    rollback_point: pre-slice git state
+    independent_verification: python -m pytest tests/feature_pipeline/test_featurectl_core.py
+    failure_triage_notes: classify failures as category bug, renderer bug, context guidance drift, or profile fixture issue
+  - id: S-004
+    title: Pipelinebench manual soft scoring
+    linked_requirements: [FR-009]
+    linked_acceptance_criteria: [AC-008]
+    linked_adrs: []
+    linked_contracts: []
+    dependencies: []
+    priority: 4
+    complexity: 5
+    critical_path: false
+    parallelizable: true
+    file_ownership:
+      - .agents/pipeline-core/scripts/pipelinebench.py
+      - tests/feature_pipeline/test_pipelinebench.py
+    conflict_risk: medium
+    dependency_notes: Independent of featurectl changes.
+    expected_touchpoints:
+      - .agents/pipeline-core/scripts/pipelinebench.py
+      - tests/feature_pipeline/test_pipelinebench.py
+    scope_confidence: medium
+    test_strategy: Add score-run test with manual-score.yaml and verify report includes soft-score table/comment.
+    tdd:
+      failing_test_file: tests/feature_pipeline/test_pipelinebench.py
+      red_command: python -m pytest tests/feature_pipeline/test_pipelinebench.py
+      expected_failure: pipelinebench has no soft-score-file mode
+      green_command: python -m pytest tests/feature_pipeline/test_pipelinebench.py
+    verification_commands:
+      - python -m pytest tests/feature_pipeline/test_pipelinebench.py tests/feature_pipeline/test_pipelinebench_offline.py
+    review_focus:
+      - hard checks remain deterministic
+      - soft scores are data only and optional
+    evidence_status: pending
+    status: pending
+    iteration_budget: 4
+    rollback_point: pre-slice git state
+    independent_verification: python -m pytest tests/feature_pipeline/test_pipelinebench.py
+    failure_triage_notes: classify failures as CLI contract bug, score parsing bug, report rendering bug, or fixture drift
+  - id: S-005
+    title: ADR and shared knowledge promotion
+    linked_requirements: [FR-010]
+    linked_acceptance_criteria: [AC-009, AC-010]
+    linked_adrs: []
+    linked_contracts: []
+    dependencies: [S-001, S-002, S-003, S-004]
+    priority: 5
+    complexity: 4
+    critical_path: false
+    parallelizable: false
+    file_ownership:
+      - .ai/knowledge/adr-index.md
+      - .ai/knowledge/architecture-overview.md
+      - .ai/knowledge/module-map.md
+      - .ai/knowledge/integration-map.md
+      - .ai/feature-workspaces/pipeline/artifact-readability-execution-semantics--20260512-readability-exec/adrs
+    conflict_risk: medium
+    dependency_notes: ADRs should reflect final implemented contracts after previous slices land.
+    expected_touchpoints:
+      - .ai/knowledge
+      - .ai/feature-workspaces/pipeline/artifact-readability-execution-semantics--20260512-readability-exec/adrs
+    scope_confidence: medium
+    test_strategy: Validate workspace finish state and full feature pipeline suite.
+    tdd:
+      failing_test_file: tests/feature_pipeline/test_finish_promote.py
+      red_command: python -m pytest tests/feature_pipeline
+      expected_failure: ADR/knowledge docs are not yet updated for this feature
+      green_command: python -m pytest tests/feature_pipeline
+    verification_commands:
+      - python -m pytest tests/feature_pipeline
+      - python pipeline-lab/showcases/scripts/validate_pipeline_goals.py --passes 3 --report /tmp/readability-goals.md
+    review_focus:
+      - ADR index captures architectural decisions
+      - knowledge docs are deeper and source-linked
+    evidence_status: pending
+    status: pending
+    iteration_budget: 4
+    rollback_point: pre-slice git state
+    independent_verification: python -m pytest tests/feature_pipeline
+    failure_triage_notes: classify failures as knowledge drift, ADR index drift, stale generated profile, or validation regression
