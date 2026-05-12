@@ -1,0 +1,1 @@
+Reviewed S-001: project-index no longer stores verbose example arrays or branch/head, profile-examples carries source/test/doc/contract/integration examples, discovered-signals is sectioned by canonical and noncanonical signals, and nfp-01-context references profile-examples and lab_signal constraints.

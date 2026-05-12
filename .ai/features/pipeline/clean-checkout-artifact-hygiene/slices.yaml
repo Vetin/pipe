@@ -1,0 +1,153 @@
+artifact_contract_version: 0.1.0
+slices:
+- id: S-001
+  title: Profile and signal readability
+  linked_requirements:
+  - FR-002
+  - FR-003
+  - FR-004
+  - FR-007
+  linked_acceptance_criteria:
+  - AC-002
+  - AC-003
+  linked_adrs: []
+  linked_contracts: []
+  dependencies: []
+  priority: 1
+  complexity: 5
+  critical_path: true
+  rationale: Reduce context noise and make discovered signal output readable.
+  files_owned: &id001
+  - .agents/pipeline-core/scripts/featurectl.py
+  - tests/feature_pipeline/test_featurectl_core.py
+  - .agents/skills/nfp-01-context/SKILL.md
+  expected_touchpoints:
+  - .ai/knowledge/project-index.yaml
+  - .ai/knowledge/profile-examples.yaml
+  - .ai/knowledge/discovered-signals.md
+  test_strategy: Add failing tests for profile split and signal section format.
+  tdd_commands:
+    red: python -m pytest tests/feature_pipeline/test_featurectl_core.py -q
+    green: python -m pytest tests/feature_pipeline/test_featurectl_core.py -q
+  verification_commands:
+  - python .agents/pipeline-core/scripts/featurectl.py init --profile-project
+  - python -m pytest tests/feature_pipeline/test_featurectl_core.py -q
+  review_focus:
+  - project-index keeps only compact retrieval memory
+  - lab_signal usage remains constrained
+  evidence_status: complete
+  status: complete
+  iteration_budget: 3
+  rollback_point: pre-slice git state
+  independent_verification: inspect .ai/knowledge/project-index.yaml and profile-examples.yaml
+  failure_triage_notes: classify failures as renderer, test fixture, or docs drift
+  parallelizable: false
+  file_ownership: *id001
+  conflict_risk: medium
+  dependency_notes: Depends only on listed prior slices and shared featurectl/test files.
+  scope_confidence: high
+  tdd:
+    failing_test_file: tests/feature_pipeline/test_featurectl_core.py
+    red_command: python -m pytest tests/feature_pipeline/test_featurectl_core.py -q
+    expected_failure: targeted regression fails before implementation
+    green_command: python -m pytest tests/feature_pipeline/test_featurectl_core.py -q
+- id: S-002
+  title: Evidence policy and clean-checkout readability guards
+  linked_requirements:
+  - FR-001
+  - FR-005
+  linked_acceptance_criteria:
+  - AC-001
+  - AC-004
+  dependencies:
+  - S-001
+  linked_adrs: []
+  linked_contracts: []
+  priority: 2
+  complexity: 4
+  critical_path: true
+  rationale: Make stale formatting reviews easy to catch and legacy evidence explicit.
+  files_owned: &id002
+  - .agents/pipeline-core/scripts/featurectl.py
+  - tests/feature_pipeline/test_artifact_formatting.py
+  - .ai/features
+  expected_touchpoints:
+  - .ai/features/*/evidence/manifest.yaml
+  - .ai/feature-workspaces/*/evidence/manifest.yaml
+  test_strategy: Add generated promote readability and evidence policy checks.
+  tdd_commands:
+    red: python -m pytest tests/feature_pipeline/test_artifact_formatting.py -q
+    green: python -m pytest tests/feature_pipeline/test_artifact_formatting.py -q
+  verification_commands:
+  - python -m pytest tests/feature_pipeline/test_artifact_formatting.py -q
+  - git diff --check
+  review_focus:
+  - no fake hashes introduced
+  - generated artifacts remain line-based
+  evidence_status: complete
+  status: complete
+  iteration_budget: 3
+  rollback_point: pre-slice git state
+  independent_verification: rg for semantic diff_hash and line-length violations
+  failure_triage_notes: classify failures as legacy policy or formatting regression
+  parallelizable: false
+  file_ownership: *id002
+  conflict_risk: medium
+  dependency_notes: Depends only on listed prior slices and shared featurectl/test files.
+  scope_confidence: high
+  tdd:
+    failing_test_file: tests/feature_pipeline/test_artifact_formatting.py
+    red_command: python -m pytest tests/feature_pipeline/test_artifact_formatting.py -q
+    expected_failure: targeted regression fails before implementation
+    green_command: python -m pytest tests/feature_pipeline/test_artifact_formatting.py -q
+- id: S-003
+  title: CLI wrapper module split and benchmark separation
+  linked_requirements:
+  - FR-006
+  linked_acceptance_criteria:
+  - AC-005
+  - AC-006
+  dependencies:
+  - S-001
+  - S-002
+  linked_adrs: []
+  linked_contracts: []
+  priority: 3
+  complexity: 5
+  critical_path: false
+  rationale: Reduce top-level script size while preserving CLI compatibility.
+  files_owned: &id003
+  - .agents/pipeline-core/scripts/featurectl.py
+  - .agents/pipeline-core/scripts/featurectl_core
+  - .agents/pipeline-core/scripts/pipelinebench.py
+  - .agents/pipeline-core/scripts/pipelinebench_core
+  - tests/feature_pipeline/test_artifact_formatting.py
+  expected_touchpoints:
+  - .ai/knowledge/architecture-overview.md
+  test_strategy: Add wrapper smoke and source layout checks.
+  tdd_commands:
+    red: python -m pytest tests/feature_pipeline/test_artifact_formatting.py -q
+    green: python -m pytest tests/feature_pipeline/test_artifact_formatting.py -q
+  verification_commands:
+  - python .agents/pipeline-core/scripts/featurectl.py status --workspace .ai/features/pipeline/portable-artifact-consistency
+  - python .agents/pipeline-core/scripts/pipelinebench.py list-scenarios
+  - python -m pytest tests/feature_pipeline -q
+  review_focus:
+  - top-level scripts remain callable
+  - import path is stable from repository root
+  evidence_status: complete
+  status: complete
+  iteration_budget: 3
+  rollback_point: pre-slice git state
+  independent_verification: direct CLI smoke tests
+  failure_triage_notes: classify failures as import path, moved file, or test expectation drift
+  parallelizable: false
+  file_ownership: *id003
+  conflict_risk: medium
+  dependency_notes: Depends only on listed prior slices and shared featurectl/test files.
+  scope_confidence: high
+  tdd:
+    failing_test_file: tests/feature_pipeline/test_artifact_formatting.py
+    red_command: python -m pytest tests/feature_pipeline/test_artifact_formatting.py -q
+    expected_failure: targeted regression fails before implementation
+    green_command: python -m pytest tests/feature_pipeline/test_artifact_formatting.py -q

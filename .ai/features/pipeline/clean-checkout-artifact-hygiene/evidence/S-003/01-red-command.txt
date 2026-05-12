@@ -1,0 +1,1 @@
+python -m pytest tests/feature_pipeline/test_artifact_formatting.py::ArtifactFormattingTests::test_pipeline_cli_scripts_are_thin_wrappers -q

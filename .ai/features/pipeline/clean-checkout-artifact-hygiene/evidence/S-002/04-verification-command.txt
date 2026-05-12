@@ -1,0 +1,1 @@
+python -m pytest tests/feature_pipeline/test_artifact_formatting.py tests/feature_pipeline/test_gates_and_evidence.py::GatesAndEvidenceTests::test_record_evidence_and_complete_slice -q && featurectl validate evidence manifests

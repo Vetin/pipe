@@ -1,0 +1,40 @@
+artifact_contract_version: 0.1.0
+review_id: REV-001
+tier: strict_review
+severity: note
+finding: Clean checkout artifact hygiene implementation is ready for final verification.
+artifact: workspace
+evidence: >
+  Full tests/feature_pipeline suite passed after the wrapper split, project
+  profile split, evidence identity policy, and curated knowledge sidecar fix.
+recommendation: Run final verification, write feature-card memory, then promote.
+blocking: false
+linked_requirement_ids:
+- FR-001
+- FR-002
+- FR-003
+- FR-004
+- FR-005
+- FR-006
+- FR-007
+linked_slice_ids:
+- S-001
+- S-002
+- S-003
+file_refs:
+- .agents/pipeline-core/scripts/featurectl.py
+- .agents/pipeline-core/scripts/featurectl_core/cli.py
+- .agents/pipeline-core/scripts/pipelinebench.py
+- .agents/pipeline-core/scripts/pipelinebench_core/cli.py
+- tests/feature_pipeline/test_artifact_formatting.py
+- tests/feature_pipeline/test_featurectl_core.py
+- .agents/skills/nfp-01-context/SKILL.md
+- .ai/knowledge/project-index.yaml
+- .ai/knowledge/profile-examples.yaml
+- .ai/knowledge/discovered-signals.md
+reproduction_or_reasoning: >
+  Strict review checked requirement traceability, CLI compatibility, source
+  readability, profile portability, lab-signal isolation, evidence identity
+  semantics, generated sidecar suppression, and source-truth consistency.
+fix_verification_command: python -m pytest tests/feature_pipeline -q
+re_review_required: false

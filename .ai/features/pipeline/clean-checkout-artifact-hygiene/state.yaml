@@ -2,7 +2,7 @@ artifact_contract_version: 0.1.0
 feature_key: pipeline/clean-checkout-artifact-hygiene
 run_id: 20260512-clean-checkout-hygiene
 current_step: promote
-lifecycle: promoted-readonly
+lifecycle: canonical
 read_only: true
 worktree:
   branch: feature/pipeline-clean-checkout-artifact-hygiene-20260512-clean-checkout-hygiene

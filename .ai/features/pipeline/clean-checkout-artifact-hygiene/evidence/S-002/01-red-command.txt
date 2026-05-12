@@ -1,0 +1,1 @@
+python -m pytest tests/feature_pipeline/test_artifact_formatting.py::ArtifactFormattingTests::test_change_label_only_manifests_declare_identity_policy -q

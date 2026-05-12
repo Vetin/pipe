@@ -1,0 +1,9 @@
+ M .ai/knowledge/contracts-overview.md
+ M .ai/knowledge/features-overview.md
+ M .ai/knowledge/project-overview.md
+ M .ai/knowledge/project-snapshot.md
+ M .ai/knowledge/testing-overview.md
+ M tests/feature_pipeline/test_artifact_formatting.py
+?? .ai/knowledge/architecture-overview.generated.md
+?? .ai/knowledge/integration-map.generated.md
+?? .ai/knowledge/module-map.generated.md

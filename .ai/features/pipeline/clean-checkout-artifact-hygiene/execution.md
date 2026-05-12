@@ -177,6 +177,7 @@ None yet.
 - 2026-05-12T19:54:06Z gate=review old_status=pending new_status=complete by=codex note=strict review found no blocking findings
 - 2026-05-12T19:57:30Z gate=verification old_status=pending new_status=complete by=codex note=final unittest pytest goal validation and diff check passed
 - 2026-05-12T19:58:44Z gate=finish old_status=pending new_status=complete by=codex note=feature card and shared knowledge updates complete
+- 2026-05-12T20:01:07Z promoted feature memory to .ai/features/pipeline/clean-checkout-artifact-hygiene
 
 ## History
 

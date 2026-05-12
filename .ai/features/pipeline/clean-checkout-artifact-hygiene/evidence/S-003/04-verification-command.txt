@@ -1,0 +1,1 @@
+python .agents/pipeline-core/scripts/featurectl.py status --workspace .ai/features/pipeline/portable-artifact-consistency && python .agents/pipeline-core/scripts/pipelinebench.py list-scenarios && python -m pytest tests/feature_pipeline -q

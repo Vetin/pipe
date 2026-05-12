@@ -1,0 +1,16 @@
+ M .agents/pipeline-core/scripts/featurectl.py
+ M .ai/feature-workspaces/pipeline/artifact-readability-execution-semantics--20260512-readability-exec/evidence/manifest.yaml
+ M .ai/feature-workspaces/pipeline/clean-checkout-artifact-hygiene--20260512-clean-checkout-hygiene/evidence/manifest.yaml
+ M .ai/features/pipeline/artifact-readability-execution-semantics/evidence/manifest.yaml
+ M .ai/features/pipeline/random-feature-stress-lab/evidence/manifest.yaml
+ M .ai/knowledge/contracts-overview.md
+ M .ai/knowledge/features-overview.md
+ M .ai/knowledge/project-overview.md
+ M .ai/knowledge/project-snapshot.md
+ M .ai/knowledge/testing-overview.md
+ M tests/feature_pipeline/test_artifact_formatting.py
+ M tests/feature_pipeline/test_gates_and_evidence.py
+?? .ai/feature-workspaces/pipeline/clean-checkout-artifact-hygiene--20260512-clean-checkout-hygiene/evidence/S-002/
+?? .ai/knowledge/architecture-overview.generated.md
+?? .ai/knowledge/integration-map.generated.md
+?? .ai/knowledge/module-map.generated.md
