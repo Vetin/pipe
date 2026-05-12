@@ -1,18 +1,18 @@
 artifact_contract_version: 0.1.0
 generated_by: featurectl.py init --profile-project
-generated_at: '2026-05-12T14:01:09Z'
+generated_at: '2026-05-12T14:15:54Z'
 project:
-  name: pipeline-lifecycle-hygiene-profile-noise-20260512-lifecycle-hygiene
-  root: /Users/egormasnankin/work/harness-pipeline/worktrees/pipeline-lifecycle-hygiene-profile-noise-20260512-lifecycle-hygiene
-  branch: feature/pipeline-lifecycle-hygiene-profile-noise-20260512-lifecycle-hygiene
-  head: 684b6f1
+  name: harness-pipeline
+  root: /Users/egormasnankin/work/harness-pipeline
+  branch: main
+  head: f0b2e8b
   remote: git@github.com:Vetin/pipe.git
 counts:
-  tracked_files: 1518
-  profiled_files: 184
+  tracked_files: 1591
+  profiled_files: 185
   source_files: 2
   test_files: 36
-  doc_files: 91
+  doc_files: 92
   contract_files: 20
   integration_files: 3
 package_manifests: []
@@ -21,7 +21,7 @@ module_dirs:
 - path: .agents
   tracked_files: 76
 - path: .ai
-  tracked_files: 58
+  tracked_files: 59
 - path: tests
   tracked_files: 36
 - path: pipeline-lab
@@ -119,6 +119,8 @@ integration_examples:
 canonical_features:
 - feature_key: pipeline/codex-e2e-runner-hardening
   path: .ai/features/pipeline/codex-e2e-runner-hardening
+- feature_key: pipeline/lifecycle-hygiene-profile-noise
+  path: .ai/features/pipeline/lifecycle-hygiene-profile-noise
 - feature_key: pipeline/random-feature-stress-lab
   path: .ai/features/pipeline/random-feature-stress-lab
 - feature_key: pipeline/real-codex-showcase-debug-runner
@@ -138,6 +140,13 @@ feature_catalog:
   source_count: 1
   sources:
   - .ai/features/pipeline/codex-e2e-runner-hardening
+- name: pipeline/lifecycle-hygiene-profile-noise
+  kind: canonical
+  confidence: high
+  description: Promoted feature memory recorded by the Native Feature Pipeline.
+  source_count: 1
+  sources:
+  - .ai/features/pipeline/lifecycle-hygiene-profile-noise
 - name: pipeline/random-feature-stress-lab
   kind: canonical
   confidence: high
