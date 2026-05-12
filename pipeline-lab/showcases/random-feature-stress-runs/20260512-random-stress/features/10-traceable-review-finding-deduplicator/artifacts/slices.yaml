@@ -1,0 +1,16 @@
+artifact_contract_version: 0.1.0
+slices:
+- id: S-001
+  requirement_ids:
+  - FR-001
+  - FR-002
+  - FR-003
+  title: Traceable Review finding deduplicator
+  red_command: python -m unittest tests.feature_pipeline.test_random_feature_stress
+    --feature 10-traceable-review-finding-deduplicator
+  green_command: python -m unittest tests.feature_pipeline.test_random_feature_stress
+  rollback: Remove artifacts for 10-traceable-review-finding-deduplicator
+  review_focus:
+  - shared knowledge
+  - rollback
+  - evidence

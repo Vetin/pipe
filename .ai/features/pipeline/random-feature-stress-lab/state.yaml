@@ -1,0 +1,30 @@
+artifact_contract_version: 0.1.0
+feature_key: pipeline/random-feature-stress-lab
+run_id: run-20260512-stress
+current_step: promote
+worktree:
+  branch: feature/pipeline-random-feature-stress-lab-run-20260512-stress
+  path: ../worktrees/pipeline-random-feature-stress-lab-run-20260512-stress
+gates:
+  feature_contract: approved
+  architecture: approved
+  tech_design: approved
+  slicing_readiness: approved
+  implementation: delegated
+  review: complete
+  verification: complete
+  finish: complete
+stale:
+  feature: false
+  architecture: false
+  tech_design: false
+  slices: false
+  evidence: false
+  review: false
+  feature_card: false
+  canonical_docs: false
+  index: false
+active_slice: null
+locks:
+  owner: null
+  acquired_at: null

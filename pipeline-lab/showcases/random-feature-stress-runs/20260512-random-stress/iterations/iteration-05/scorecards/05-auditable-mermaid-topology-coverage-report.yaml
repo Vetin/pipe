@@ -1,0 +1,16 @@
+artifact_contract_version: 0.1.0
+feature_id: 05-auditable-mermaid-topology-coverage-report
+iteration: 5
+repository_area: architecture
+complexity: 7
+dimensions:
+  feature_contract: 0.86
+  repository_context: 0.845
+  architecture_topology: 0.84
+  shared_knowledge: 0.825
+  slicing_evidence: 0.84
+  rollback_review: 0.835
+overall: 0.841
+mistakes_observed: &id001 []
+open_improvements: *id001
+status: pass

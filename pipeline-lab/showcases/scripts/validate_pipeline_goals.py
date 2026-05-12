@@ -14,6 +14,7 @@ import yaml
 ROOT = Path(__file__).resolve().parents[3]
 DEFAULT_NATIVE_RUN = ROOT / "pipeline-lab/showcases/native-emulation-runs/20260512-native-debug"
 DEFAULT_INIT_RUN = ROOT / "pipeline-lab/showcases/init-profile-runs/20260512-init-profile"
+DEFAULT_RANDOM_STRESS_RUN = ROOT / "pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress"
 DEFAULT_REPORT = ROOT / "pipeline-lab/showcases/pipeline-goal-validation-report.md"
 REQUIRED_WEB_SOURCES = (
     "https://academy.openai.com/public/resources/skills",
@@ -40,6 +41,7 @@ def validate_once(native_run: Path, init_run: Path) -> list[dict[str, str]]:
     checks.extend(validate_project_profile())
     checks.extend(validate_init_showcases(init_run))
     checks.extend(validate_skill_matrix())
+    checks.extend(validate_random_feature_stress(DEFAULT_RANDOM_STRESS_RUN))
     checks.extend(validate_web_best_practices())
     return checks
 
@@ -181,12 +183,32 @@ def validate_skill_matrix() -> list[dict[str, str]]:
             "architecture skill requires Mermaid topology and shared knowledge impact",
         )
     )
+    checks.append(
+        check(
+            "skill_architecture_shared_knowledge_decision_table",
+            "Shared Knowledge Decision Table" in architecture_skill
+            and "Decision" in architecture_skill
+            and "Evidence" in architecture_skill
+            and "Future reuse" in architecture_skill,
+            "architecture skill requires shared knowledge decisions with evidence and future reuse",
+        )
+    )
     finish_skill = read_text(ROOT / ".agents/skills/nfp-11-finish/SKILL.md")
     checks.append(
         check(
             "skill_finish_shared_knowledge_updates",
             "## Shared Knowledge Updates" in finish_skill and ".ai/knowledge/features-overview.md" in finish_skill,
             "finish skill requires shared knowledge update reporting",
+        )
+    )
+    checks.append(
+        check(
+            "skill_finish_shared_knowledge_decision_table",
+            "Shared Knowledge Decision Table" in finish_skill
+            and "Decision" in finish_skill
+            and "Evidence" in finish_skill
+            and "Future reuse" in finish_skill,
+            "finish skill requires shared knowledge decisions with evidence and future reuse",
         )
     )
     tdd_skill = ROOT / ".agents/skills/nfp-08-tdd-implementation/SKILL.md"
@@ -227,6 +249,26 @@ def validate_skill_matrix() -> list[dict[str, str]]:
         ]
         checks.append(check("skill_project-init", not missing, "missing: " + ", ".join(missing) if missing else "/init profile protocol present"))
     return checks
+
+
+def validate_random_feature_stress(run_dir: Path) -> list[dict[str, str]]:
+    summary_path = run_dir / "summary.yaml"
+    report_path = run_dir / "side-by-side.md"
+    if not summary_path.exists():
+        return [check("random_stress_summary_exists", False, f"missing {summary_path}")]
+    summary = read_yaml(summary_path)
+    common = summary.get("common_mistakes") or []
+    open_improvements = summary.get("open_improvements") or []
+    side_by_side = read_text(report_path) if report_path.exists() else ""
+    return [
+        check("random_stress_summary_exists", summary_path.exists(), "random stress summary exists"),
+        check("random_stress_ten_features", int(summary.get("feature_count") or 0) == 10, f"features: {summary.get('feature_count')}"),
+        check("random_stress_ten_iterations", int(summary.get("iterations") or 0) == 10, f"iterations: {summary.get('iterations')}"),
+        check("random_stress_hundred_runs", int(summary.get("total_feature_runs") or 0) == 100, f"runs: {summary.get('total_feature_runs')}"),
+        check("random_stress_common_mistakes", "generic shared-knowledge path bullets" in common, "common shared-knowledge mistake detected"),
+        check("random_stress_no_open_improvements", not open_improvements, f"open improvements: {len(open_improvements)}"),
+        check("random_stress_side_by_side", "Side By Side Knowledge Comparison" in side_by_side and "10/10" in side_by_side, "side-by-side knowledge report exists"),
+    ]
 
 
 def validate_web_best_practices() -> list[dict[str, str]]:

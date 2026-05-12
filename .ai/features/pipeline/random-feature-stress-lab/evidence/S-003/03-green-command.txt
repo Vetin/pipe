@@ -1,0 +1,1 @@
+python -m unittest tests.feature_pipeline.test_random_feature_stress tests.feature_pipeline.test_pipeline_goal_validation tests.feature_pipeline.test_methodology_contract

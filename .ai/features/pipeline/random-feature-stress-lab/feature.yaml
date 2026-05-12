@@ -1,0 +1,17 @@
+artifact_contract_version: 0.1.0
+feature_key: pipeline/random-feature-stress-lab
+domain: pipeline
+slug: random-feature-stress-lab
+title: Random Feature Stress Lab
+status: complete
+run_id: run-20260512-stress
+branch: feature/pipeline-random-feature-stress-lab-run-20260512-stress
+worktree: ../worktrees/pipeline-random-feature-stress-lab-run-20260512-stress
+canonical_path: .ai/features/pipeline/random-feature-stress-lab
+workspace_path: .ai/feature-workspaces/pipeline/random-feature-stress-lab--run-20260512-stress
+aliases: []
+keywords:
+- pipeline
+- random-feature-stress-lab
+created_at: '2026-05-12T00:00:03Z'
+updated_at: '2026-05-12T00:00:03Z'

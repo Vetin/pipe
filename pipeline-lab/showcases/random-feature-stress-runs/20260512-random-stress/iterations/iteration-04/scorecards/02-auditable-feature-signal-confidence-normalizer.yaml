@@ -1,0 +1,17 @@
+artifact_contract_version: 0.1.0
+feature_id: 02-auditable-feature-signal-confidence-normalizer
+iteration: 4
+repository_area: project-init
+complexity: 8
+dimensions:
+  feature_contract: 0.84
+  repository_context: 0.824
+  architecture_topology: 0.816
+  shared_knowledge: 0.796
+  slicing_evidence: 0.818
+  rollback_review: 0.81
+overall: 0.817
+mistakes_observed: &id001
+- rollback target not explicit enough
+open_improvements: *id001
+status: pass

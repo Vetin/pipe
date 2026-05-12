@@ -1,0 +1,16 @@
+artifact_contract_version: 0.1.0
+slices:
+- id: S-001
+  requirement_ids:
+  - FR-001
+  - FR-002
+  - FR-003
+  title: Policy-Aware Nested prompt policy verifier
+  red_command: python -m unittest tests.feature_pipeline.test_random_feature_stress
+    --feature 03-policy-aware-nested-prompt-policy-verifier
+  green_command: python -m unittest tests.feature_pipeline.test_random_feature_stress
+  rollback: Remove artifacts for 03-policy-aware-nested-prompt-policy-verifier
+  review_focus:
+  - shared knowledge
+  - rollback
+  - evidence

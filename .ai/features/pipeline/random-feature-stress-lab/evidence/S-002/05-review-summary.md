@@ -1,0 +1,1 @@
+Review: checked deterministic output, 100 scorecards, no open improvements, and shared knowledge decision tables in architecture and feature cards.

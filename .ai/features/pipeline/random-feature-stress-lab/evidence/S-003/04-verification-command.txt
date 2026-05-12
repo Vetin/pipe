@@ -1,0 +1,1 @@
+python -m unittest discover tests/feature_pipeline && python pipeline-lab/showcases/scripts/validate_pipeline_goals.py --passes 3

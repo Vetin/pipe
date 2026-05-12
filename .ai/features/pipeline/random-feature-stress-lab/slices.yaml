@@ -1,0 +1,158 @@
+artifact_contract_version: 0.1.0
+slices:
+- id: S-001
+  title: Deterministic ten-feature stress runner
+  linked_requirements:
+  - FR-001
+  - FR-002
+  - FR-003
+  - FR-005
+  - FR-006
+  linked_acceptance_criteria:
+  - AC-001
+  - AC-002
+  - AC-004
+  linked_adrs:
+  - ADR-001
+  linked_contracts:
+  - summary-yaml
+  dependencies: []
+  priority: 1
+  complexity: 6
+  critical_path: true
+  parallelizable: false
+  file_ownership:
+  - pipeline-lab/showcases/scripts/run_random_feature_stress.py
+  conflict_risk: medium
+  dependency_notes: Starts the lab; reports and tests depend on this CLI.
+  expected_touchpoints:
+  - pipeline-lab/showcases/scripts/run_random_feature_stress.py
+  - pipeline-lab/showcases/random-feature-stress-runs/**
+  scope_confidence: high
+  test_strategy: Run the CLI in a temp output directory and inspect generated summary/report/artifacts.
+  tdd:
+    failing_test_file: tests/feature_pipeline/test_random_feature_stress.py
+    red_command: python -m unittest tests.feature_pipeline.test_random_feature_stress
+    expected_failure: missing random feature stress runner
+    green_command: python -m unittest tests.feature_pipeline.test_random_feature_stress
+  verification_commands:
+  - python -m unittest tests.feature_pipeline.test_random_feature_stress
+  - python pipeline-lab/showcases/scripts/run_random_feature_stress.py --run-id 20260512-stress
+    --seed 20260512 --feature-count 10 --iterations 10 --clean
+  review_focus:
+  - deterministic output
+  - count enforcement
+  - shared knowledge quality
+  - rollback scope
+  evidence_status: complete
+  status: complete
+  iteration_budget: 10
+  rollback_point: Remove the script and generated run directory.
+  independent_verification: Inspect summary.yaml, side-by-side report, and generated
+    artifacts.
+  failure_triage_notes: Classify failures as generation, scoring, reporting, or validation
+    gaps.
+- id: S-002
+  title: Shared knowledge decision table skill improvement
+  linked_requirements:
+  - FR-004
+  linked_acceptance_criteria:
+  - AC-002
+  - AC-003
+  linked_adrs:
+  - ADR-002
+  linked_contracts:
+  - architecture-template
+  - feature-card-template
+  dependencies:
+  - S-001
+  priority: 2
+  complexity: 4
+  critical_path: true
+  parallelizable: true
+  file_ownership:
+  - .agents/skills/nfp-03-architecture/SKILL.md
+  - .agents/skills/nfp-11-finish/SKILL.md
+  - .agents/pipeline-core/references/generated-templates/architecture-template.md
+  - .agents/pipeline-core/references/generated-templates/feature-card-template.md
+  conflict_risk: low
+  dependency_notes: Can be implemented once the stress runner exposes generic shared-knowledge
+    bullets as a common mistake.
+  expected_touchpoints:
+  - .agents/skills/nfp-03-architecture/SKILL.md
+  - .agents/skills/nfp-11-finish/SKILL.md
+  - .agents/pipeline-core/references/generated-templates/*.md
+  scope_confidence: high
+  test_strategy: Assert skills/templates require shared-knowledge decision/status,
+    evidence, and future reuse.
+  tdd:
+    failing_test_file: tests/feature_pipeline/test_random_feature_stress.py
+    red_command: python -m unittest tests.feature_pipeline.test_random_feature_stress
+    expected_failure: skills/templates do not require shared-knowledge decision tables
+    green_command: python -m unittest tests.feature_pipeline.test_random_feature_stress
+  verification_commands:
+  - python -m unittest tests.feature_pipeline.test_random_feature_stress
+  - python -m unittest tests.feature_pipeline.test_methodology_contract
+  review_focus:
+  - avoid generic path-only knowledge updates
+  - ensure future agents know what to reuse
+  evidence_status: complete
+  status: complete
+  iteration_budget: 10
+  rollback_point: Revert skill/template wording if it creates excessive process burden.
+  independent_verification: Read generated architecture.md and feature-card.md from
+    the stress run.
+  failure_triage_notes: Classify as skill-instruction gap or generated-artifact gap.
+- id: S-003
+  title: Validation report, final run, and project knowledge refresh
+  linked_requirements:
+  - FR-003
+  - FR-005
+  - FR-006
+  linked_acceptance_criteria:
+  - AC-001
+  - AC-004
+  linked_adrs:
+  - ADR-001
+  - ADR-002
+  linked_contracts:
+  - stress-summary
+  - feature-card
+  dependencies:
+  - S-001
+  - S-002
+  priority: 3
+  complexity: 5
+  critical_path: false
+  parallelizable: true
+  file_ownership:
+  - tests/feature_pipeline/test_random_feature_stress.py
+  - pipeline-lab/showcases/random-feature-stress-runs/**
+  - .ai/knowledge/**
+  conflict_risk: low
+  dependency_notes: Final validation depends on runner and skill improvements.
+  expected_touchpoints:
+  - tests/feature_pipeline/test_random_feature_stress.py
+  - pipeline-lab/showcases/random-feature-stress-runs/**
+  - .ai/knowledge/**
+  scope_confidence: high
+  test_strategy: Run focused tests, full feature_pipeline suite, goal validation,
+    and final stress run.
+  tdd:
+    failing_test_file: tests/feature_pipeline/test_random_feature_stress.py
+    red_command: python -m unittest tests.feature_pipeline.test_random_feature_stress
+    expected_failure: final run artifacts missing before implementation
+    green_command: python -m unittest tests.feature_pipeline.test_random_feature_stress
+  verification_commands:
+  - python -m unittest discover tests/feature_pipeline
+  - python pipeline-lab/showcases/scripts/validate_pipeline_goals.py --passes 3
+  review_focus:
+  - final open improvements must be empty
+  - output must state rollback target repos were not mutated
+  evidence_status: complete
+  status: complete
+  iteration_budget: 10
+  rollback_point: Remove generated run artifacts and rerun project init.
+  independent_verification: Compare summary.yaml with Markdown reports and test output.
+  failure_triage_notes: Classify as report mismatch, validation regression, or project-profile
+    drift.

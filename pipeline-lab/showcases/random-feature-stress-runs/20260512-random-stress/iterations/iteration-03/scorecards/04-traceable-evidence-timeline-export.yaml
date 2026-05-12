@@ -1,0 +1,18 @@
+artifact_contract_version: 0.1.0
+feature_id: 04-traceable-evidence-timeline-export
+iteration: 3
+repository_area: evidence
+complexity: 10
+dimensions:
+  feature_contract: 0.82
+  repository_context: 0.803
+  architecture_topology: 0.792
+  shared_knowledge: 0.767
+  slicing_evidence: 0.796
+  rollback_review: 0.785
+overall: 0.794
+mistakes_observed: &id001
+- generic shared-knowledge path bullets
+- rollback target not explicit enough
+open_improvements: *id001
+status: pass

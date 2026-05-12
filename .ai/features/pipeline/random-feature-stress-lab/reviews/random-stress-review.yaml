@@ -1,0 +1,19 @@
+artifact_contract_version: 0.1.0
+review_id: random-stress-review
+tier: adversarial
+severity: note
+finding: deterministic random feature stress lab passed focused, goal, and full pipeline validation
+artifact: pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/summary.yaml
+evidence: 10 generated features, 10 iterations, 100 scorecards, and zero final open improvements
+recommendation: keep shared knowledge decision tables mandatory in architecture and finish outputs
+blocking: false
+linked_requirement_ids: [FR-001, FR-002, FR-003, FR-004, FR-005, FR-006]
+linked_slice_ids: [S-001, S-002, S-003]
+file_refs:
+  - pipeline-lab/showcases/scripts/run_random_feature_stress.py
+  - tests/feature_pipeline/test_random_feature_stress.py
+  - .agents/skills/nfp-03-architecture/SKILL.md
+  - .agents/skills/nfp-11-finish/SKILL.md
+reproduction_or_reasoning: The final run summary reports status pass, open_improvements empty, and every generated architecture/card includes Shared Knowledge Decision Table.
+fix_verification_command: python -m unittest discover tests/feature_pipeline
+re_review_required: false

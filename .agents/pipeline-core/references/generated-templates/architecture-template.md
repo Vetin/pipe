@@ -20,9 +20,14 @@ flowchart LR
 ## Architecture Risks
 ## Alternatives Considered
 ## Shared Knowledge Impact
-- `.ai/knowledge/features-overview.md`:
-- `.ai/knowledge/architecture-overview.md`:
-- `.ai/knowledge/module-map.md`:
-- `.ai/knowledge/integration-map.md`:
+
+### Shared Knowledge Decision Table
+
+| Knowledge file | Decision | Evidence | Future reuse |
+| --- | --- | --- | --- |
+| `.ai/knowledge/features-overview.md` | update / confirm unchanged / defer |  |  |
+| `.ai/knowledge/architecture-overview.md` | update / confirm unchanged / defer |  |  |
+| `.ai/knowledge/module-map.md` | update / confirm unchanged / defer |  |  |
+| `.ai/knowledge/integration-map.md` | update / confirm unchanged / defer |  |  |
 ## Completeness Correctness Coherence
 ## ADRs

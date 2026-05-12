@@ -1,0 +1,8 @@
+artifact_contract_version: 0.1.0
+native_prompt: no direct internal skill invocation
+commands:
+- name: stress-run
+  command: run_random_feature_stress.py --iterations 10
+- name: shared-knowledge-check
+  command: inspect generated decision tables
+final_score: 0.958

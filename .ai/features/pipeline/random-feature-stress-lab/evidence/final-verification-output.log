@@ -1,0 +1,8 @@
+python -m unittest tests.feature_pipeline.test_random_feature_stress tests.feature_pipeline.test_pipeline_goal_validation tests.feature_pipeline.test_methodology_contract
+14 tests passed.
+
+python pipeline-lab/showcases/scripts/validate_pipeline_goals.py --passes 3
+3 passes, 0 failures.
+
+python -m unittest discover tests/feature_pipeline
+101 tests passed.

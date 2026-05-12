@@ -1,0 +1,16 @@
+artifact_contract_version: 0.1.0
+feature_id: 02-auditable-feature-signal-confidence-normalizer
+iteration: 10
+repository_area: project-init
+complexity: 8
+dimensions:
+  feature_contract: 0.96
+  repository_context: 0.95
+  architecture_topology: 0.96
+  shared_knowledge: 0.97
+  slicing_evidence: 0.95
+  rollback_review: 0.96
+overall: 0.958
+mistakes_observed: []
+open_improvements: []
+status: pass

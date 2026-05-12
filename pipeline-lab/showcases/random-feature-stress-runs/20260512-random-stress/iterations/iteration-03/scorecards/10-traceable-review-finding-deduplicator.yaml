@@ -1,0 +1,17 @@
+artifact_contract_version: 0.1.0
+feature_id: 10-traceable-review-finding-deduplicator
+iteration: 3
+repository_area: review
+complexity: 1
+dimensions:
+  feature_contract: 0.82
+  repository_context: 0.803
+  architecture_topology: 0.792
+  shared_knowledge: 0.767
+  slicing_evidence: 0.796
+  rollback_review: 0.785
+overall: 0.794
+mistakes_observed: &id001
+- generic shared-knowledge path bullets
+open_improvements: *id001
+status: pass

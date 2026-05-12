@@ -1,0 +1,16 @@
+artifact_contract_version: 0.1.0
+feature_id: 09-bounded-gate-autoresume-hints
+iteration: 6
+repository_area: skills
+complexity: 5
+dimensions:
+  feature_contract: 0.88
+  repository_context: 0.866
+  architecture_topology: 0.864
+  shared_knowledge: 0.854
+  slicing_evidence: 0.862
+  rollback_review: 0.86
+overall: 0.864
+mistakes_observed: &id001 []
+open_improvements: *id001
+status: pass

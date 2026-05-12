@@ -37,6 +37,9 @@ Responsibilities:
 - update living documentation summaries when appropriate
 - capture shared-knowledge updates in `feature-card.md` so future agents can
   see what changed without replaying the full transcript
+- include a `Shared Knowledge Decision Table` with `Decision`, `Evidence`, and
+  `Future reuse` columns for every updated, confirmed unchanged, or deferred
+  `.ai/knowledge` file
 - do not claim completion without fresh final verification after the last
   implementation or review fix
 
@@ -55,10 +58,12 @@ Workflow:
    `## Shared Knowledge Updates`.
 7. Update `execution.md` with final summary and PR summary.
 8. Update `.ai/knowledge` summaries when appropriate. At minimum, record in
-   `feature-card.md` whether `.ai/knowledge/features-overview.md`,
+   `feature-card.md` a `Shared Knowledge Decision Table` showing whether
+   `.ai/knowledge/features-overview.md`,
    `.ai/knowledge/architecture-overview.md`, `.ai/knowledge/module-map.md`, and
-   `.ai/knowledge/integration-map.md` were updated or intentionally left
-   unchanged, and why.
+   `.ai/knowledge/integration-map.md` were updated, confirmed unchanged, or
+   deferred. Each row must include the `Decision`, `Evidence`, and
+   `Future reuse` value.
 9. Set the finish gate to `complete`.
 10. Run `featurectl.py validate --workspace <workspace>`.
 
@@ -75,6 +80,8 @@ Feature memory must include:
 - claim provenance mapping final claims to artifacts and commands
 - rollback guidance for operators or future agents
 - shared knowledge updates with `.ai/knowledge` paths and reuse notes
+- shared knowledge decision table with update/unchanged/deferred status,
+  evidence, and future reuse notes
 - commands that prove final state
 - plan drift notes explaining what changed from `feature.md`,
   `architecture.md`, `tech-design.md`, and `slices.yaml`

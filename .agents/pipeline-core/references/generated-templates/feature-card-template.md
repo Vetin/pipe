@@ -12,10 +12,15 @@
 ## Claim Provenance
 ## Rollback Guidance
 ## Shared Knowledge Updates
-- `.ai/knowledge/features-overview.md`:
-- `.ai/knowledge/architecture-overview.md`:
-- `.ai/knowledge/module-map.md`:
-- `.ai/knowledge/integration-map.md`:
+
+### Shared Knowledge Decision Table
+
+| Knowledge file | Decision | Evidence | Future reuse |
+| --- | --- | --- | --- |
+| `.ai/knowledge/features-overview.md` | updated / confirmed unchanged / deferred |  |  |
+| `.ai/knowledge/architecture-overview.md` | updated / confirmed unchanged / deferred |  |  |
+| `.ai/knowledge/module-map.md` | updated / confirmed unchanged / deferred |  |  |
+| `.ai/knowledge/integration-map.md` | updated / confirmed unchanged / deferred |  |  |
 ## Plan Drift
 ## Known Risks
 ## Future Modification Notes

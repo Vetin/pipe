@@ -1,0 +1,16 @@
+artifact_contract_version: 0.1.0
+slices:
+- id: S-001
+  requirement_ids:
+  - FR-001
+  - FR-002
+  - FR-003
+  title: Guided Scenario score drift detector
+  red_command: python -m unittest tests.feature_pipeline.test_random_feature_stress
+    --feature 08-guided-scenario-score-drift-detector
+  green_command: python -m unittest tests.feature_pipeline.test_random_feature_stress
+  rollback: Remove artifacts for 08-guided-scenario-score-drift-detector
+  review_focus:
+  - shared knowledge
+  - rollback
+  - evidence

@@ -1,0 +1,166 @@
+artifact_contract_version: 0.1.0
+features:
+- id: 01-guided-workspace-recovery-doctor
+  title: Guided Workspace recovery doctor
+  repository_area: featurectl
+  feature_request: Add guided workspace recovery doctor to detect broken feature workspaces
+    and propose safe repair commands.
+  expected_result: Generated artifacts must identify touched modules, state transitions,
+    tests, review focus, rollback guidance, and shared knowledge impact.
+  complexity: 1
+  changed_parts:
+  - state.yaml
+  - execution.md
+  - worktree status
+  - feature.yaml
+  risk_profile:
+  - state drift
+  - unsafe branch repair
+  - missing provenance
+  shared_pattern: state-machine recovery
+- id: 02-auditable-feature-signal-confidence-normalizer
+  title: Auditable Feature signal confidence normalizer
+  repository_area: project-init
+  feature_request: Add auditable feature signal confidence normalizer to deduplicate
+    noisy feature signals and explain confidence across docs and source files.
+  expected_result: Generated artifacts must identify touched modules, state transitions,
+    tests, review focus, rollback guidance, and shared knowledge impact.
+  complexity: 8
+  changed_parts:
+  - profile scanner
+  - features-overview.md
+  - .ai/knowledge/project-index.yaml
+  risk_profile:
+  - overstated feature memory
+  - duplicate catalog rows
+  shared_pattern: knowledge bootstrap
+- id: 03-policy-aware-nested-prompt-policy-verifier
+  title: Policy-Aware Nested prompt policy verifier
+  repository_area: codex-e2e
+  feature_request: Add policy-aware nested prompt policy verifier to verify nested
+    Codex prompts discover AGENTS.md and avoid direct internal skill invocation lists.
+  expected_result: Generated artifacts must identify touched modules, state transitions,
+    tests, review focus, rollback guidance, and shared knowledge impact.
+  complexity: 8
+  changed_parts:
+  - prompt.md
+  - run_codex_e2e_case.py
+  - codex-output.log
+  risk_profile:
+  - policy bypass
+  - chat-only state
+  - missing worktree policy
+  shared_pattern: native prompt integrity
+- id: 04-traceable-evidence-timeline-export
+  title: Traceable Evidence timeline export
+  repository_area: evidence
+  feature_request: Add traceable evidence timeline export to render red, green, review,
+    fix, and verification evidence into a chronological report.
+  expected_result: Generated artifacts must identify touched modules, state transitions,
+    tests, review focus, rollback guidance, and shared knowledge impact.
+  complexity: 10
+  changed_parts:
+  - execution.md
+  - reviews/
+  - evidence/manifest.yaml
+  risk_profile:
+  - missing failed attempt
+  - unlinked command output
+  shared_pattern: evidence traceability
+- id: 05-auditable-mermaid-topology-coverage-report
+  title: Auditable Mermaid topology coverage report
+  repository_area: architecture
+  feature_request: Add auditable mermaid topology coverage report to audit generated
+    architecture files for topology actors, services, persistence, and communication
+    arrows.
+  expected_result: Generated artifacts must identify touched modules, state transitions,
+    tests, review focus, rollback guidance, and shared knowledge impact.
+  complexity: 7
+  changed_parts:
+  - validation reports
+  - architecture.md
+  - diagrams/
+  risk_profile:
+  - blank diagram
+  - generic service boxes
+  shared_pattern: architecture topology
+- id: 06-bounded-canonical-memory-diff-preview
+  title: Bounded Canonical memory diff preview
+  repository_area: promotion
+  feature_request: Add bounded canonical memory diff preview to preview canonical
+    feature memory changes before promote copies a workspace into .ai/features.
+  expected_result: Generated artifacts must identify touched modules, state transitions,
+    tests, review focus, rollback guidance, and shared knowledge impact.
+  complexity: 8
+  changed_parts:
+  - feature-card.md
+  - .ai/features-archive
+  - .ai/features
+  risk_profile:
+  - memory overwrite
+  - lost archived variant
+  shared_pattern: promotion safety
+- id: 07-guided-shared-knowledge-coverage-gate
+  title: Guided Shared knowledge coverage gate
+  repository_area: validators
+  feature_request: Add guided shared knowledge coverage gate to fail validation when
+    architecture or feature cards omit knowledge update decisions.
+  expected_result: Generated artifacts must identify touched modules, state transitions,
+    tests, review focus, rollback guidance, and shared knowledge impact.
+  complexity: 9
+  changed_parts:
+  - validate_pipeline_goals.py
+  - architecture.md
+  - feature-card.md
+  risk_profile:
+  - generic knowledge bullets
+  - future agent confusion
+  shared_pattern: knowledge decision table
+- id: 08-guided-scenario-score-drift-detector
+  title: Guided Scenario score drift detector
+  repository_area: pipelinebench
+  feature_request: Add guided scenario score drift detector to compare repeated benchmark
+    runs and flag score drift by skill and scenario.
+  expected_result: Generated artifacts must identify touched modules, state transitions,
+    tests, review focus, rollback guidance, and shared knowledge impact.
+  complexity: 6
+  changed_parts:
+  - scorecards
+  - showcase-summary.yaml
+  - showcase-report.md
+  risk_profile:
+  - false positive drift
+  - unstable baselines
+  shared_pattern: benchmark comparison
+- id: 09-bounded-gate-autoresume-hints
+  title: Bounded Gate autoresume hints
+  repository_area: skills
+  feature_request: Add bounded gate autoresume hints to show the next safe pipeline
+    action after each gate transition without adding next_skill to state.
+  expected_result: Generated artifacts must identify touched modules, state transitions,
+    tests, review focus, rollback guidance, and shared knowledge impact.
+  complexity: 5
+  changed_parts:
+  - nfp skills
+  - state.yaml
+  - execution.md
+  risk_profile:
+  - state contract regression
+  - skipped gate
+  shared_pattern: workflow continuity
+- id: 10-traceable-review-finding-deduplicator
+  title: Traceable Review finding deduplicator
+  repository_area: review
+  feature_request: Add traceable review finding deduplicator to group repeated review
+    findings across iterations and keep fix verification commands intact.
+  expected_result: Generated artifacts must identify touched modules, state transitions,
+    tests, review focus, rollback guidance, and shared knowledge impact.
+  complexity: 1
+  changed_parts:
+  - execution.md
+  - reviews/*.yaml
+  - verification-review.md
+  risk_profile:
+  - lost critical finding
+  - duplicate noise
+  shared_pattern: review replay

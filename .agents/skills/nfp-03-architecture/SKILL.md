@@ -37,6 +37,9 @@ Responsibilities:
   design begins
 - identify which `.ai/knowledge` summaries the feature should update at finish
   so future feature work can reuse the architecture picture
+- include a `Shared Knowledge Decision Table` with one row per relevant
+  `.ai/knowledge` file, including `Decision`, `Evidence`, and `Future reuse`
+  columns; do not leave generic path-only bullets
 - document considered alternatives and why the selected direction fits the
   existing repository
 - keep claims grounded in inspected files, ADRs, contracts, and tests
@@ -86,6 +89,11 @@ Workflow:
 
    ## Shared Knowledge Impact
 
+   ### Shared Knowledge Decision Table
+
+   | Knowledge file | Decision | Evidence | Future reuse |
+   | --- | --- | --- | --- |
+
    ## Completeness Correctness Coherence
 
    ## ADRs
@@ -97,9 +105,10 @@ Workflow:
    read from the top of the feature without implementation detail. It must show
    at least actor/client, entrypoint, affected services/modules, persistence or
    event/audit path, and external integration when applicable.
-8. In `Shared Knowledge Impact`, list the `.ai/knowledge` files that finish
-   should update or confirm unchanged, with one line explaining the future reuse
-   value of each update.
+8. In `Shared Knowledge Impact`, include a `Shared Knowledge Decision Table`.
+   For each `.ai/knowledge` file, state whether finish should update it,
+   confirm it unchanged, or defer it; cite the artifact or source evidence; and
+   explain the future reuse value. Generic path-only bullets are not enough.
 9. Add diagrams under `diagrams/` when they clarify flow or module boundaries.
 10. Add ADRs under `adrs/` only for significant decisions. Each ADR must include
    alternatives and consequences.

@@ -1,2 +1,7 @@
-artifact_contract_version: '0.1.0'
-features: []
+artifact_contract_version: 0.1.0
+features:
+- feature_key: pipeline/random-feature-stress-lab
+  title: Random Feature Stress Lab
+  status: complete
+  path: .ai/features/pipeline/random-feature-stress-lab
+  run_id: run-20260512-stress

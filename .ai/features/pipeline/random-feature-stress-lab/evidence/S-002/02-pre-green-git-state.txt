@@ -1,0 +1,20 @@
+## feature/pipeline-random-feature-stress-lab-run-20260512-stress
+ M .agents/pipeline-core/references/generated-templates/architecture-template.md
+ M .agents/pipeline-core/references/generated-templates/feature-card-template.md
+ M .agents/skills/nfp-03-architecture/SKILL.md
+ M .agents/skills/nfp-11-finish/SKILL.md
+ M .ai/knowledge/architecture-overview.md
+ M .ai/knowledge/contracts-overview.md
+ M .ai/knowledge/features-overview.md
+ M .ai/knowledge/integration-map.md
+ M .ai/knowledge/module-map.md
+ M .ai/knowledge/project-index.yaml
+ M .ai/knowledge/project-overview.md
+ M .ai/knowledge/project-snapshot.md
+ M .ai/knowledge/testing-overview.md
+ M pipeline-lab/showcases/pipeline-goal-validation-report.md
+ M pipeline-lab/showcases/scripts/validate_pipeline_goals.py
+?? .ai/feature-workspaces/
+?? pipeline-lab/showcases/random-feature-stress-runs/
+?? pipeline-lab/showcases/scripts/run_random_feature_stress.py
+?? tests/feature_pipeline/test_random_feature_stress.py
