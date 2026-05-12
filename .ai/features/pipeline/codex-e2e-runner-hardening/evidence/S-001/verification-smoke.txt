@@ -1,0 +1,4 @@
+case: toy-greeting-smoke
+run_dir: /tmp/codex-e2e-s001-smoke-evidence/toy-greeting-smoke/s001-smoke
+returncode: 0
+summary: /tmp/codex-e2e-s001-smoke-evidence/summary-s001-smoke.yaml

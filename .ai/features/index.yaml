@@ -1,5 +1,10 @@
 artifact_contract_version: 0.1.0
 features:
+- feature_key: pipeline/codex-e2e-runner-hardening
+  title: Codex E2E Runner Hardening
+  status: complete
+  path: .ai/features/pipeline/codex-e2e-runner-hardening
+  run_id: run-20260512-codex-e2e-hardening
 - feature_key: pipeline/random-feature-stress-lab
   title: Random Feature Stress Lab
   status: complete

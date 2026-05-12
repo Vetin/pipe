@@ -1,0 +1,177 @@
+artifact_contract_version: 0.1.0
+feature_key: pipeline/codex-e2e-runner-hardening
+slices:
+- id: S-001
+  title: Harden E2E source, worktree, and prompt contracts
+  linked_requirements:
+  - FR-001
+  - FR-003
+  - FR-004
+  - FR-005
+  linked_acceptance_criteria:
+  - AC-003
+  - AC-004
+  linked_adrs:
+  - ADR-001
+  - ADR-002
+  linked_contracts:
+  - source-repository-resolution
+  - worktree-safety
+  - prompt-profiles
+  dependencies: []
+  priority: 1
+  complexity: 6
+  critical_path: true
+  parallelizable: false
+  file_ownership:
+  - pipeline-lab/showcases/scripts/run_codex_e2e_case.py
+  - tests/feature_pipeline/test_codex_e2e_runner.py
+  - pipeline-lab/showcases/fixtures/toy-greeting/**
+  - pipeline-lab/showcases/codex-real-smoke-cases.yaml
+  conflict_risk: medium
+  dependency_notes: Debug wrapper and showcase regeneration depend on prompt profile
+    and template source metadata.
+  expected_touchpoints:
+  - pipeline-lab/showcases/scripts/run_codex_e2e_case.py
+  - tests/feature_pipeline/test_codex_e2e_runner.py
+  - pipeline-lab/showcases/fixtures/toy-greeting/README.md
+  - pipeline-lab/showcases/codex-real-smoke-cases.yaml
+  scope_confidence: high
+  test_strategy: Add focused unit tests before runner changes for template materialization,
+    prompt profile selection, and worktree replacement behavior.
+  tdd:
+    failing_test_file: tests/feature_pipeline/test_codex_e2e_runner.py
+    red_command: python -m pytest tests/feature_pipeline/test_codex_e2e_runner.py
+    expected_failure: tests fail for missing template source support, replacement
+      guard, or prompt profile handling
+    green_command: python -m pytest tests/feature_pipeline/test_codex_e2e_runner.py
+  verification_commands:
+  - python -m pytest tests/feature_pipeline/test_codex_e2e_runner.py
+  - python .agents/pipeline-core/scripts/featurectl.py validate --workspace .ai/feature-workspaces/pipeline/codex-e2e-runner-hardening--run-20260512-codex-e2e-hardening
+  review_focus:
+  - no silent destructive branch or worktree replacement
+  - fixture repos are initialized cleanly and deterministically
+  - native prompt rule remains enforced
+  evidence_status: complete
+  status: complete
+  iteration_budget: 10
+  rollback_point: pre-slice git state
+  independent_verification: Inspect generated run.yaml for source_repo_kind and prompt_profile
+    after tests.
+  failure_triage_notes: Classify failures as expected red, implementation bug, test
+    bug, design gap, scope change, environment failure, or flaky before continuing.
+- id: S-002
+  title: Harden debug wrapper validation and portable reports
+  linked_requirements:
+  - FR-002
+  - FR-005
+  - FR-006
+  linked_acceptance_criteria:
+  - AC-001
+  - AC-002
+  linked_adrs:
+  - ADR-003
+  linked_contracts:
+  - portable-output
+  - debug-validation
+  dependencies:
+  - S-001
+  priority: 2
+  complexity: 6
+  critical_path: true
+  parallelizable: false
+  file_ownership:
+  - pipeline-lab/showcases/scripts/run_codex_debug_pipeline.py
+  - pipeline-lab/showcases/scripts/validate_pipeline_goals.py
+  - tests/feature_pipeline/test_codex_debug_runner.py
+  - tests/feature_pipeline/test_pipeline_goal_validation.py
+  conflict_risk: medium
+  dependency_notes: Requires S-001 prompt profile metadata and fixture support.
+  expected_touchpoints:
+  - pipeline-lab/showcases/scripts/run_codex_debug_pipeline.py
+  - pipeline-lab/showcases/scripts/validate_pipeline_goals.py
+  - tests/feature_pipeline/test_codex_debug_runner.py
+  - tests/feature_pipeline/test_pipeline_goal_validation.py
+  scope_confidence: high
+  test_strategy: Add debug wrapper and validator tests before adding portable-output
+    and real-smoke validation changes.
+  tdd:
+    failing_test_file: tests/feature_pipeline/test_codex_debug_runner.py
+    red_command: python -m pytest tests/feature_pipeline/test_codex_debug_runner.py
+      tests/feature_pipeline/test_pipeline_goal_validation.py
+    expected_failure: tests fail for missing portable-output option or missing real-mode
+      smoke completion support
+    green_command: python -m pytest tests/feature_pipeline/test_codex_debug_runner.py
+      tests/feature_pipeline/test_pipeline_goal_validation.py
+  verification_commands:
+  - python -m pytest tests/feature_pipeline/test_codex_debug_runner.py tests/feature_pipeline/test_pipeline_goal_validation.py
+  - python .agents/pipeline-core/scripts/featurectl.py validate --workspace .ai/feature-workspaces/pipeline/codex-e2e-runner-hardening--run-20260512-codex-e2e-hardening
+  review_focus:
+  - validation consumes actual paths before portable rewriting
+  - real mode is not confused with fake Codex unit tests
+  - committed showcase artifacts do not leak machine-local paths
+  evidence_status: complete
+  status: complete
+  iteration_budget: 10
+  rollback_point: pre-slice git state
+  independent_verification: Inspect portable summary and comparison output for absence
+    of local absolute paths.
+  failure_triage_notes: Classify failures as expected red, implementation bug, test
+    bug, design gap, scope change, environment failure, or flaky before continuing.
+- id: S-003
+  title: Regenerate showcase outputs and promote memory
+  linked_requirements:
+  - FR-007
+  linked_acceptance_criteria:
+  - AC-001
+  - AC-002
+  linked_adrs: []
+  linked_contracts:
+  - pipeline-goal-validation
+  dependencies:
+  - S-001
+  - S-002
+  priority: 3
+  complexity: 5
+  critical_path: true
+  parallelizable: false
+  file_ownership:
+  - pipeline-lab/showcases/codex-debug-runs/20260512-debug/**
+  - pipeline-lab/showcases/pipeline-goal-validation-report.md
+  - .ai/feature-workspaces/pipeline/codex-e2e-runner-hardening--run-20260512-codex-e2e-hardening/**
+  - .ai/features/pipeline/codex-e2e-runner-hardening/**
+  conflict_risk: medium
+  dependency_notes: Requires implementation and validation updates from S-001 and
+    S-002.
+  expected_touchpoints:
+  - pipeline-lab/showcases/codex-debug-runs/20260512-debug/summary.yaml
+  - pipeline-lab/showcases/codex-debug-runs/20260512-debug/validation.md
+  - pipeline-lab/showcases/codex-debug-runs/20260512-debug/comparison.md
+  - pipeline-lab/showcases/pipeline-goal-validation-report.md
+  - .ai/features/pipeline/codex-e2e-runner-hardening/feature-card.md
+  scope_confidence: medium
+  test_strategy: Run regenerated debug showcase and full deterministic pipeline goal
+    validation three times.
+  tdd:
+    failing_test_file: pipeline-lab/showcases/codex-debug-runs/20260512-debug/summary.yaml
+    red_command: python pipeline-lab/showcases/scripts/validate_pipeline_goals.py
+      --passes 3
+    expected_failure: validation fails until regenerated debug run and promoted feature
+      memory are present
+    green_command: python pipeline-lab/showcases/scripts/validate_pipeline_goals.py
+      --passes 3
+  verification_commands:
+  - python pipeline-lab/showcases/scripts/validate_pipeline_goals.py --passes 3
+  - python .agents/pipeline-core/scripts/featurectl.py validate --workspace .ai/feature-workspaces/pipeline/codex-e2e-runner-hardening--run-20260512-codex-e2e-hardening
+  review_focus:
+  - deterministic validation passes three times
+  - feature-card and shared knowledge updates are present
+  - final artifacts match the implementation
+  evidence_status: complete
+  status: complete
+  iteration_budget: 10
+  rollback_point: pre-slice git state
+  independent_verification: Check `git diff --stat` and pipeline goal validation report
+    after regeneration.
+  failure_triage_notes: Classify failures as expected red, implementation bug, test
+    bug, design gap, scope change, environment failure, or flaky before continuing.

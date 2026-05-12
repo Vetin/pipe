@@ -1,0 +1,17 @@
+artifact_contract_version: 0.1.0
+feature_key: pipeline/codex-e2e-runner-hardening
+domain: pipeline
+slug: codex-e2e-runner-hardening
+title: Codex E2E Runner Hardening
+status: complete
+run_id: run-20260512-codex-e2e-hardening
+branch: feature/pipeline-codex-e2e-runner-hardening-run-20260512-codex-e2e-hardening
+worktree: ../worktrees/pipeline-codex-e2e-runner-hardening-run-20260512-codex-e2e-hardening
+canonical_path: .ai/features/pipeline/codex-e2e-runner-hardening
+workspace_path: .ai/feature-workspaces/pipeline/codex-e2e-runner-hardening--run-20260512-codex-e2e-hardening
+aliases: []
+keywords:
+- pipeline
+- codex-e2e-runner-hardening
+created_at: '2026-05-12T09:41:15Z'
+updated_at: '2026-05-12T09:41:15Z'

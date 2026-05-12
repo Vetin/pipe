@@ -1,0 +1,1 @@
+python -m pytest tests/feature_pipeline/test_codex_e2e_runner.py && python .agents/pipeline-core/scripts/featurectl.py validate --workspace .ai/feature-workspaces/pipeline/codex-e2e-runner-hardening--run-20260512-codex-e2e-hardening

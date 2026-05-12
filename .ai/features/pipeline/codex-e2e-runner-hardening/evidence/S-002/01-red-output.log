@@ -1,0 +1,14 @@
+.ai/feature-workspaces/pipeline/codex-e2e-runner-hardening--run-20260512-codex-e2e-hardening/evidence/S-002/01-red-output.log
+============================= test session starts ==============================
+collected 7 items
+
+FAILED tests/feature_pipeline/test_codex_debug_runner.py::CodexDebugRunnerTests::test_clean_rerun_forwards_replacement_and_prompt_profile
+  run_codex_debug_pipeline.py: error: unrecognized arguments: --prompt-profile outcome-smoke
+FAILED tests/feature_pipeline/test_codex_debug_runner.py::CodexDebugRunnerTests::test_portable_output_removes_local_paths_from_reports
+  run_codex_debug_pipeline.py: error: unrecognized arguments: --portable-output
+FAILED tests/feature_pipeline/test_codex_debug_runner.py::CodexDebugRunnerTests::test_real_mode_accepts_executable_shim_that_completes_artifacts
+  run_codex_debug_pipeline.py: error: unrecognized arguments: --prompt-profile outcome-smoke
+FAILED tests/feature_pipeline/test_pipeline_goal_validation.py::PipelineGoalValidationTests::test_codex_debug_portability_is_validated_when_enabled
+  AssertionError: 'codex_debug_portable_output' not found in passing checks
+
+4 failed, 3 passed

@@ -4,7 +4,7 @@
 - Init profile run: `/Users/egormasnankin/work/worktrees/pipeline-codex-e2e-runner-hardening-run-20260512-codex-e2e-hardening/pipeline-lab/showcases/init-profile-runs/20260512-init-profile`
 - Codex debug run: `/Users/egormasnankin/work/worktrees/pipeline-codex-e2e-runner-hardening-run-20260512-codex-e2e-hardening/pipeline-lab/showcases/codex-debug-runs/20260512-debug`
 - Repeated passes: `3`
-- Generated at: `2026-05-12T11:38:42.171489+00:00`
+- Generated at: `2026-05-12T11:43:48.880830+00:00`
 
 ## Pass Summary
 
@@ -67,7 +67,7 @@
 - `pass` `twenty-enterprise-duplicate-merge-with-preview-conflict-rules-and-rollback_round3_artifacts`: round 3 artifacts exist
 - `pass` `init_project_index_exists`: project-index.yaml exists
 - `pass` `init_project_snapshot_exists`: project-snapshot.md exists
-- `pass` `init_source_count`: source files: 20
+- `pass` `init_source_count`: source files: 18
 - `pass` `init_test_count`: test files: 36
 - `pass` `init_feature_signals`: feature signals extracted
 - `pass` `init_feature_catalog`: feature catalog extracted
@@ -158,7 +158,7 @@
 - `pass` `twenty-enterprise-duplicate-merge-with-preview-conflict-rules-and-rollback_round3_artifacts`: round 3 artifacts exist
 - `pass` `init_project_index_exists`: project-index.yaml exists
 - `pass` `init_project_snapshot_exists`: project-snapshot.md exists
-- `pass` `init_source_count`: source files: 20
+- `pass` `init_source_count`: source files: 18
 - `pass` `init_test_count`: test files: 36
 - `pass` `init_feature_signals`: feature signals extracted
 - `pass` `init_feature_catalog`: feature catalog extracted
@@ -249,7 +249,7 @@
 - `pass` `twenty-enterprise-duplicate-merge-with-preview-conflict-rules-and-rollback_round3_artifacts`: round 3 artifacts exist
 - `pass` `init_project_index_exists`: project-index.yaml exists
 - `pass` `init_project_snapshot_exists`: project-snapshot.md exists
-- `pass` `init_source_count`: source files: 20
+- `pass` `init_source_count`: source files: 18
 - `pass` `init_test_count`: test files: 36
 - `pass` `init_feature_signals`: feature signals extracted
 - `pass` `init_feature_catalog`: feature catalog extracted

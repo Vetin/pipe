@@ -1,0 +1,12 @@
+Review: direct in-session review because no subagent tool is exposed in this host.
+
+Scope checked:
+- Template source materializes into <output-dir>/_source-repos/<case-id>/<run-id>, is initialized as git, and is clean.
+- Source definitions with both repo_path and template_path, or neither, fail before Codex invocation.
+- Existing target worktree or branch fails unless --replace-existing-worktree is passed.
+- full-native remains the default prompt profile and outcome-smoke avoids direct nfp-* invocation lists.
+- CLI --prompt-profile overrides case prompt_profile.
+- run manifests persist source_repo_kind, prompt_profile, and path_mode: actual.
+- Local toy-greeting smoke fixture and case file are self-contained.
+
+Outcome: approved with concern that mandatory subagent review could not be executed in this tool host.
