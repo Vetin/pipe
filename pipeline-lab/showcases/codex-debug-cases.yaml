@@ -1,0 +1,12 @@
+artifact_contract_version: '0.1.0'
+description: Self-contained Codex debug cases for validating real-vs-mock showcase execution.
+cases:
+  harness-codex-debug-smoke:
+    title: Harness Codex Debug Smoke
+    domain: pipeline
+    original_codebase:
+      repo_path: ../..
+      base_ref: HEAD
+    target_branch: nfp/harness-codex-debug-smoke
+    feature_request: Add a stable Codex debug smoke feature that proves the native feature pipeline can be discovered, artifacts can be generated, and implementation output can be validated from a normal feature request.
+    expected_result: The run must produce feature, architecture, technical design, slices, comparison, validation, and final output artifacts while explicitly reporting whether Codex execution was mock, dry-run, or real.
