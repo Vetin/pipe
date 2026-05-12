@@ -2,7 +2,7 @@
 
 ## Current Tests
 
-- Unit test path: `/Users/egormasnankin/work/worktrees/pipeline-real-codex-showcase-debug-runner-run-20260512-codex-debug/tests/feature_pipeline/test_codex_e2e_runner.py`
+- Unit test path: `$ROOT/tests/feature_pipeline/test_codex_e2e_runner.py`
 - Uses fake Codex: `true`
 
 ## Selected Debug Runner

@@ -1,7 +1,10 @@
 case: harness-codex-debug-smoke
 title: Harness Codex Debug Smoke
-repo: /Users/egormasnankin/work/worktrees/worktrees/codex-harness-codex-debug-smoke-20260512-debug
-source_repo: /Users/egormasnankin/work/worktrees/pipeline-real-codex-showcase-debug-runner-run-20260512-codex-debug
+repo: $WORK_ROOT/worktrees/codex-harness-codex-debug-smoke-20260512-debug
+source_repo: $ROOT
+source_repo_kind: repo_path
+prompt_profile: full-native
+path_mode: actual
 feature_request: Add a stable Codex debug smoke feature that proves the native feature
   pipeline can be discovered, artifacts can be generated, and implementation output
   can be validated from a normal feature request.
@@ -14,23 +17,17 @@ run_id: 20260512-debug
 dry_run: false
 execution_mode: mock
 uses_real_codex: false
-codex_bin: /Users/egormasnankin/work/worktrees/pipeline-real-codex-showcase-debug-runner-run-20260512-codex-debug/pipeline-lab/showcases/codex-debug-runs/20260512-debug/fake-codex.py
+codex_bin: $RUN_DIR/fake-codex.py
 timeout_seconds: 1800
 timed_out: false
 returncode: 0
-started_at: '2026-05-12T00:37:13.635348+00:00'
-finished_at: '2026-05-12T00:37:14.213193+00:00'
-before_head: af4b209bb979fe5449153f652246cb2101b2a4ca
-after_head: 69d7ce23f29b7195e0674f989be69d363556b5f3
-before_status: "M .agents/skills/nfp-00-intake/SKILL.md\n M .agents/skills/nfp-01-context/SKILL.md\n\
-  \ M .agents/skills/nfp-02-feature-contract/SKILL.md\n M .agents/skills/nfp-03-architecture/SKILL.md\n\
-  \ M .agents/skills/nfp-04-tech-design/SKILL.md\n M .agents/skills/nfp-05-slicing/SKILL.md\n\
-  \ M .agents/skills/nfp-06-readiness/SKILL.md\n M .agents/skills/nfp-07-worktree/SKILL.md\n\
-  \ M .agents/skills/nfp-08-tdd-implementation/SKILL.md\n M .agents/skills/nfp-09-review/SKILL.md\n\
-  \ M .agents/skills/nfp-10-verification/SKILL.md\n M .agents/skills/nfp-11-finish/SKILL.md\n\
-  \ M .agents/skills/nfp-12-promote/SKILL.md\n M .agents/skills/project-init/SKILL.md"
+started_at: '2026-05-12T11:10:41.673593+00:00'
+finished_at: '2026-05-12T11:10:42.474611+00:00'
+before_head: 4d96b52ee0c31a52f07fead679e798389b4d1ff1
+after_head: 7ca19ea697daf848b1f09330dbaaa721df104df1
+before_status: clean
 after_status: clean
-prompt: /Users/egormasnankin/work/worktrees/pipeline-real-codex-showcase-debug-runner-run-20260512-codex-debug/pipeline-lab/showcases/codex-debug-runs/20260512-debug/e2e/harness-codex-debug-smoke/20260512-debug/prompt.md
-command: /Users/egormasnankin/work/worktrees/pipeline-real-codex-showcase-debug-runner-run-20260512-codex-debug/pipeline-lab/showcases/codex-debug-runs/20260512-debug/e2e/harness-codex-debug-smoke/20260512-debug/codex-command.json
-output: /Users/egormasnankin/work/worktrees/pipeline-real-codex-showcase-debug-runner-run-20260512-codex-debug/pipeline-lab/showcases/codex-debug-runs/20260512-debug/e2e/harness-codex-debug-smoke/20260512-debug/codex-output.log
-final: /Users/egormasnankin/work/worktrees/pipeline-real-codex-showcase-debug-runner-run-20260512-codex-debug/pipeline-lab/showcases/codex-debug-runs/20260512-debug/e2e/harness-codex-debug-smoke/20260512-debug/codex-final.txt
+prompt: $RUN_DIR/e2e/harness-codex-debug-smoke/20260512-debug/prompt.md
+command: $RUN_DIR/e2e/harness-codex-debug-smoke/20260512-debug/codex-command.json
+output: $RUN_DIR/e2e/harness-codex-debug-smoke/20260512-debug/codex-output.log
+final: $RUN_DIR/e2e/harness-codex-debug-smoke/20260512-debug/codex-final.txt

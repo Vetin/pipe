@@ -1,15 +1,16 @@
 artifact_contract_version: 0.1.0
 run_id: 20260512-debug
-generated_at: '2026-05-12T00:37:14.259341+00:00'
+generated_at: '2026-05-12T11:10:42.521931+00:00'
 mode: mock
+path_mode: portable
 uses_real_codex: false
-codex_bin: /Users/egormasnankin/work/worktrees/pipeline-real-codex-showcase-debug-runner-run-20260512-codex-debug/pipeline-lab/showcases/codex-debug-runs/20260512-debug/fake-codex.py
+codex_bin: $RUN_DIR/fake-codex.py
 case_count: 1
 status: pass
 e2e_returncode: 0
-e2e_summary: /Users/egormasnankin/work/worktrees/pipeline-real-codex-showcase-debug-runner-run-20260512-codex-debug/pipeline-lab/showcases/codex-debug-runs/20260512-debug/e2e/summary-20260512-debug.yaml
+e2e_summary: $RUN_DIR/e2e/summary-20260512-debug.yaml
 comparison:
-  current_unit_test_path: /Users/egormasnankin/work/worktrees/pipeline-real-codex-showcase-debug-runner-run-20260512-codex-debug/tests/feature_pipeline/test_codex_e2e_runner.py
+  current_unit_test_path: $ROOT/tests/feature_pipeline/test_codex_e2e_runner.py
   current_unit_tests_use_fake_codex: true
   new_runner_advantage: explicit execution_mode, real Codex preflight, timeout metadata,
     generated artifact validation, and comparison report
@@ -22,20 +23,21 @@ results:
   uses_real_codex: false
   returncode: 0
   timed_out: false
-  repo: /Users/egormasnankin/work/worktrees/worktrees/codex-harness-codex-debug-smoke-20260512-debug
+  repo: $WORK_ROOT/worktrees/codex-harness-codex-debug-smoke-20260512-debug
   target_branch: nfp/harness-codex-debug-smoke
-  after_head: 69d7ce23f29b7195e0674f989be69d363556b5f3
+  after_head: 7ca19ea697daf848b1f09330dbaaa721df104df1
   after_status: clean
   artifact_source: changed_files
   artifacts:
     feature.md:
-    - /Users/egormasnankin/work/worktrees/worktrees/codex-harness-codex-debug-smoke-20260512-debug/.ai/feature-workspaces/debug/harness-codex-debug-smoke/feature.md
+    - $WORK_ROOT/worktrees/codex-harness-codex-debug-smoke-20260512-debug/.ai/feature-workspaces/debug/harness-codex-debug-smoke/feature.md
     architecture.md:
-    - /Users/egormasnankin/work/worktrees/worktrees/codex-harness-codex-debug-smoke-20260512-debug/.ai/feature-workspaces/debug/harness-codex-debug-smoke/architecture.md
+    - $WORK_ROOT/worktrees/codex-harness-codex-debug-smoke-20260512-debug/.ai/feature-workspaces/debug/harness-codex-debug-smoke/architecture.md
     tech-design.md:
-    - /Users/egormasnankin/work/worktrees/worktrees/codex-harness-codex-debug-smoke-20260512-debug/.ai/feature-workspaces/debug/harness-codex-debug-smoke/tech-design.md
+    - $WORK_ROOT/worktrees/codex-harness-codex-debug-smoke-20260512-debug/.ai/feature-workspaces/debug/harness-codex-debug-smoke/tech-design.md
     slices.yaml:
-    - /Users/egormasnankin/work/worktrees/worktrees/codex-harness-codex-debug-smoke-20260512-debug/.ai/feature-workspaces/debug/harness-codex-debug-smoke/slices.yaml
+    - $WORK_ROOT/worktrees/codex-harness-codex-debug-smoke-20260512-debug/.ai/feature-workspaces/debug/harness-codex-debug-smoke/slices.yaml
   failures: []
   warnings: []
+  source_repo: $ROOT
 weaknesses: []

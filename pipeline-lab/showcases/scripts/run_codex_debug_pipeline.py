@@ -157,7 +157,7 @@ def e2e_command(args: argparse.Namespace, run_dir: Path, codex_bin: str) -> list
     for case in args.case or []:
         cmd.extend(["--case", case])
     for codex_arg in args.codex_arg or []:
-        cmd.extend(["--codex-arg", codex_arg])
+        cmd.append(f"--codex-arg={codex_arg}")
     if args.allow_dirty:
         cmd.append("--allow-dirty")
     if args.reset_to_base:

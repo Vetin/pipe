@@ -1,9 +1,9 @@
-/Users/egormasnankin/work/worktrees/pipeline-real-codex-showcase-debug-runner-run-20260512-codex-debug/pipeline-lab/showcases/codex-debug-runs/20260512-debug/fake-codex.py exec --dangerously-bypass-approvals-and-sandbox -C /Users/egormasnankin/work/worktrees/worktrees/codex-harness-codex-debug-smoke-20260512-debug -o /Users/egormasnankin/work/worktrees/pipeline-real-codex-showcase-debug-runner-run-20260512-codex-debug/pipeline-lab/showcases/codex-debug-runs/20260512-debug/e2e/harness-codex-debug-smoke/20260512-debug/codex-final.txt 'You are a nested Codex worker running as a reproducible E2E feature implementation case.
+$RUN_DIR/fake-codex.py exec --dangerously-bypass-approvals-and-sandbox -C $WORK_ROOT/worktrees/codex-harness-codex-debug-smoke-20260512-debug -o $RUN_DIR/e2e/harness-codex-debug-smoke/20260512-debug/codex-final.txt 'You are a nested Codex worker running as a reproducible E2E feature implementation case.
 
 Repository ownership:
-- Work only inside this fresh feature worktree: /Users/egormasnankin/work/worktrees/worktrees/codex-harness-codex-debug-smoke-20260512-debug
-- Original codebase checkout: /Users/egormasnankin/work/worktrees/pipeline-real-codex-showcase-debug-runner-run-20260512-codex-debug
-- This repository represents the original codebase from case file: /Users/egormasnankin/work/worktrees/pipeline-real-codex-showcase-debug-runner-run-20260512-codex-debug/pipeline-lab/showcases/codex-debug-cases.yaml
+- Work only inside this fresh feature worktree: $WORK_ROOT/worktrees/codex-harness-codex-debug-smoke-20260512-debug
+- Original codebase checkout: $ROOT
+- This repository represents the original codebase from case file: $ROOT/pipeline-lab/showcases/codex-debug-cases.yaml
 - Original codebase base ref: HEAD
 - Target branch name: nfp/harness-codex-debug-smoke
 - Do not modify sibling repositories or harness files.
@@ -18,7 +18,7 @@ Case:
 - Expected result: The run must produce feature, architecture, technical design, slices, comparison, validation, and final output artifacts while explicitly reporting whether Codex execution was mock, dry-run, or real.
 
 Native Feature Pipeline:
-- If `AGENTS.md`, `.agents/pipeline-core`, `.agents/skills`, `.ai/pipeline-docs`, or `skills` are missing, copy/install them from /Users/egormasnankin/work/worktrees/pipeline-real-codex-showcase-debug-runner-run-20260512-codex-debug/AGENTS.md, /Users/egormasnankin/work/worktrees/pipeline-real-codex-showcase-debug-runner-run-20260512-codex-debug/.agents, /Users/egormasnankin/work/worktrees/pipeline-real-codex-showcase-debug-runner-run-20260512-codex-debug/.ai/pipeline-docs, and /Users/egormasnankin/work/worktrees/pipeline-real-codex-showcase-debug-runner-run-20260512-codex-debug/skills into this worktree before continuing.
+- If `AGENTS.md`, `.agents/pipeline-core`, `.agents/skills`, `.ai/pipeline-docs`, or `skills` are missing, copy/install them from $ROOT/AGENTS.md, $ROOT/.agents, $ROOT/.ai/pipeline-docs, and $ROOT/skills into this worktree before continuing.
 - Treat this as a normal user feature request. Discover the repository'"'"'s native pipeline instructions from `AGENTS.md`, `.agents`, `.ai/pipeline-docs`, and local docs; do not ask the user to invoke individual internal skills by name.
 - Progress through these outcomes in order:
   - intake and repository context discovery

@@ -126,6 +126,8 @@ class CodexDebugRunnerTests(unittest.TestCase):
             "mock",
             "--prompt-profile",
             "outcome-smoke",
+            "--codex-arg=-m",
+            "--codex-arg=test-model",
             "--clean",
         ]
 
@@ -143,10 +145,15 @@ class CodexDebugRunnerTests(unittest.TestCase):
         self.assertEqual(summary["status"], "pass")
         self.assertEqual(e2e_run["prompt_profile"], "outcome-smoke")
         self.assertIn("--prompt-profile outcome-smoke", command)
+        self.assertIn("--codex-arg=-m", command)
+        self.assertIn("--codex-arg=test-model", command)
         self.assertIn("--replace-existing-worktree", command)
         self.assertIn("bounded completion smoke case", prompt)
         self.assertNotIn("nfp-00-intake", prompt)
         self.assertNotIn("nfp-12-promote", prompt)
+        codex_command = (run_dir / "e2e/toy-feature/stable-rerun/codex-command.json").read_text(encoding="utf-8")
+        self.assertIn('"-m"', codex_command)
+        self.assertIn('"test-model"', codex_command)
 
     def test_portable_output_removes_local_paths_from_reports(self):
         result = run(

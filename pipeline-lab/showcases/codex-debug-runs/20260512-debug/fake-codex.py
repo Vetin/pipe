@@ -54,7 +54,7 @@ print(json.dumps({
     "repo": str(repo),
     "branch": branch,
     "commit": commit,
-    "has_native_pipeline": "normal user feature request" in prompt and "Progress through these outcomes" in prompt,
+    "has_native_pipeline": "normal user feature request" in prompt and ("Progress through these outcomes" in prompt or "bounded completion smoke case" in prompt),
     "no_direct_skill_invocations": "nfp-00-intake" not in prompt and "nfp-12-promote" not in prompt,
     "fresh_worktree": "fresh feature worktree" in prompt and "do not implement in the base checkout" in prompt,
     "generated_artifacts": sorted(artifacts),

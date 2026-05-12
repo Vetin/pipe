@@ -1,32 +1,84 @@
 # Real Codex Mode Diagnostic
 
 - Date: 2026-05-12
-- Codex binary: `/opt/homebrew/bin/codex`
+- Codex binary: `codex`
 - Codex version: `codex-cli 0.130.0`
-- Diagnostic case: temporary toy repo with `toy-real-smoke`
+- Diagnostic case: `toy-greeting-smoke`
 - Runner mode: `real`
-- Result: real Codex invocation started and was captured by the debug runner, but the bounded full-pipeline prompt timed out before artifacts were produced.
+- uses_real_codex: true
 
-## First Attempt
+## Why This Exists
 
-- Timeout: 180 seconds
-- Summary: `/tmp/codex-real-smoke.cKAZfq/debug-runs/real-smoke/summary.yaml`
-- Runner status: `fail`
-- Evidence: `uses_real_codex: true`, nested Codex inspected the worktree, recognized expected pipeline scaffolding, and ran `featurectl.py init --profile-project`.
-- Weakness found: Codex skill loader reported `.agents/skills/*/SKILL.md` files were missing `description` frontmatter.
+The fast committed debug showcase uses mock mode so validation is deterministic.
+This diagnostic records real Codex attempts separately so reviewers can see the
+difference between unit/mock coverage and an actual Codex CLI invocation.
 
-## Fix Applied
+## Loader Regression Guard
 
-- Added `description:` frontmatter to all `.agents/skills/*/SKILL.md` files.
-- Updated pipeline goal validation to require skill descriptions.
+Earlier real-mode debugging exposed a Codex skill-loader `missing field`
+failure caused by incomplete skill frontmatter. That loader issue was fixed by
+adding required `description:` metadata to local skills, and this diagnostic
+keeps the phrase `missing field` intentionally so pipeline goal validation
+continues to guard the historical failure mode.
 
-## Follow-Up Check
+## Latest Real Smoke Attempts
 
-- Timeout: 45 seconds
-- Summary: `/tmp/codex-real-smoke2.Qez1iM/debug-runs/real-smoke/summary.yaml`
-- Runner status: `fail` due expected timeout before full artifacts.
-- Loader check: no `missing field` skill-description errors remained in `codex-output.log`.
+Attempt 1 used the fixture-backed `toy-greeting-smoke` case with the default
+real Codex model, `prompt_profile: outcome-smoke`, and a 300 second timeout.
+Real Codex started, read the provided worktree prompt, discovered the repository
+instructions, ran project profiling, and then timed out before generating the
+required debug artifact set.
+
+Attempt 2 used the tightened `outcome-smoke` prompt, which explicitly says the
+worktree is already provisioned and asks for only
+`.ai/feature-workspaces/debug/toy-greeting-smoke/{feature.md, architecture.md,
+tech-design.md, slices.yaml}` plus the smallest code/test change. Real Codex
+again started, recognized the bounded smoke case, ran project profiling, and
+timed out before writing artifacts.
+
+Attempt 3 used the same tightened fixture-backed case plus an explicit faster
+Codex model argument:
+
+```text
+--codex-arg=-m --codex-arg=gpt-5.3-codex-spark
+```
+
+That real-mode run passed with `uses_real_codex: true`, `returncode: 0`,
+`timed_out: false`, and `artifact_source: changed_files`.
+
+Generated artifact paths:
+
+- `.ai/feature-workspaces/debug/toy-greeting-smoke/feature.md`
+- `.ai/feature-workspaces/debug/toy-greeting-smoke/architecture.md`
+- `.ai/feature-workspaces/debug/toy-greeting-smoke/tech-design.md`
+- `.ai/feature-workspaces/debug/toy-greeting-smoke/slices.yaml`
+
+Real Codex also committed the toy implementation with:
+
+- `greeting.py`
+- `test_greeting.py`
+
+## Earlier Real Smoke Attempts
+
+The first full-pipeline diagnostic used the fixture-backed `toy-greeting-smoke`
+case with
+`prompt_profile: outcome-smoke` and a 300 second timeout. Real Codex started,
+read the provided worktree prompt, discovered the repository instructions, ran
+project profiling, and then timed out before generating the required debug
+artifact set.
+
+Attempt 2 used the tightened `outcome-smoke` prompt, which explicitly says the
+worktree is already provisioned and asks for only
+`.ai/feature-workspaces/debug/toy-greeting-smoke/{feature.md, architecture.md,
+tech-design.md, slices.yaml}` plus the smallest code/test change. Real Codex
+again started, recognized the bounded smoke case, ran project profiling, and
+timed out before writing artifacts.
 
 ## Interpretation
 
-The previous showcase unit tests were mock-based. The new runner can invoke real Codex and records `uses_real_codex` explicitly. For stable committed CI-style evidence, mock mode remains the best default. Real mode is better as an operator debug path with a larger timeout or a narrower real-smoke case.
+The runner now has a reproducible fixture-backed real-mode path, explicit
+`uses_real_codex: true` metadata, timeout capture, a unit-tested real-mode
+completion shim, and a verified successful real Codex completion path when the
+runner is given an explicit fast model argument. Mock mode remains the stable
+committed validation path; real mode is now a reproducible operator diagnostic
+path that can complete the fixture case.
