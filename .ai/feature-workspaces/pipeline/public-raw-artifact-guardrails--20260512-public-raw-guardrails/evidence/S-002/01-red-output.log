@@ -1,0 +1,82 @@
+..FF........                                                             [100%]
+=================================== FAILURES ===================================
+_ FeatureCtlCoreTests.test_init_profile_filters_generated_showcase_feature_signals _
+
+self = <test_featurectl_core.FeatureCtlCoreTests testMethod=test_init_profile_filters_generated_showcase_feature_signals>
+
+    def test_init_profile_filters_generated_showcase_feature_signals(self):
+        (self.repo / "docs").mkdir()
+        (self.repo / "docs/features.md").write_text("# Feature: Real Billing Dashboard\n", encoding="utf-8")
+        generated = self.repo / "pipeline-lab/showcases/random-feature-stress-runs/20260512/features/01-noisy/artifacts"
+        generated.mkdir(parents=True)
+        (generated / "feature.md").write_text("# Feature: Generated Stress Artifact\n", encoding="utf-8")
+        report = self.repo / "pipeline-lab/showcases/native-emulation-report.md"
+        report.parent.mkdir(parents=True, exist_ok=True)
+        report.write_text("# Native Feature Emulation Report\n", encoding="utf-8")
+        (self.repo / "features.md").write_text("# Feature: Root Spec Noise\n", encoding="utf-8")
+        (self.repo / "plan.md").write_text("# Pipeline Lab Feature Plan\n", encoding="utf-8")
+        (self.repo / "vision.md").write_text("# Service Architecture Vision\n", encoding="utf-8")
+        benchmark = self.repo / "pipeline-lab/benchmarks/suites/feature-quality.md"
+        benchmark.parent.mkdir(parents=True, exist_ok=True)
+        benchmark.write_text("# Feature: Pipeline Quality Benchmark\n", encoding="utf-8")
+        run_dir = self.repo / "pipeline-lab/runs/20260512/generated"
+        run_dir.mkdir(parents=True)
+        (run_dir / "feature.md").write_text("# Feature: Generated Run Artifact\n", encoding="utf-8")
+        run(["git", "add", "."], self.repo)
+        run(["git", "commit", "-m", "add real and generated feature docs"], self.repo)
+    
+        run([sys.executable, str(SCRIPT), "init", "--profile-project"], self.repo)
+    
+        index = yaml.safe_load((self.repo / ".ai/knowledge/project-index.yaml").read_text(encoding="utf-8"))
+>       self.assertNotIn("feature_signals", index)
+E       AssertionError: 'feature_signals' unexpectedly found in {'artifact_contract_version': '0.1.0', 'generated_by': 'featurectl.py init --profile-project', 'generated_at': '2026-05-12T20:40:05Z', 'project': {'name': 'repo', 'root': '.', 'remote': 'none'}, 'counts': {'tracked_files': 9, 'profiled_files': 6, 'source_files': 0, 'test_files': 0, 'doc_files': 6, 'contract_files': 0, 'integration_files': 0}, 'package_manifests': [], 'scripts': [], 'module_dirs': [{'path': 'docs', 'tracked_files': 1}, {'path': 'pipeline-lab', 'tracked_files': 1}], 'canonical_features': [], 'feature_signals': [{'source': 'docs/features.md', 'signal': 'Feature: Real Billing Dashboard', 'kind': 'detected'}, {'source': 'pipeline-lab/benchmarks/suites/feature-quality.md', 'signal': 'Feature: Pipeline Quality Benchmark', 'kind': 'lab_signal'}], 'feature_catalog': [{'name': 'Pipeline Quality Benchmark', 'kind': 'lab_signal', 'confidence': 'medium', 'description': 'Pipeline Quality Benchmark appears only in 1 pipeline-lab signal; use lab_signal only for pipeline-lab or benchmark work.', 'source_count': 1, 'sources': ['pipeline-lab/benchmarks/suites/feature-quality.md']}, {'name': 'Real Billing Dashboard', 'kind': 'detected', 'confidence': 'medium', 'description': 'Real Billing Dashboard appears in 1 documentation signal; inspect the listed files before relying on this as architecture truth.', 'source_count': 1, 'sources': ['docs/features.md']}]}
+
+tests/feature_pipeline/test_featurectl_core.py:142: AssertionError
+_ FeatureCtlCoreTests.test_init_profile_project_updates_source_backed_knowledge _
+
+self = <test_featurectl_core.FeatureCtlCoreTests testMethod=test_init_profile_project_updates_source_backed_knowledge>
+
+        def test_init_profile_project_updates_source_backed_knowledge(self):
+            (self.repo / "package.json").write_text(
+                """{
+      "name": "profiled-toy-app",
+      "scripts": {
+        "test": "pytest",
+        "build": "echo build"
+      }
+    }
+    """,
+                encoding="utf-8",
+            )
+            (self.repo / "src/auth").mkdir(parents=True)
+            (self.repo / "src/auth/reset_service.py").write_text("def reset_password(): pass\n", encoding="utf-8")
+            (self.repo / "src/features/billing/components").mkdir(parents=True)
+            (self.repo / "src/features/billing/components/Button.tsx").write_text("export const Button = () => null;\n", encoding="utf-8")
+            (self.repo / "tests").mkdir()
+            (self.repo / "tests/test_reset_service.py").write_text("def test_reset_password(): pass\n", encoding="utf-8")
+            (self.repo / "docs").mkdir()
+            (self.repo / "docs/features.md").write_text("# Feature: Reset Password\n", encoding="utf-8")
+            (self.repo / "openapi.yaml").write_text("openapi: 3.0.0\n", encoding="utf-8")
+            run(["git", "add", "."], self.repo)
+            run(["git", "commit", "-m", "add profile sources"], self.repo)
+    
+            result = run([sys.executable, str(SCRIPT), "init", "--profile-project"], self.repo)
+    
+            self.assertIn("project_profile: updated", result.stdout)
+            self.assertIn("project_name: profiled-toy-app", result.stdout)
+            self.assertIn("detected_feature_catalog_items:", result.stdout)
+            index = yaml.safe_load((self.repo / ".ai/knowledge/project-index.yaml").read_text(encoding="utf-8"))
+            self.assertEqual(index["project"]["name"], "profiled-toy-app")
+            self.assertEqual(index["project"]["root"], ".")
+            self.assertNotIn(str(self.repo), (self.repo / ".ai/knowledge/project-index.yaml").read_text(encoding="utf-8"))
+            self.assertGreaterEqual(index["counts"]["source_files"], 1)
+            self.assertGreaterEqual(index["counts"]["test_files"], 1)
+>           self.assertNotIn("feature_signals", index)
+E           AssertionError: 'feature_signals' unexpectedly found in {'artifact_contract_version': '0.1.0', 'generated_by': 'featurectl.py init --profile-project', 'generated_at': '2026-05-12T20:40:05Z', 'project': {'name': 'profiled-toy-app', 'root': '.', 'remote': 'none'}, 'counts': {'tracked_files': 7, 'profiled_files': 7, 'source_files': 2, 'test_files': 1, 'doc_files': 2, 'contract_files': 1, 'integration_files': 0}, 'package_manifests': ['package.json'], 'scripts': [{'source': 'package.json', 'name': 'build', 'command': 'echo build'}, {'source': 'package.json', 'name': 'test', 'command': 'pytest'}], 'module_dirs': [{'path': 'src', 'tracked_files': 2}, {'path': 'docs', 'tracked_files': 1}, {'path': 'src/auth', 'tracked_files': 1}, {'path': 'src/features', 'tracked_files': 1}, {'path': 'tests', 'tracked_files': 1}], 'canonical_features': [], 'feature_signals': [{'source': 'docs/features.md', 'signal': 'Feature: Reset Password', 'kind': 'detected'}, {'source': 'src/auth/reset_service.py', 'signal': 'reset service', 'kind': 'detected'}, {'source': 'src/features/billing/components/Button.tsx', 'signal': 'billing', 'kind': 'detected'}], 'feature_catalog': [{'name': 'Billing', 'kind': 'detected', 'confidence': 'low', 'description': 'Billing appears in 1 source signal; inspect the listed files before relying on this as architecture truth.', 'source_count': 1, 'sources': ['src/features/billing/components/Button.tsx']}, {'name': 'Reset Password', 'kind': 'detected', 'confidence': 'medium', 'description': 'Reset Password appears in 1 documentation signal; inspect the listed files before relying on this as architecture truth.', 'source_count': 1, 'sources': ['docs/features.md']}, {'name': 'Reset Service', 'kind': 'detected', 'confidence': 'low', 'description': 'Reset Service appears in 1 source signal; inspect the listed files before relying on this as architecture truth.', 'source_count': 1, 'sources': ['src/auth/reset_service.py']}]}
+
+tests/feature_pipeline/test_featurectl_core.py:87: AssertionError
+=========================== short test summary info ============================
+FAILED tests/feature_pipeline/test_featurectl_core.py::FeatureCtlCoreTests::test_init_profile_filters_generated_showcase_feature_signals
+FAILED tests/feature_pipeline/test_featurectl_core.py::FeatureCtlCoreTests::test_init_profile_project_updates_source_backed_knowledge
+2 failed, 10 passed in 2.13s
+exit=1

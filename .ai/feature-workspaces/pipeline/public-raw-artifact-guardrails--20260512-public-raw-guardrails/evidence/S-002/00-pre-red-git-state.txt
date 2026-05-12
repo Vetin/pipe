@@ -1,0 +1,3 @@
+ M pipeline-lab/showcases/scripts/validate_pipeline_goals.py
+ M tests/feature_pipeline/test_featurectl_core.py
+?? .ai/feature-workspaces/pipeline/public-raw-artifact-guardrails--20260512-public-raw-guardrails/evidence/S-002/

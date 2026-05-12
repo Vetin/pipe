@@ -84,10 +84,8 @@ class FeatureCtlCoreTests(unittest.TestCase):
         self.assertNotIn(str(self.repo), (self.repo / ".ai/knowledge/project-index.yaml").read_text(encoding="utf-8"))
         self.assertGreaterEqual(index["counts"]["source_files"], 1)
         self.assertGreaterEqual(index["counts"]["test_files"], 1)
-        self.assertGreaterEqual(len(index["feature_catalog"]), 1)
-        self.assertTrue(any(item["name"] == "Reset Password" for item in index["feature_catalog"]))
-        self.assertTrue(any(item["name"] == "Billing" for item in index["feature_catalog"]))
-        self.assertFalse(any(item["name"] == "Button" for item in index["feature_catalog"]))
+        self.assertNotIn("feature_signals", index)
+        self.assertNotIn("feature_catalog", index)
         self.assertNotIn("source_examples", index)
         self.assertNotIn("test_examples", index)
         self.assertNotIn("doc_examples", index)
@@ -113,6 +111,8 @@ class FeatureCtlCoreTests(unittest.TestCase):
         self.assertIn("Noncanonical Signals", discovered)
         self.assertIn("Detected Feature Signals", discovered)
         self.assertIn("Reset Password", discovered)
+        self.assertIn("Billing", discovered)
+        self.assertNotIn("### Button", discovered)
         self.assertIn("docs/features.md", discovered)
 
     def test_init_profile_filters_generated_showcase_feature_signals(self):
@@ -139,33 +139,21 @@ class FeatureCtlCoreTests(unittest.TestCase):
         run([sys.executable, str(SCRIPT), "init", "--profile-project"], self.repo)
 
         index = yaml.safe_load((self.repo / ".ai/knowledge/project-index.yaml").read_text(encoding="utf-8"))
-        signals = {item["signal"] for item in index["feature_signals"]}
-        sources = {item["source"] for item in index["feature_signals"]}
-        signal_by_source = {item["source"]: item for item in index["feature_signals"]}
-        catalog_by_name = {item["name"]: item for item in index["feature_catalog"]}
-        catalog_names = {item["name"] for item in index["feature_catalog"]}
-        self.assertIn("Feature: Real Billing Dashboard", signals)
-        self.assertIn("Real Billing Dashboard", catalog_names)
-        self.assertEqual(catalog_by_name["Real Billing Dashboard"]["kind"], "detected")
-        self.assertIn("Feature: Pipeline Quality Benchmark", signals)
-        self.assertEqual(signal_by_source["pipeline-lab/benchmarks/suites/feature-quality.md"]["kind"], "lab_signal")
-        self.assertEqual(catalog_by_name["Pipeline Quality Benchmark"]["kind"], "lab_signal")
-        self.assertNotIn("Feature: Generated Stress Artifact", signals)
-        self.assertNotIn("Generated Stress Artifact", catalog_names)
-        self.assertNotIn("Native Feature Emulation Report", signals)
-        self.assertNotIn("Feature: Root Spec Noise", signals)
-        self.assertNotIn("Pipeline Lab Feature Plan", signals)
-        self.assertNotIn("Service Architecture Vision", signals)
-        self.assertNotIn("Feature: Generated Run Artifact", signals)
-        self.assertFalse(any(source.startswith("pipeline-lab/showcases/") for source in sources))
-        self.assertFalse(any(source.startswith("pipeline-lab/runs/") for source in sources))
+        self.assertNotIn("feature_signals", index)
+        self.assertNotIn("feature_catalog", index)
         discovered = (self.repo / ".ai/knowledge/discovered-signals.md").read_text(encoding="utf-8")
         self.assertIn("## Noncanonical Signals", discovered)
         self.assertIn("### Real Billing Dashboard", discovered)
+        self.assertIn("- Kind: detected", discovered)
+        self.assertIn("### Pipeline Quality Benchmark", discovered)
         self.assertIn("Kind: lab_signal", discovered)
+        self.assertIn("pipeline-lab/benchmarks/suites/feature-quality.md", discovered)
         self.assertIn("Use `lab_signal` only for pipeline-lab", discovered)
         self.assertNotIn("Generated Stress Artifact", discovered)
         self.assertNotIn("Root Spec Noise", discovered)
+        self.assertNotIn("Generated Run Artifact", discovered)
+        self.assertNotIn("pipeline-lab/showcases/random-feature-stress-runs", discovered)
+        self.assertNotIn("pipeline-lab/runs/20260512", discovered)
 
     def test_init_profile_uses_canonical_reason_for_canonical_catalog_entries(self):
         canonical = self.repo / ".ai/features/billing/invoices"

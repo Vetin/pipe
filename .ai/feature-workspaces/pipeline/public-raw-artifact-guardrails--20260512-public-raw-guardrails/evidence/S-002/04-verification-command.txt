@@ -1,0 +1,1 @@
+python .agents/pipeline-core/scripts/featurectl.py init --profile-project && python -m pytest tests/feature_pipeline/test_featurectl_core.py tests/feature_pipeline/test_pipeline_goal_validation.py tests/feature_pipeline/test_artifact_formatting.py -q

@@ -89,8 +89,8 @@ slices:
   review_focus:
   - canonical memory remains discoverable
   - lab signals stay in discovered-signals only
-  evidence_status: pending
-  status: pending
+  evidence_status: complete
+  status: complete
   iteration_budget: 3
   rollback_point: pre-slice git state
   independent_verification: inspect project-index and discovered-signals

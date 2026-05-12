@@ -1218,7 +1218,7 @@ def sync_knowledge_canonical_features(root: Path) -> None:
 
 def compact_project_index_profile(profile: dict[str, Any]) -> dict[str, Any]:
     compact = copy.deepcopy(profile)
-    for key in PROFILE_EXAMPLE_KEYS:
+    for key in {*PROFILE_EXAMPLE_KEYS, "feature_signals", "feature_catalog"}:
         compact.pop(key, None)
     project = compact.get("project")
     if isinstance(project, dict):

@@ -133,16 +133,26 @@ def validate_best_three(native_run: Path) -> list[dict[str, str]]:
 def validate_project_profile() -> list[dict[str, str]]:
     index_path = ROOT / ".ai/knowledge/project-index.yaml"
     snapshot_path = ROOT / ".ai/knowledge/project-snapshot.md"
+    discovered_path = ROOT / ".ai/knowledge/discovered-signals.md"
     context_skill = read_text(ROOT / ".agents/skills/nfp-01-context/SKILL.md")
     profile = read_yaml(index_path) if index_path.exists() else {}
     counts = profile.get("counts") or {}
+    discovered = read_text(discovered_path) if discovered_path.exists() else ""
     return [
         check("init_project_index_exists", index_path.exists(), "project-index.yaml exists"),
         check("init_project_snapshot_exists", snapshot_path.exists(), "project-snapshot.md exists"),
         check("init_source_count", int(counts.get("source_files") or 0) > 0, f"source files: {counts.get('source_files')}"),
         check("init_test_count", int(counts.get("test_files") or 0) > 0, f"test files: {counts.get('test_files')}"),
-        check("init_feature_signals", len(profile.get("feature_signals") or []) >= 2, "filtered feature signals extracted"),
-        check("init_feature_catalog", len(profile.get("feature_catalog") or []) >= 3, "feature catalog extracted"),
+        check(
+            "init_feature_signals",
+            "## Detected Feature Signals" in discovered and discovered.count("[lab_signal]") >= 2,
+            "filtered feature signals extracted into discovered-signals.md",
+        ),
+        check(
+            "init_feature_catalog",
+            discovered.count("\n### ") >= 3 and "## Noncanonical Signals" in discovered,
+            "feature catalog extracted into discovered-signals.md",
+        ),
         check(
             "init_current_feature_picture",
             "Current Feature Picture" in read_text(ROOT / ".ai/knowledge/discovered-signals.md")

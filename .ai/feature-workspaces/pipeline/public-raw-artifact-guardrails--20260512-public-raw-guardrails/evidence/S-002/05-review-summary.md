@@ -1,0 +1,3 @@
+Spec review: pass. S-002 removes feature_signals and feature_catalog from compact project-index output, preserves canonical feature references there, and keeps discovered/catalog information in discovered-signals.md.
+
+Code-quality review: pass. Goal validation now follows the split by reading discovered-signals.md, while featurectl still computes signal data internally for renderers and stdout counts.
