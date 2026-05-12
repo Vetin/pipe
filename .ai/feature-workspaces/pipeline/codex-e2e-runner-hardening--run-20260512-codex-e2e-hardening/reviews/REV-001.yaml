@@ -1,0 +1,34 @@
+artifact_contract_version: 0.1.0
+review_id: REV-001
+tier: strict_review
+severity: note
+finding: Codex E2E runner hardening satisfies the planned safety, fixture, prompt, real-mode, and portability contracts.
+artifact: feature branch
+evidence: Focused tests passed, pipeline goal validation passed three times, portable debug artifacts contain no local absolute paths, and real Codex fixture smoke passed with a fast model argument.
+recommendation: Keep mock mode as the committed deterministic validation path and use real mode with explicit model arguments for operator diagnostics.
+blocking: false
+linked_requirement_ids:
+  - FR-001
+  - FR-002
+  - FR-003
+  - FR-004
+  - FR-005
+  - FR-006
+  - FR-007
+linked_slice_ids:
+  - S-001
+  - S-002
+  - S-003
+file_refs:
+  - pipeline-lab/showcases/scripts/run_codex_e2e_case.py
+  - pipeline-lab/showcases/scripts/run_codex_debug_pipeline.py
+  - pipeline-lab/showcases/scripts/validate_pipeline_goals.py
+  - tests/feature_pipeline/test_codex_e2e_runner.py
+  - tests/feature_pipeline/test_codex_debug_runner.py
+  - tests/feature_pipeline/test_pipeline_goal_validation.py
+  - pipeline-lab/showcases/codex-debug-runs/20260512-debug/summary.yaml
+  - pipeline-lab/showcases/codex-debug-runs/20260512-debug/real-mode-diagnostic.md
+reproduction_or_reasoning: The branch blocks implicit worktree replacement, supports fixture-backed source repos, validates prompt profiles, normalizes committed debug output, and captures real Codex completion evidence.
+fix_verification_command: python -m pytest tests/feature_pipeline/test_codex_e2e_runner.py tests/feature_pipeline/test_codex_debug_runner.py tests/feature_pipeline/test_pipeline_goal_validation.py && python pipeline-lab/showcases/scripts/validate_pipeline_goals.py --passes 3 --report pipeline-lab/showcases/pipeline-goal-validation-report.md
+re_review_required: false
+

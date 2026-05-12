@@ -1,9 +1,10 @@
 # Pipeline Goal Validation
 
-- Native run: `/Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-native-debug`
-- Init profile run: `/Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/init-profile-runs/20260512-init-profile`
+- Native run: `/Users/egormasnankin/work/worktrees/pipeline-codex-e2e-runner-hardening-run-20260512-codex-e2e-hardening/pipeline-lab/showcases/native-emulation-runs/20260512-native-debug`
+- Init profile run: `/Users/egormasnankin/work/worktrees/pipeline-codex-e2e-runner-hardening-run-20260512-codex-e2e-hardening/pipeline-lab/showcases/init-profile-runs/20260512-init-profile`
+- Codex debug run: `/Users/egormasnankin/work/worktrees/pipeline-codex-e2e-runner-hardening-run-20260512-codex-e2e-hardening/pipeline-lab/showcases/codex-debug-runs/20260512-debug`
 - Repeated passes: `3`
-- Generated at: `2026-05-12T00:12:02.765673+00:00`
+- Generated at: `2026-05-12T11:38:42.171489+00:00`
 
 ## Pass Summary
 
@@ -66,8 +67,8 @@
 - `pass` `twenty-enterprise-duplicate-merge-with-preview-conflict-rules-and-rollback_round3_artifacts`: round 3 artifacts exist
 - `pass` `init_project_index_exists`: project-index.yaml exists
 - `pass` `init_project_snapshot_exists`: project-snapshot.md exists
-- `pass` `init_source_count`: source files: 16
-- `pass` `init_test_count`: test files: 35
+- `pass` `init_source_count`: source files: 20
+- `pass` `init_test_count`: test files: 36
 - `pass` `init_feature_signals`: feature signals extracted
 - `pass` `init_feature_catalog`: feature catalog extracted
 - `pass` `init_current_feature_picture`: features overview describes current feature picture
@@ -107,6 +108,15 @@
 - `pass` `random_stress_common_mistakes`: common shared-knowledge mistake detected
 - `pass` `random_stress_no_open_improvements`: open improvements: 0
 - `pass` `random_stress_side_by_side`: side-by-side knowledge report exists
+- `pass` `codex_debug_summary_exists`: codex debug summary exists
+- `pass` `codex_debug_status_pass`: status: pass
+- `pass` `codex_debug_explicit_mode`: mode: mock
+- `pass` `codex_debug_real_flag`: uses_real_codex is explicit
+- `pass` `codex_debug_compares_current_tests`: comparison proves current unit tests use fake Codex
+- `pass` `codex_debug_artifacts_validated`: generated NFP artifacts validated
+- `pass` `codex_debug_validation_report`: validation report exists
+- `pass` `codex_debug_real_mode_diagnostic`: real mode diagnostic records real Codex attempt and loader fix
+- `pass` `codex_debug_portable_output`: portable path tokens present
 - `pass` `web_best_practices_doc`: web best-practices synthesis exists
 - `pass` `web_source_https://academy.openai.com/public/resources/skills`: source recorded: https://academy.openai.com/public/resources/skills
 - `pass` `web_source_https://github.com/github/spec-kit`: source recorded: https://github.com/github/spec-kit
@@ -148,8 +158,8 @@
 - `pass` `twenty-enterprise-duplicate-merge-with-preview-conflict-rules-and-rollback_round3_artifacts`: round 3 artifacts exist
 - `pass` `init_project_index_exists`: project-index.yaml exists
 - `pass` `init_project_snapshot_exists`: project-snapshot.md exists
-- `pass` `init_source_count`: source files: 16
-- `pass` `init_test_count`: test files: 35
+- `pass` `init_source_count`: source files: 20
+- `pass` `init_test_count`: test files: 36
 - `pass` `init_feature_signals`: feature signals extracted
 - `pass` `init_feature_catalog`: feature catalog extracted
 - `pass` `init_current_feature_picture`: features overview describes current feature picture
@@ -189,6 +199,15 @@
 - `pass` `random_stress_common_mistakes`: common shared-knowledge mistake detected
 - `pass` `random_stress_no_open_improvements`: open improvements: 0
 - `pass` `random_stress_side_by_side`: side-by-side knowledge report exists
+- `pass` `codex_debug_summary_exists`: codex debug summary exists
+- `pass` `codex_debug_status_pass`: status: pass
+- `pass` `codex_debug_explicit_mode`: mode: mock
+- `pass` `codex_debug_real_flag`: uses_real_codex is explicit
+- `pass` `codex_debug_compares_current_tests`: comparison proves current unit tests use fake Codex
+- `pass` `codex_debug_artifacts_validated`: generated NFP artifacts validated
+- `pass` `codex_debug_validation_report`: validation report exists
+- `pass` `codex_debug_real_mode_diagnostic`: real mode diagnostic records real Codex attempt and loader fix
+- `pass` `codex_debug_portable_output`: portable path tokens present
 - `pass` `web_best_practices_doc`: web best-practices synthesis exists
 - `pass` `web_source_https://academy.openai.com/public/resources/skills`: source recorded: https://academy.openai.com/public/resources/skills
 - `pass` `web_source_https://github.com/github/spec-kit`: source recorded: https://github.com/github/spec-kit
@@ -230,8 +249,8 @@
 - `pass` `twenty-enterprise-duplicate-merge-with-preview-conflict-rules-and-rollback_round3_artifacts`: round 3 artifacts exist
 - `pass` `init_project_index_exists`: project-index.yaml exists
 - `pass` `init_project_snapshot_exists`: project-snapshot.md exists
-- `pass` `init_source_count`: source files: 16
-- `pass` `init_test_count`: test files: 35
+- `pass` `init_source_count`: source files: 20
+- `pass` `init_test_count`: test files: 36
 - `pass` `init_feature_signals`: feature signals extracted
 - `pass` `init_feature_catalog`: feature catalog extracted
 - `pass` `init_current_feature_picture`: features overview describes current feature picture
@@ -271,6 +290,15 @@
 - `pass` `random_stress_common_mistakes`: common shared-knowledge mistake detected
 - `pass` `random_stress_no_open_improvements`: open improvements: 0
 - `pass` `random_stress_side_by_side`: side-by-side knowledge report exists
+- `pass` `codex_debug_summary_exists`: codex debug summary exists
+- `pass` `codex_debug_status_pass`: status: pass
+- `pass` `codex_debug_explicit_mode`: mode: mock
+- `pass` `codex_debug_real_flag`: uses_real_codex is explicit
+- `pass` `codex_debug_compares_current_tests`: comparison proves current unit tests use fake Codex
+- `pass` `codex_debug_artifacts_validated`: generated NFP artifacts validated
+- `pass` `codex_debug_validation_report`: validation report exists
+- `pass` `codex_debug_real_mode_diagnostic`: real mode diagnostic records real Codex attempt and loader fix
+- `pass` `codex_debug_portable_output`: portable path tokens present
 - `pass` `web_best_practices_doc`: web best-practices synthesis exists
 - `pass` `web_source_https://academy.openai.com/public/resources/skills`: source recorded: https://academy.openai.com/public/resources/skills
 - `pass` `web_source_https://github.com/github/spec-kit`: source recorded: https://github.com/github/spec-kit

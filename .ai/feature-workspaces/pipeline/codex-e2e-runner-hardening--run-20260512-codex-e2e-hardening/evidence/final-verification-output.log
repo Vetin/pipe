@@ -1,0 +1,15 @@
+python -m pytest tests/feature_pipeline/test_codex_e2e_runner.py tests/feature_pipeline/test_codex_debug_runner.py tests/feature_pipeline/test_pipeline_goal_validation.py
+16 passed in 6.30s
+
+python pipeline-lab/showcases/scripts/validate_pipeline_goals.py --passes 3 --report pipeline-lab/showcases/pipeline-goal-validation-report.md
+passes: 3
+failures: 0
+
+real Codex smoke:
+mode: real
+uses_real_codex: true
+status: pass
+returncode: 0
+timed_out: false
+artifact_source: changed_files
+
