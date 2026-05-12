@@ -7,10 +7,10 @@ worktree:
   path: ../worktrees/pipeline-codex-e2e-runner-hardening-run-20260512-codex-e2e-hardening
 gates:
   feature_contract: approved
-  architecture: pending
-  tech_design: pending
-  slicing_readiness: pending
-  implementation: blocked
+  architecture: approved
+  tech_design: approved
+  slicing_readiness: approved
+  implementation: approved
   review: pending
   verification: pending
   finish: pending

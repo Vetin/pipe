@@ -86,7 +86,7 @@ Docs Consulted: Architecture
 - `.ai/pipeline-docs/steps/architecture/overview.md`
 - `.ai/pipeline-docs/steps/architecture/checklist.md`
 
-Docs Consulted: Tech Design
+Docs Consulted: Technical Design
 - `.agents/pipeline-core/references/native-skill-protocol.md`
 - `.agents/pipeline-core/references/methodology-lenses.md`
 - `skills/native-feature-pipeline/references/upstream-pattern-map.md`
@@ -141,3 +141,7 @@ Feature run initialized at 2026-05-12T09:41:15Z. The next step is context discov
 - 2026-05-12T09:46:50Z gate=implementation old_status=blocked new_status=approved by=codex note=Implementation authorized after approved planning gates.
 - 2026-05-12T09:46:50Z gate=slicing_readiness old_status=pending new_status=approved by=codex note=Slices are dependency ordered and mapped to focused validation.
 a.
+- 2026-05-12T09:49:00Z gate=architecture old_status=pending new_status=approved by=codex note=Architecture includes source-grounded topology and shared knowledge impact.
+- 2026-05-12T09:49:00Z gate=tech_design old_status=pending new_status=approved by=codex note=Technical design defines runner contracts, tests, and validation commands.
+- 2026-05-12T09:49:00Z gate=slicing_readiness old_status=pending new_status=approved by=codex note=Slices are dependency ordered and mapped to focused validation.
+- 2026-05-12T09:49:00Z gate=implementation old_status=blocked new_status=approved by=codex note=Implementation authorized after approved planning gates.
