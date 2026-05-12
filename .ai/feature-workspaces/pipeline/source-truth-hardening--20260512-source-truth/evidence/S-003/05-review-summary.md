@@ -1,0 +1,1 @@
+Spec and code quality review: production docs use .agents/pipeline-core references and fallback policy is explicit.

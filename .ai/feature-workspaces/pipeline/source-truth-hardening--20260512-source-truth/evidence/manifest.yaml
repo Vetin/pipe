@@ -1,0 +1,79 @@
+artifact_contract_version: 0.1.0
+feature_key: pipeline/source-truth-hardening
+slices:
+  S-001:
+    red:
+      timestamp: '2026-05-12T13:00:00Z'
+      command_file: S-001/01-red-command.txt
+      output_file: S-001/01-red-output.log
+      git_state_file: S-001/00-pre-red-git-state.txt
+    green:
+      timestamp: '2026-05-12T13:01:00Z'
+      command_file: S-001/03-green-command.txt
+      output_file: S-001/03-green-output.log
+      git_state_file: S-001/02-pre-green-git-state.txt
+    verification:
+      timestamp: '2026-05-12T13:02:00Z'
+      command_file: S-001/04-verification-command.txt
+      output_file: S-001/04-verification-output.log
+    review:
+      timestamp: '2026-05-12T13:03:00Z'
+      summary_file: S-001/05-review-summary.md
+    commit: 1ee02b4
+  S-002:
+    red:
+      timestamp: '2026-05-12T13:04:00Z'
+      command_file: S-002/01-red-command.txt
+      output_file: S-002/01-red-output.log
+      git_state_file: S-002/00-pre-red-git-state.txt
+    green:
+      timestamp: '2026-05-12T13:05:00Z'
+      command_file: S-002/03-green-command.txt
+      output_file: S-002/03-green-output.log
+      git_state_file: S-002/02-pre-green-git-state.txt
+    verification:
+      timestamp: '2026-05-12T13:06:00Z'
+      command_file: S-002/04-verification-command.txt
+      output_file: S-002/04-verification-output.log
+    review:
+      timestamp: '2026-05-12T13:07:00Z'
+      summary_file: S-002/05-review-summary.md
+    commit: 77e26ec
+  S-003:
+    red:
+      timestamp: '2026-05-12T13:08:00Z'
+      command_file: S-003/01-red-command.txt
+      output_file: S-003/01-red-output.log
+      git_state_file: S-003/00-pre-red-git-state.txt
+    green:
+      timestamp: '2026-05-12T13:09:00Z'
+      command_file: S-003/03-green-command.txt
+      output_file: S-003/03-green-output.log
+      git_state_file: S-003/02-pre-green-git-state.txt
+    verification:
+      timestamp: '2026-05-12T13:10:00Z'
+      command_file: S-003/04-verification-command.txt
+      output_file: S-003/04-verification-output.log
+    review:
+      timestamp: '2026-05-12T13:11:00Z'
+      summary_file: S-003/05-review-summary.md
+    commit: c7521c7
+  S-004:
+    red:
+      timestamp: '2026-05-12T13:12:00Z'
+      command_file: S-004/01-red-command.txt
+      output_file: S-004/01-red-output.log
+      git_state_file: S-004/00-pre-red-git-state.txt
+    green:
+      timestamp: '2026-05-12T13:13:00Z'
+      command_file: S-004/03-green-command.txt
+      output_file: S-004/03-green-output.log
+      git_state_file: S-004/02-pre-green-git-state.txt
+    verification:
+      timestamp: '2026-05-12T13:14:00Z'
+      command_file: S-004/04-verification-command.txt
+      output_file: S-004/04-verification-output.log
+    review:
+      timestamp: '2026-05-12T13:15:00Z'
+      summary_file: S-004/05-review-summary.md
+    commit: 9d961fc

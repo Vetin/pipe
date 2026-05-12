@@ -110,10 +110,10 @@ nfp-01-context
 
 ## Latest Status
 
-Current step: context
-Next recommended skill: nfp-02-feature-contract
+Current step: finish
+Next recommended skill: nfp-12-promote
 Blocking issues: none
-Last updated: 2026-05-12T12:45:00Z
+Last updated: 2026-05-12T13:20:00Z
 
 ## Summary
 
@@ -123,3 +123,11 @@ Feature run initialized at 2026-05-12T12:32:35Z. The next step is context discov
 - 2026-05-12T12:41:21Z gate=architecture old_status=pending new_status=approved by=codex note=architecture written with source truth topology
 - 2026-05-12T12:41:21Z gate=tech_design old_status=pending new_status=approved by=codex note=tech design written with validation and evidence contracts
 - 2026-05-12T12:41:21Z gate=slicing_readiness old_status=pending new_status=approved by=codex note=slices cover validation, evidence, skills, profile filtering
+- 2026-05-12T12:59:40Z completed slice S-001 with evidence
+- 2026-05-12T12:59:40Z completed slice S-002 with evidence
+- 2026-05-12T12:59:40Z completed slice S-003 with evidence
+- 2026-05-12T12:59:41Z completed slice S-004 with evidence
+- 2026-05-12T13:00:55Z gate=implementation old_status=blocked new_status=complete by=codex note=all four hardening slices complete with evidence
+- 2026-05-12T13:00:55Z gate=review old_status=pending new_status=complete by=codex note=REV-001 has no blocking findings
+- 2026-05-12T13:00:55Z gate=verification old_status=pending new_status=complete by=codex note=focused tests and evidence validation passed
+- 2026-05-12T13:00:56Z gate=finish old_status=pending new_status=complete by=codex note=feature card and shared knowledge update plan complete

@@ -1,0 +1,1 @@
+Spec and code quality review: generated showcase reports are filtered while docs/features.md remains discoverable.

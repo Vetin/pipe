@@ -1,7 +1,7 @@
 artifact_contract_version: 0.1.0
 feature_key: pipeline/source-truth-hardening
 run_id: 20260512-source-truth
-current_step: context
+current_step: finish
 worktree:
   branch: feature/pipeline-source-truth-hardening-20260512-source-truth
   path: ../worktrees/pipeline-source-truth-hardening-20260512-source-truth
@@ -10,10 +10,10 @@ gates:
   architecture: approved
   tech_design: approved
   slicing_readiness: approved
-  implementation: blocked
-  review: pending
-  verification: pending
-  finish: pending
+  implementation: complete
+  review: complete
+  verification: complete
+  finish: complete
 stale:
   feature: false
   architecture: false
@@ -21,8 +21,8 @@ stale:
   slices: false
   evidence: false
   review: false
-  feature_card: true
-  canonical_docs: true
+  feature_card: false
+  canonical_docs: false
   index: false
 active_slice: null
 locks:

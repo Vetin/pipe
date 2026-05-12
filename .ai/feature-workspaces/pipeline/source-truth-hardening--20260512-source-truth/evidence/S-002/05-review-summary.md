@@ -1,0 +1,1 @@
+Spec and code quality review: complete-slice now writes only proposed valid manifest.

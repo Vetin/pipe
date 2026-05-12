@@ -1,0 +1,8 @@
+Focused verification:
+- tests/feature_pipeline/test_finish_promote.py: 15 passed
+- tests/feature_pipeline/test_evidence_order.py + test_finish_promote.py: 17 passed
+- tests/feature_pipeline/test_methodology_contract.py + test_featurectl_core.py + test_codex_e2e_runner.py: 28 passed
+- tests/feature_pipeline/test_featurectl_core.py: 8 passed
+- featurectl validate --workspace source-truth-hardening --evidence: pass
+
+Final verification will run the full feature_pipeline suite before promotion.
