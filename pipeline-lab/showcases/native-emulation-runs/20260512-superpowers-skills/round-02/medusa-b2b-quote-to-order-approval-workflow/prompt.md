@@ -1,6 +1,6 @@
 I need you to implement this feature in the local Medusa checkout.
 
-Repository: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/medusa
+Repository: /pipeline-lab/showcases/repos/medusa
 Feature: B2B quote-to-order approval workflow
 Expected result: Medusa’s B2B starter already includes company and merchant approval concepts. ([GitHub][6]) Showcase feature: buyer submits quote, company admin approves, merchant approves, pricing/promotions/tax/shipping are locked, quote converts to order. Expected result: architecture with multi-actor approval flow, ADRs for price locking and approval semantics, contracts for quote/order transitions, slices for permissions, approvals, expiry, conversion, and audit.
 
@@ -12,11 +12,12 @@ Do not ask me to invoke individual internal skills by name; infer the workflow f
 Round focus: Adds explicit audit, rollback, permission, contract, and failure-mode expectations.
 
 Repository hints to inspect first:
-- integration-tests/api/__tests__/admin/draft-order/draft-order.js.txt
-- integration-tests/api/__tests__/admin/draft-order/ff-tax-inclusive-draft-order.js.txt
-- integration-tests/api/__tests__/admin/order-edit/ff-tax-inclusive-pricing.js.txt
-- integration-tests/api/__tests__/admin/order-edit/order-edit.js.txt
-- integration-tests/api/__tests__/admin/order/__snapshots__/order.js.snap
-- integration-tests/api/__tests__/admin/order/ff-tax-inclusive-pricing.js.txt
-- integration-tests/api/__tests__/admin/order/order.js.txt
-- integration-tests/api/__tests__/batch-jobs/order/export.js.txt
+
+- integration-tests/api/**tests**/admin/draft-order/draft-order.js.txt
+- integration-tests/api/**tests**/admin/draft-order/ff-tax-inclusive-draft-order.js.txt
+- integration-tests/api/**tests**/admin/order-edit/ff-tax-inclusive-pricing.js.txt
+- integration-tests/api/**tests**/admin/order-edit/order-edit.js.txt
+- integration-tests/api/**tests**/admin/order/**snapshots**/order.js.snap
+- integration-tests/api/**tests**/admin/order/ff-tax-inclusive-pricing.js.txt
+- integration-tests/api/**tests**/admin/order/order.js.txt
+- integration-tests/api/**tests**/batch-jobs/order/export.js.txt

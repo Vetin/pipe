@@ -1,136 +1,146 @@
 results:
-- case: docmost
-  repo: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/docmost
-  branch: showcase/docmost-pipeline-materialized
-  commit: 98ca457
-  feature_dir: showcase/page-approval-workflow
-  workspace: .ai/feature-workspaces/pages/page-approval-workflow--run-docmost-approval
-  canonical: .ai/features/pages/page-approval-workflow
-  patch: .ai/showcase-patches/docmost.patch
-  report: .ai/showcase-reports/docmost.md
-  test_command: node showcase/page-approval-workflow/feature.s-001.test.js && node
-    showcase/page-approval-workflow/feature.s-002.test.js && node showcase/page-approval-workflow/feature.s-003.test.js
-  test_output: passed
-  status: ''
-- case: formbricks
-  repo: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/formbricks
-  branch: showcase/formbricks-pipeline-materialized
-  commit: 08b5e03
-  feature_dir: showcase/signed-survey-response-webhooks
-  workspace: .ai/feature-workspaces/webhooks/signed-survey-response-webhooks--run-formbricks-webhooks
-  canonical: .ai/features/webhooks/signed-survey-response-webhooks
-  patch: .ai/showcase-patches/formbricks.patch
-  report: .ai/showcase-reports/formbricks.md
-  test_command: node showcase/signed-survey-response-webhooks/feature.s-001.test.js
-    && node showcase/signed-survey-response-webhooks/feature.s-002.test.js && node
-    showcase/signed-survey-response-webhooks/feature.s-003.test.js
-  test_output: passed
-  status: ''
-- case: actual
-  repo: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/actual
-  branch: showcase/actual-pipeline-materialized
-  commit: 925147f
-  feature_dir: showcase/rule-preview-and-undo
-  workspace: .ai/feature-workspaces/imports/rule-preview-and-undo--run-actual-import-undo
-  canonical: .ai/features/imports/rule-preview-and-undo
-  patch: .ai/showcase-patches/actual.patch
-  report: .ai/showcase-reports/actual.md
-  test_command: node showcase/rule-preview-and-undo/feature.s-001.test.js && node
-    showcase/rule-preview-and-undo/feature.s-002.test.js && node showcase/rule-preview-and-undo/feature.s-003.test.js
-  test_output: passed
-  status: ''
-- case: plane
-  repo: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/plane
-  branch: showcase/plane-pipeline-materialized
-  commit: 7e323e1
-  feature_dir: showcase/triage-automation-rules
-  workspace: .ai/feature-workspaces/triage/triage-automation-rules--run-plane-triage-rules
-  canonical: .ai/features/triage/triage-automation-rules
-  patch: .ai/showcase-patches/plane.patch
-  report: .ai/showcase-reports/plane.md
-  test_command: node showcase/triage-automation-rules/feature.s-001.test.js && node
-    showcase/triage-automation-rules/feature.s-002.test.js && node showcase/triage-automation-rules/feature.s-003.test.js
-  test_output: passed
-  status: ''
-- case: nocodb
-  repo: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/nocodb
-  branch: showcase/nocodb-pipeline-materialized
-  commit: 0c3ad4a
-  feature_dir: showcase/schema-change-audit-log
-  workspace: .ai/feature-workspaces/schema/schema-change-audit-log--run-nocodb-schema-audit
-  canonical: .ai/features/schema/schema-change-audit-log
-  patch: .ai/showcase-patches/nocodb.patch
-  report: .ai/showcase-reports/nocodb.md
-  test_command: node showcase/schema-change-audit-log/feature.s-001.test.js && node
-    showcase/schema-change-audit-log/feature.s-002.test.js && node showcase/schema-change-audit-log/feature.s-003.test.js
-  test_output: passed
-  status: ''
-- case: appsmith
-  repo: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/appsmith
-  branch: showcase/appsmith-pipeline-materialized
-  commit: 9d3790c
-  feature_dir: showcase/app-version-restore-diff-preview
-  workspace: .ai/feature-workspaces/versions/app-version-restore-diff-preview--run-appsmith-version-restore
-  canonical: .ai/features/versions/app-version-restore-diff-preview
-  patch: .ai/showcase-patches/appsmith.patch
-  report: .ai/showcase-reports/appsmith.md
-  test_command: node showcase/app-version-restore-diff-preview/feature.s-001.test.js
-    && node showcase/app-version-restore-diff-preview/feature.s-002.test.js && node
-    showcase/app-version-restore-diff-preview/feature.s-003.test.js
-  test_output: passed
-  status: ''
-- case: listmonk
-  repo: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/listmonk
-  branch: showcase/listmonk-pipeline-materialized
-  commit: 193b16a
-  feature_dir: showcase/double-opt-in-segment-onboarding
-  workspace: .ai/feature-workspaces/subscribers/double-opt-in-segment-onboarding--run-listmonk-double-opt-in
-  canonical: .ai/features/subscribers/double-opt-in-segment-onboarding
-  patch: .ai/showcase-patches/listmonk.patch
-  report: .ai/showcase-reports/listmonk.md
-  test_command: go test ./showcase/double-opt-in-segment-onboarding
-  test_output: "ok  \tgithub.com/knadh/listmonk/showcase/double-opt-in-segment-onboarding\t\
-    (cached)"
-  status: ''
-- case: medusa
-  repo: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/medusa
-  branch: showcase/medusa-pipeline-materialized
-  commit: 13e0383
-  feature_dir: showcase/first-order-promotion-usage-caps
-  workspace: .ai/feature-workspaces/promotions/first-order-promotion-usage-caps--run-medusa-first-order-promo
-  canonical: .ai/features/promotions/first-order-promotion-usage-caps
-  patch: .ai/showcase-patches/medusa.patch
-  report: .ai/showcase-reports/medusa.md
-  test_command: node showcase/first-order-promotion-usage-caps/feature.s-001.test.js
-    && node showcase/first-order-promotion-usage-caps/feature.s-002.test.js && node
-    showcase/first-order-promotion-usage-caps/feature.s-003.test.js
-  test_output: passed
-  status: ''
-- case: excalidraw
-  repo: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/excalidraw
-  branch: showcase/excalidraw-pipeline-materialized
-  commit: 8cf9344
-  feature_dir: showcase/layer-lock-history-safe-editing
-  workspace: .ai/feature-workspaces/canvas/layer-lock-history-safe-editing--run-excalidraw-layer-lock
-  canonical: .ai/features/canvas/layer-lock-history-safe-editing
-  patch: .ai/showcase-patches/excalidraw.patch
-  report: .ai/showcase-reports/excalidraw.md
-  test_command: node showcase/layer-lock-history-safe-editing/feature.s-001.test.js
-    && node showcase/layer-lock-history-safe-editing/feature.s-002.test.js && node
-    showcase/layer-lock-history-safe-editing/feature.s-003.test.js
-  test_output: passed
-  status: ''
-- case: twenty
-  repo: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/twenty
-  branch: showcase/twenty-pipeline-materialized
-  commit: d613dab
-  feature_dir: showcase/duplicate-company-merge-audit-trail
-  workspace: .ai/feature-workspaces/crm/duplicate-company-merge-audit-trail--run-twenty-company-merge
-  canonical: .ai/features/crm/duplicate-company-merge-audit-trail
-  patch: .ai/showcase-patches/twenty.patch
-  report: .ai/showcase-reports/twenty.md
-  test_command: node showcase/duplicate-company-merge-audit-trail/feature.s-001.test.js
-    && node showcase/duplicate-company-merge-audit-trail/feature.s-002.test.js &&
-    node showcase/duplicate-company-merge-audit-trail/feature.s-003.test.js
-  test_output: passed
-  status: ''
+  - case: docmost
+    repo: /pipeline-lab/showcases/repos/docmost
+    branch: showcase/docmost-pipeline-materialized
+    commit: 98ca457
+    feature_dir: showcase/page-approval-workflow
+    workspace: .ai/feature-workspaces/pages/page-approval-workflow--run-docmost-approval
+    canonical: .ai/features/pages/page-approval-workflow
+    patch: .ai/showcase-patches/docmost.patch
+    report: .ai/showcase-reports/docmost.md
+    test_command:
+      node showcase/page-approval-workflow/feature.s-001.test.js && node
+      showcase/page-approval-workflow/feature.s-002.test.js && node showcase/page-approval-workflow/feature.s-003.test.js
+    test_output: passed
+    status: ''
+  - case: formbricks
+    repo: /pipeline-lab/showcases/repos/formbricks
+    branch: showcase/formbricks-pipeline-materialized
+    commit: 08b5e03
+    feature_dir: showcase/signed-survey-response-webhooks
+    workspace: .ai/feature-workspaces/webhooks/signed-survey-response-webhooks--run-formbricks-webhooks
+    canonical: .ai/features/webhooks/signed-survey-response-webhooks
+    patch: .ai/showcase-patches/formbricks.patch
+    report: .ai/showcase-reports/formbricks.md
+    test_command:
+      node showcase/signed-survey-response-webhooks/feature.s-001.test.js
+      && node showcase/signed-survey-response-webhooks/feature.s-002.test.js && node
+      showcase/signed-survey-response-webhooks/feature.s-003.test.js
+    test_output: passed
+    status: ''
+  - case: actual
+    repo: /pipeline-lab/showcases/repos/actual
+    branch: showcase/actual-pipeline-materialized
+    commit: 925147f
+    feature_dir: showcase/rule-preview-and-undo
+    workspace: .ai/feature-workspaces/imports/rule-preview-and-undo--run-actual-import-undo
+    canonical: .ai/features/imports/rule-preview-and-undo
+    patch: .ai/showcase-patches/actual.patch
+    report: .ai/showcase-reports/actual.md
+    test_command:
+      node showcase/rule-preview-and-undo/feature.s-001.test.js && node
+      showcase/rule-preview-and-undo/feature.s-002.test.js && node showcase/rule-preview-and-undo/feature.s-003.test.js
+    test_output: passed
+    status: ''
+  - case: plane
+    repo: /pipeline-lab/showcases/repos/plane
+    branch: showcase/plane-pipeline-materialized
+    commit: 7e323e1
+    feature_dir: showcase/triage-automation-rules
+    workspace: .ai/feature-workspaces/triage/triage-automation-rules--run-plane-triage-rules
+    canonical: .ai/features/triage/triage-automation-rules
+    patch: .ai/showcase-patches/plane.patch
+    report: .ai/showcase-reports/plane.md
+    test_command:
+      node showcase/triage-automation-rules/feature.s-001.test.js && node
+      showcase/triage-automation-rules/feature.s-002.test.js && node showcase/triage-automation-rules/feature.s-003.test.js
+    test_output: passed
+    status: ''
+  - case: nocodb
+    repo: /pipeline-lab/showcases/repos/nocodb
+    branch: showcase/nocodb-pipeline-materialized
+    commit: 0c3ad4a
+    feature_dir: showcase/schema-change-audit-log
+    workspace: .ai/feature-workspaces/schema/schema-change-audit-log--run-nocodb-schema-audit
+    canonical: .ai/features/schema/schema-change-audit-log
+    patch: .ai/showcase-patches/nocodb.patch
+    report: .ai/showcase-reports/nocodb.md
+    test_command:
+      node showcase/schema-change-audit-log/feature.s-001.test.js && node
+      showcase/schema-change-audit-log/feature.s-002.test.js && node showcase/schema-change-audit-log/feature.s-003.test.js
+    test_output: passed
+    status: ''
+  - case: appsmith
+    repo: /pipeline-lab/showcases/repos/appsmith
+    branch: showcase/appsmith-pipeline-materialized
+    commit: 9d3790c
+    feature_dir: showcase/app-version-restore-diff-preview
+    workspace: .ai/feature-workspaces/versions/app-version-restore-diff-preview--run-appsmith-version-restore
+    canonical: .ai/features/versions/app-version-restore-diff-preview
+    patch: .ai/showcase-patches/appsmith.patch
+    report: .ai/showcase-reports/appsmith.md
+    test_command:
+      node showcase/app-version-restore-diff-preview/feature.s-001.test.js
+      && node showcase/app-version-restore-diff-preview/feature.s-002.test.js && node
+      showcase/app-version-restore-diff-preview/feature.s-003.test.js
+    test_output: passed
+    status: ''
+  - case: listmonk
+    repo: /pipeline-lab/showcases/repos/listmonk
+    branch: showcase/listmonk-pipeline-materialized
+    commit: 193b16a
+    feature_dir: showcase/double-opt-in-segment-onboarding
+    workspace: .ai/feature-workspaces/subscribers/double-opt-in-segment-onboarding--run-listmonk-double-opt-in
+    canonical: .ai/features/subscribers/double-opt-in-segment-onboarding
+    patch: .ai/showcase-patches/listmonk.patch
+    report: .ai/showcase-reports/listmonk.md
+    test_command: go test ./showcase/double-opt-in-segment-onboarding
+    test_output:
+      "ok  \tgithub.com/knadh/listmonk/showcase/double-opt-in-segment-onboarding\t\
+      (cached)"
+    status: ''
+  - case: medusa
+    repo: /pipeline-lab/showcases/repos/medusa
+    branch: showcase/medusa-pipeline-materialized
+    commit: 13e0383
+    feature_dir: showcase/first-order-promotion-usage-caps
+    workspace: .ai/feature-workspaces/promotions/first-order-promotion-usage-caps--run-medusa-first-order-promo
+    canonical: .ai/features/promotions/first-order-promotion-usage-caps
+    patch: .ai/showcase-patches/medusa.patch
+    report: .ai/showcase-reports/medusa.md
+    test_command:
+      node showcase/first-order-promotion-usage-caps/feature.s-001.test.js
+      && node showcase/first-order-promotion-usage-caps/feature.s-002.test.js && node
+      showcase/first-order-promotion-usage-caps/feature.s-003.test.js
+    test_output: passed
+    status: ''
+  - case: excalidraw
+    repo: /pipeline-lab/showcases/repos/excalidraw
+    branch: showcase/excalidraw-pipeline-materialized
+    commit: 8cf9344
+    feature_dir: showcase/layer-lock-history-safe-editing
+    workspace: .ai/feature-workspaces/canvas/layer-lock-history-safe-editing--run-excalidraw-layer-lock
+    canonical: .ai/features/canvas/layer-lock-history-safe-editing
+    patch: .ai/showcase-patches/excalidraw.patch
+    report: .ai/showcase-reports/excalidraw.md
+    test_command:
+      node showcase/layer-lock-history-safe-editing/feature.s-001.test.js
+      && node showcase/layer-lock-history-safe-editing/feature.s-002.test.js && node
+      showcase/layer-lock-history-safe-editing/feature.s-003.test.js
+    test_output: passed
+    status: ''
+  - case: twenty
+    repo: /pipeline-lab/showcases/repos/twenty
+    branch: showcase/twenty-pipeline-materialized
+    commit: d613dab
+    feature_dir: showcase/duplicate-company-merge-audit-trail
+    workspace: .ai/feature-workspaces/crm/duplicate-company-merge-audit-trail--run-twenty-company-merge
+    canonical: .ai/features/crm/duplicate-company-merge-audit-trail
+    patch: .ai/showcase-patches/twenty.patch
+    report: .ai/showcase-reports/twenty.md
+    test_command:
+      node showcase/duplicate-company-merge-audit-trail/feature.s-001.test.js
+      && node showcase/duplicate-company-merge-audit-trail/feature.s-002.test.js &&
+      node showcase/duplicate-company-merge-audit-trail/feature.s-003.test.js
+    test_output: passed
+    status: ''

@@ -1,71 +1,71 @@
 results:
-- case: docmost
-  repo: docmost
-  feature: Page Approval Workflow
-  workspace: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/worktrees/pages-page-approval-workflow-run-docmost-approval/.ai/feature-workspaces/pages/page-approval-workflow--run-docmost-approval
-  worktree: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/worktrees/pages-page-approval-workflow-run-docmost-approval
-  report: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/implementation-runs/docmost/report.md
-  patch: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/implementation-runs/docmost/implementation.patch
-- case: formbricks
-  repo: formbricks
-  feature: Signed Survey Response Webhooks
-  workspace: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/worktrees/webhooks-signed-survey-response-webhooks-run-formbricks-webhooks/.ai/feature-workspaces/webhooks/signed-survey-response-webhooks--run-formbricks-webhooks
-  worktree: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/worktrees/webhooks-signed-survey-response-webhooks-run-formbricks-webhooks
-  report: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/implementation-runs/formbricks/report.md
-  patch: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/implementation-runs/formbricks/implementation.patch
-- case: actual
-  repo: actual
-  feature: Rule Preview And Undo
-  workspace: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/worktrees/imports-rule-preview-and-undo-run-actual-import-undo/.ai/feature-workspaces/imports/rule-preview-and-undo--run-actual-import-undo
-  worktree: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/worktrees/imports-rule-preview-and-undo-run-actual-import-undo
-  report: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/implementation-runs/actual/report.md
-  patch: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/implementation-runs/actual/implementation.patch
-- case: plane
-  repo: plane
-  feature: Triage Automation Rules
-  workspace: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/worktrees/triage-triage-automation-rules-run-plane-triage-rules/.ai/feature-workspaces/triage/triage-automation-rules--run-plane-triage-rules
-  worktree: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/worktrees/triage-triage-automation-rules-run-plane-triage-rules
-  report: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/implementation-runs/plane/report.md
-  patch: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/implementation-runs/plane/implementation.patch
-- case: nocodb
-  repo: nocodb
-  feature: Schema Change Audit Log
-  workspace: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/worktrees/schema-schema-change-audit-log-run-nocodb-schema-audit/.ai/feature-workspaces/schema/schema-change-audit-log--run-nocodb-schema-audit
-  worktree: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/worktrees/schema-schema-change-audit-log-run-nocodb-schema-audit
-  report: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/implementation-runs/nocodb/report.md
-  patch: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/implementation-runs/nocodb/implementation.patch
-- case: appsmith
-  repo: appsmith
-  feature: App Version Restore Diff Preview
-  workspace: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/worktrees/versions-app-version-restore-diff-preview-run-appsmith-version-restore/.ai/feature-workspaces/versions/app-version-restore-diff-preview--run-appsmith-version-restore
-  worktree: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/worktrees/versions-app-version-restore-diff-preview-run-appsmith-version-restore
-  report: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/implementation-runs/appsmith/report.md
-  patch: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/implementation-runs/appsmith/implementation.patch
-- case: listmonk
-  repo: listmonk
-  feature: Double Opt In Segment Onboarding
-  workspace: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/worktrees/subscribers-double-opt-in-segment-onboarding-run-listmonk-double-opt-in/.ai/feature-workspaces/subscribers/double-opt-in-segment-onboarding--run-listmonk-double-opt-in
-  worktree: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/worktrees/subscribers-double-opt-in-segment-onboarding-run-listmonk-double-opt-in
-  report: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/implementation-runs/listmonk/report.md
-  patch: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/implementation-runs/listmonk/implementation.patch
-- case: medusa
-  repo: medusa
-  feature: First Order Promotion Usage Caps
-  workspace: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/worktrees/promotions-first-order-promotion-usage-caps-run-medusa-first-order-promo/.ai/feature-workspaces/promotions/first-order-promotion-usage-caps--run-medusa-first-order-promo
-  worktree: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/worktrees/promotions-first-order-promotion-usage-caps-run-medusa-first-order-promo
-  report: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/implementation-runs/medusa/report.md
-  patch: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/implementation-runs/medusa/implementation.patch
-- case: excalidraw
-  repo: excalidraw
-  feature: Layer Lock History Safe Editing
-  workspace: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/worktrees/canvas-layer-lock-history-safe-editing-run-excalidraw-layer-lock/.ai/feature-workspaces/canvas/layer-lock-history-safe-editing--run-excalidraw-layer-lock
-  worktree: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/worktrees/canvas-layer-lock-history-safe-editing-run-excalidraw-layer-lock
-  report: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/implementation-runs/excalidraw/report.md
-  patch: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/implementation-runs/excalidraw/implementation.patch
-- case: twenty
-  repo: twenty
-  feature: Duplicate Company Merge Audit Trail
-  workspace: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/worktrees/crm-duplicate-company-merge-audit-trail-run-twenty-company-merge/.ai/feature-workspaces/crm/duplicate-company-merge-audit-trail--run-twenty-company-merge
-  worktree: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/worktrees/crm-duplicate-company-merge-audit-trail-run-twenty-company-merge
-  report: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/implementation-runs/twenty/report.md
-  patch: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/implementation-runs/twenty/implementation.patch
+  - case: docmost
+    repo: docmost
+    feature: Page Approval Workflow
+    workspace: /pipeline-lab/showcases/repos/worktrees/pages-page-approval-workflow-run-docmost-approval/.ai/feature-workspaces/pages/page-approval-workflow--run-docmost-approval
+    worktree: /pipeline-lab/showcases/repos/worktrees/pages-page-approval-workflow-run-docmost-approval
+    report: /pipeline-lab/showcases/implementation-runs/docmost/report.md
+    patch: /pipeline-lab/showcases/implementation-runs/docmost/implementation.patch
+  - case: formbricks
+    repo: formbricks
+    feature: Signed Survey Response Webhooks
+    workspace: /pipeline-lab/showcases/repos/worktrees/webhooks-signed-survey-response-webhooks-run-formbricks-webhooks/.ai/feature-workspaces/webhooks/signed-survey-response-webhooks--run-formbricks-webhooks
+    worktree: /pipeline-lab/showcases/repos/worktrees/webhooks-signed-survey-response-webhooks-run-formbricks-webhooks
+    report: /pipeline-lab/showcases/implementation-runs/formbricks/report.md
+    patch: /pipeline-lab/showcases/implementation-runs/formbricks/implementation.patch
+  - case: actual
+    repo: actual
+    feature: Rule Preview And Undo
+    workspace: /pipeline-lab/showcases/repos/worktrees/imports-rule-preview-and-undo-run-actual-import-undo/.ai/feature-workspaces/imports/rule-preview-and-undo--run-actual-import-undo
+    worktree: /pipeline-lab/showcases/repos/worktrees/imports-rule-preview-and-undo-run-actual-import-undo
+    report: /pipeline-lab/showcases/implementation-runs/actual/report.md
+    patch: /pipeline-lab/showcases/implementation-runs/actual/implementation.patch
+  - case: plane
+    repo: plane
+    feature: Triage Automation Rules
+    workspace: /pipeline-lab/showcases/repos/worktrees/triage-triage-automation-rules-run-plane-triage-rules/.ai/feature-workspaces/triage/triage-automation-rules--run-plane-triage-rules
+    worktree: /pipeline-lab/showcases/repos/worktrees/triage-triage-automation-rules-run-plane-triage-rules
+    report: /pipeline-lab/showcases/implementation-runs/plane/report.md
+    patch: /pipeline-lab/showcases/implementation-runs/plane/implementation.patch
+  - case: nocodb
+    repo: nocodb
+    feature: Schema Change Audit Log
+    workspace: /pipeline-lab/showcases/repos/worktrees/schema-schema-change-audit-log-run-nocodb-schema-audit/.ai/feature-workspaces/schema/schema-change-audit-log--run-nocodb-schema-audit
+    worktree: /pipeline-lab/showcases/repos/worktrees/schema-schema-change-audit-log-run-nocodb-schema-audit
+    report: /pipeline-lab/showcases/implementation-runs/nocodb/report.md
+    patch: /pipeline-lab/showcases/implementation-runs/nocodb/implementation.patch
+  - case: appsmith
+    repo: appsmith
+    feature: App Version Restore Diff Preview
+    workspace: /pipeline-lab/showcases/repos/worktrees/versions-app-version-restore-diff-preview-run-appsmith-version-restore/.ai/feature-workspaces/versions/app-version-restore-diff-preview--run-appsmith-version-restore
+    worktree: /pipeline-lab/showcases/repos/worktrees/versions-app-version-restore-diff-preview-run-appsmith-version-restore
+    report: /pipeline-lab/showcases/implementation-runs/appsmith/report.md
+    patch: /pipeline-lab/showcases/implementation-runs/appsmith/implementation.patch
+  - case: listmonk
+    repo: listmonk
+    feature: Double Opt In Segment Onboarding
+    workspace: /pipeline-lab/showcases/repos/worktrees/subscribers-double-opt-in-segment-onboarding-run-listmonk-double-opt-in/.ai/feature-workspaces/subscribers/double-opt-in-segment-onboarding--run-listmonk-double-opt-in
+    worktree: /pipeline-lab/showcases/repos/worktrees/subscribers-double-opt-in-segment-onboarding-run-listmonk-double-opt-in
+    report: /pipeline-lab/showcases/implementation-runs/listmonk/report.md
+    patch: /pipeline-lab/showcases/implementation-runs/listmonk/implementation.patch
+  - case: medusa
+    repo: medusa
+    feature: First Order Promotion Usage Caps
+    workspace: /pipeline-lab/showcases/repos/worktrees/promotions-first-order-promotion-usage-caps-run-medusa-first-order-promo/.ai/feature-workspaces/promotions/first-order-promotion-usage-caps--run-medusa-first-order-promo
+    worktree: /pipeline-lab/showcases/repos/worktrees/promotions-first-order-promotion-usage-caps-run-medusa-first-order-promo
+    report: /pipeline-lab/showcases/implementation-runs/medusa/report.md
+    patch: /pipeline-lab/showcases/implementation-runs/medusa/implementation.patch
+  - case: excalidraw
+    repo: excalidraw
+    feature: Layer Lock History Safe Editing
+    workspace: /pipeline-lab/showcases/repos/worktrees/canvas-layer-lock-history-safe-editing-run-excalidraw-layer-lock/.ai/feature-workspaces/canvas/layer-lock-history-safe-editing--run-excalidraw-layer-lock
+    worktree: /pipeline-lab/showcases/repos/worktrees/canvas-layer-lock-history-safe-editing-run-excalidraw-layer-lock
+    report: /pipeline-lab/showcases/implementation-runs/excalidraw/report.md
+    patch: /pipeline-lab/showcases/implementation-runs/excalidraw/implementation.patch
+  - case: twenty
+    repo: twenty
+    feature: Duplicate Company Merge Audit Trail
+    workspace: /pipeline-lab/showcases/repos/worktrees/crm-duplicate-company-merge-audit-trail-run-twenty-company-merge/.ai/feature-workspaces/crm/duplicate-company-merge-audit-trail--run-twenty-company-merge
+    worktree: /pipeline-lab/showcases/repos/worktrees/crm-duplicate-company-merge-audit-trail-run-twenty-company-merge
+    report: /pipeline-lab/showcases/implementation-runs/twenty/report.md
+    patch: /pipeline-lab/showcases/implementation-runs/twenty/implementation.patch

@@ -2,48 +2,50 @@ case: twenty
 repository: twenty
 feature: Duplicate Company Merge Audit Trail
 language: js
-workspace: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/worktrees/crm-duplicate-company-merge-audit-trail-run-twenty-company-merge/.ai/feature-workspaces/crm/duplicate-company-merge-audit-trail--run-twenty-company-merge
-worktree: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/worktrees/crm-duplicate-company-merge-audit-trail-run-twenty-company-merge
+workspace: /pipeline-lab/showcases/repos/worktrees/crm-duplicate-company-merge-audit-trail-run-twenty-company-merge/.ai/feature-workspaces/crm/duplicate-company-merge-audit-trail--run-twenty-company-merge
+worktree: /pipeline-lab/showcases/repos/worktrees/crm-duplicate-company-merge-audit-trail-run-twenty-company-merge
 source_files:
-- showcase/duplicate-company-merge-audit-trail/feature.js
-- showcase/duplicate-company-merge-audit-trail/feature.s-001.test.js
-- showcase/duplicate-company-merge-audit-trail/feature.s-002.test.js
-- showcase/duplicate-company-merge-audit-trail/feature.s-003.test.js
+  - showcase/duplicate-company-merge-audit-trail/feature.js
+  - showcase/duplicate-company-merge-audit-trail/feature.s-001.test.js
+  - showcase/duplicate-company-merge-audit-trail/feature.s-002.test.js
+  - showcase/duplicate-company-merge-audit-trail/feature.s-003.test.js
 artifact_inventory:
-- feature.md
-- architecture.md
-- tech-design.md
-- slices.yaml
-- execution.md
-- evidence/manifest.yaml
-- evidence/final-verification-output.log
-- reviews/showcase-review.yaml
-- reviews/verification-review.md
-- final-output.md
-- feature-card.md
-- state.yaml
+  - feature.md
+  - architecture.md
+  - tech-design.md
+  - slices.yaml
+  - execution.md
+  - evidence/manifest.yaml
+  - evidence/final-verification-output.log
+  - reviews/showcase-review.yaml
+  - reviews/verification-review.md
+  - final-output.md
+  - feature-card.md
+  - state.yaml
 observations:
-- slice: S-001
-  red_returncode: 1
-  green_returncode: 0
-  verification_returncode: 0
-  test: showcase/duplicate-company-merge-audit-trail/feature.s-001.test.js
-- slice: S-002
-  red_returncode: 1
-  green_returncode: 0
-  verification_returncode: 0
-  test: showcase/duplicate-company-merge-audit-trail/feature.s-002.test.js
-- slice: S-003
-  red_returncode: 1
-  green_returncode: 0
-  verification_returncode: 0
-  test: showcase/duplicate-company-merge-audit-trail/feature.s-003.test.js
-diff_stat: ".../duplicate-company-merge-audit-trail/feature.js | 77 ++++++++++++++++++++++\n\
+  - slice: S-001
+    red_returncode: 1
+    green_returncode: 0
+    verification_returncode: 0
+    test: showcase/duplicate-company-merge-audit-trail/feature.s-001.test.js
+  - slice: S-002
+    red_returncode: 1
+    green_returncode: 0
+    verification_returncode: 0
+    test: showcase/duplicate-company-merge-audit-trail/feature.s-002.test.js
+  - slice: S-003
+    red_returncode: 1
+    green_returncode: 0
+    verification_returncode: 0
+    test: showcase/duplicate-company-merge-audit-trail/feature.s-003.test.js
+diff_stat:
+  ".../duplicate-company-merge-audit-trail/feature.js | 77 ++++++++++++++++++++++\n\
   \ .../feature.s-001.test.js                          | 10 +++\n .../feature.s-002.test.js\
   \                          | 19 ++++++\n .../feature.s-003.test.js             \
   \             | 14 ++++\n 4 files changed, 120 insertions(+)"
 validation: 'validation: pass'
 readiness: 'validation: pass'
-status: "A showcase/duplicate-company-merge-audit-trail/feature.js\n A showcase/duplicate-company-merge-audit-trail/feature.s-001.test.js\n\
+status:
+  "A showcase/duplicate-company-merge-audit-trail/feature.js\n A showcase/duplicate-company-merge-audit-trail/feature.s-001.test.js\n\
   \ A showcase/duplicate-company-merge-audit-trail/feature.s-002.test.js\n A showcase/duplicate-company-merge-audit-trail/feature.s-003.test.js\n\
   ?? .agents/\n?? .ai/\n?? skills/"

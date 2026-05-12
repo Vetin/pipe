@@ -7,9 +7,10 @@ This validates that the Native Feature Pipeline can initialize, generate artifac
 
 ## Generated Pipeline Artifacts
 
-Workspace: `/Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/worktrees/imports-rule-preview-and-undo-run-actual-import-undo/.ai/feature-workspaces/imports/rule-preview-and-undo--run-actual-import-undo`
+Workspace: `/pipeline-lab/showcases/repos/worktrees/imports-rule-preview-and-undo-run-actual-import-undo/.ai/feature-workspaces/imports/rule-preview-and-undo--run-actual-import-undo`
 
 Artifacts:
+
 - `feature.md`
 - `architecture.md`
 - `tech-design.md`
@@ -26,6 +27,7 @@ Artifacts:
 ## Code Changes
 
 Source files:
+
 - `showcase/rule-preview-and-undo/feature.js`
 - `showcase/rule-preview-and-undo/feature.s-001.test.js`
 - `showcase/rule-preview-and-undo/feature.s-002.test.js`

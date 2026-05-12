@@ -7,9 +7,10 @@ This validates that the Native Feature Pipeline can initialize, generate artifac
 
 ## Generated Pipeline Artifacts
 
-Workspace: `/Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/worktrees/schema-schema-change-audit-log-run-nocodb-schema-audit/.ai/feature-workspaces/schema/schema-change-audit-log--run-nocodb-schema-audit`
+Workspace: `/pipeline-lab/showcases/repos/worktrees/schema-schema-change-audit-log-run-nocodb-schema-audit/.ai/feature-workspaces/schema/schema-change-audit-log--run-nocodb-schema-audit`
 
 Artifacts:
+
 - `feature.md`
 - `architecture.md`
 - `tech-design.md`
@@ -26,6 +27,7 @@ Artifacts:
 ## Code Changes
 
 Source files:
+
 - `showcase/schema-change-audit-log/feature.js`
 - `showcase/schema-change-audit-log/feature.s-001.test.js`
 - `showcase/schema-change-audit-log/feature.s-002.test.js`

@@ -1,6 +1,6 @@
 # Native Feature Output Validation
 
-- Run directory: `/Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-mermaid-topology`
+- Run directory: `/pipeline-lab/showcases/native-emulation-runs/20260512-mermaid-topology`
 - Repeated passes: `3`
 - Minimum final score: `0.920`
 - Generated at: `2026-05-11T23:46:38.511617+00:00`
@@ -8,18 +8,21 @@
 ## Pass Summary
 
 | Pass | Status | Findings |
-| ---: | --- | ---: |
-| 1 | pass | 0 |
-| 2 | pass | 0 |
-| 3 | pass | 0 |
+| ---: | ------ | -------: |
+|    1 | pass   |        0 |
+|    2 | pass   |        0 |
+|    3 | pass   |        0 |
 
 ## Findings
 
 ### Pass 1
+
 - `pass` `all`: all native feature outputs passed
 
 ### Pass 2
+
 - `pass` `all`: all native feature outputs passed
 
 ### Pass 3
+
 - `pass` `all`: all native feature outputs passed

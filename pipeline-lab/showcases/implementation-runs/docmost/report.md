@@ -7,9 +7,10 @@ This validates that the Native Feature Pipeline can initialize, generate artifac
 
 ## Generated Pipeline Artifacts
 
-Workspace: `/Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/worktrees/pages-page-approval-workflow-run-docmost-approval/.ai/feature-workspaces/pages/page-approval-workflow--run-docmost-approval`
+Workspace: `/pipeline-lab/showcases/repos/worktrees/pages-page-approval-workflow-run-docmost-approval/.ai/feature-workspaces/pages/page-approval-workflow--run-docmost-approval`
 
 Artifacts:
+
 - `feature.md`
 - `architecture.md`
 - `tech-design.md`
@@ -26,6 +27,7 @@ Artifacts:
 ## Code Changes
 
 Source files:
+
 - `showcase/page-approval-workflow/feature.js`
 - `showcase/page-approval-workflow/feature.s-001.test.js`
 - `showcase/page-approval-workflow/feature.s-002.test.js`

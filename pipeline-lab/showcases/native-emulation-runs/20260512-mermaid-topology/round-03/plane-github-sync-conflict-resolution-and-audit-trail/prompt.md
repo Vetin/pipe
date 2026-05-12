@@ -1,6 +1,6 @@
 I need you to implement this feature in the local Plane checkout.
 
-Repository: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/plane
+Repository: /pipeline-lab/showcases/repos/plane
 Feature: GitHub sync conflict resolution and audit trail
 Expected result: Plane already has GitHub issue sync concepts. ([Plane Docs][2]) Showcase feature: when a Plane issue and GitHub issue diverge, show conflict preview, choose source of truth, apply resolution, and log audit events. Expected pipeline output: feature contract with sync rules, ADR for conflict strategy, tech design for sync-state model, contract docs for GitHub webhook/API handling, TDD slices for conflict detection/resolution/audit.
 
@@ -13,6 +13,7 @@ Do not ask me to invoke individual internal skills by name; infer the workflow f
 Round focus: Requires repo inspection, non-delegable gates, red/green evidence, review replay, and promotion memory.
 
 Repository hints to inspect first:
+
 - .github/ISSUE_TEMPLATE/--bug-report.yaml
 - .github/ISSUE_TEMPLATE/--feature-request.yaml
 - .github/ISSUE_TEMPLATE/config.yaml

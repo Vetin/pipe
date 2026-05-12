@@ -2,89 +2,89 @@ artifact_contract_version: 0.1.0
 judge_mode: deterministic-llm-style
 generated_at: '2026-05-11T23:33:27.631353+00:00'
 runs:
-- summary_path: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-superpowers-skills/summary.yaml
-  run_id: 20260512-superpowers-skills
-  judge_mode: deterministic-llm-style
-  case_average: 1.0
-  methodology_coverage:
+  - summary_path: /pipeline-lab/showcases/native-emulation-runs/20260512-superpowers-skills/summary.yaml
+    run_id: 20260512-superpowers-skills
+    judge_mode: deterministic-llm-style
+    case_average: 1.0
+    methodology_coverage:
+      overall: 1.0
+      dimensions:
+        adaptive_rigor: 1.0
+        ambiguity_taxonomy: 1.0
+        bounded_clarification: 1.0
+        brownfield_reuse: 1.0
+        source_provenance: 1.0
+        task_graph: 1.0
+        tdd_law: 1.0
+        adversarial_review: 1.0
+        verification_debt: 1.0
+        eval_metrics: 1.0
+      missing_or_weak: []
+      scanned_files:
+        - /.agents/skills/nfp-04-tech-design/SKILL.md
+        - /.agents/skills/nfp-09-review/SKILL.md
+        - /.agents/skills/nfp-07-worktree/SKILL.md
+        - /.agents/skills/nfp-02-feature-contract/SKILL.md
+        - /.agents/skills/nfp-11-finish/SKILL.md
+        - /.agents/skills/nfp-06-readiness/SKILL.md
+        - /.agents/skills/project-init/SKILL.md
+        - /.agents/skills/nfp-12-promote/SKILL.md
+        - /.agents/skills/nfp-03-architecture/SKILL.md
+        - /.agents/skills/nfp-05-slicing/SKILL.md
+        - /.agents/skills/nfp-00-intake/SKILL.md
+        - /.agents/skills/nfp-08-tdd-implementation/SKILL.md
+        - /.agents/skills/nfp-10-verification/SKILL.md
+        - /.agents/skills/nfp-01-context/SKILL.md
+        - /.agents/pipeline-core/references/methodology-lenses.md
     overall: 1.0
-    dimensions:
-      adaptive_rigor: 1.0
-      ambiguity_taxonomy: 1.0
-      bounded_clarification: 1.0
-      brownfield_reuse: 1.0
-      source_provenance: 1.0
-      task_graph: 1.0
-      tdd_law: 1.0
-      adversarial_review: 1.0
-      verification_debt: 1.0
-      eval_metrics: 1.0
-    missing_or_weak: []
-    scanned_files:
-    - /Users/egormasnankin/work/harness-pipeline/.agents/skills/nfp-04-tech-design/SKILL.md
-    - /Users/egormasnankin/work/harness-pipeline/.agents/skills/nfp-09-review/SKILL.md
-    - /Users/egormasnankin/work/harness-pipeline/.agents/skills/nfp-07-worktree/SKILL.md
-    - /Users/egormasnankin/work/harness-pipeline/.agents/skills/nfp-02-feature-contract/SKILL.md
-    - /Users/egormasnankin/work/harness-pipeline/.agents/skills/nfp-11-finish/SKILL.md
-    - /Users/egormasnankin/work/harness-pipeline/.agents/skills/nfp-06-readiness/SKILL.md
-    - /Users/egormasnankin/work/harness-pipeline/.agents/skills/project-init/SKILL.md
-    - /Users/egormasnankin/work/harness-pipeline/.agents/skills/nfp-12-promote/SKILL.md
-    - /Users/egormasnankin/work/harness-pipeline/.agents/skills/nfp-03-architecture/SKILL.md
-    - /Users/egormasnankin/work/harness-pipeline/.agents/skills/nfp-05-slicing/SKILL.md
-    - /Users/egormasnankin/work/harness-pipeline/.agents/skills/nfp-00-intake/SKILL.md
-    - /Users/egormasnankin/work/harness-pipeline/.agents/skills/nfp-08-tdd-implementation/SKILL.md
-    - /Users/egormasnankin/work/harness-pipeline/.agents/skills/nfp-10-verification/SKILL.md
-    - /Users/egormasnankin/work/harness-pipeline/.agents/skills/nfp-01-context/SKILL.md
-    - /Users/egormasnankin/work/harness-pipeline/.agents/pipeline-core/references/methodology-lenses.md
-  overall: 1.0
-  high_quality: true
-  hard_failures: []
-  cases:
-  - case: twenty-enterprise-duplicate-merge-with-preview-conflict-rules-and-rollback
-    source: Twenty
-    feature: Enterprise duplicate merge with preview, conflict rules, and rollback
-    round: 3
-    overall: 1.0
-    weakest_dimension: native_prompt_integrity
     high_quality: true
     hard_failures: []
-    dimensions:
-      native_prompt_integrity: 1.0
-      artifact_completeness: 1.0
-      contract_clarity: 1.0
-      repo_context_research: 1.0
-      architecture_design: 1.0
-      slicing_tdd: 1.0
-      review_evidence: 1.0
-  - case: medusa-b2b-quote-to-order-approval-workflow
-    source: Medusa
-    feature: B2B quote-to-order approval workflow
-    round: 3
-    overall: 1.0
-    weakest_dimension: native_prompt_integrity
-    high_quality: true
-    hard_failures: []
-    dimensions:
-      native_prompt_integrity: 1.0
-      artifact_completeness: 1.0
-      contract_clarity: 1.0
-      repo_context_research: 1.0
-      architecture_design: 1.0
-      slicing_tdd: 1.0
-      review_evidence: 1.0
-  - case: plane-github-sync-conflict-resolution-and-audit-trail
-    source: Plane
-    feature: GitHub sync conflict resolution and audit trail
-    round: 3
-    overall: 1.0
-    weakest_dimension: native_prompt_integrity
-    high_quality: true
-    hard_failures: []
-    dimensions:
-      native_prompt_integrity: 1.0
-      artifact_completeness: 1.0
-      contract_clarity: 1.0
-      repo_context_research: 1.0
-      architecture_design: 1.0
-      slicing_tdd: 1.0
-      review_evidence: 1.0
+    cases:
+      - case: twenty-enterprise-duplicate-merge-with-preview-conflict-rules-and-rollback
+        source: Twenty
+        feature: Enterprise duplicate merge with preview, conflict rules, and rollback
+        round: 3
+        overall: 1.0
+        weakest_dimension: native_prompt_integrity
+        high_quality: true
+        hard_failures: []
+        dimensions:
+          native_prompt_integrity: 1.0
+          artifact_completeness: 1.0
+          contract_clarity: 1.0
+          repo_context_research: 1.0
+          architecture_design: 1.0
+          slicing_tdd: 1.0
+          review_evidence: 1.0
+      - case: medusa-b2b-quote-to-order-approval-workflow
+        source: Medusa
+        feature: B2B quote-to-order approval workflow
+        round: 3
+        overall: 1.0
+        weakest_dimension: native_prompt_integrity
+        high_quality: true
+        hard_failures: []
+        dimensions:
+          native_prompt_integrity: 1.0
+          artifact_completeness: 1.0
+          contract_clarity: 1.0
+          repo_context_research: 1.0
+          architecture_design: 1.0
+          slicing_tdd: 1.0
+          review_evidence: 1.0
+      - case: plane-github-sync-conflict-resolution-and-audit-trail
+        source: Plane
+        feature: GitHub sync conflict resolution and audit trail
+        round: 3
+        overall: 1.0
+        weakest_dimension: native_prompt_integrity
+        high_quality: true
+        hard_failures: []
+        dimensions:
+          native_prompt_integrity: 1.0
+          artifact_completeness: 1.0
+          contract_clarity: 1.0
+          repo_context_research: 1.0
+          architecture_design: 1.0
+          slicing_tdd: 1.0
+          review_evidence: 1.0

@@ -4,7 +4,7 @@
 - Init profile run: `$ROOT/pipeline-lab/showcases/init-profile-runs/20260512-init-profile`
 - Codex debug run: `$ROOT/pipeline-lab/showcases/codex-debug-runs/20260512-debug`
 - Repeated passes: `3`
-- Generated at: `2026-05-12T11:47:12.413965+00:00`
+- Generated at: `2026-05-12T11:47:58.552896+00:00`
 
 ## Pass Summary
 

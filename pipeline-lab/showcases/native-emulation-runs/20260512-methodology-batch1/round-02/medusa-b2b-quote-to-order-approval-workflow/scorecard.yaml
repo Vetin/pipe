@@ -6,7 +6,8 @@ profile: risk-closed
 overall: 0.89
 high_quality: false
 weakest_dimension: evidence_validation
-prompt_improvement: Closes weak baseline areas by forcing traceability, risk gates,
+prompt_improvement:
+  Closes weak baseline areas by forcing traceability, risk gates,
   and test surfaces.
 dimensions:
   native_prompt: 1.0
@@ -17,11 +18,11 @@ dimensions:
   review_security: 0.88
   evidence_validation: 0.85
 artifacts:
-  feature: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-methodology-batch1/round-02/medusa-b2b-quote-to-order-approval-workflow/artifacts/feature.md
-  repo_context: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-methodology-batch1/round-02/medusa-b2b-quote-to-order-approval-workflow/artifacts/repo-context.md
-  architecture: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-methodology-batch1/round-02/medusa-b2b-quote-to-order-approval-workflow/artifacts/architecture.md
-  tech_design: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-methodology-batch1/round-02/medusa-b2b-quote-to-order-approval-workflow/artifacts/tech-design.md
-  slices: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-methodology-batch1/round-02/medusa-b2b-quote-to-order-approval-workflow/artifacts/slices.yaml
-  review: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-methodology-batch1/round-02/medusa-b2b-quote-to-order-approval-workflow/artifacts/reviews/review.md
-  evidence: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-methodology-batch1/round-02/medusa-b2b-quote-to-order-approval-workflow/artifacts/evidence/manifest.yaml
-  feature_card: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-methodology-batch1/round-02/medusa-b2b-quote-to-order-approval-workflow/artifacts/feature-card.md
+  feature: /pipeline-lab/showcases/native-emulation-runs/20260512-methodology-batch1/round-02/medusa-b2b-quote-to-order-approval-workflow/artifacts/feature.md
+  repo_context: /pipeline-lab/showcases/native-emulation-runs/20260512-methodology-batch1/round-02/medusa-b2b-quote-to-order-approval-workflow/artifacts/repo-context.md
+  architecture: /pipeline-lab/showcases/native-emulation-runs/20260512-methodology-batch1/round-02/medusa-b2b-quote-to-order-approval-workflow/artifacts/architecture.md
+  tech_design: /pipeline-lab/showcases/native-emulation-runs/20260512-methodology-batch1/round-02/medusa-b2b-quote-to-order-approval-workflow/artifacts/tech-design.md
+  slices: /pipeline-lab/showcases/native-emulation-runs/20260512-methodology-batch1/round-02/medusa-b2b-quote-to-order-approval-workflow/artifacts/slices.yaml
+  review: /pipeline-lab/showcases/native-emulation-runs/20260512-methodology-batch1/round-02/medusa-b2b-quote-to-order-approval-workflow/artifacts/reviews/review.md
+  evidence: /pipeline-lab/showcases/native-emulation-runs/20260512-methodology-batch1/round-02/medusa-b2b-quote-to-order-approval-workflow/artifacts/evidence/manifest.yaml
+  feature_card: /pipeline-lab/showcases/native-emulation-runs/20260512-methodology-batch1/round-02/medusa-b2b-quote-to-order-approval-workflow/artifacts/feature-card.md

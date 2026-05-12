@@ -7,9 +7,10 @@ This validates that the Native Feature Pipeline can initialize, generate artifac
 
 ## Generated Pipeline Artifacts
 
-Workspace: `/Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/worktrees/webhooks-signed-survey-response-webhooks-run-formbricks-webhooks/.ai/feature-workspaces/webhooks/signed-survey-response-webhooks--run-formbricks-webhooks`
+Workspace: `/pipeline-lab/showcases/repos/worktrees/webhooks-signed-survey-response-webhooks-run-formbricks-webhooks/.ai/feature-workspaces/webhooks/signed-survey-response-webhooks--run-formbricks-webhooks`
 
 Artifacts:
+
 - `feature.md`
 - `architecture.md`
 - `tech-design.md`
@@ -26,6 +27,7 @@ Artifacts:
 ## Code Changes
 
 Source files:
+
 - `showcase/signed-survey-response-webhooks/feature.js`
 - `showcase/signed-survey-response-webhooks/feature.s-001.test.js`
 - `showcase/signed-survey-response-webhooks/feature.s-002.test.js`

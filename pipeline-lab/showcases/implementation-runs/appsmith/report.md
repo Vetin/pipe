@@ -7,9 +7,10 @@ This validates that the Native Feature Pipeline can initialize, generate artifac
 
 ## Generated Pipeline Artifacts
 
-Workspace: `/Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/worktrees/versions-app-version-restore-diff-preview-run-appsmith-version-restore/.ai/feature-workspaces/versions/app-version-restore-diff-preview--run-appsmith-version-restore`
+Workspace: `/pipeline-lab/showcases/repos/worktrees/versions-app-version-restore-diff-preview-run-appsmith-version-restore/.ai/feature-workspaces/versions/app-version-restore-diff-preview--run-appsmith-version-restore`
 
 Artifacts:
+
 - `feature.md`
 - `architecture.md`
 - `tech-design.md`
@@ -26,6 +27,7 @@ Artifacts:
 ## Code Changes
 
 Source files:
+
 - `showcase/app-version-restore-diff-preview/feature.js`
 - `showcase/app-version-restore-diff-preview/feature.s-001.test.js`
 - `showcase/app-version-restore-diff-preview/feature.s-002.test.js`

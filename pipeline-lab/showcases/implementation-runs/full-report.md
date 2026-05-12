@@ -7,27 +7,28 @@ Important scope note: the code changes are bounded showcase implementations unde
 
 ## Overall Result
 
-| Repository | Feature | Validation | Readiness | Patch |
-| --- | --- | --- | --- | --- |
-| `actual` | Rule Preview And Undo | `validation: pass` | `validation: pass` | [patch](actual/implementation.patch) |
-| `appsmith` | App Version Restore Diff Preview | `validation: pass` | `validation: pass` | [patch](appsmith/implementation.patch) |
-| `docmost` | Page Approval Workflow | `validation: pass` | `validation: pass` | [patch](docmost/implementation.patch) |
-| `excalidraw` | Layer Lock History Safe Editing | `validation: pass` | `validation: pass` | [patch](excalidraw/implementation.patch) |
-| `formbricks` | Signed Survey Response Webhooks | `validation: pass` | `validation: pass` | [patch](formbricks/implementation.patch) |
-| `listmonk` | Double Opt In Segment Onboarding | `validation: pass` | `validation: pass` | [patch](listmonk/implementation.patch) |
-| `medusa` | First Order Promotion Usage Caps | `validation: pass` | `validation: pass` | [patch](medusa/implementation.patch) |
-| `nocodb` | Schema Change Audit Log | `validation: pass` | `validation: pass` | [patch](nocodb/implementation.patch) |
-| `plane` | Triage Automation Rules | `validation: pass` | `validation: pass` | [patch](plane/implementation.patch) |
-| `twenty` | Duplicate Company Merge Audit Trail | `validation: pass` | `validation: pass` | [patch](twenty/implementation.patch) |
+| Repository   | Feature                             | Validation         | Readiness          | Patch                                    |
+| ------------ | ----------------------------------- | ------------------ | ------------------ | ---------------------------------------- |
+| `actual`     | Rule Preview And Undo               | `validation: pass` | `validation: pass` | [patch](actual/implementation.patch)     |
+| `appsmith`   | App Version Restore Diff Preview    | `validation: pass` | `validation: pass` | [patch](appsmith/implementation.patch)   |
+| `docmost`    | Page Approval Workflow              | `validation: pass` | `validation: pass` | [patch](docmost/implementation.patch)    |
+| `excalidraw` | Layer Lock History Safe Editing     | `validation: pass` | `validation: pass` | [patch](excalidraw/implementation.patch) |
+| `formbricks` | Signed Survey Response Webhooks     | `validation: pass` | `validation: pass` | [patch](formbricks/implementation.patch) |
+| `listmonk`   | Double Opt In Segment Onboarding    | `validation: pass` | `validation: pass` | [patch](listmonk/implementation.patch)   |
+| `medusa`     | First Order Promotion Usage Caps    | `validation: pass` | `validation: pass` | [patch](medusa/implementation.patch)     |
+| `nocodb`     | Schema Change Audit Log             | `validation: pass` | `validation: pass` | [patch](nocodb/implementation.patch)     |
+| `plane`      | Triage Automation Rules             | `validation: pass` | `validation: pass` | [patch](plane/implementation.patch)      |
+| `twenty`     | Duplicate Company Merge Audit Trail | `validation: pass` | `validation: pass` | [patch](twenty/implementation.patch)     |
 
 ## actual: Rule Preview And Undo
 
-- Worktree: `/Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/worktrees/imports-rule-preview-and-undo-run-actual-import-undo`
-- Workspace: `/Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/worktrees/imports-rule-preview-and-undo-run-actual-import-undo/.ai/feature-workspaces/imports/rule-preview-and-undo--run-actual-import-undo`
+- Worktree: `/pipeline-lab/showcases/repos/worktrees/imports-rule-preview-and-undo-run-actual-import-undo`
+- Workspace: `/pipeline-lab/showcases/repos/worktrees/imports-rule-preview-and-undo-run-actual-import-undo/.ai/feature-workspaces/imports/rule-preview-and-undo--run-actual-import-undo`
 - Report: [actual/report.md](actual/report.md)
 - Patch: [actual/implementation.patch](actual/implementation.patch)
 
 Generated artifacts:
+
 - `feature.md`
 - `architecture.md`
 - `tech-design.md`
@@ -42,6 +43,7 @@ Generated artifacts:
 - `state.yaml`
 
 Code changes:
+
 - `showcase/rule-preview-and-undo/feature.js`
 - `showcase/rule-preview-and-undo/feature.s-001.test.js`
 - `showcase/rule-preview-and-undo/feature.s-002.test.js`
@@ -58,6 +60,7 @@ showcase/rule-preview-and-undo/feature.js          | 77 ++++++++++++++++++++++
 ```
 
 Slice validation:
+
 - `S-001`: red `1`, green `0`, verification `0`, test `showcase/rule-preview-and-undo/feature.s-001.test.js`
 - `S-002`: red `1`, green `0`, verification `0`, test `showcase/rule-preview-and-undo/feature.s-002.test.js`
 - `S-003`: red `1`, green `0`, verification `0`, test `showcase/rule-preview-and-undo/feature.s-003.test.js`
@@ -73,12 +76,13 @@ Implementation status: full bounded showcase implementation. Production-module i
 
 ## appsmith: App Version Restore Diff Preview
 
-- Worktree: `/Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/worktrees/versions-app-version-restore-diff-preview-run-appsmith-version-restore`
-- Workspace: `/Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/worktrees/versions-app-version-restore-diff-preview-run-appsmith-version-restore/.ai/feature-workspaces/versions/app-version-restore-diff-preview--run-appsmith-version-restore`
+- Worktree: `/pipeline-lab/showcases/repos/worktrees/versions-app-version-restore-diff-preview-run-appsmith-version-restore`
+- Workspace: `/pipeline-lab/showcases/repos/worktrees/versions-app-version-restore-diff-preview-run-appsmith-version-restore/.ai/feature-workspaces/versions/app-version-restore-diff-preview--run-appsmith-version-restore`
 - Report: [appsmith/report.md](appsmith/report.md)
 - Patch: [appsmith/implementation.patch](appsmith/implementation.patch)
 
 Generated artifacts:
+
 - `feature.md`
 - `architecture.md`
 - `tech-design.md`
@@ -93,6 +97,7 @@ Generated artifacts:
 - `state.yaml`
 
 Code changes:
+
 - `showcase/app-version-restore-diff-preview/feature.js`
 - `showcase/app-version-restore-diff-preview/feature.s-001.test.js`
 - `showcase/app-version-restore-diff-preview/feature.s-002.test.js`
@@ -109,6 +114,7 @@ Diff stat:
 ```
 
 Slice validation:
+
 - `S-001`: red `1`, green `0`, verification `0`, test `showcase/app-version-restore-diff-preview/feature.s-001.test.js`
 - `S-002`: red `1`, green `0`, verification `0`, test `showcase/app-version-restore-diff-preview/feature.s-002.test.js`
 - `S-003`: red `1`, green `0`, verification `0`, test `showcase/app-version-restore-diff-preview/feature.s-003.test.js`
@@ -124,12 +130,13 @@ Implementation status: full bounded showcase implementation. Production-module i
 
 ## docmost: Page Approval Workflow
 
-- Worktree: `/Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/worktrees/pages-page-approval-workflow-run-docmost-approval`
-- Workspace: `/Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/worktrees/pages-page-approval-workflow-run-docmost-approval/.ai/feature-workspaces/pages/page-approval-workflow--run-docmost-approval`
+- Worktree: `/pipeline-lab/showcases/repos/worktrees/pages-page-approval-workflow-run-docmost-approval`
+- Workspace: `/pipeline-lab/showcases/repos/worktrees/pages-page-approval-workflow-run-docmost-approval/.ai/feature-workspaces/pages/page-approval-workflow--run-docmost-approval`
 - Report: [docmost/report.md](docmost/report.md)
 - Patch: [docmost/implementation.patch](docmost/implementation.patch)
 
 Generated artifacts:
+
 - `feature.md`
 - `architecture.md`
 - `tech-design.md`
@@ -144,6 +151,7 @@ Generated artifacts:
 - `state.yaml`
 
 Code changes:
+
 - `showcase/page-approval-workflow/feature.js`
 - `showcase/page-approval-workflow/feature.s-001.test.js`
 - `showcase/page-approval-workflow/feature.s-002.test.js`
@@ -160,6 +168,7 @@ showcase/page-approval-workflow/feature.js         | 77 ++++++++++++++++++++++
 ```
 
 Slice validation:
+
 - `S-001`: red `1`, green `0`, verification `0`, test `showcase/page-approval-workflow/feature.s-001.test.js`
 - `S-002`: red `1`, green `0`, verification `0`, test `showcase/page-approval-workflow/feature.s-002.test.js`
 - `S-003`: red `1`, green `0`, verification `0`, test `showcase/page-approval-workflow/feature.s-003.test.js`
@@ -175,12 +184,13 @@ Implementation status: full bounded showcase implementation. Production-module i
 
 ## excalidraw: Layer Lock History Safe Editing
 
-- Worktree: `/Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/worktrees/canvas-layer-lock-history-safe-editing-run-excalidraw-layer-lock`
-- Workspace: `/Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/worktrees/canvas-layer-lock-history-safe-editing-run-excalidraw-layer-lock/.ai/feature-workspaces/canvas/layer-lock-history-safe-editing--run-excalidraw-layer-lock`
+- Worktree: `/pipeline-lab/showcases/repos/worktrees/canvas-layer-lock-history-safe-editing-run-excalidraw-layer-lock`
+- Workspace: `/pipeline-lab/showcases/repos/worktrees/canvas-layer-lock-history-safe-editing-run-excalidraw-layer-lock/.ai/feature-workspaces/canvas/layer-lock-history-safe-editing--run-excalidraw-layer-lock`
 - Report: [excalidraw/report.md](excalidraw/report.md)
 - Patch: [excalidraw/implementation.patch](excalidraw/implementation.patch)
 
 Generated artifacts:
+
 - `feature.md`
 - `architecture.md`
 - `tech-design.md`
@@ -195,6 +205,7 @@ Generated artifacts:
 - `state.yaml`
 
 Code changes:
+
 - `showcase/layer-lock-history-safe-editing/feature.js`
 - `showcase/layer-lock-history-safe-editing/feature.s-001.test.js`
 - `showcase/layer-lock-history-safe-editing/feature.s-002.test.js`
@@ -211,6 +222,7 @@ Diff stat:
 ```
 
 Slice validation:
+
 - `S-001`: red `1`, green `0`, verification `0`, test `showcase/layer-lock-history-safe-editing/feature.s-001.test.js`
 - `S-002`: red `1`, green `0`, verification `0`, test `showcase/layer-lock-history-safe-editing/feature.s-002.test.js`
 - `S-003`: red `1`, green `0`, verification `0`, test `showcase/layer-lock-history-safe-editing/feature.s-003.test.js`
@@ -226,12 +238,13 @@ Implementation status: full bounded showcase implementation. Production-module i
 
 ## formbricks: Signed Survey Response Webhooks
 
-- Worktree: `/Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/worktrees/webhooks-signed-survey-response-webhooks-run-formbricks-webhooks`
-- Workspace: `/Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/worktrees/webhooks-signed-survey-response-webhooks-run-formbricks-webhooks/.ai/feature-workspaces/webhooks/signed-survey-response-webhooks--run-formbricks-webhooks`
+- Worktree: `/pipeline-lab/showcases/repos/worktrees/webhooks-signed-survey-response-webhooks-run-formbricks-webhooks`
+- Workspace: `/pipeline-lab/showcases/repos/worktrees/webhooks-signed-survey-response-webhooks-run-formbricks-webhooks/.ai/feature-workspaces/webhooks/signed-survey-response-webhooks--run-formbricks-webhooks`
 - Report: [formbricks/report.md](formbricks/report.md)
 - Patch: [formbricks/implementation.patch](formbricks/implementation.patch)
 
 Generated artifacts:
+
 - `feature.md`
 - `architecture.md`
 - `tech-design.md`
@@ -246,6 +259,7 @@ Generated artifacts:
 - `state.yaml`
 
 Code changes:
+
 - `showcase/signed-survey-response-webhooks/feature.js`
 - `showcase/signed-survey-response-webhooks/feature.s-001.test.js`
 - `showcase/signed-survey-response-webhooks/feature.s-002.test.js`
@@ -262,6 +276,7 @@ Diff stat:
 ```
 
 Slice validation:
+
 - `S-001`: red `1`, green `0`, verification `0`, test `showcase/signed-survey-response-webhooks/feature.s-001.test.js`
 - `S-002`: red `1`, green `0`, verification `0`, test `showcase/signed-survey-response-webhooks/feature.s-002.test.js`
 - `S-003`: red `1`, green `0`, verification `0`, test `showcase/signed-survey-response-webhooks/feature.s-003.test.js`
@@ -277,12 +292,13 @@ Implementation status: full bounded showcase implementation. Production-module i
 
 ## listmonk: Double Opt In Segment Onboarding
 
-- Worktree: `/Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/worktrees/subscribers-double-opt-in-segment-onboarding-run-listmonk-double-opt-in`
-- Workspace: `/Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/worktrees/subscribers-double-opt-in-segment-onboarding-run-listmonk-double-opt-in/.ai/feature-workspaces/subscribers/double-opt-in-segment-onboarding--run-listmonk-double-opt-in`
+- Worktree: `/pipeline-lab/showcases/repos/worktrees/subscribers-double-opt-in-segment-onboarding-run-listmonk-double-opt-in`
+- Workspace: `/pipeline-lab/showcases/repos/worktrees/subscribers-double-opt-in-segment-onboarding-run-listmonk-double-opt-in/.ai/feature-workspaces/subscribers/double-opt-in-segment-onboarding--run-listmonk-double-opt-in`
 - Report: [listmonk/report.md](listmonk/report.md)
 - Patch: [listmonk/implementation.patch](listmonk/implementation.patch)
 
 Generated artifacts:
+
 - `feature.md`
 - `architecture.md`
 - `tech-design.md`
@@ -297,6 +313,7 @@ Generated artifacts:
 - `state.yaml`
 
 Code changes:
+
 - `showcase/double-opt-in-segment-onboarding/errors.go`
 - `showcase/double-opt-in-segment-onboarding/feature.go`
 - `showcase/double-opt-in-segment-onboarding/feature_s_001_test.go`
@@ -315,6 +332,7 @@ Diff stat:
 ```
 
 Slice validation:
+
 - `S-001`: red `1`, green `0`, verification `0`, test `showcase/double-opt-in-segment-onboarding/feature_s_001_test.go`
 - `S-002`: red `1`, green `0`, verification `0`, test `showcase/double-opt-in-segment-onboarding/feature_s_002_test.go`
 - `S-003`: red `1`, green `0`, verification `0`, test `showcase/double-opt-in-segment-onboarding/feature_s_003_test.go`
@@ -330,12 +348,13 @@ Implementation status: full bounded showcase implementation. Production-module i
 
 ## medusa: First Order Promotion Usage Caps
 
-- Worktree: `/Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/worktrees/promotions-first-order-promotion-usage-caps-run-medusa-first-order-promo`
-- Workspace: `/Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/worktrees/promotions-first-order-promotion-usage-caps-run-medusa-first-order-promo/.ai/feature-workspaces/promotions/first-order-promotion-usage-caps--run-medusa-first-order-promo`
+- Worktree: `/pipeline-lab/showcases/repos/worktrees/promotions-first-order-promotion-usage-caps-run-medusa-first-order-promo`
+- Workspace: `/pipeline-lab/showcases/repos/worktrees/promotions-first-order-promotion-usage-caps-run-medusa-first-order-promo/.ai/feature-workspaces/promotions/first-order-promotion-usage-caps--run-medusa-first-order-promo`
 - Report: [medusa/report.md](medusa/report.md)
 - Patch: [medusa/implementation.patch](medusa/implementation.patch)
 
 Generated artifacts:
+
 - `feature.md`
 - `architecture.md`
 - `tech-design.md`
@@ -350,6 +369,7 @@ Generated artifacts:
 - `state.yaml`
 
 Code changes:
+
 - `showcase/first-order-promotion-usage-caps/feature.js`
 - `showcase/first-order-promotion-usage-caps/feature.s-001.test.js`
 - `showcase/first-order-promotion-usage-caps/feature.s-002.test.js`
@@ -366,6 +386,7 @@ Diff stat:
 ```
 
 Slice validation:
+
 - `S-001`: red `1`, green `0`, verification `0`, test `showcase/first-order-promotion-usage-caps/feature.s-001.test.js`
 - `S-002`: red `1`, green `0`, verification `0`, test `showcase/first-order-promotion-usage-caps/feature.s-002.test.js`
 - `S-003`: red `1`, green `0`, verification `0`, test `showcase/first-order-promotion-usage-caps/feature.s-003.test.js`
@@ -381,12 +402,13 @@ Implementation status: full bounded showcase implementation. Production-module i
 
 ## nocodb: Schema Change Audit Log
 
-- Worktree: `/Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/worktrees/schema-schema-change-audit-log-run-nocodb-schema-audit`
-- Workspace: `/Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/worktrees/schema-schema-change-audit-log-run-nocodb-schema-audit/.ai/feature-workspaces/schema/schema-change-audit-log--run-nocodb-schema-audit`
+- Worktree: `/pipeline-lab/showcases/repos/worktrees/schema-schema-change-audit-log-run-nocodb-schema-audit`
+- Workspace: `/pipeline-lab/showcases/repos/worktrees/schema-schema-change-audit-log-run-nocodb-schema-audit/.ai/feature-workspaces/schema/schema-change-audit-log--run-nocodb-schema-audit`
 - Report: [nocodb/report.md](nocodb/report.md)
 - Patch: [nocodb/implementation.patch](nocodb/implementation.patch)
 
 Generated artifacts:
+
 - `feature.md`
 - `architecture.md`
 - `tech-design.md`
@@ -401,6 +423,7 @@ Generated artifacts:
 - `state.yaml`
 
 Code changes:
+
 - `showcase/schema-change-audit-log/feature.js`
 - `showcase/schema-change-audit-log/feature.s-001.test.js`
 - `showcase/schema-change-audit-log/feature.s-002.test.js`
@@ -417,6 +440,7 @@ showcase/schema-change-audit-log/feature.js        | 77 ++++++++++++++++++++++
 ```
 
 Slice validation:
+
 - `S-001`: red `1`, green `0`, verification `0`, test `showcase/schema-change-audit-log/feature.s-001.test.js`
 - `S-002`: red `1`, green `0`, verification `0`, test `showcase/schema-change-audit-log/feature.s-002.test.js`
 - `S-003`: red `1`, green `0`, verification `0`, test `showcase/schema-change-audit-log/feature.s-003.test.js`
@@ -432,12 +456,13 @@ Implementation status: full bounded showcase implementation. Production-module i
 
 ## plane: Triage Automation Rules
 
-- Worktree: `/Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/worktrees/triage-triage-automation-rules-run-plane-triage-rules`
-- Workspace: `/Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/worktrees/triage-triage-automation-rules-run-plane-triage-rules/.ai/feature-workspaces/triage/triage-automation-rules--run-plane-triage-rules`
+- Worktree: `/pipeline-lab/showcases/repos/worktrees/triage-triage-automation-rules-run-plane-triage-rules`
+- Workspace: `/pipeline-lab/showcases/repos/worktrees/triage-triage-automation-rules-run-plane-triage-rules/.ai/feature-workspaces/triage/triage-automation-rules--run-plane-triage-rules`
 - Report: [plane/report.md](plane/report.md)
 - Patch: [plane/implementation.patch](plane/implementation.patch)
 
 Generated artifacts:
+
 - `feature.md`
 - `architecture.md`
 - `tech-design.md`
@@ -452,6 +477,7 @@ Generated artifacts:
 - `state.yaml`
 
 Code changes:
+
 - `showcase/triage-automation-rules/feature.js`
 - `showcase/triage-automation-rules/feature.s-001.test.js`
 - `showcase/triage-automation-rules/feature.s-002.test.js`
@@ -468,6 +494,7 @@ showcase/triage-automation-rules/feature.js        | 77 ++++++++++++++++++++++
 ```
 
 Slice validation:
+
 - `S-001`: red `1`, green `0`, verification `0`, test `showcase/triage-automation-rules/feature.s-001.test.js`
 - `S-002`: red `1`, green `0`, verification `0`, test `showcase/triage-automation-rules/feature.s-002.test.js`
 - `S-003`: red `1`, green `0`, verification `0`, test `showcase/triage-automation-rules/feature.s-003.test.js`
@@ -483,12 +510,13 @@ Implementation status: full bounded showcase implementation. Production-module i
 
 ## twenty: Duplicate Company Merge Audit Trail
 
-- Worktree: `/Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/worktrees/crm-duplicate-company-merge-audit-trail-run-twenty-company-merge`
-- Workspace: `/Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/worktrees/crm-duplicate-company-merge-audit-trail-run-twenty-company-merge/.ai/feature-workspaces/crm/duplicate-company-merge-audit-trail--run-twenty-company-merge`
+- Worktree: `/pipeline-lab/showcases/repos/worktrees/crm-duplicate-company-merge-audit-trail-run-twenty-company-merge`
+- Workspace: `/pipeline-lab/showcases/repos/worktrees/crm-duplicate-company-merge-audit-trail-run-twenty-company-merge/.ai/feature-workspaces/crm/duplicate-company-merge-audit-trail--run-twenty-company-merge`
 - Report: [twenty/report.md](twenty/report.md)
 - Patch: [twenty/implementation.patch](twenty/implementation.patch)
 
 Generated artifacts:
+
 - `feature.md`
 - `architecture.md`
 - `tech-design.md`
@@ -503,6 +531,7 @@ Generated artifacts:
 - `state.yaml`
 
 Code changes:
+
 - `showcase/duplicate-company-merge-audit-trail/feature.js`
 - `showcase/duplicate-company-merge-audit-trail/feature.s-001.test.js`
 - `showcase/duplicate-company-merge-audit-trail/feature.s-002.test.js`
@@ -519,6 +548,7 @@ Diff stat:
 ```
 
 Slice validation:
+
 - `S-001`: red `1`, green `0`, verification `0`, test `showcase/duplicate-company-merge-audit-trail/feature.s-001.test.js`
 - `S-002`: red `1`, green `0`, verification `0`, test `showcase/duplicate-company-merge-audit-trail/feature.s-002.test.js`
 - `S-003`: red `1`, green `0`, verification `0`, test `showcase/duplicate-company-merge-audit-trail/feature.s-003.test.js`

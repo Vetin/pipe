@@ -3,7 +3,7 @@ generated_by: featurectl.py init --profile-project
 generated_at: '2026-05-12T11:45:27Z'
 project:
   name: harness-pipeline
-  root: /Users/egormasnankin/work/harness-pipeline
+  root:
   branch: main
   head: '4392776'
   remote: none
@@ -18,461 +18,488 @@ counts:
 package_manifests: []
 scripts: []
 module_dirs:
-- path: pipeline-lab
-  tracked_files: 267
-- path: .agents
-  tracked_files: 68
-- path: .ai
-  tracked_files: 58
-- path: tests
-  tracked_files: 36
+  - path: pipeline-lab
+    tracked_files: 267
+  - path: .agents
+    tracked_files: 68
+  - path: .ai
+    tracked_files: 58
+  - path: tests
+    tracked_files: 36
 source_examples:
-- .agents/pipeline-core/scripts/featurectl.py
-- .agents/pipeline-core/scripts/pipelinebench.py
-- pipeline-lab/showcases/codex-debug-runs/20260512-debug/fake-codex.py
-- pipeline-lab/showcases/fixtures/toy-greeting/greeting.py
-- pipeline-lab/showcases/fixtures/toy-greeting/test_greeting.py
-- pipeline-lab/showcases/scripts/aggregate_implementation_runs.py
-- pipeline-lab/showcases/scripts/aggregate_real_showcases.py
-- pipeline-lab/showcases/scripts/collect_nfp_real_runs.py
-- pipeline-lab/showcases/scripts/export_codex_conversations.py
-- pipeline-lab/showcases/scripts/implement_real_showcase.py
-- pipeline-lab/showcases/scripts/judge_native_feature_builds.py
-- pipeline-lab/showcases/scripts/materialize_implementation_runs.py
-- pipeline-lab/showcases/scripts/run_codex_debug_pipeline.py
-- pipeline-lab/showcases/scripts/run_codex_e2e_case.py
-- pipeline-lab/showcases/scripts/run_init_profile_showcases.py
-- pipeline-lab/showcases/scripts/run_native_feature_emulation.py
-- pipeline-lab/showcases/scripts/run_random_feature_stress.py
-- pipeline-lab/showcases/scripts/run_real_showcase.py
-- pipeline-lab/showcases/scripts/validate_native_feature_outputs.py
-- pipeline-lab/showcases/scripts/validate_pipeline_goals.py
+  - .agents/pipeline-core/scripts/featurectl.py
+  - .agents/pipeline-core/scripts/pipelinebench.py
+  - pipeline-lab/showcases/codex-debug-runs/20260512-debug/fake-codex.py
+  - pipeline-lab/showcases/fixtures/toy-greeting/greeting.py
+  - pipeline-lab/showcases/fixtures/toy-greeting/test_greeting.py
+  - pipeline-lab/showcases/scripts/aggregate_implementation_runs.py
+  - pipeline-lab/showcases/scripts/aggregate_real_showcases.py
+  - pipeline-lab/showcases/scripts/collect_nfp_real_runs.py
+  - pipeline-lab/showcases/scripts/export_codex_conversations.py
+  - pipeline-lab/showcases/scripts/implement_real_showcase.py
+  - pipeline-lab/showcases/scripts/judge_native_feature_builds.py
+  - pipeline-lab/showcases/scripts/materialize_implementation_runs.py
+  - pipeline-lab/showcases/scripts/run_codex_debug_pipeline.py
+  - pipeline-lab/showcases/scripts/run_codex_e2e_case.py
+  - pipeline-lab/showcases/scripts/run_init_profile_showcases.py
+  - pipeline-lab/showcases/scripts/run_native_feature_emulation.py
+  - pipeline-lab/showcases/scripts/run_random_feature_stress.py
+  - pipeline-lab/showcases/scripts/run_real_showcase.py
+  - pipeline-lab/showcases/scripts/validate_native_feature_outputs.py
+  - pipeline-lab/showcases/scripts/validate_pipeline_goals.py
 test_examples:
-- tests/feature_pipeline/.gitkeep
-- tests/feature_pipeline/plan_test_helpers.py
-- tests/feature_pipeline/test_agents_policy.py
-- tests/feature_pipeline/test_codex_debug_runner.py
-- tests/feature_pipeline/test_codex_e2e_runner.py
-- tests/feature_pipeline/test_context_skill_contract.py
-- tests/feature_pipeline/test_docset_loading.py
-- tests/feature_pipeline/test_evidence_order.py
-- tests/feature_pipeline/test_feature_contract_path.py
-- tests/feature_pipeline/test_feature_identity.py
-- tests/feature_pipeline/test_featurectl_core.py
-- tests/feature_pipeline/test_finish_promote.py
-- tests/feature_pipeline/test_gate_status.py
-- tests/feature_pipeline/test_gates_and_evidence.py
-- tests/feature_pipeline/test_init_profile_showcases.py
-- tests/feature_pipeline/test_methodology_contract.py
-- tests/feature_pipeline/test_native_feature_emulation.py
-- tests/feature_pipeline/test_native_feature_judge.py
-- tests/feature_pipeline/test_native_feature_validation.py
-- tests/feature_pipeline/test_pipeline_goal_validation.py
-- tests/feature_pipeline/test_pipelinebench.py
-- tests/feature_pipeline/test_pipelinebench_offline.py
-- tests/feature_pipeline/test_planning_readiness.py
-- tests/feature_pipeline/test_promotion.py
-- tests/feature_pipeline/test_random_feature_stress.py
-- tests/feature_pipeline/test_real_showcase_runner.py
-- tests/feature_pipeline/test_review_blocking.py
-- tests/feature_pipeline/test_review_verification.py
-- tests/feature_pipeline/test_showcases.py
-- tests/feature_pipeline/test_skill_candidate_isolation.py
+  - tests/feature_pipeline/.gitkeep
+  - tests/feature_pipeline/plan_test_helpers.py
+  - tests/feature_pipeline/test_agents_policy.py
+  - tests/feature_pipeline/test_codex_debug_runner.py
+  - tests/feature_pipeline/test_codex_e2e_runner.py
+  - tests/feature_pipeline/test_context_skill_contract.py
+  - tests/feature_pipeline/test_docset_loading.py
+  - tests/feature_pipeline/test_evidence_order.py
+  - tests/feature_pipeline/test_feature_contract_path.py
+  - tests/feature_pipeline/test_feature_identity.py
+  - tests/feature_pipeline/test_featurectl_core.py
+  - tests/feature_pipeline/test_finish_promote.py
+  - tests/feature_pipeline/test_gate_status.py
+  - tests/feature_pipeline/test_gates_and_evidence.py
+  - tests/feature_pipeline/test_init_profile_showcases.py
+  - tests/feature_pipeline/test_methodology_contract.py
+  - tests/feature_pipeline/test_native_feature_emulation.py
+  - tests/feature_pipeline/test_native_feature_judge.py
+  - tests/feature_pipeline/test_native_feature_validation.py
+  - tests/feature_pipeline/test_pipeline_goal_validation.py
+  - tests/feature_pipeline/test_pipelinebench.py
+  - tests/feature_pipeline/test_pipelinebench_offline.py
+  - tests/feature_pipeline/test_planning_readiness.py
+  - tests/feature_pipeline/test_promotion.py
+  - tests/feature_pipeline/test_random_feature_stress.py
+  - tests/feature_pipeline/test_real_showcase_runner.py
+  - tests/feature_pipeline/test_review_blocking.py
+  - tests/feature_pipeline/test_review_verification.py
+  - tests/feature_pipeline/test_showcases.py
+  - tests/feature_pipeline/test_skill_candidate_isolation.py
 doc_examples:
-- .agents/pipeline-core/references/README.md
-- .agents/pipeline-core/references/artifact-requirements.md
-- .agents/pipeline-core/references/context-reuse-policy.md
-- .agents/pipeline-core/references/documentation-loading-policy.md
-- .agents/pipeline-core/references/feature-identity-policy.md
-- .agents/pipeline-core/references/gate-policy.md
-- .agents/pipeline-core/references/generated-templates/adr-template.md
-- .agents/pipeline-core/references/generated-templates/apex-template.md
-- .agents/pipeline-core/references/generated-templates/architecture-template.md
-- .agents/pipeline-core/references/generated-templates/execution-template.md
-- .agents/pipeline-core/references/generated-templates/feature-card-template.md
-- .agents/pipeline-core/references/generated-templates/feature-template.md
-- .agents/pipeline-core/references/generated-templates/review-template.md
-- .agents/pipeline-core/references/generated-templates/tech-design-template.md
-- .agents/pipeline-core/references/methodology-lenses.md
-- .agents/pipeline-core/references/native-skill-protocol.md
-- .agents/pipeline-core/references/quality-rubric.md
-- .agents/pipeline-core/references/skill-power-validation-policy.md
-- .agents/pipeline-core/references/subagent-review-policy.md
-- .agents/pipeline-core/references/workflow-state-machine.md
-- .agents/skills/nfp-00-intake/SKILL.md
-- .agents/skills/nfp-01-context/SKILL.md
-- .agents/skills/nfp-02-feature-contract/SKILL.md
-- .agents/skills/nfp-03-architecture/SKILL.md
-- .agents/skills/nfp-04-tech-design/SKILL.md
-- .agents/skills/nfp-05-slicing/SKILL.md
-- .agents/skills/nfp-06-readiness/SKILL.md
-- .agents/skills/nfp-07-worktree/SKILL.md
-- .agents/skills/nfp-08-tdd-implementation/SKILL.md
-- .agents/skills/nfp-09-review/SKILL.md
+  - .agents/pipeline-core/references/README.md
+  - .agents/pipeline-core/references/artifact-requirements.md
+  - .agents/pipeline-core/references/context-reuse-policy.md
+  - .agents/pipeline-core/references/documentation-loading-policy.md
+  - .agents/pipeline-core/references/feature-identity-policy.md
+  - .agents/pipeline-core/references/gate-policy.md
+  - .agents/pipeline-core/references/generated-templates/adr-template.md
+  - .agents/pipeline-core/references/generated-templates/apex-template.md
+  - .agents/pipeline-core/references/generated-templates/architecture-template.md
+  - .agents/pipeline-core/references/generated-templates/execution-template.md
+  - .agents/pipeline-core/references/generated-templates/feature-card-template.md
+  - .agents/pipeline-core/references/generated-templates/feature-template.md
+  - .agents/pipeline-core/references/generated-templates/review-template.md
+  - .agents/pipeline-core/references/generated-templates/tech-design-template.md
+  - .agents/pipeline-core/references/methodology-lenses.md
+  - .agents/pipeline-core/references/native-skill-protocol.md
+  - .agents/pipeline-core/references/quality-rubric.md
+  - .agents/pipeline-core/references/skill-power-validation-policy.md
+  - .agents/pipeline-core/references/subagent-review-policy.md
+  - .agents/pipeline-core/references/workflow-state-machine.md
+  - .agents/skills/nfp-00-intake/SKILL.md
+  - .agents/skills/nfp-01-context/SKILL.md
+  - .agents/skills/nfp-02-feature-contract/SKILL.md
+  - .agents/skills/nfp-03-architecture/SKILL.md
+  - .agents/skills/nfp-04-tech-design/SKILL.md
+  - .agents/skills/nfp-05-slicing/SKILL.md
+  - .agents/skills/nfp-06-readiness/SKILL.md
+  - .agents/skills/nfp-07-worktree/SKILL.md
+  - .agents/skills/nfp-08-tdd-implementation/SKILL.md
+  - .agents/skills/nfp-09-review/SKILL.md
 contract_examples:
-- .agents/pipeline-core/references/native-skill-protocol.md
-- .agents/pipeline-core/scripts/schemas/.gitkeep
-- .agents/pipeline-core/scripts/schemas/benchmark.schema.json
-- .agents/pipeline-core/scripts/schemas/docset.schema.json
-- .agents/pipeline-core/scripts/schemas/evaluation-result.schema.json
-- .agents/pipeline-core/scripts/schemas/evidence.schema.json
-- .agents/pipeline-core/scripts/schemas/feature.schema.json
-- .agents/pipeline-core/scripts/schemas/index.schema.json
-- .agents/pipeline-core/scripts/schemas/review.schema.json
-- .agents/pipeline-core/scripts/schemas/slices.schema.json
-- .agents/pipeline-core/scripts/schemas/state.schema.json
-- .agents/skills/nfp-02-feature-contract/SKILL.md
-- .agents/skills/nfp-02-feature-contract/agents/openai.yaml
-- .ai/knowledge/contracts-overview.md
-- .ai/pipeline-docs/steps/feature-contract/checklist.md
-- .ai/pipeline-docs/steps/feature-contract/docset.yaml
-- .ai/pipeline-docs/steps/feature-contract/overview.md
-- tests/feature_pipeline/test_context_skill_contract.py
-- tests/feature_pipeline/test_feature_contract_path.py
-- tests/feature_pipeline/test_methodology_contract.py
+  - .agents/pipeline-core/references/native-skill-protocol.md
+  - .agents/pipeline-core/scripts/schemas/.gitkeep
+  - .agents/pipeline-core/scripts/schemas/benchmark.schema.json
+  - .agents/pipeline-core/scripts/schemas/docset.schema.json
+  - .agents/pipeline-core/scripts/schemas/evaluation-result.schema.json
+  - .agents/pipeline-core/scripts/schemas/evidence.schema.json
+  - .agents/pipeline-core/scripts/schemas/feature.schema.json
+  - .agents/pipeline-core/scripts/schemas/index.schema.json
+  - .agents/pipeline-core/scripts/schemas/review.schema.json
+  - .agents/pipeline-core/scripts/schemas/slices.schema.json
+  - .agents/pipeline-core/scripts/schemas/state.schema.json
+  - .agents/skills/nfp-02-feature-contract/SKILL.md
+  - .agents/skills/nfp-02-feature-contract/agents/openai.yaml
+  - .ai/knowledge/contracts-overview.md
+  - .ai/pipeline-docs/steps/feature-contract/checklist.md
+  - .ai/pipeline-docs/steps/feature-contract/docset.yaml
+  - .ai/pipeline-docs/steps/feature-contract/overview.md
+  - tests/feature_pipeline/test_context_skill_contract.py
+  - tests/feature_pipeline/test_feature_contract_path.py
+  - tests/feature_pipeline/test_methodology_contract.py
 integration_examples:
-- .agents/pipeline-core/references/workflow-state-machine.md
-- .ai/knowledge/integration-map.md
-- pipeline-lab/benchmarks/scenarios/webhook-integration.yaml
-- pipeline-lab/showcases/scenarios/02-webhook-integration.yaml
+  - .agents/pipeline-core/references/workflow-state-machine.md
+  - .ai/knowledge/integration-map.md
+  - pipeline-lab/benchmarks/scenarios/webhook-integration.yaml
+  - pipeline-lab/showcases/scenarios/02-webhook-integration.yaml
 canonical_features:
-- feature_key: pipeline/codex-e2e-runner-hardening
-  path: .ai/features/pipeline/codex-e2e-runner-hardening
-- feature_key: pipeline/random-feature-stress-lab
-  path: .ai/features/pipeline/random-feature-stress-lab
-- feature_key: pipeline/real-codex-showcase-debug-runner
-  path: .ai/features/pipeline/real-codex-showcase-debug-runner
+  - feature_key: pipeline/codex-e2e-runner-hardening
+    path: .ai/features/pipeline/codex-e2e-runner-hardening
+  - feature_key: pipeline/random-feature-stress-lab
+    path: .ai/features/pipeline/random-feature-stress-lab
+  - feature_key: pipeline/real-codex-showcase-debug-runner
+    path: .ai/features/pipeline/real-codex-showcase-debug-runner
 feature_signals:
-- source: features.md
-  signal: Best three showcase features
-- source: pipeline-lab/README.md
-  signal: Pipeline Lab
-- source: pipeline-lab/VALIDATION.md
-  signal: Native Feature Pipeline Validation
-- source: pipeline-lab/showcases/README.md
-  signal: Native Feature Emulation
-- source: pipeline-lab/showcases/codex-debug-runs/20260512-debug/e2e/harness-codex-debug-smoke/20260512-debug/report.md
-  signal: Feature Request
-- source: pipeline-lab/showcases/codex-debug-runs/20260512-debug/validation.md
-  signal: Codex Debug Pipeline Validation
-- source: pipeline-lab/showcases/init-profile-report.md
-  signal: Reuse In Feature Pipeline
-- source: pipeline-lab/showcases/native-emulation-judge-report.md
-  signal: Native Feature Build Judge Report
-- source: pipeline-lab/showcases/native-emulation-report.md
-  signal: Native Feature Emulation Report
-- source: pipeline-lab/showcases/native-emulation-validation-report.md
-  signal: Native Feature Output Validation
-- source: pipeline-lab/showcases/pipeline-goal-validation-report.md
-  signal: Pipeline Goal Validation
-- source: pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/feature-list.md
-  signal: Random Feature Stress List
-- source: pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/01-guided-workspace-recovery-doctor/artifacts/architecture.md
-  signal: 'Architecture: Guided Workspace recovery doctor'
-- source: pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/01-guided-workspace-recovery-doctor/artifacts/feature-card.md
-  signal: 'Feature Card: 01-guided-workspace-recovery-doctor'
-- source: pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/01-guided-workspace-recovery-doctor/artifacts/feature.md
-  signal: 'Feature: Guided Workspace recovery doctor'
-- source: pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/01-guided-workspace-recovery-doctor/artifacts/repo-context.md
-  signal: Candidate Files And Modules
-- source: pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/02-auditable-feature-signal-confidence-normalizer/artifacts/architecture.md
-  signal: 'Architecture: Auditable Feature signal confidence normalizer'
-- source: pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/02-auditable-feature-signal-confidence-normalizer/artifacts/feature-card.md
-  signal: 'Feature Card: 02-auditable-feature-signal-confidence-normalizer'
-- source: pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/02-auditable-feature-signal-confidence-normalizer/artifacts/feature.md
-  signal: 'Feature: Auditable Feature signal confidence normalizer'
-- source: pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/02-auditable-feature-signal-confidence-normalizer/artifacts/repo-context.md
-  signal: 'Repository Context: Auditable Feature signal confidence normalizer'
-- source: pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/02-auditable-feature-signal-confidence-normalizer/artifacts/reviews/review.md
-  signal: 'Review: Auditable Feature signal confidence normalizer'
-- source: pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/02-auditable-feature-signal-confidence-normalizer/artifacts/tech-design.md
-  signal: 'Technical Design: Auditable Feature signal confidence normalizer'
-- source: pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/03-policy-aware-nested-prompt-policy-verifier/artifacts/architecture.md
-  signal: 'Architecture: Policy-Aware Nested prompt policy verifier'
-- source: pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/03-policy-aware-nested-prompt-policy-verifier/artifacts/feature-card.md
-  signal: 'Feature Card: 03-policy-aware-nested-prompt-policy-verifier'
-- source: pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/03-policy-aware-nested-prompt-policy-verifier/artifacts/feature.md
-  signal: 'Feature: Policy-Aware Nested prompt policy verifier'
-- source: pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/03-policy-aware-nested-prompt-policy-verifier/artifacts/repo-context.md
-  signal: Candidate Files And Modules
-- source: pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/04-traceable-evidence-timeline-export/artifacts/architecture.md
-  signal: 'Architecture: Traceable Evidence timeline export'
-- source: pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/04-traceable-evidence-timeline-export/artifacts/feature-card.md
-  signal: 'Feature Card: 04-traceable-evidence-timeline-export'
-- source: pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/04-traceable-evidence-timeline-export/artifacts/feature.md
-  signal: 'Feature: Traceable Evidence timeline export'
-- source: pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/04-traceable-evidence-timeline-export/artifacts/repo-context.md
-  signal: Candidate Files And Modules
-- source: pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/05-auditable-mermaid-topology-coverage-report/artifacts/architecture.md
-  signal: 'Architecture: Auditable Mermaid topology coverage report'
-- source: pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/05-auditable-mermaid-topology-coverage-report/artifacts/feature-card.md
-  signal: 'Feature Card: 05-auditable-mermaid-topology-coverage-report'
-- source: pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/05-auditable-mermaid-topology-coverage-report/artifacts/feature.md
-  signal: 'Feature: Auditable Mermaid topology coverage report'
-- source: pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/05-auditable-mermaid-topology-coverage-report/artifacts/repo-context.md
-  signal: Candidate Files And Modules
-- source: pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/06-bounded-canonical-memory-diff-preview/artifacts/architecture.md
-  signal: 'Architecture: Bounded Canonical memory diff preview'
-- source: pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/06-bounded-canonical-memory-diff-preview/artifacts/feature-card.md
-  signal: 'Feature Card: 06-bounded-canonical-memory-diff-preview'
-- source: pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/06-bounded-canonical-memory-diff-preview/artifacts/feature.md
-  signal: 'Feature: Bounded Canonical memory diff preview'
-- source: pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/06-bounded-canonical-memory-diff-preview/artifacts/repo-context.md
-  signal: Candidate Files And Modules
-- source: pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/07-guided-shared-knowledge-coverage-gate/artifacts/architecture.md
-  signal: 'Architecture: Guided Shared knowledge coverage gate'
-- source: pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/07-guided-shared-knowledge-coverage-gate/artifacts/feature-card.md
-  signal: 'Feature Card: 07-guided-shared-knowledge-coverage-gate'
+  - source: features.md
+    signal: Best three showcase features
+  - source: pipeline-lab/README.md
+    signal: Pipeline Lab
+  - source: pipeline-lab/VALIDATION.md
+    signal: Native Feature Pipeline Validation
+  - source: pipeline-lab/showcases/README.md
+    signal: Native Feature Emulation
+  - source: pipeline-lab/showcases/codex-debug-runs/20260512-debug/e2e/harness-codex-debug-smoke/20260512-debug/report.md
+    signal: Feature Request
+  - source: pipeline-lab/showcases/codex-debug-runs/20260512-debug/validation.md
+    signal: Codex Debug Pipeline Validation
+  - source: pipeline-lab/showcases/init-profile-report.md
+    signal: Reuse In Feature Pipeline
+  - source: pipeline-lab/showcases/native-emulation-judge-report.md
+    signal: Native Feature Build Judge Report
+  - source: pipeline-lab/showcases/native-emulation-report.md
+    signal: Native Feature Emulation Report
+  - source: pipeline-lab/showcases/native-emulation-validation-report.md
+    signal: Native Feature Output Validation
+  - source: pipeline-lab/showcases/pipeline-goal-validation-report.md
+    signal: Pipeline Goal Validation
+  - source: pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/feature-list.md
+    signal: Random Feature Stress List
+  - source: pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/01-guided-workspace-recovery-doctor/artifacts/architecture.md
+    signal: 'Architecture: Guided Workspace recovery doctor'
+  - source: pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/01-guided-workspace-recovery-doctor/artifacts/feature-card.md
+    signal: 'Feature Card: 01-guided-workspace-recovery-doctor'
+  - source: pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/01-guided-workspace-recovery-doctor/artifacts/feature.md
+    signal: 'Feature: Guided Workspace recovery doctor'
+  - source: pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/01-guided-workspace-recovery-doctor/artifacts/repo-context.md
+    signal: Candidate Files And Modules
+  - source: pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/02-auditable-feature-signal-confidence-normalizer/artifacts/architecture.md
+    signal: 'Architecture: Auditable Feature signal confidence normalizer'
+  - source: pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/02-auditable-feature-signal-confidence-normalizer/artifacts/feature-card.md
+    signal: 'Feature Card: 02-auditable-feature-signal-confidence-normalizer'
+  - source: pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/02-auditable-feature-signal-confidence-normalizer/artifacts/feature.md
+    signal: 'Feature: Auditable Feature signal confidence normalizer'
+  - source: pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/02-auditable-feature-signal-confidence-normalizer/artifacts/repo-context.md
+    signal: 'Repository Context: Auditable Feature signal confidence normalizer'
+  - source: pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/02-auditable-feature-signal-confidence-normalizer/artifacts/reviews/review.md
+    signal: 'Review: Auditable Feature signal confidence normalizer'
+  - source: pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/02-auditable-feature-signal-confidence-normalizer/artifacts/tech-design.md
+    signal: 'Technical Design: Auditable Feature signal confidence normalizer'
+  - source: pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/03-policy-aware-nested-prompt-policy-verifier/artifacts/architecture.md
+    signal: 'Architecture: Policy-Aware Nested prompt policy verifier'
+  - source: pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/03-policy-aware-nested-prompt-policy-verifier/artifacts/feature-card.md
+    signal: 'Feature Card: 03-policy-aware-nested-prompt-policy-verifier'
+  - source: pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/03-policy-aware-nested-prompt-policy-verifier/artifacts/feature.md
+    signal: 'Feature: Policy-Aware Nested prompt policy verifier'
+  - source: pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/03-policy-aware-nested-prompt-policy-verifier/artifacts/repo-context.md
+    signal: Candidate Files And Modules
+  - source: pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/04-traceable-evidence-timeline-export/artifacts/architecture.md
+    signal: 'Architecture: Traceable Evidence timeline export'
+  - source: pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/04-traceable-evidence-timeline-export/artifacts/feature-card.md
+    signal: 'Feature Card: 04-traceable-evidence-timeline-export'
+  - source: pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/04-traceable-evidence-timeline-export/artifacts/feature.md
+    signal: 'Feature: Traceable Evidence timeline export'
+  - source: pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/04-traceable-evidence-timeline-export/artifacts/repo-context.md
+    signal: Candidate Files And Modules
+  - source: pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/05-auditable-mermaid-topology-coverage-report/artifacts/architecture.md
+    signal: 'Architecture: Auditable Mermaid topology coverage report'
+  - source: pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/05-auditable-mermaid-topology-coverage-report/artifacts/feature-card.md
+    signal: 'Feature Card: 05-auditable-mermaid-topology-coverage-report'
+  - source: pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/05-auditable-mermaid-topology-coverage-report/artifacts/feature.md
+    signal: 'Feature: Auditable Mermaid topology coverage report'
+  - source: pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/05-auditable-mermaid-topology-coverage-report/artifacts/repo-context.md
+    signal: Candidate Files And Modules
+  - source: pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/06-bounded-canonical-memory-diff-preview/artifacts/architecture.md
+    signal: 'Architecture: Bounded Canonical memory diff preview'
+  - source: pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/06-bounded-canonical-memory-diff-preview/artifacts/feature-card.md
+    signal: 'Feature Card: 06-bounded-canonical-memory-diff-preview'
+  - source: pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/06-bounded-canonical-memory-diff-preview/artifacts/feature.md
+    signal: 'Feature: Bounded Canonical memory diff preview'
+  - source: pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/06-bounded-canonical-memory-diff-preview/artifacts/repo-context.md
+    signal: Candidate Files And Modules
+  - source: pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/07-guided-shared-knowledge-coverage-gate/artifacts/architecture.md
+    signal: 'Architecture: Guided Shared knowledge coverage gate'
+  - source: pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/07-guided-shared-knowledge-coverage-gate/artifacts/feature-card.md
+    signal: 'Feature Card: 07-guided-shared-knowledge-coverage-gate'
 feature_catalog:
-- name: pipeline/codex-e2e-runner-hardening
-  kind: canonical
-  confidence: high
-  description: Promoted feature memory recorded by the Native Feature Pipeline.
-  source_count: 1
-  sources:
-  - .ai/features/pipeline/codex-e2e-runner-hardening
-- name: pipeline/random-feature-stress-lab
-  kind: canonical
-  confidence: high
-  description: Promoted feature memory recorded by the Native Feature Pipeline.
-  source_count: 1
-  sources:
-  - .ai/features/pipeline/random-feature-stress-lab
-- name: pipeline/real-codex-showcase-debug-runner
-  kind: canonical
-  confidence: high
-  description: Promoted feature memory recorded by the Native Feature Pipeline.
-  source_count: 1
-  sources:
-  - .ai/features/pipeline/real-codex-showcase-debug-runner
-- name: Candidate Files And Modules
-  kind: detected
-  confidence: high
-  description: Candidate Files And Modules appears in 9 documentation signals; inspect
-    the listed files before relying on this as architecture truth.
-  source_count: 9
-  sources:
-  - pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/01-guided-workspace-recovery-doctor/artifacts/repo-context.md
-  - pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/03-policy-aware-nested-prompt-policy-verifier/artifacts/repo-context.md
-  - pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/04-traceable-evidence-timeline-export/artifacts/repo-context.md
-  - pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/05-auditable-mermaid-topology-coverage-report/artifacts/repo-context.md
-  - pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/06-bounded-canonical-memory-diff-preview/artifacts/repo-context.md
-  - pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/07-guided-shared-knowledge-coverage-gate/artifacts/repo-context.md
-- name: 01 Guided Workspace Recovery Doctor
-  kind: detected
-  confidence: high
-  description: 01 Guided Workspace Recovery Doctor appears in 2 documentation signals;
-    inspect the listed files before relying on this as architecture truth.
-  source_count: 3
-  sources:
-  - pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/01-guided-workspace-recovery-doctor/artifacts/architecture.md
-  - pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/01-guided-workspace-recovery-doctor/artifacts/evidence/manifest.yaml
-  - pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/01-guided-workspace-recovery-doctor/artifacts/feature-card.md
-- name: Architecture Auditable Feature Signal Confidence Normalizer
-  kind: detected
-  confidence: medium
-  description: Architecture Auditable Feature Signal Confidence Normalizer appears
-    in 1 documentation signal; inspect the listed files before relying on this as
-    architecture truth.
-  source_count: 1
-  sources:
-  - pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/02-auditable-feature-signal-confidence-normalizer/artifacts/architecture.md
-- name: Architecture Auditable Mermaid Topology Coverage Report
-  kind: detected
-  confidence: medium
-  description: Architecture Auditable Mermaid Topology Coverage Report appears in
-    1 documentation signal; inspect the listed files before relying on this as architecture
-    truth.
-  source_count: 1
-  sources:
-  - pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/05-auditable-mermaid-topology-coverage-report/artifacts/architecture.md
-- name: Architecture Bounded Canonical Memory Diff Preview
-  kind: detected
-  confidence: medium
-  description: Architecture Bounded Canonical Memory Diff Preview appears in 1 documentation
-    signal; inspect the listed files before relying on this as architecture truth.
-  source_count: 1
-  sources:
-  - pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/06-bounded-canonical-memory-diff-preview/artifacts/architecture.md
-- name: Architecture Bounded Gate Autoresume Hints
-  kind: detected
-  confidence: medium
-  description: Architecture Bounded Gate Autoresume Hints appears in 1 documentation
-    signal; inspect the listed files before relying on this as architecture truth.
-  source_count: 1
-  sources:
-  - pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/09-bounded-gate-autoresume-hints/artifacts/architecture.md
-- name: Architecture Guided Scenario Score Drift Detector
-  kind: detected
-  confidence: medium
-  description: Architecture Guided Scenario Score Drift Detector appears in 1 documentation
-    signal; inspect the listed files before relying on this as architecture truth.
-  source_count: 1
-  sources:
-  - pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/08-guided-scenario-score-drift-detector/artifacts/architecture.md
-- name: Architecture Guided Shared Knowledge Coverage Gate
-  kind: detected
-  confidence: medium
-  description: Architecture Guided Shared Knowledge Coverage Gate appears in 1 documentation
-    signal; inspect the listed files before relying on this as architecture truth.
-  source_count: 1
-  sources:
-  - pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/07-guided-shared-knowledge-coverage-gate/artifacts/architecture.md
-- name: Architecture Guided Workspace Recovery Doctor
-  kind: detected
-  confidence: medium
-  description: Architecture Guided Workspace Recovery Doctor appears in 1 documentation
-    signal; inspect the listed files before relying on this as architecture truth.
-  source_count: 1
-  sources:
-  - pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/01-guided-workspace-recovery-doctor/artifacts/architecture.md
-- name: Architecture Policy Aware Nested Prompt Policy Verifier
-  kind: detected
-  confidence: medium
-  description: Architecture Policy Aware Nested Prompt Policy Verifier appears in
-    1 documentation signal; inspect the listed files before relying on this as architecture
-    truth.
-  source_count: 1
-  sources:
-  - pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/03-policy-aware-nested-prompt-policy-verifier/artifacts/architecture.md
-- name: Architecture Traceable Evidence Timeline Export
-  kind: detected
-  confidence: medium
-  description: Architecture Traceable Evidence Timeline Export appears in 1 documentation
-    signal; inspect the listed files before relying on this as architecture truth.
-  source_count: 1
-  sources:
-  - pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/04-traceable-evidence-timeline-export/artifacts/architecture.md
-- name: Architecture Traceable Review Finding Deduplicator
-  kind: detected
-  confidence: medium
-  description: Architecture Traceable Review Finding Deduplicator appears in 1 documentation
-    signal; inspect the listed files before relying on this as architecture truth.
-  source_count: 1
-  sources:
-  - pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/10-traceable-review-finding-deduplicator/artifacts/architecture.md
-- name: Auditable Feature Signal Confidence Normalizer
-  kind: detected
-  confidence: medium
-  description: Auditable Feature Signal Confidence Normalizer appears in 1 documentation
-    signal; inspect the listed files before relying on this as architecture truth.
-  source_count: 1
-  sources:
-  - pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/02-auditable-feature-signal-confidence-normalizer/artifacts/feature.md
-- name: Auditable Mermaid Topology Coverage Report
-  kind: detected
-  confidence: medium
-  description: Auditable Mermaid Topology Coverage Report appears in 1 documentation
-    signal; inspect the listed files before relying on this as architecture truth.
-  source_count: 1
-  sources:
-  - pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/05-auditable-mermaid-topology-coverage-report/artifacts/feature.md
-- name: Best Three Showcase Features
-  kind: detected
-  confidence: medium
-  description: Best Three Showcase Features appears in 1 documentation signal; inspect
-    the listed files before relying on this as architecture truth.
-  source_count: 1
-  sources:
-  - features.md
-- name: Bounded Canonical Memory Diff Preview
-  kind: detected
-  confidence: medium
-  description: Bounded Canonical Memory Diff Preview appears in 1 documentation signal;
-    inspect the listed files before relying on this as architecture truth.
-  source_count: 1
-  sources:
-  - pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/06-bounded-canonical-memory-diff-preview/artifacts/feature.md
-- name: Bounded Gate Autoresume Hints
-  kind: detected
-  confidence: medium
-  description: Bounded Gate Autoresume Hints appears in 1 documentation signal; inspect
-    the listed files before relying on this as architecture truth.
-  source_count: 1
-  sources:
-  - pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/09-bounded-gate-autoresume-hints/artifacts/feature.md
-- name: Codex Debug Pipeline Validation
-  kind: detected
-  confidence: medium
-  description: Codex Debug Pipeline Validation appears in 1 documentation signal;
-    inspect the listed files before relying on this as architecture truth.
-  source_count: 1
-  sources:
-  - pipeline-lab/showcases/codex-debug-runs/20260512-debug/validation.md
-- name: Feature Card 01 Guided Workspace Recovery Doctor
-  kind: detected
-  confidence: medium
-  description: Feature Card 01 Guided Workspace Recovery Doctor appears in 1 documentation
-    signal; inspect the listed files before relying on this as architecture truth.
-  source_count: 1
-  sources:
-  - pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/01-guided-workspace-recovery-doctor/artifacts/feature-card.md
-- name: Feature Card 02 Auditable Feature Signal Confidence Normalizer
-  kind: detected
-  confidence: medium
-  description: Feature Card 02 Auditable Feature Signal Confidence Normalizer appears
-    in 1 documentation signal; inspect the listed files before relying on this as
-    architecture truth.
-  source_count: 1
-  sources:
-  - pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/02-auditable-feature-signal-confidence-normalizer/artifacts/feature-card.md
-- name: Feature Card 03 Policy Aware Nested Prompt Policy Verifier
-  kind: detected
-  confidence: medium
-  description: Feature Card 03 Policy Aware Nested Prompt Policy Verifier appears
-    in 1 documentation signal; inspect the listed files before relying on this as
-    architecture truth.
-  source_count: 1
-  sources:
-  - pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/03-policy-aware-nested-prompt-policy-verifier/artifacts/feature-card.md
-- name: Feature Card 04 Traceable Evidence Timeline Export
-  kind: detected
-  confidence: medium
-  description: Feature Card 04 Traceable Evidence Timeline Export appears in 1 documentation
-    signal; inspect the listed files before relying on this as architecture truth.
-  source_count: 1
-  sources:
-  - pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/04-traceable-evidence-timeline-export/artifacts/feature-card.md
-- name: Feature Card 05 Auditable Mermaid Topology Coverage Report
-  kind: detected
-  confidence: medium
-  description: Feature Card 05 Auditable Mermaid Topology Coverage Report appears
-    in 1 documentation signal; inspect the listed files before relying on this as
-    architecture truth.
-  source_count: 1
-  sources:
-  - pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/05-auditable-mermaid-topology-coverage-report/artifacts/feature-card.md
-- name: Feature Card 06 Bounded Canonical Memory Diff Preview
-  kind: detected
-  confidence: medium
-  description: Feature Card 06 Bounded Canonical Memory Diff Preview appears in 1
-    documentation signal; inspect the listed files before relying on this as architecture
-    truth.
-  source_count: 1
-  sources:
-  - pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/06-bounded-canonical-memory-diff-preview/artifacts/feature-card.md
-- name: Feature Card 07 Guided Shared Knowledge Coverage Gate
-  kind: detected
-  confidence: medium
-  description: Feature Card 07 Guided Shared Knowledge Coverage Gate appears in 1
-    documentation signal; inspect the listed files before relying on this as architecture
-    truth.
-  source_count: 1
-  sources:
-  - pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/07-guided-shared-knowledge-coverage-gate/artifacts/feature-card.md
-- name: Feature Card 08 Guided Scenario Score Drift Detector
-  kind: detected
-  confidence: medium
-  description: Feature Card 08 Guided Scenario Score Drift Detector appears in 1 documentation
-    signal; inspect the listed files before relying on this as architecture truth.
-  source_count: 1
-  sources:
-  - pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/08-guided-scenario-score-drift-detector/artifacts/feature-card.md
-- name: Feature Card 09 Bounded Gate Autoresume Hints
-  kind: detected
-  confidence: medium
-  description: Feature Card 09 Bounded Gate Autoresume Hints appears in 1 documentation
-    signal; inspect the listed files before relying on this as architecture truth.
-  source_count: 1
-  sources:
-  - pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/09-bounded-gate-autoresume-hints/artifacts/feature-card.md
+  - name: pipeline/codex-e2e-runner-hardening
+    kind: canonical
+    confidence: high
+    description: Promoted feature memory recorded by the Native Feature Pipeline.
+    source_count: 1
+    sources:
+      - .ai/features/pipeline/codex-e2e-runner-hardening
+  - name: pipeline/random-feature-stress-lab
+    kind: canonical
+    confidence: high
+    description: Promoted feature memory recorded by the Native Feature Pipeline.
+    source_count: 1
+    sources:
+      - .ai/features/pipeline/random-feature-stress-lab
+  - name: pipeline/real-codex-showcase-debug-runner
+    kind: canonical
+    confidence: high
+    description: Promoted feature memory recorded by the Native Feature Pipeline.
+    source_count: 1
+    sources:
+      - .ai/features/pipeline/real-codex-showcase-debug-runner
+  - name: Candidate Files And Modules
+    kind: detected
+    confidence: high
+    description:
+      Candidate Files And Modules appears in 9 documentation signals; inspect
+      the listed files before relying on this as architecture truth.
+    source_count: 9
+    sources:
+      - pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/01-guided-workspace-recovery-doctor/artifacts/repo-context.md
+      - pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/03-policy-aware-nested-prompt-policy-verifier/artifacts/repo-context.md
+      - pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/04-traceable-evidence-timeline-export/artifacts/repo-context.md
+      - pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/05-auditable-mermaid-topology-coverage-report/artifacts/repo-context.md
+      - pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/06-bounded-canonical-memory-diff-preview/artifacts/repo-context.md
+      - pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/07-guided-shared-knowledge-coverage-gate/artifacts/repo-context.md
+  - name: 01 Guided Workspace Recovery Doctor
+    kind: detected
+    confidence: high
+    description:
+      01 Guided Workspace Recovery Doctor appears in 2 documentation signals;
+      inspect the listed files before relying on this as architecture truth.
+    source_count: 3
+    sources:
+      - pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/01-guided-workspace-recovery-doctor/artifacts/architecture.md
+      - pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/01-guided-workspace-recovery-doctor/artifacts/evidence/manifest.yaml
+      - pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/01-guided-workspace-recovery-doctor/artifacts/feature-card.md
+  - name: Architecture Auditable Feature Signal Confidence Normalizer
+    kind: detected
+    confidence: medium
+    description:
+      Architecture Auditable Feature Signal Confidence Normalizer appears
+      in 1 documentation signal; inspect the listed files before relying on this as
+      architecture truth.
+    source_count: 1
+    sources:
+      - pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/02-auditable-feature-signal-confidence-normalizer/artifacts/architecture.md
+  - name: Architecture Auditable Mermaid Topology Coverage Report
+    kind: detected
+    confidence: medium
+    description:
+      Architecture Auditable Mermaid Topology Coverage Report appears in
+      1 documentation signal; inspect the listed files before relying on this as architecture
+      truth.
+    source_count: 1
+    sources:
+      - pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/05-auditable-mermaid-topology-coverage-report/artifacts/architecture.md
+  - name: Architecture Bounded Canonical Memory Diff Preview
+    kind: detected
+    confidence: medium
+    description:
+      Architecture Bounded Canonical Memory Diff Preview appears in 1 documentation
+      signal; inspect the listed files before relying on this as architecture truth.
+    source_count: 1
+    sources:
+      - pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/06-bounded-canonical-memory-diff-preview/artifacts/architecture.md
+  - name: Architecture Bounded Gate Autoresume Hints
+    kind: detected
+    confidence: medium
+    description:
+      Architecture Bounded Gate Autoresume Hints appears in 1 documentation
+      signal; inspect the listed files before relying on this as architecture truth.
+    source_count: 1
+    sources:
+      - pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/09-bounded-gate-autoresume-hints/artifacts/architecture.md
+  - name: Architecture Guided Scenario Score Drift Detector
+    kind: detected
+    confidence: medium
+    description:
+      Architecture Guided Scenario Score Drift Detector appears in 1 documentation
+      signal; inspect the listed files before relying on this as architecture truth.
+    source_count: 1
+    sources:
+      - pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/08-guided-scenario-score-drift-detector/artifacts/architecture.md
+  - name: Architecture Guided Shared Knowledge Coverage Gate
+    kind: detected
+    confidence: medium
+    description:
+      Architecture Guided Shared Knowledge Coverage Gate appears in 1 documentation
+      signal; inspect the listed files before relying on this as architecture truth.
+    source_count: 1
+    sources:
+      - pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/07-guided-shared-knowledge-coverage-gate/artifacts/architecture.md
+  - name: Architecture Guided Workspace Recovery Doctor
+    kind: detected
+    confidence: medium
+    description:
+      Architecture Guided Workspace Recovery Doctor appears in 1 documentation
+      signal; inspect the listed files before relying on this as architecture truth.
+    source_count: 1
+    sources:
+      - pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/01-guided-workspace-recovery-doctor/artifacts/architecture.md
+  - name: Architecture Policy Aware Nested Prompt Policy Verifier
+    kind: detected
+    confidence: medium
+    description:
+      Architecture Policy Aware Nested Prompt Policy Verifier appears in
+      1 documentation signal; inspect the listed files before relying on this as architecture
+      truth.
+    source_count: 1
+    sources:
+      - pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/03-policy-aware-nested-prompt-policy-verifier/artifacts/architecture.md
+  - name: Architecture Traceable Evidence Timeline Export
+    kind: detected
+    confidence: medium
+    description:
+      Architecture Traceable Evidence Timeline Export appears in 1 documentation
+      signal; inspect the listed files before relying on this as architecture truth.
+    source_count: 1
+    sources:
+      - pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/04-traceable-evidence-timeline-export/artifacts/architecture.md
+  - name: Architecture Traceable Review Finding Deduplicator
+    kind: detected
+    confidence: medium
+    description:
+      Architecture Traceable Review Finding Deduplicator appears in 1 documentation
+      signal; inspect the listed files before relying on this as architecture truth.
+    source_count: 1
+    sources:
+      - pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/10-traceable-review-finding-deduplicator/artifacts/architecture.md
+  - name: Auditable Feature Signal Confidence Normalizer
+    kind: detected
+    confidence: medium
+    description:
+      Auditable Feature Signal Confidence Normalizer appears in 1 documentation
+      signal; inspect the listed files before relying on this as architecture truth.
+    source_count: 1
+    sources:
+      - pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/02-auditable-feature-signal-confidence-normalizer/artifacts/feature.md
+  - name: Auditable Mermaid Topology Coverage Report
+    kind: detected
+    confidence: medium
+    description:
+      Auditable Mermaid Topology Coverage Report appears in 1 documentation
+      signal; inspect the listed files before relying on this as architecture truth.
+    source_count: 1
+    sources:
+      - pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/05-auditable-mermaid-topology-coverage-report/artifacts/feature.md
+  - name: Best Three Showcase Features
+    kind: detected
+    confidence: medium
+    description:
+      Best Three Showcase Features appears in 1 documentation signal; inspect
+      the listed files before relying on this as architecture truth.
+    source_count: 1
+    sources:
+      - features.md
+  - name: Bounded Canonical Memory Diff Preview
+    kind: detected
+    confidence: medium
+    description:
+      Bounded Canonical Memory Diff Preview appears in 1 documentation signal;
+      inspect the listed files before relying on this as architecture truth.
+    source_count: 1
+    sources:
+      - pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/06-bounded-canonical-memory-diff-preview/artifacts/feature.md
+  - name: Bounded Gate Autoresume Hints
+    kind: detected
+    confidence: medium
+    description:
+      Bounded Gate Autoresume Hints appears in 1 documentation signal; inspect
+      the listed files before relying on this as architecture truth.
+    source_count: 1
+    sources:
+      - pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/09-bounded-gate-autoresume-hints/artifacts/feature.md
+  - name: Codex Debug Pipeline Validation
+    kind: detected
+    confidence: medium
+    description:
+      Codex Debug Pipeline Validation appears in 1 documentation signal;
+      inspect the listed files before relying on this as architecture truth.
+    source_count: 1
+    sources:
+      - pipeline-lab/showcases/codex-debug-runs/20260512-debug/validation.md
+  - name: Feature Card 01 Guided Workspace Recovery Doctor
+    kind: detected
+    confidence: medium
+    description:
+      Feature Card 01 Guided Workspace Recovery Doctor appears in 1 documentation
+      signal; inspect the listed files before relying on this as architecture truth.
+    source_count: 1
+    sources:
+      - pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/01-guided-workspace-recovery-doctor/artifacts/feature-card.md
+  - name: Feature Card 02 Auditable Feature Signal Confidence Normalizer
+    kind: detected
+    confidence: medium
+    description:
+      Feature Card 02 Auditable Feature Signal Confidence Normalizer appears
+      in 1 documentation signal; inspect the listed files before relying on this as
+      architecture truth.
+    source_count: 1
+    sources:
+      - pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/02-auditable-feature-signal-confidence-normalizer/artifacts/feature-card.md
+  - name: Feature Card 03 Policy Aware Nested Prompt Policy Verifier
+    kind: detected
+    confidence: medium
+    description:
+      Feature Card 03 Policy Aware Nested Prompt Policy Verifier appears
+      in 1 documentation signal; inspect the listed files before relying on this as
+      architecture truth.
+    source_count: 1
+    sources:
+      - pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/03-policy-aware-nested-prompt-policy-verifier/artifacts/feature-card.md
+  - name: Feature Card 04 Traceable Evidence Timeline Export
+    kind: detected
+    confidence: medium
+    description:
+      Feature Card 04 Traceable Evidence Timeline Export appears in 1 documentation
+      signal; inspect the listed files before relying on this as architecture truth.
+    source_count: 1
+    sources:
+      - pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/04-traceable-evidence-timeline-export/artifacts/feature-card.md
+  - name: Feature Card 05 Auditable Mermaid Topology Coverage Report
+    kind: detected
+    confidence: medium
+    description:
+      Feature Card 05 Auditable Mermaid Topology Coverage Report appears
+      in 1 documentation signal; inspect the listed files before relying on this as
+      architecture truth.
+    source_count: 1
+    sources:
+      - pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/05-auditable-mermaid-topology-coverage-report/artifacts/feature-card.md
+  - name: Feature Card 06 Bounded Canonical Memory Diff Preview
+    kind: detected
+    confidence: medium
+    description:
+      Feature Card 06 Bounded Canonical Memory Diff Preview appears in 1
+      documentation signal; inspect the listed files before relying on this as architecture
+      truth.
+    source_count: 1
+    sources:
+      - pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/06-bounded-canonical-memory-diff-preview/artifacts/feature-card.md
+  - name: Feature Card 07 Guided Shared Knowledge Coverage Gate
+    kind: detected
+    confidence: medium
+    description:
+      Feature Card 07 Guided Shared Knowledge Coverage Gate appears in 1
+      documentation signal; inspect the listed files before relying on this as architecture
+      truth.
+    source_count: 1
+    sources:
+      - pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/07-guided-shared-knowledge-coverage-gate/artifacts/feature-card.md
+  - name: Feature Card 08 Guided Scenario Score Drift Detector
+    kind: detected
+    confidence: medium
+    description:
+      Feature Card 08 Guided Scenario Score Drift Detector appears in 1 documentation
+      signal; inspect the listed files before relying on this as architecture truth.
+    source_count: 1
+    sources:
+      - pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/08-guided-scenario-score-drift-detector/artifacts/feature-card.md
+  - name: Feature Card 09 Bounded Gate Autoresume Hints
+    kind: detected
+    confidence: medium
+    description:
+      Feature Card 09 Bounded Gate Autoresume Hints appears in 1 documentation
+      signal; inspect the listed files before relying on this as architecture truth.
+    source_count: 1
+    sources:
+      - pipeline-lab/showcases/random-feature-stress-runs/20260512-random-stress/features/09-bounded-gate-autoresume-hints/artifacts/feature-card.md

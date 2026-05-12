@@ -7,9 +7,10 @@ This validates that the Native Feature Pipeline can initialize, generate artifac
 
 ## Generated Pipeline Artifacts
 
-Workspace: `/Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/worktrees/crm-duplicate-company-merge-audit-trail-run-twenty-company-merge/.ai/feature-workspaces/crm/duplicate-company-merge-audit-trail--run-twenty-company-merge`
+Workspace: `/pipeline-lab/showcases/repos/worktrees/crm-duplicate-company-merge-audit-trail-run-twenty-company-merge/.ai/feature-workspaces/crm/duplicate-company-merge-audit-trail--run-twenty-company-merge`
 
 Artifacts:
+
 - `feature.md`
 - `architecture.md`
 - `tech-design.md`
@@ -26,6 +27,7 @@ Artifacts:
 ## Code Changes
 
 Source files:
+
 - `showcase/duplicate-company-merge-audit-trail/feature.js`
 - `showcase/duplicate-company-merge-audit-trail/feature.s-001.test.js`
 - `showcase/duplicate-company-merge-audit-trail/feature.s-002.test.js`

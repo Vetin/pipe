@@ -7,9 +7,10 @@ This validates that the Native Feature Pipeline can initialize, generate artifac
 
 ## Generated Pipeline Artifacts
 
-Workspace: `/Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/worktrees/triage-triage-automation-rules-run-plane-triage-rules/.ai/feature-workspaces/triage/triage-automation-rules--run-plane-triage-rules`
+Workspace: `/pipeline-lab/showcases/repos/worktrees/triage-triage-automation-rules-run-plane-triage-rules/.ai/feature-workspaces/triage/triage-automation-rules--run-plane-triage-rules`
 
 Artifacts:
+
 - `feature.md`
 - `architecture.md`
 - `tech-design.md`
@@ -26,6 +27,7 @@ Artifacts:
 ## Code Changes
 
 Source files:
+
 - `showcase/triage-automation-rules/feature.js`
 - `showcase/triage-automation-rules/feature.s-001.test.js`
 - `showcase/triage-automation-rules/feature.s-002.test.js`

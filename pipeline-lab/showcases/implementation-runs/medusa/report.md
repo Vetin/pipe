@@ -7,9 +7,10 @@ This validates that the Native Feature Pipeline can initialize, generate artifac
 
 ## Generated Pipeline Artifacts
 
-Workspace: `/Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/worktrees/promotions-first-order-promotion-usage-caps-run-medusa-first-order-promo/.ai/feature-workspaces/promotions/first-order-promotion-usage-caps--run-medusa-first-order-promo`
+Workspace: `/pipeline-lab/showcases/repos/worktrees/promotions-first-order-promotion-usage-caps-run-medusa-first-order-promo/.ai/feature-workspaces/promotions/first-order-promotion-usage-caps--run-medusa-first-order-promo`
 
 Artifacts:
+
 - `feature.md`
 - `architecture.md`
 - `tech-design.md`
@@ -26,6 +27,7 @@ Artifacts:
 ## Code Changes
 
 Source files:
+
 - `showcase/first-order-promotion-usage-caps/feature.js`
 - `showcase/first-order-promotion-usage-caps/feature.s-001.test.js`
 - `showcase/first-order-promotion-usage-caps/feature.s-002.test.js`

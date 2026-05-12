@@ -2,49 +2,51 @@ case: docmost
 repository: docmost
 feature: Page Approval Workflow
 language: js
-workspace: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/worktrees/pages-page-approval-workflow-run-docmost-approval/.ai/feature-workspaces/pages/page-approval-workflow--run-docmost-approval
-worktree: /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/worktrees/pages-page-approval-workflow-run-docmost-approval
+workspace: /pipeline-lab/showcases/repos/worktrees/pages-page-approval-workflow-run-docmost-approval/.ai/feature-workspaces/pages/page-approval-workflow--run-docmost-approval
+worktree: /pipeline-lab/showcases/repos/worktrees/pages-page-approval-workflow-run-docmost-approval
 source_files:
-- showcase/page-approval-workflow/feature.js
-- showcase/page-approval-workflow/feature.s-001.test.js
-- showcase/page-approval-workflow/feature.s-002.test.js
-- showcase/page-approval-workflow/feature.s-003.test.js
+  - showcase/page-approval-workflow/feature.js
+  - showcase/page-approval-workflow/feature.s-001.test.js
+  - showcase/page-approval-workflow/feature.s-002.test.js
+  - showcase/page-approval-workflow/feature.s-003.test.js
 artifact_inventory:
-- feature.md
-- architecture.md
-- tech-design.md
-- slices.yaml
-- execution.md
-- evidence/manifest.yaml
-- evidence/final-verification-output.log
-- reviews/showcase-review.yaml
-- reviews/verification-review.md
-- final-output.md
-- feature-card.md
-- state.yaml
+  - feature.md
+  - architecture.md
+  - tech-design.md
+  - slices.yaml
+  - execution.md
+  - evidence/manifest.yaml
+  - evidence/final-verification-output.log
+  - reviews/showcase-review.yaml
+  - reviews/verification-review.md
+  - final-output.md
+  - feature-card.md
+  - state.yaml
 observations:
-- slice: S-001
-  red_returncode: 1
-  green_returncode: 0
-  verification_returncode: 0
-  test: showcase/page-approval-workflow/feature.s-001.test.js
-- slice: S-002
-  red_returncode: 1
-  green_returncode: 0
-  verification_returncode: 0
-  test: showcase/page-approval-workflow/feature.s-002.test.js
-- slice: S-003
-  red_returncode: 1
-  green_returncode: 0
-  verification_returncode: 0
-  test: showcase/page-approval-workflow/feature.s-003.test.js
-diff_stat: "showcase/page-approval-workflow/feature.js         | 77 ++++++++++++++++++++++\n\
+  - slice: S-001
+    red_returncode: 1
+    green_returncode: 0
+    verification_returncode: 0
+    test: showcase/page-approval-workflow/feature.s-001.test.js
+  - slice: S-002
+    red_returncode: 1
+    green_returncode: 0
+    verification_returncode: 0
+    test: showcase/page-approval-workflow/feature.s-002.test.js
+  - slice: S-003
+    red_returncode: 1
+    green_returncode: 0
+    verification_returncode: 0
+    test: showcase/page-approval-workflow/feature.s-003.test.js
+diff_stat:
+  "showcase/page-approval-workflow/feature.js         | 77 ++++++++++++++++++++++\n\
   \ .../page-approval-workflow/feature.s-001.test.js   | 10 +++\n .../page-approval-workflow/feature.s-002.test.js\
   \   | 19 ++++++\n .../page-approval-workflow/feature.s-003.test.js   | 14 ++++\n\
   \ 4 files changed, 120 insertions(+)"
 validation: 'validation: pass'
 readiness: 'validation: pass'
-status: "M .agents/pipeline-core/references/README.md\n M .agents/pipeline-core/references/artifact-requirements.md\n\
+status:
+  "M .agents/pipeline-core/references/README.md\n M .agents/pipeline-core/references/artifact-requirements.md\n\
   \ M .agents/pipeline-core/scripts/featurectl.py\n M .agents/pipeline-core/scripts/pipelinebench.py\n\
   \ M .agents/pipeline-core/scripts/schemas/review.schema.json\n M .agents/pipeline-core/scripts/schemas/slices.schema.json\n\
   \ M .agents/skills/nfp-00-intake/SKILL.md\n M .agents/skills/nfp-01-context/SKILL.md\n\

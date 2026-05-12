@@ -6,18 +6,18 @@ Conversation exports are available in [`conversations/index.md`](conversations/i
 
 ## Summary
 
-| Repo | Branch | Commit | Code diff check | Status | Code files |
-| --- | --- | --- | --- | --- | ---: |
-| `docmost` | `nfp/docmost-page-approval` | `b997dff` | `pass` | M .codex-nfp-final.txt | 9 |
-| `formbricks` | `nfp/formbricks-signed-webhooks` | `94d85e9` | `pass` | clean | 12 |
-| `actual` | `nfp/actual-import-rule-preview-undo` | `0e5b991` | `pass` | ?? .codex-nfp-final.txt | 4 |
-| `plane` | `nfp/plane-triage-automation` | `8410cc8` | `pass` | ?? .codex-nfp-final.txt | 15 |
-| `nocodb` | `nfp/nocodb-schema-audit-log` | `11cbf80` | `pass` | ?? .codex-nfp-final.txt | 2 |
-| `appsmith` | `nfp/appsmith-version-restore-diff` | `420914a` | `pass` | clean | 6 |
-| `listmonk` | `nfp/listmonk-double-opt-in-segment` | `3f3533e` | `pass` | clean | 18 |
-| `medusa` | `nfp/medusa-first-order-promo-caps` | `148a8e0d` | `pass` | ?? .codex-nfp-final.txt | 6 |
-| `excalidraw` | `nfp/excalidraw-layer-lock-history` | `2d7f2ad` | `pass` | clean | 5 |
-| `twenty` | `nfp/twenty-company-merge` | `2a2d11c` | `pass` | ?? .codex-nfp-final.txt | 4 |
+| Repo         | Branch                                | Commit     | Code diff check | Status                  | Code files |
+| ------------ | ------------------------------------- | ---------- | --------------- | ----------------------- | ---------: |
+| `docmost`    | `nfp/docmost-page-approval`           | `b997dff`  | `pass`          | M .codex-nfp-final.txt  |          9 |
+| `formbricks` | `nfp/formbricks-signed-webhooks`      | `94d85e9`  | `pass`          | clean                   |         12 |
+| `actual`     | `nfp/actual-import-rule-preview-undo` | `0e5b991`  | `pass`          | ?? .codex-nfp-final.txt |          4 |
+| `plane`      | `nfp/plane-triage-automation`         | `8410cc8`  | `pass`          | ?? .codex-nfp-final.txt |         15 |
+| `nocodb`     | `nfp/nocodb-schema-audit-log`         | `11cbf80`  | `pass`          | ?? .codex-nfp-final.txt |          2 |
+| `appsmith`   | `nfp/appsmith-version-restore-diff`   | `420914a`  | `pass`          | clean                   |          6 |
+| `listmonk`   | `nfp/listmonk-double-opt-in-segment`  | `3f3533e`  | `pass`          | clean                   |         18 |
+| `medusa`     | `nfp/medusa-first-order-promo-caps`   | `148a8e0d` | `pass`          | ?? .codex-nfp-final.txt |          6 |
+| `excalidraw` | `nfp/excalidraw-layer-lock-history`   | `2d7f2ad`  | `pass`          | clean                   |          5 |
+| `twenty`     | `nfp/twenty-company-merge`            | `2a2d11c`  | `pass`          | ?? .codex-nfp-final.txt |          4 |
 
 ## Details
 
@@ -33,6 +33,7 @@ Conversation exports are available in [`conversations/index.md`](conversations/i
 - `.codex-nfp-final.txt` present: `true`
 
 Changed production/test files:
+
 - `apps/server/src/core/page/page-verification/dto/page-verification.dto.ts`
 - `apps/server/src/core/page/page-verification/page-verification.service.spec.ts`
 - `apps/server/src/core/page/page-verification/page-verification.service.ts`
@@ -94,6 +95,7 @@ Final summary is written to `.codex-nfp-final.txt`. It is intentionally left mod
 - `.codex-nfp-final.txt` present: `true`
 
 Changed production/test files:
+
 - `.gitignore`
 - `apps/web/app/api/(internal)/pipeline/route.ts`
 - `apps/web/app/api/(internal)/webhook-deliveries/route.ts`
@@ -133,7 +135,7 @@ Nested Codex final summary:
 
 ```text
 Nested command used:
-`codex exec --dangerously-bypass-approvals-and-sandbox -C /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/formbricks -o .codex-nfp-final.txt '<prompt requiring NFP nfp-00 through nfp-12, featurectl new/status/validate/readiness/worktree/evidence/review/finish/promote, TDD red/green evidence, production integration, promotion to nfp/formbricks-signed-webhooks, and commit>'`
+`codex exec --dangerously-bypass-approvals-and-sandbox -C /pipeline-lab/showcases/repos/formbricks -o .codex-nfp-final.txt '<prompt requiring NFP nfp-00 through nfp-12, featurectl new/status/validate/readiness/worktree/evidence/review/finish/promote, TDD red/green evidence, production integration, promotion to nfp/formbricks-signed-webhooks, and commit>'`
 
 Branch: `nfp/formbricks-signed-webhooks`
 Implementation commit: `b961e50`
@@ -192,6 +194,7 @@ Blockers/gaps:
 - `.codex-nfp-final.txt` present: `true`
 
 Changed production/test files:
+
 - `packages/loot-core/src/server/accounts/app.ts`
 - `packages/loot-core/src/server/accounts/sync.test.ts`
 - `packages/loot-core/src/server/accounts/sync.ts`
@@ -224,7 +227,7 @@ Nested Codex final summary:
 Completed on root checkout branch `nfp/actual-import-rule-preview-undo`.
 
 Supervisor command shape:
-`codex exec --dangerously-bypass-approvals-and-sandbox -C /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/actual -o .codex-nfp-final.txt '<prompt>'`
+`codex exec --dangerously-bypass-approvals-and-sandbox -C /pipeline-lab/showcases/repos/actual -o .codex-nfp-final.txt '<prompt>'`
 
 Commit:
 `0e5b991e5032494add916f322133e44a753ec7c5` - `[AI] Add import rule preview and rollback metadata`
@@ -264,6 +267,7 @@ Residual gaps:
 - `.codex-nfp-final.txt` present: `true`
 
 Changed production/test files:
+
 - `apps/api/plane/app/serializers/__init__.py`
 - `apps/api/plane/app/serializers/triage.py`
 - `apps/api/plane/app/urls/project.py`
@@ -294,7 +298,7 @@ returncode=0
 
 Nested Codex final summary:
 
-```text
+````text
 Implemented and committed the Plane triage automation NFP work.
 
 Report written and printed at `.codex-nfp-final.txt`.
@@ -311,8 +315,9 @@ Current git status:
 ```text
 ## nfp/plane-triage-automation
 ?? .codex-nfp-final.txt
-```
-```
+````
+
+````
 
 ### nocodb
 
@@ -333,7 +338,7 @@ Code diff check:
 
 ```text
 returncode=0
-```
+````
 
 Full diff check:
 
@@ -347,7 +352,7 @@ Full diff check:
 Nested Codex final summary:
 
 ```text
-Codex command shape used by supervisor: `codex exec --cd /Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/nocodb "<implementation worker prompt for nfp/nocodb-schema-audit-log>"`
+Codex command shape used by supervisor: `codex exec --cd /pipeline-lab/showcases/repos/nocodb "<implementation worker prompt for nfp/nocodb-schema-audit-log>"`
 
 Branch: `nfp/nocodb-schema-audit-log`
 Commit: `11cbf805cacdd33644adbf4e2c544dc4cc92fc37`
@@ -394,6 +399,7 @@ Blockers/gaps:
 - `.codex-nfp-final.txt` present: `true`
 
 Changed production/test files:
+
 - `app/server/appsmith-server/src/main/java/com/appsmith/server/controllers/ce/ApplicationControllerCE.java`
 - `app/server/appsmith-server/src/main/java/com/appsmith/server/dtos/ApplicationSnapshotDiffDTO.java`
 - `app/server/appsmith-server/src/main/java/com/appsmith/server/services/ce/ApplicationSnapshotServiceCE.java`
@@ -1141,7 +1147,7 @@ Changed files:
 - app/server/appsmith-server/src/main/java/com/appsmith/server/services/ce/ApplicationSnapshotServiceCEImpl.java
 - app/server/appsmith-server/src/test/java/com/appsmith/server/services/ApplicationSnapshotServiceTest.java
 - app/server/appsmith-server/src/test/java/com/appsmith/server/services/ce/ApplicationSnapshotServiceUnitTest.java
-- .agents/** installed from /Users/egormasnankin/work/harness-pipeline/.agents
+- .agents/** installed from /.agents
 - .ai/** installed/promoted NFP support, workspace, canonical feature, knowledge, evidence, and pipeline docs
 - .codex-nfp-final.txt
 
@@ -1187,6 +1193,7 @@ Blockers, gaps, and follow-up risk:
 - `.codex-nfp-final.txt` present: `true`
 
 Changed production/test files:
+
 - `cmd/handlers.go`
 - `cmd/import.go`
 - `cmd/init.go`
@@ -1285,7 +1292,7 @@ Blockers, gaps, and intentionally skipped work:
 - The checkout does contain cmd/internal/models/queries/static layers, and the correction integrates with them.
 
 Scope confirmation:
-- No files outside `/Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/repos/listmonk` were edited by the nested worker.
+- No files outside `/pipeline-lab/showcases/repos/listmonk` were edited by the nested worker.
 ```
 
 ### medusa
@@ -1300,6 +1307,7 @@ Scope confirmation:
 - `.codex-nfp-final.txt` present: `true`
 
 Changed production/test files:
+
 - `integration-tests/modules/__tests__/cart/store/first-order-promotion.spec.ts`
 - `packages/core/core-flows/src/cart/steps/get-actions-to-compute-from-promotions.ts`
 - `packages/core/core-flows/src/cart/steps/get-first-order-promotion-context.ts`
@@ -1354,6 +1362,7 @@ Final report written to `.codex-nfp-final.txt` in the feature worktree.
 - `.codex-nfp-final.txt` present: `true`
 
 Changed production/test files:
+
 - `packages/element/src/Scene.ts`
 - `packages/element/src/mutateElement.ts`
 - `packages/excalidraw/components/App.tsx`
@@ -1413,6 +1422,7 @@ Working tree is clean on `nfp/excalidraw-layer-lock-history`.
 - `.codex-nfp-final.txt` present: `true`
 
 Changed production/test files:
+
 - `packages/twenty-server/src/engine/api/common/common-query-runners/__tests__/common-merge-many-query-runner.service.spec.ts`
 - `packages/twenty-server/src/engine/api/common/common-query-runners/common-merge-many-query-runner.service.ts`
 - `packages/twenty-server/src/engine/api/common/types/common-query-args.type.ts`
@@ -1432,7 +1442,7 @@ returncode=0
 
 Nested Codex final summary:
 
-```text
+````text
 Completed and wrote the required final report to `.codex-nfp-final.txt`.
 
 Final branch: `nfp/twenty-company-merge`
@@ -1456,5 +1466,8 @@ Final git status:
 ## nfp/twenty-company-merge
 ?? .codex-nfp-final.txt
 ?? .worktrees/
+````
+
 ```
+
 ```
