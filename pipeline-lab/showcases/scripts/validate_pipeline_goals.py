@@ -85,13 +85,14 @@ def validate_agents_policy() -> list[dict[str, str]]:
     return [
         check(
             "agents_pipeline_mandatory",
-            "The Native Feature Pipeline is mandatory" in agents and "If there is doubt, use the pipeline" in agents,
-            "AGENTS.md makes pipeline use mandatory for feature-building work",
+            "Use the Native Feature Pipeline for substantial feature-building work" in agents and "Use lightweight repair mode" in agents,
+            "AGENTS.md uses selective full-pipeline triggers with lightweight repair mode",
         ),
         check(
             "agents_self_modification_policy",
-            "Use our own technology while changing it" in agents and "Do not bypass the pipeline because a change is \"internal\"" in agents,
-            "AGENTS.md applies the pipeline to pipeline self-modification",
+            "Use our own technology while changing it" in agents
+            and "Use the pipeline for pipeline self-modification when the change affects behavior" in agents,
+            "AGENTS.md applies the pipeline to behavior-affecting pipeline self-modification",
         ),
         check(
             "agents_init_before_feature_work",
@@ -140,9 +141,14 @@ def validate_project_profile() -> list[dict[str, str]]:
         check("init_project_snapshot_exists", snapshot_path.exists(), "project-snapshot.md exists"),
         check("init_source_count", int(counts.get("source_files") or 0) > 0, f"source files: {counts.get('source_files')}"),
         check("init_test_count", int(counts.get("test_files") or 0) > 0, f"test files: {counts.get('test_files')}"),
-        check("init_feature_signals", len(profile.get("feature_signals") or []) >= 3, "feature signals extracted"),
+        check("init_feature_signals", len(profile.get("feature_signals") or []) >= 2, "filtered feature signals extracted"),
         check("init_feature_catalog", len(profile.get("feature_catalog") or []) >= 3, "feature catalog extracted"),
-        check("init_current_feature_picture", "Current Feature Picture" in read_text(ROOT / ".ai/knowledge/features-overview.md"), "features overview describes current feature picture"),
+        check(
+            "init_current_feature_picture",
+            "Current Feature Picture" in read_text(ROOT / ".ai/knowledge/discovered-signals.md")
+            and "Canonical Feature Memory" in read_text(ROOT / ".ai/knowledge/features-overview.md"),
+            "discovered-signals describes current feature picture while features-overview keeps canonical memory",
+        ),
         check("context_skill_uses_profile", "featurectl.py init --profile-project" in context_skill, "context skill invokes project profiling when knowledge is sparse"),
     ]
 
