@@ -103,21 +103,14 @@ None currently recorded.
   - Decision or pattern reused: each slice links requirements, verification, ownership, rollback, and review focus.
   - Confidence: high.
 
-## Current Run State
-
-Current step: promote
-Next recommended skill: nfp-12-promote
-Blocking issues: none
-Last updated: 2026-05-12T15:47:24Z
-
 ## Event Log
 
 - 2026-05-12T15:00:16Z event_type=run_initialized detail=migrated-legacy-summary
-- 2026-05-12T15:09:01Z completed slice S-001 with evidence
-- 2026-05-12T15:26:37Z event_type=slice_completed slice=S-002 attempt=1
-- 2026-05-12T15:32:35Z event_type=slice_completed slice=S-003 attempt=1
-- 2026-05-12T15:36:50Z event_type=slice_completed slice=S-004 attempt=1
-- 2026-05-12T15:43:38Z event_type=slice_completed slice=S-005 attempt=1
+- 2026-05-12T15:09:01Z event_type=slice_completed slice=S-001 attempt=1 reason=initial
+- 2026-05-12T15:26:37Z event_type=slice_completed slice=S-002 attempt=1 reason=initial
+- 2026-05-12T15:32:35Z event_type=slice_completed slice=S-003 attempt=1 reason=initial
+- 2026-05-12T15:36:50Z event_type=slice_completed slice=S-004 attempt=1 reason=initial
+- 2026-05-12T15:43:38Z event_type=slice_completed slice=S-005 attempt=1 reason=initial
 - 2026-05-12T15:44:08Z gate=implementation old_status=blocked new_status=complete by=codex note=all readability, execution, profile, benchmark, and knowledge slices complete
 - 2026-05-12T15:44:17Z gate=review old_status=pending new_status=complete by=codex note=manual quality review recorded with no blocking findings
 - 2026-05-12T15:44:24Z gate=verification old_status=pending new_status=complete by=codex note=full feature-pipeline suite and goal validation passed
@@ -129,3 +122,11 @@ Last updated: 2026-05-12T15:47:24Z
 - Migrated from legacy execution sections on 2026-05-12.
 - Initial current step: readiness
 - Initial next step: nfp-06-readiness
+
+
+## Current Run State
+
+Current step: promote
+Next recommended skill: nfp-12-promote
+Blocking issues: none
+Last updated: 2026-05-12T15:47:24Z

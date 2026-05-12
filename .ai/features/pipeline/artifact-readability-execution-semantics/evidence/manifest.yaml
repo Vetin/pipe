@@ -38,7 +38,7 @@ slices:
     review:
       timestamp: '2026-05-12T15:34:00Z'
       summary_file: S-002/05-review-summary.md
-    diff_hash: s002-execution-retry-semantics
+    change_label: s002-execution-retry-semantics
   S-003:
     red:
       timestamp: '2026-05-12T15:40:00Z'
@@ -57,7 +57,7 @@ slices:
     review:
       timestamp: '2026-05-12T15:47:00Z'
       summary_file: S-003/05-review-summary.md
-    diff_hash: s003-lab-signal-profile-categories
+    change_label: s003-lab-signal-profile-categories
   S-004:
     red:
       timestamp: '2026-05-12T15:50:00Z'
@@ -76,7 +76,7 @@ slices:
     review:
       timestamp: '2026-05-12T15:58:00Z'
       summary_file: S-004/05-review-summary.md
-    diff_hash: s004-pipelinebench-manual-soft-score
+    change_label: s004-pipelinebench-manual-soft-score
   S-005:
     red:
       timestamp: '2026-05-12T16:02:00Z'
@@ -95,4 +95,4 @@ slices:
     review:
       timestamp: '2026-05-12T16:10:00Z'
       summary_file: S-005/05-review-summary.md
-    diff_hash: s005-adr-shared-knowledge-promotion
+    change_label: s005-adr-shared-knowledge-promotion

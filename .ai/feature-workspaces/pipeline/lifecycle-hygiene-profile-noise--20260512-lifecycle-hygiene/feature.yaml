@@ -6,7 +6,7 @@ title: Lifecycle hygiene and profile noise
 status: promoted-readonly
 run_id: 20260512-lifecycle-hygiene
 branch: feature/pipeline-lifecycle-hygiene-profile-noise-20260512-lifecycle-hygiene
-worktree: worktrees/pipeline-lifecycle-hygiene-profile-noise-20260512-lifecycle-hygiene
+worktree: ../worktrees/pipeline-lifecycle-hygiene-profile-noise-20260512-lifecycle-hygiene
 canonical_path: .ai/features/pipeline/lifecycle-hygiene-profile-noise
 workspace_path: .ai/feature-workspaces/pipeline/lifecycle-hygiene-profile-noise--20260512-lifecycle-hygiene
 aliases: []

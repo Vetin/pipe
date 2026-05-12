@@ -55,13 +55,6 @@ None currently recorded.
 - Docs Consulted: Slicing - split timeout metadata, debug wrapper, and
   regenerated comparison artifacts.
 
-## Current Run State
-
-Current step: promote
-Next recommended skill: nfp-12-promote
-Blocking issues: none
-Last updated: 2026-05-12T12:55:00Z
-
 ## Event Log
 
 - 2026-05-12T00:13:24Z event_type=run_initialized detail=migrated-legacy-summary
@@ -71,11 +64,11 @@ Last updated: 2026-05-12T12:55:00Z
 - 2026-05-12T00:18:03Z gate=tech_design old_status=pending new_status=approved by=codex note=technical design defines mode, timeout, validation contracts
 - 2026-05-12T00:18:03Z gate=slicing_readiness old_status=pending new_status=approved by=codex note=slices cover runner metadata, debug wrapper, and regenerated artifacts
 - 2026-05-12T00:18:03Z gate=implementation old_status=blocked new_status=delegated by=codex note=implementation may proceed in feature worktree
-- 2026-05-12T00:26:42Z completed slice S-001 with evidence
-- 2026-05-12T00:26:42Z completed slice S-002 with evidence
-- 2026-05-12T00:26:54Z event_type=slice_retry_completed slice=S-001 attempt=2 reason=historical-retry
-- 2026-05-12T00:26:54Z event_type=slice_retry_completed slice=S-002 attempt=2 reason=historical-retry
-- 2026-05-12T00:38:38Z completed slice S-003 with evidence
+- 2026-05-12T00:26:42Z event_type=slice_completed slice=S-001 attempt=1 reason=initial
+- 2026-05-12T00:26:42Z event_type=slice_completed slice=S-002 attempt=1 reason=initial
+- 2026-05-12T00:26:54Z event_type=slice_retry_completed slice=S-001 attempt=2 reason=historical-retry supersedes=attempt-1
+- 2026-05-12T00:26:54Z event_type=slice_retry_completed slice=S-002 attempt=2 reason=historical-retry supersedes=attempt-1
+- 2026-05-12T00:38:38Z event_type=slice_completed slice=S-003 attempt=1 reason=initial
 - 2026-05-12T00:39:02Z gate=implementation old_status=delegated new_status=complete by=codex note=all slices complete
 - 2026-05-12T00:40:16Z gate=review old_status=pending new_status=complete by=codex note=review artifacts recorded
 - 2026-05-12T00:40:17Z gate=verification old_status=pending new_status=complete by=codex note=final verification output recorded
@@ -86,3 +79,11 @@ Last updated: 2026-05-12T12:55:00Z
 - Migrated from legacy execution sections on 2026-05-12.
 - Initial current step: promote
 - Initial next step: nfp-12-promote
+
+
+## Current Run State
+
+Current step: promote
+Next recommended skill: nfp-12-promote
+Blocking issues: none
+Last updated: 2026-05-12T12:55:00Z

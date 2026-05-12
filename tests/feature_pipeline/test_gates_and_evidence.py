@@ -123,6 +123,34 @@ class GatesAndEvidenceTests(unittest.TestCase):
         self.assertEqual(manifest["slices"]["S-001"]["diff_hash"], "abc123")
         self.assertEqual(slices["slices"][0]["status"], "complete")
         self.assertEqual(slices["slices"][0]["evidence_status"], "complete")
+        self.assertIn(
+            "event_type=slice_completed slice=S-001 attempt=1 reason=initial",
+            (workspace / "execution.md").read_text(encoding="utf-8"),
+        )
+
+    def test_complete_slice_stores_semantic_label_outside_diff_hash(self):
+        workspace = self.ready_workspace("run-semantic-label")
+
+        self.record_full_evidence(workspace)
+        run(
+            [
+                sys.executable,
+                str(SCRIPT),
+                "complete-slice",
+                "--workspace",
+                str(workspace),
+                "--slice",
+                "S-001",
+                "--diff-hash",
+                "s001-source-truth-hardening",
+            ],
+            self.repo,
+        )
+
+        manifest = yaml.safe_load((workspace / "evidence/manifest.yaml").read_text(encoding="utf-8"))
+        slice_entry = manifest["slices"]["S-001"]
+        self.assertEqual(slice_entry["change_label"], "s001-source-truth-hardening")
+        self.assertNotIn("diff_hash", slice_entry)
 
     def test_complete_slice_is_idempotent_without_explicit_retry(self):
         workspace = self.ready_workspace("run-idempotent-complete")
@@ -224,7 +252,12 @@ class GatesAndEvidenceTests(unittest.TestCase):
         execution = (workspace / "execution.md").read_text(encoding="utf-8")
         self.assertEqual(manifest["slices"]["S-001"]["retries"][0]["attempt"], 2)
         self.assertEqual(manifest["slices"]["S-001"]["retries"][0]["reason"], "rerun-after-review")
-        self.assertIn("event_type=slice_retry_completed slice=S-001 attempt=2 reason=rerun-after-review", execution)
+        self.assertEqual(manifest["slices"]["S-001"]["retries"][0]["change_label"], "changed456")
+        self.assertNotIn("diff_hash", manifest["slices"]["S-001"]["retries"][0])
+        self.assertIn(
+            "event_type=slice_retry_completed slice=S-001 attempt=2 reason=rerun-after-review supersedes=attempt-1",
+            execution,
+        )
 
     def test_complete_slice_fails_when_green_is_before_red(self):
         workspace = self.ready_workspace("run-bad-order")
@@ -268,6 +301,19 @@ class GatesAndEvidenceTests(unittest.TestCase):
 
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("evidence manifest references unknown slice: S-999", result.stdout)
+
+    def test_validate_evidence_rejects_semantic_label_in_diff_hash(self):
+        workspace = self.ready_workspace("run-semantic-diff-hash")
+        self.record_full_evidence(workspace)
+        manifest_path = workspace / "evidence/manifest.yaml"
+        manifest = yaml.safe_load(manifest_path.read_text(encoding="utf-8"))
+        manifest["slices"]["S-001"]["diff_hash"] = "s001-semantic-label"
+        manifest_path.write_text(yaml.safe_dump(manifest, sort_keys=False), encoding="utf-8")
+
+        result = run([sys.executable, str(SCRIPT), "validate", "--workspace", str(workspace), "--evidence"], self.repo, check=False)
+
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("S-001 diff_hash must be a hexadecimal hash; use change_label for semantic labels", result.stdout)
 
     def create_workspace(self, run_id="run-gates"):
         run(

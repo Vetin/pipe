@@ -66,19 +66,21 @@ Docs Consulted: Slicing
   - Decision or pattern reused: CLI-level temp repository tests.
   - Confidence: high.
 
+## Event Log
+
+- 2026-05-12T17:17:48Z event_type=run_initialized step=context next=nfp-01-context
+- 2026-05-12T17:35:16Z event_type=slice_completed slice=S-001 attempt=1 reason=initial
+- 2026-05-12T17:47:35Z event_type=slice_completed slice=S-002 attempt=1 reason=initial
+
+## History
+
+- Initial current step: context
+- Initial next step: nfp-01-context
+
+
 ## Current Run State
 
 Current step: context
 Next recommended skill: nfp-01-context
 Blocking issues: none
 Last updated: 2026-05-12T17:17:48Z
-
-## Event Log
-
-- 2026-05-12T17:17:48Z event_type=run_initialized step=context next=nfp-01-context
-- 2026-05-12T17:35:16Z event_type=slice_completed slice=S-001 attempt=1
-
-## History
-
-- Initial current step: context
-- Initial next step: nfp-01-context

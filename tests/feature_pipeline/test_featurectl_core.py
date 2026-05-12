@@ -257,6 +257,8 @@ class FeatureCtlCoreTests(unittest.TestCase):
         self.assertIn("## Current Run State", execution)
         self.assertIn("## Event Log", execution)
         self.assertIn("## History", execution)
+        self.assertLess(execution.index("## Event Log"), execution.index("## Current Run State"))
+        self.assertLess(execution.index("## History"), execution.index("## Current Run State"))
         self.assertNotIn("## Latest Status", execution)
         self.assertIn("event_type=run_initialized", execution)
 

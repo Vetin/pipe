@@ -6,7 +6,7 @@ title: Artifact readability and execution semantics
 status: complete
 run_id: 20260512-readability-exec
 branch: feature/pipeline-artifact-readability-execution-semantics-20260512-readability-exec
-worktree: worktrees/pipeline-artifact-readability-execution-semantics-20260512-readability-exec
+worktree: ../worktrees/pipeline-artifact-readability-execution-semantics-20260512-readability-exec
 canonical_path: .ai/features/pipeline/artifact-readability-execution-semantics
 workspace_path: .ai/feature-workspaces/pipeline/artifact-readability-execution-semantics--20260512-readability-exec
 aliases: []

@@ -92,13 +92,6 @@ None currently recorded.
     implementation begins.
   - Confidence: medium.
 
-## Current Run State
-
-Current step: promote
-Next recommended skill: nfp-12-promote
-Blocking issues: none
-Last updated: 2026-05-12T13:09:41Z
-
 ## Event Log
 
 - 2026-05-12T12:32:35Z event_type=run_initialized detail=migrated-legacy-summary
@@ -107,10 +100,10 @@ Last updated: 2026-05-12T13:09:41Z
 - 2026-05-12T12:41:21Z gate=architecture old_status=pending new_status=approved by=codex note=architecture written with source truth topology
 - 2026-05-12T12:41:21Z gate=tech_design old_status=pending new_status=approved by=codex note=tech design written with validation and evidence contracts
 - 2026-05-12T12:41:21Z gate=slicing_readiness old_status=pending new_status=approved by=codex note=slices cover validation, evidence, skills, profile filtering
-- 2026-05-12T12:59:40Z completed slice S-001 with evidence
-- 2026-05-12T12:59:40Z completed slice S-002 with evidence
-- 2026-05-12T12:59:40Z completed slice S-003 with evidence
-- 2026-05-12T12:59:41Z completed slice S-004 with evidence
+- 2026-05-12T12:59:40Z event_type=slice_completed slice=S-001 attempt=1 reason=initial
+- 2026-05-12T12:59:40Z event_type=slice_completed slice=S-002 attempt=1 reason=initial
+- 2026-05-12T12:59:40Z event_type=slice_completed slice=S-003 attempt=1 reason=initial
+- 2026-05-12T12:59:41Z event_type=slice_completed slice=S-004 attempt=1 reason=initial
 - 2026-05-12T13:00:55Z gate=implementation old_status=blocked new_status=complete by=codex note=all four hardening slices complete with evidence
 - 2026-05-12T13:00:55Z gate=review old_status=pending new_status=complete by=codex note=REV-001 has no blocking findings
 - 2026-05-12T13:00:55Z gate=verification old_status=pending new_status=complete by=codex note=focused tests and evidence validation passed
@@ -122,3 +115,11 @@ Last updated: 2026-05-12T13:09:41Z
 - Migrated from legacy execution sections on 2026-05-12.
 - Initial current step: promote
 - Initial next step: nfp-12-promote
+
+
+## Current Run State
+
+Current step: promote
+Next recommended skill: nfp-12-promote
+Blocking issues: none
+Last updated: 2026-05-12T13:09:41Z

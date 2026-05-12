@@ -54,13 +54,6 @@ None currently recorded.
 - Docs Consulted: Slicing - used slice validation requirements and iteration
   ledger policy to define implementation slices.
 
-## Current Run State
-
-Current step: promote
-Next recommended skill: nfp-12-promote
-Blocking issues: none
-Last updated: 2026-05-12T14:05:00Z
-
 ## Event Log
 
 - 2026-05-12T00:00:03Z event_type=run_initialized detail=migrated-legacy-summary
@@ -70,9 +63,9 @@ Last updated: 2026-05-12T14:05:00Z
 - 2026-05-12T00:03:06Z gate=tech_design old_status=pending new_status=approved by=codex note=technical design scoped to offline deterministic runner and tests
 - 2026-05-12T00:03:06Z gate=slicing_readiness old_status=pending new_status=approved by=codex note=slices cover runner, skill improvement, and validation
 - 2026-05-12T00:03:06Z gate=implementation old_status=blocked new_status=delegated by=codex note=implementation may proceed in feature worktree
-- 2026-05-12T00:08:58Z completed slice S-001 with evidence
-- 2026-05-12T00:08:58Z completed slice S-002 with evidence
-- 2026-05-12T00:08:59Z completed slice S-003 with evidence
+- 2026-05-12T00:08:58Z event_type=slice_completed slice=S-001 attempt=1 reason=initial
+- 2026-05-12T00:08:58Z event_type=slice_completed slice=S-002 attempt=1 reason=initial
+- 2026-05-12T00:08:59Z event_type=slice_completed slice=S-003 attempt=1 reason=initial
 - 2026-05-12T00:09:44Z gate=review old_status=pending new_status=complete by=codex note=review artifact recorded and nonblocking
 - 2026-05-12T00:09:44Z gate=verification old_status=pending new_status=complete by=codex note=focused, goal, and full validation passed
 - 2026-05-12T00:09:44Z gate=finish old_status=pending new_status=complete by=codex note=feature card and shared knowledge decision table completed
@@ -83,3 +76,11 @@ Last updated: 2026-05-12T14:05:00Z
 - Migrated from legacy execution sections on 2026-05-12.
 - Initial current step: promote
 - Initial next step: nfp-12-promote
+
+
+## Current Run State
+
+Current step: promote
+Next recommended skill: nfp-12-promote
+Blocking issues: none
+Last updated: 2026-05-12T14:05:00Z

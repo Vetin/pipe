@@ -4,7 +4,7 @@ run_id: 20260512-lifecycle-hygiene
 current_step: promote
 worktree:
   branch: feature/pipeline-lifecycle-hygiene-profile-noise-20260512-lifecycle-hygiene
-  path: worktrees/pipeline-lifecycle-hygiene-profile-noise-20260512-lifecycle-hygiene
+  path: ../worktrees/pipeline-lifecycle-hygiene-profile-noise-20260512-lifecycle-hygiene
 gates:
   feature_contract: approved
   architecture: approved

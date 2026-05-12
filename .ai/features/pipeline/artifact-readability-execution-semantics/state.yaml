@@ -6,7 +6,7 @@ lifecycle: canonical
 read_only: true
 worktree:
   branch: feature/pipeline-artifact-readability-execution-semantics-20260512-readability-exec
-  path: worktrees/pipeline-artifact-readability-execution-semantics-20260512-readability-exec
+  path: ../worktrees/pipeline-artifact-readability-execution-semantics-20260512-readability-exec
 gates:
   feature_contract: approved
   architecture: approved

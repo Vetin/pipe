@@ -1547,13 +1547,6 @@ None currently recorded.
 
 None yet.
 
-## Current Run State
-
-Current step: context
-Next recommended skill: nfp-01-context
-Blocking issues: none
-Last updated: {now}
-
 ## Event Log
 
 - {now} event_type=run_initialized step=context next=nfp-01-context
@@ -1562,6 +1555,13 @@ Last updated: {now}
 
 - Initial current step: context
 - Initial next step: nfp-01-context
+
+## Current Run State
+
+Current step: context
+Next recommended skill: nfp-01-context
+Blocking issues: none
+Last updated: {now}
 """
 
 
@@ -1828,6 +1828,12 @@ def validate_execution_latest_status(workspace: Path, state: dict[str, Any]) -> 
         blockers.append("execution.md missing ## Event Log")
     if not re.search(r"^## History\s*$", execution, flags=re.MULTILINE):
         blockers.append("execution.md missing ## History")
+    event_match = re.search(r"^## Event Log\s*$", execution, flags=re.MULTILINE)
+    history_match = re.search(r"^## History\s*$", execution, flags=re.MULTILINE)
+    if current_matches and event_match and event_match.start() > current_matches[0].start():
+        blockers.append("execution.md Current Run State must appear after ## Event Log")
+    if current_matches and history_match and history_match.start() > current_matches[0].start():
+        blockers.append("execution.md Current Run State must appear after ## History")
     blockers.extend(validate_no_active_legacy_execution_sections(execution))
     blockers.extend(validate_events_are_in_event_log(execution))
     blockers.extend(validate_execution_completion_events(execution))
@@ -1894,33 +1900,36 @@ def extract_markdown_section(markdown: str, heading: str) -> str | None:
 def validate_execution_completion_events(execution: str) -> list[str]:
     blockers: list[str] = []
     seen: set[str] = set()
-    for line in execution.splitlines():
+    event_log = extract_markdown_section(execution, "Event Log") or execution
+    for line in event_log.splitlines():
         structured = re.search(r"\bevent_type=(slice_completed|slice_retry_completed)\b.*\bslice=(S-[0-9]{3})\b", line)
         if structured:
             event_type = structured.group(1)
             slice_id = structured.group(2)
-            if event_type == "slice_completed" and slice_id in seen:
-                blockers.append(f"execution.md duplicate completed slice event for {slice_id}")
-            if event_type == "slice_retry_completed":
+            if event_type == "slice_completed":
+                attempt_match = re.search(r"\battempt=([0-9]+)\b", line)
+                reason_match = re.search(r"\breason=initial\b", line)
+                if slice_id in seen:
+                    blockers.append(f"execution.md duplicate completed slice event for {slice_id}")
+                if not attempt_match or int(attempt_match.group(1)) != 1:
+                    blockers.append(f"execution.md completed slice event for {slice_id} missing attempt=1")
+                if not reason_match:
+                    blockers.append(f"execution.md completed slice event for {slice_id} missing reason=initial")
+                seen.add(slice_id)
+            else:
                 attempt_match = re.search(r"\battempt=([0-9]+)\b", line)
                 reason_match = re.search(r"\breason=([^\s]+)\b", line)
+                supersedes_match = re.search(r"\bsupersedes=attempt-[0-9]+\b", line)
                 if not attempt_match or int(attempt_match.group(1)) < 2:
                     blockers.append(f"execution.md retry completed slice event for {slice_id} missing attempt>=2")
                 if not reason_match:
                     blockers.append(f"execution.md retry completed slice event for {slice_id} missing reason")
-            seen.add(slice_id)
+                if not supersedes_match:
+                    blockers.append(f"execution.md retry completed slice event for {slice_id} missing supersedes")
             continue
         match = re.search(r"\bcompleted slice (S-[0-9]{3})\b", line)
-        if not match:
-            continue
-        slice_id = match.group(1)
-        is_retry = "retry" in line.lower()
-        if is_retry:
-            if not (re.search(r"\battempt=([2-9][0-9]*)\b", line) and re.search(r"\breason=([^\s]+)\b", line)):
-                blockers.append(f"execution.md retry completed slice event for {slice_id} missing attempt and reason")
-        elif slice_id in seen:
-            blockers.append(f"execution.md duplicate completed slice event for {slice_id}")
-        seen.add(slice_id)
+        if match:
+            blockers.append(f"execution.md unstructured completed slice event for {match.group(1)}; use event_type=slice_completed")
     return blockers
 
 
@@ -2655,8 +2664,13 @@ def validate_slice_evidence(workspace: Path, slice_id: str, manifest: dict[str, 
         green_ts = parse_timestamp(slice_entry["green"]["timestamp"])
         if red_ts >= green_ts:
             blockers.append(f"{slice_id} red evidence timestamp must be before green evidence timestamp")
-    if "commit" not in slice_entry and "diff_hash" not in slice_entry:
-        blockers.append(f"{slice_id} missing commit or diff_hash")
+    if "commit" not in slice_entry and "diff_hash" not in slice_entry and "change_label" not in slice_entry:
+        blockers.append(f"{slice_id} missing commit, diff_hash, or change_label")
+    if "diff_hash" in slice_entry and not is_hex_hash(str(slice_entry["diff_hash"])):
+        blockers.append(f"{slice_id} diff_hash must be a hexadecimal hash; use change_label for semantic labels")
+    for retry in slice_entry.get("retries") or []:
+        if isinstance(retry, dict) and "diff_hash" in retry and not is_hex_hash(str(retry["diff_hash"])):
+            blockers.append(f"{slice_id} retry diff_hash must be a hexadecimal hash; use change_label for semantic labels")
     return blockers
 
 
@@ -2753,29 +2767,46 @@ def add_slice_commit_metadata(
     attempt: int = 1,
 ) -> None:
     entry = manifest.setdefault("slices", {}).setdefault(slice_id, {})
-    if commit:
-        entry["commit"] = commit
-    if diff_hash:
-        entry["diff_hash"] = diff_hash
+    metadata = slice_completion_metadata(commit=commit, diff_hash=diff_hash)
+    if not retry:
+        entry.update(metadata)
     if retry:
         retries = entry.setdefault("retries", [])
-        retries.append(
-            {
-                "timestamp": utc_now(),
-                "attempt": attempt,
-                "reason": retry_reason,
-                "commit": commit,
-                "diff_hash": diff_hash,
-            }
-        )
+        retry_entry = {
+            "timestamp": utc_now(),
+            "attempt": attempt,
+            "reason": retry_reason,
+        }
+        retry_entry.update(metadata)
+        retries.append(retry_entry)
+
+
+def slice_completion_metadata(*, commit: str | None, diff_hash: str | None) -> dict[str, str]:
+    metadata: dict[str, str] = {}
+    if commit:
+        metadata["commit"] = commit
+    if diff_hash:
+        if is_hex_hash(diff_hash):
+            metadata["diff_hash"] = diff_hash
+        else:
+            metadata["change_label"] = diff_hash
+    return metadata
+
+
+def is_hex_hash(value: str) -> bool:
+    return bool(re.fullmatch(r"[0-9a-fA-F]{6,64}", value.strip()))
 
 
 def render_slice_completion_event(slice_id: str, *, retry: bool, attempt: int, reason: str | None) -> str:
     timestamp = utc_now()
     if retry:
         reason_value = slugify_event_value(reason or "unspecified")
-        return f"- {timestamp} event_type=slice_retry_completed slice={slice_id} attempt={attempt} reason={reason_value}"
-    return f"- {timestamp} event_type=slice_completed slice={slice_id} attempt=1"
+        supersedes = max(1, attempt - 1)
+        return (
+            f"- {timestamp} event_type=slice_retry_completed slice={slice_id} "
+            f"attempt={attempt} reason={reason_value} supersedes=attempt-{supersedes}"
+        )
+    return f"- {timestamp} event_type=slice_completed slice={slice_id} attempt=1 reason=initial"
 
 
 def slugify_event_value(value: str) -> str:
@@ -2898,23 +2929,19 @@ def write_latest_status(workspace: Path, current_step: str) -> None:
         "Blocking issues: none\n"
         f"Last updated: {utc_now()}\n"
     )
-    current_match = re.search(r"^## Current Run State\s*$", execution, flags=re.MULTILINE)
-    if current_match:
-        prefix = execution[: current_match.start()]
-        rest = execution[current_match.end() :]
-        next_heading = re.search(r"\n##\s+", rest)
-        suffix = rest[next_heading.start() :] if next_heading else ""
-        write_text(execution_path, prefix.rstrip() + "\n\n" + current_state + suffix)
-    elif re.search(r"^## Latest Status\s*$", execution, flags=re.MULTILINE):
-        legacy_match = re.search(r"^## Latest Status\s*$", execution, flags=re.MULTILINE)
-        assert legacy_match is not None
-        prefix = execution[: legacy_match.start()]
-        rest = execution[legacy_match.end() :]
-        next_heading = re.search(r"\n##\s+", rest)
-        suffix = rest[next_heading.start() :] if next_heading else ""
-        write_text(execution_path, prefix.rstrip() + "\n\n" + current_state + suffix)
-    else:
-        write_text(execution_path, execution.rstrip() + "\n\n" + current_state)
+    execution = remove_markdown_section_by_heading(execution, "Current Run State")
+    execution = remove_markdown_section_by_heading(execution, "Latest Status")
+    write_text(execution_path, execution.rstrip() + "\n\n" + current_state)
+
+
+def remove_markdown_section_by_heading(markdown: str, heading: str) -> str:
+    match = re.search(rf"^## {re.escape(heading)}\s*$", markdown, flags=re.MULTILINE)
+    if not match:
+        return markdown
+    rest = markdown[match.end() :]
+    next_heading = re.search(r"\n##\s+", rest)
+    suffix = rest[next_heading.start() :] if next_heading else ""
+    return (markdown[: match.start()].rstrip() + "\n\n" + suffix.lstrip()).rstrip() + "\n"
 
 
 if __name__ == "__main__":

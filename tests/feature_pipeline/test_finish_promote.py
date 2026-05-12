@@ -234,6 +234,21 @@ class FinishPromoteTests(unittest.TestCase):
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("execution.md duplicate completed slice event for S-001", result.stdout)
 
+    def test_validate_rejects_unstructured_completed_slice_events(self):
+        workspace = self.completed_workspace("run-unstructured-slice-complete")
+        execution_path = workspace / "execution.md"
+        execution = execution_path.read_text(encoding="utf-8")
+        execution = execution.replace(
+            "event_type=slice_completed slice=S-001 attempt=1 reason=initial",
+            "completed slice S-001 with evidence",
+        )
+        execution_path.write_text(execution, encoding="utf-8")
+
+        result = run([sys.executable, str(SCRIPT), "validate", "--workspace", str(workspace)], self.repo, check=False)
+
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("execution.md unstructured completed slice event for S-001; use event_type=slice_completed", result.stdout)
+
     def test_validate_rejects_retry_without_attempt_or_reason(self):
         workspace = self.completed_workspace("run-retry-without-semantics")
         execution_path = workspace / "execution.md"
@@ -247,7 +262,7 @@ class FinishPromoteTests(unittest.TestCase):
         result = run([sys.executable, str(SCRIPT), "validate", "--workspace", str(workspace)], self.repo, check=False)
 
         self.assertNotEqual(result.returncode, 0)
-        self.assertIn("execution.md retry completed slice event for S-001 missing attempt and reason", result.stdout)
+        self.assertIn("execution.md unstructured completed slice event for S-001; use event_type=slice_completed", result.stdout)
 
     def test_promote_conflict_aborts_by_default(self):
         first = self.completed_workspace("run-promote-first")

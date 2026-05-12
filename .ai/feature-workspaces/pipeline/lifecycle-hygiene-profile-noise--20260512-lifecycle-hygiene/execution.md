@@ -87,20 +87,13 @@ None currently recorded.
   - Decision or pattern reused: each slice carries TDD commands, ownership, dependency notes, and verification commands.
   - Confidence: high.
 
-## Current Run State
-
-Current step: promote
-Next recommended skill: nfp-12-promote
-Blocking issues: none
-Last updated: 2026-05-12T14:13:29Z
-
 ## Event Log
 
 - 2026-05-12T13:36:17Z event_type=run_initialized detail=migrated-legacy-summary
-- 2026-05-12T13:47:38Z completed slice S-001 with evidence
-- 2026-05-12T13:55:46Z completed slice S-002 with evidence
-- 2026-05-12T14:02:11Z completed slice S-003 with evidence
-- 2026-05-12T14:06:02Z completed slice S-004 with evidence
+- 2026-05-12T13:47:38Z event_type=slice_completed slice=S-001 attempt=1 reason=initial
+- 2026-05-12T13:55:46Z event_type=slice_completed slice=S-002 attempt=1 reason=initial
+- 2026-05-12T14:02:11Z event_type=slice_completed slice=S-003 attempt=1 reason=initial
+- 2026-05-12T14:06:02Z event_type=slice_completed slice=S-004 attempt=1 reason=initial
 - 2026-05-12T14:10:14Z gate=implementation old_status=blocked new_status=complete by=codex note=all lifecycle, execution, profile, and policy slices complete
 - 2026-05-12T14:10:14Z gate=review old_status=pending new_status=complete by=codex note=quality review recorded with no blocking findings
 - 2026-05-12T14:10:14Z gate=verification old_status=pending new_status=complete by=codex note=full tests passed: 128 passed
@@ -111,3 +104,11 @@ Last updated: 2026-05-12T14:13:29Z
 - Migrated from legacy execution sections on 2026-05-12.
 - Initial current step: promote
 - Initial next step: nfp-12-promote
+
+
+## Current Run State
+
+Current step: promote
+Next recommended skill: nfp-12-promote
+Blocking issues: none
+Last updated: 2026-05-12T14:13:29Z

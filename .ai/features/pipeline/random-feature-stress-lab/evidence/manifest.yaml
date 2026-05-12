@@ -9,7 +9,7 @@ slices:
     review:
       timestamp: '2026-05-12T00:04:01Z'
       summary_file: S-001/05-review-summary.md
-    diff_hash: random-stress-S-001
+    change_label: random-stress-S-001
     red:
       timestamp: '2026-05-12T00:01:01Z'
       command_file: S-001/01-red-command.txt
@@ -28,7 +28,7 @@ slices:
     review:
       timestamp: '2026-05-12T00:04:02Z'
       summary_file: S-002/05-review-summary.md
-    diff_hash: random-stress-S-002
+    change_label: random-stress-S-002
     red:
       timestamp: '2026-05-12T00:01:02Z'
       command_file: S-002/01-red-command.txt
@@ -47,7 +47,7 @@ slices:
     review:
       timestamp: '2026-05-12T00:04:03Z'
       summary_file: S-003/05-review-summary.md
-    diff_hash: random-stress-S-003
+    change_label: random-stress-S-003
     red:
       timestamp: '2026-05-12T00:01:03Z'
       command_file: S-003/01-red-command.txt
