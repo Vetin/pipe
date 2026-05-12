@@ -1,0 +1,10 @@
+python -m pytest tests/feature_pipeline -q
+135 passed, 107 subtests passed in 45.87s
+
+python pipeline-lab/showcases/scripts/validate_pipeline_goals.py --passes 3 --report /tmp/readability-goals.md
+passes: 3
+failures: 0
+
+pipelinebench.py score-run --soft-score-file /tmp/pipelinebench-manual-score.yaml
+hard_score: 8/8
+soft_score: 12/15

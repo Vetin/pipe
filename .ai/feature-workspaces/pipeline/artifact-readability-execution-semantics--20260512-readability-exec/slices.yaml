@@ -228,8 +228,8 @@ slices:
   review_focus:
   - ADR index captures architectural decisions
   - knowledge docs are deeper and source-linked
-  evidence_status: pending
-  status: pending
+  evidence_status: complete
+  status: complete
   iteration_budget: 4
   rollback_point: pre-slice git state
   independent_verification: python -m pytest tests/feature_pipeline

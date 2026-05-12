@@ -90,6 +90,35 @@ class ArtifactFormattingTests(unittest.TestCase):
                 long_lines = [line for line in content.splitlines() if len(line) > 220]
                 self.assertEqual(long_lines, [])
 
+    def test_source_controlled_knowledge_docs_capture_pipeline_lifecycle(self):
+        architecture = (ROOT / ".ai/knowledge/architecture-overview.md").read_text(encoding="utf-8")
+        module_map = (ROOT / ".ai/knowledge/module-map.md").read_text(encoding="utf-8")
+        integration_map = (ROOT / ".ai/knowledge/integration-map.md").read_text(encoding="utf-8")
+        adr_index = (ROOT / ".ai/knowledge/adr-index.md").read_text(encoding="utf-8")
+
+        for expected in (
+            "## Control Plane",
+            "## Artifact Lifecycle",
+            "featurectl.py",
+            "pipelinebench.py",
+            "feature workspace",
+            "canonical feature memory",
+            "evidence lifecycle",
+        ):
+            self.assertIn(expected, architecture)
+        self.assertIn("## Pipeline Control Modules", module_map)
+        self.assertIn(".agents/pipeline-core/scripts/featurectl.py", module_map)
+        self.assertIn(".agents/pipeline-core/scripts/pipelinebench.py", module_map)
+        self.assertIn("## Pipeline Artifact Flow", integration_map)
+        self.assertIn("feature workspace -> canonical feature memory", integration_map)
+        for adr in (
+            "ADR-001 Promoted Readonly Workspaces",
+            "ADR-002 Canonical Memory And Lab Signals",
+            "ADR-003 Execution Event Log Semantics",
+            "ADR-004 Manual Benchmark Soft Scoring",
+        ):
+            self.assertIn(adr, adr_index)
+
 
 if __name__ == "__main__":
     unittest.main()

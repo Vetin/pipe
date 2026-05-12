@@ -1,0 +1,1 @@
+Red run failed as expected: architecture-overview.md lacked Control Plane and Artifact Lifecycle sections, and ADR/module/integration knowledge had not yet captured the pipeline lifecycle decisions.

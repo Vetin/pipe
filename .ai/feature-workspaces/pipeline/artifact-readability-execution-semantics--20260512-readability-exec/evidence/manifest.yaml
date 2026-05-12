@@ -77,3 +77,22 @@ slices:
       timestamp: '2026-05-12T15:58:00Z'
       summary_file: S-004/05-review-summary.md
     diff_hash: s004-pipelinebench-manual-soft-score
+  S-005:
+    red:
+      timestamp: '2026-05-12T16:02:00Z'
+      command_file: S-005/01-red-command.txt
+      output_file: S-005/01-red-output.log
+      git_state_file: S-005/00-pre-red-git-state.txt
+    green:
+      timestamp: '2026-05-12T16:08:00Z'
+      command_file: S-005/03-green-command.txt
+      output_file: S-005/03-green-output.log
+      git_state_file: S-005/02-pre-green-git-state.txt
+    verification:
+      timestamp: '2026-05-12T16:09:00Z'
+      command_file: S-005/04-verification-command.txt
+      output_file: S-005/04-verification-output.log
+    review:
+      timestamp: '2026-05-12T16:10:00Z'
+      summary_file: S-005/05-review-summary.md
+    diff_hash: s005-adr-shared-knowledge-promotion
