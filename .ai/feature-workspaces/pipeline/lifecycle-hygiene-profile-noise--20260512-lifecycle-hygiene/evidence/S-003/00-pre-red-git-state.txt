@@ -1,0 +1,13 @@
+## feature/pipeline-lifecycle-hygiene-profile-noise-20260512-lifecycle-hygiene
+ M .agents/pipeline-core/scripts/featurectl.py
+ M .ai/knowledge/architecture-overview.md
+ M .ai/knowledge/contracts-overview.md
+ M .ai/knowledge/features-overview.md
+ M .ai/knowledge/integration-map.md
+ M .ai/knowledge/module-map.md
+ M .ai/knowledge/project-index.yaml
+ M .ai/knowledge/project-overview.md
+ M .ai/knowledge/project-snapshot.md
+ M .ai/knowledge/testing-overview.md
+ M tests/feature_pipeline/test_featurectl_core.py
+?? .ai/knowledge/discovered-signals.md

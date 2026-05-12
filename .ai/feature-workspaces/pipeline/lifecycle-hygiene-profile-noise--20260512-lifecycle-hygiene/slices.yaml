@@ -146,8 +146,8 @@ slices:
   review_focus:
   - canonical feature memory remains complete
   - generated showcase and spec docs do not appear as feature signals
-  evidence_status: pending
-  status: pending
+  evidence_status: complete
+  status: complete
   iteration_budget: 4
   rollback_point: pre-slice git state
   independent_verification: python -m pytest tests/feature_pipeline/test_featurectl_core.py

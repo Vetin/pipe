@@ -1,0 +1,1 @@
+python .agents/pipeline-core/scripts/featurectl.py init --profile-project; inspect features-overview/discovered-signals and profile filters

@@ -98,8 +98,14 @@ class FeatureCtlCoreTests(unittest.TestCase):
         self.assertIn("Feature Topology Reuse", architecture)
         self.assertIn(".ai/knowledge/architecture-overview.md", architecture)
         features = (self.repo / ".ai/knowledge/features-overview.md").read_text(encoding="utf-8")
-        self.assertIn("Current Feature Picture", features)
-        self.assertIn("Reset Password", features)
+        self.assertIn("Canonical Feature Memory", features)
+        self.assertIn("No canonical features have been promoted yet.", features)
+        self.assertNotIn("Reset Password", features)
+        discovered = (self.repo / ".ai/knowledge/discovered-signals.md").read_text(encoding="utf-8")
+        self.assertIn("Current Feature Picture", discovered)
+        self.assertIn("Detected Feature Signals", discovered)
+        self.assertIn("Reset Password", discovered)
+        self.assertIn("docs/features.md", discovered)
 
     def test_init_profile_filters_generated_showcase_feature_signals(self):
         (self.repo / "docs").mkdir()
@@ -110,6 +116,12 @@ class FeatureCtlCoreTests(unittest.TestCase):
         report = self.repo / "pipeline-lab/showcases/native-emulation-report.md"
         report.parent.mkdir(parents=True, exist_ok=True)
         report.write_text("# Native Feature Emulation Report\n", encoding="utf-8")
+        (self.repo / "features.md").write_text("# Feature: Root Spec Noise\n", encoding="utf-8")
+        (self.repo / "plan.md").write_text("# Pipeline Lab Feature Plan\n", encoding="utf-8")
+        (self.repo / "vision.md").write_text("# Service Architecture Vision\n", encoding="utf-8")
+        run_dir = self.repo / "pipeline-lab/runs/20260512/generated"
+        run_dir.mkdir(parents=True)
+        (run_dir / "feature.md").write_text("# Feature: Generated Run Artifact\n", encoding="utf-8")
         run(["git", "add", "."], self.repo)
         run(["git", "commit", "-m", "add real and generated feature docs"], self.repo)
 
@@ -124,7 +136,16 @@ class FeatureCtlCoreTests(unittest.TestCase):
         self.assertNotIn("Feature: Generated Stress Artifact", signals)
         self.assertNotIn("Generated Stress Artifact", catalog_names)
         self.assertNotIn("Native Feature Emulation Report", signals)
-        self.assertFalse(any(source.startswith("pipeline-lab/showcases/random-feature-stress-runs/") for source in sources))
+        self.assertNotIn("Feature: Root Spec Noise", signals)
+        self.assertNotIn("Pipeline Lab Feature Plan", signals)
+        self.assertNotIn("Service Architecture Vision", signals)
+        self.assertNotIn("Feature: Generated Run Artifact", signals)
+        self.assertFalse(any(source.startswith("pipeline-lab/showcases/") for source in sources))
+        self.assertFalse(any(source.startswith("pipeline-lab/runs/") for source in sources))
+        discovered = (self.repo / ".ai/knowledge/discovered-signals.md").read_text(encoding="utf-8")
+        self.assertIn("Real Billing Dashboard", discovered)
+        self.assertNotIn("Generated Stress Artifact", discovered)
+        self.assertNotIn("Root Spec Noise", discovered)
 
     def test_init_outside_git_fails_clearly(self):
         outside = self.tempdir / "outside"
