@@ -16,6 +16,10 @@ Last reviewed: 2026-05-12
 - `.agents/pipeline-core/scripts/pipelinebench_core/cli.py`: offline benchmark
   scoring, candidate isolation checks, showcase comparison, and manual
   soft-score report generation.
+- `pipeline-lab/showcases/scripts/run_init_profile_showcases.py`: repeated
+  project-init showcase runner. It reads compact project metadata from
+  `project-index.yaml` and feature signal/catalog data from
+  `discovered-signals.md`.
 - `.agents/skills/nfp-00-intake` through `.agents/skills/nfp-12-promote`: skill
   prompts that define the human/agent workflow around the deterministic scripts.
 - `.agents/skills/project-init`: repository bootstrap/profile skill, separate

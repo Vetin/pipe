@@ -133,6 +133,24 @@ None yet.
   - Decision or pattern reused: final verification runs after the last fix.
   - Confidence: high.
 
+## Docs Consulted: Finish
+
+- `.agents/pipeline-core/references/artifact-model.md`
+  - Used for: feature-card contents and canonical promotion readiness.
+  - Decision or pattern reused: feature memory carries claim provenance and
+    rollback guidance.
+  - Confidence: high.
+- `.agents/pipeline-core/references/generated-templates/feature-card-template.md`
+  - Used for: required final feature-card headings.
+  - Decision or pattern reused: include manual validation, verification debt,
+    claim provenance, rollback guidance, and shared knowledge updates.
+  - Confidence: high.
+- `.ai/knowledge/architecture-overview.md`
+  - Used for: deciding whether shared knowledge required an update.
+  - Decision or pattern reused: record compact profile memory and public raw
+    guardrails in living architecture memory.
+  - Confidence: high.
+
 ## Event Log
 
 - 2026-05-12T20:33:38Z event_type=run_initialized step=context next=nfp-01-context
@@ -150,6 +168,8 @@ None yet.
 - 2026-05-12T20:52:12Z event_type=verification_started mode=final-full-suite
 - 2026-05-12T20:53:55Z event_type=verification_passed tests=149 subtests=228 goal_failures=0
 - 2026-05-12T20:54:01Z event_type=gate_status_changed gate=verification old_status=pending new_status=complete by=codex note=full-suite-and-goal-validation-passed
+- 2026-05-12T20:56:23Z event_type=feature_card_created path=feature-card.md
+- 2026-05-12T20:56:23Z event_type=gate_status_changed gate=finish old_status=pending new_status=complete by=codex note=feature-card-and-shared-knowledge-updates-complete
 
 ## History
 
@@ -158,7 +178,25 @@ None yet.
 
 ## Current Run State
 
-Current step: verification
-Next recommended skill: nfp-11-finish
+Current step: finish
+Next recommended skill: nfp-12-promote
 Blocking issues: none
-Last updated: 2026-05-12T20:53:55Z
+Last updated: 2026-05-12T20:56:23Z
+
+## Final Summary
+
+Implemented public raw artifact guardrails for wrapper execution, source
+readability, compact project memory, discovered signal ownership, init-profile
+showcase compatibility, and structured event generation.
+
+## PR Summary
+
+- Added executable wrapper and broad source-controlled artifact readability
+  regression tests.
+- Compact `project-index.yaml` and moved signal/catalog ownership to
+  `discovered-signals.md`.
+- Updated init-profile showcase validation to consume the split profile
+  contract.
+- Standardized new gate, stale, slice, retry, archive, and promotion event
+  records around `event_type=`.
+- Recorded final full-suite verification and shared knowledge updates.

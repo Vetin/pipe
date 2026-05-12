@@ -66,6 +66,20 @@ feature memory. `.ai/knowledge/discovered-signals.md` is a source-lead map, not 
 product truth layer. Entries with `kind: lab_signal` are only for pipeline-lab,
 benchmark, showcase, or validation-tooling work.
 
+`project-index.yaml` is intentionally compact. It stores repo metadata, counts,
+module directories, scripts, package manifests, and canonical feature references.
+Verbose examples and low-confidence feature signals belong in
+`profile-examples.yaml` and `discovered-signals.md` so first-pass context does
+not confuse source leads with durable architecture memory.
+
+## Public Raw Guardrails
+
+Wrapper entrypoints must be validated by executing their commands, not by source
+text inspection alone. Source-controlled canonical YAML, Markdown, `.gitignore`,
+and Python files are guarded against collapsed one-line serialization. Raw
+command-output evidence logs remain exempt because they preserve command output
+rather than curated documentation.
+
 ## Source Anchors
 
 - `.agents/pipeline-core/scripts/featurectl.py`
@@ -73,5 +87,6 @@ benchmark, showcase, or validation-tooling work.
 - `.agents/pipeline-core/scripts/pipelinebench.py`
 - `.agents/pipeline-core/scripts/pipelinebench_core/cli.py`
 - `.agents/skills/nfp-01-context/SKILL.md`
+- `pipeline-lab/showcases/scripts/run_init_profile_showcases.py`
 - `.ai/features/pipeline/lifecycle-hygiene-profile-noise/architecture.md`
 - `.ai/feature-workspaces/pipeline/artifact-readability-execution-semantics--20260512-readability-exec/architecture.md`

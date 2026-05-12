@@ -30,6 +30,9 @@ artifacts.
 - Project profile -> context skill: `init --profile-project` refreshes
   `.ai/knowledge/project-index.yaml`, `.ai/knowledge/features-overview.md`, and
   `.ai/knowledge/discovered-signals.md`.
+- Project profile -> init showcase runner: repeated repository profiling reads
+  stable counts and modules from `project-index.yaml` while reading feature
+  signal names from `discovered-signals.md`.
 - Benchmark score -> skill iteration: hard checks catch structural regressions;
   manual soft scores capture architecture clarity, module communication, reuse,
   ADR usefulness, and review quality.
