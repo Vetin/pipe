@@ -2692,8 +2692,10 @@ def write_latest_status(workspace: Path, current_step: str) -> None:
         "Blocking issues: none\n"
         f"Last updated: {utc_now()}\n"
     )
-    if "## Latest Status" in execution:
-        prefix, rest = execution.split("## Latest Status", 1)
+    latest_match = re.search(r"^## Latest Status\s*$", execution, flags=re.MULTILINE)
+    if latest_match:
+        prefix = execution[: latest_match.start()]
+        rest = execution[latest_match.end() :]
         next_heading = re.search(r"\n##\s+", rest)
         suffix = rest[next_heading.start() :] if next_heading else ""
         write_text(execution_path, prefix.rstrip() + "\n\n" + latest + suffix)

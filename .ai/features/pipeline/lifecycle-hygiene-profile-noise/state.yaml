@@ -28,5 +28,5 @@ active_slice: null
 locks:
   owner: null
   acquired_at: null
-lifecycle: promoted-readonly
+lifecycle: canonical
 read_only: true

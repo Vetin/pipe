@@ -1,0 +1,8 @@
+## feature/pipeline-lifecycle-hygiene-profile-noise-20260512-lifecycle-hygiene
+ M .agents/skills/project-init/SKILL.md
+ M .ai/constitution.md
+ M .ai/feature-workspaces/pipeline/lifecycle-hygiene-profile-noise--20260512-lifecycle-hygiene/evidence/manifest.yaml
+ M AGENTS.md
+ M tests/feature_pipeline/test_agents_policy.py
+?? .ai/feature-workspaces/pipeline/lifecycle-hygiene-profile-noise--20260512-lifecycle-hygiene/evidence/S-004/
+?? skills/native-feature-pipeline/references/README.md

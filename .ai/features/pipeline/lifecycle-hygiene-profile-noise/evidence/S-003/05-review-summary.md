@@ -1,0 +1,1 @@
+Review focus checked: canonical feature memory is not polluted by generated signals; discovered signals remain clearly low confidence; project-index no longer includes showcase/run/spec feature sources.

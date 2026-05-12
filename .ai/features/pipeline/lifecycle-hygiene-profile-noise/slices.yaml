@@ -1,0 +1,204 @@
+artifact_contract_version: 0.1.0
+feature_key: pipeline/lifecycle-hygiene-profile-noise
+slices:
+- id: S-001
+  title: Promoted workspace lifecycle enforcement
+  linked_requirements:
+  - FR-001
+  - FR-002
+  linked_acceptance_criteria:
+  - AC-001
+  linked_adrs: []
+  linked_contracts: []
+  dependencies: []
+  priority: 1
+  complexity: 5
+  critical_path: true
+  parallelizable: false
+  file_ownership:
+  - .agents/pipeline-core/scripts/featurectl.py
+  - tests/feature_pipeline/test_finish_promote.py
+  - .ai/feature-workspaces/pipeline/*/feature.yaml
+  - .ai/feature-workspaces/pipeline/*/state.yaml
+  conflict_risk: medium
+  dependency_notes: Lifecycle validation must land before migrated promoted workspaces
+    can validate cleanly.
+  expected_touchpoints:
+  - .agents/pipeline-core/scripts/featurectl.py
+  - tests/feature_pipeline/test_finish_promote.py
+  - .ai/feature-workspaces/pipeline
+  scope_confidence: high
+  test_strategy: Add promotion lifecycle tests and validate existing promoted workspaces.
+  tdd:
+    failing_test_file: tests/feature_pipeline/test_finish_promote.py
+    red_command: python -m pytest tests/feature_pipeline/test_finish_promote.py
+    expected_failure: promoted source workspace is not marked promoted-readonly and
+      active duplicate validation is too permissive
+    green_command: python -m pytest tests/feature_pipeline/test_finish_promote.py
+  verification_commands:
+  - python -m pytest tests/feature_pipeline/test_finish_promote.py
+  - python .agents/pipeline-core/scripts/featurectl.py validate --workspace .ai/feature-workspaces/pipeline/source-truth-hardening--20260512-source-truth
+  review_focus:
+  - canonical features remain complete while source workspaces become read-only
+  - active duplicate workspaces are rejected deterministically
+  evidence_status: complete
+  status: complete
+  iteration_budget: 4
+  rollback_point: pre-slice git state
+  independent_verification: python -m pytest tests/feature_pipeline/test_finish_promote.py
+  failure_triage_notes: classify failures as lifecycle schema bug, validation overreach,
+    fixture drift, or migration miss
+- id: S-002
+  title: Execution log hygiene and complete-slice idempotency
+  linked_requirements:
+  - FR-003
+  - FR-004
+  - FR-005
+  linked_acceptance_criteria:
+  - AC-002
+  - AC-003
+  - AC-004
+  - AC-005
+  linked_adrs: []
+  linked_contracts: []
+  dependencies:
+  - S-001
+  priority: 2
+  complexity: 6
+  critical_path: true
+  parallelizable: false
+  file_ownership:
+  - .agents/pipeline-core/scripts/featurectl.py
+  - tests/feature_pipeline/test_finish_promote.py
+  - tests/feature_pipeline/test_gates_and_evidence.py
+  - .ai/features/pipeline/*/execution.md
+  - .ai/feature-workspaces/pipeline/*/execution.md
+  conflict_risk: medium
+  dependency_notes: Uses lifecycle migration from S-001 so promoted workspaces can
+    validate after execution normalization.
+  expected_touchpoints:
+  - .agents/pipeline-core/scripts/featurectl.py
+  - tests/feature_pipeline/test_finish_promote.py
+  - tests/feature_pipeline/test_gates_and_evidence.py
+  - .ai/features/pipeline
+  - .ai/feature-workspaces/pipeline
+  scope_confidence: high
+  test_strategy: Add latest-status and duplicate-completion tests, then normalize
+    current artifacts.
+  tdd:
+    failing_test_file: tests/feature_pipeline/test_gates_and_evidence.py
+    red_command: python -m pytest tests/feature_pipeline/test_gates_and_evidence.py
+      tests/feature_pipeline/test_finish_promote.py
+    expected_failure: duplicate complete-slice mutates completed evidence or duplicate
+      execution events pass validation
+    green_command: python -m pytest tests/feature_pipeline/test_gates_and_evidence.py
+      tests/feature_pipeline/test_finish_promote.py
+  verification_commands:
+  - python -m pytest tests/feature_pipeline/test_gates_and_evidence.py tests/feature_pipeline/test_finish_promote.py
+  review_focus:
+  - duplicate slice completion cannot silently rewrite evidence
+  - execution logs have one active latest status
+  evidence_status: complete
+  status: complete
+  iteration_budget: 5
+  rollback_point: pre-slice git state
+  independent_verification: python -m pytest tests/feature_pipeline/test_gates_and_evidence.py
+  failure_triage_notes: classify failures as idempotency bug, event parser bug, fixture
+    bug, or artifact migration miss
+- id: S-003
+  title: Profile noise filtering and discovered signal split
+  linked_requirements:
+  - FR-006
+  linked_acceptance_criteria:
+  - AC-006
+  - AC-007
+  linked_adrs: []
+  linked_contracts: []
+  dependencies:
+  - S-001
+  priority: 3
+  complexity: 5
+  critical_path: false
+  parallelizable: true
+  file_ownership:
+  - .agents/pipeline-core/scripts/featurectl.py
+  - tests/feature_pipeline/test_featurectl_core.py
+  - .ai/knowledge
+  conflict_risk: medium
+  dependency_notes: Profile rendering can be updated once canonical feature lifecycle
+    is no longer ambiguous.
+  expected_touchpoints:
+  - .agents/pipeline-core/scripts/featurectl.py
+  - tests/feature_pipeline/test_featurectl_core.py
+  - .ai/knowledge
+  scope_confidence: high
+  test_strategy: Add profile tests for excluded showcase/spec paths and discovered-signals
+    output.
+  tdd:
+    failing_test_file: tests/feature_pipeline/test_featurectl_core.py
+    red_command: python -m pytest tests/feature_pipeline/test_featurectl_core.py
+    expected_failure: features overview still mixes detected signals with canonical
+      memory
+    green_command: python -m pytest tests/feature_pipeline/test_featurectl_core.py
+  verification_commands:
+  - python -m pytest tests/feature_pipeline/test_featurectl_core.py
+  - python .agents/pipeline-core/scripts/featurectl.py init --profile-project
+  review_focus:
+  - canonical feature memory remains complete
+  - generated showcase and spec docs do not appear as feature signals
+  evidence_status: complete
+  status: complete
+  iteration_budget: 4
+  rollback_point: pre-slice git state
+  independent_verification: python -m pytest tests/feature_pipeline/test_featurectl_core.py
+  failure_triage_notes: classify failures as filter gap, renderer drift, fixture expectation
+    bug, or generated artifact drift
+- id: S-004
+  title: Policy and legacy reference cleanup
+  linked_requirements:
+  - FR-007
+  - FR-008
+  linked_acceptance_criteria:
+  - AC-008
+  linked_adrs: []
+  linked_contracts: []
+  dependencies:
+  - S-003
+  priority: 4
+  complexity: 3
+  critical_path: false
+  parallelizable: true
+  file_ownership:
+  - AGENTS.md
+  - .agents/skills/project-init/SKILL.md
+  - skills/native-feature-pipeline/references/README.md
+  - tests/feature_pipeline/test_agents_policy.py
+  conflict_risk: low
+  dependency_notes: Policy should reflect the final behavior after lifecycle and profile
+    cleanup.
+  expected_touchpoints:
+  - AGENTS.md
+  - .agents/skills/project-init/SKILL.md
+  - skills/native-feature-pipeline/references/README.md
+  - tests/feature_pipeline/test_agents_policy.py
+  scope_confidence: high
+  test_strategy: Update policy tests to assert selective pipeline triggers and explicit
+    legacy reference warning.
+  tdd:
+    failing_test_file: tests/feature_pipeline/test_agents_policy.py
+    red_command: python -m pytest tests/feature_pipeline/test_agents_policy.py
+    expected_failure: AGENTS still mandates pipeline for all internal repair cases
+      and init before every request
+    green_command: python -m pytest tests/feature_pipeline/test_agents_policy.py
+  verification_commands:
+  - python -m pytest tests/feature_pipeline/test_agents_policy.py
+  review_focus:
+  - policy still preserves full pipeline for real feature work
+  - project-init is documented as bootstrap/profiling, not a feature step
+  evidence_status: complete
+  status: complete
+  iteration_budget: 3
+  rollback_point: pre-slice git state
+  independent_verification: python -m pytest tests/feature_pipeline/test_agents_policy.py
+  failure_triage_notes: classify failures as policy wording mismatch, missing legacy
+    warning, or over-loose trigger rule

@@ -1,0 +1,13 @@
+## feature/pipeline-lifecycle-hygiene-profile-noise-20260512-lifecycle-hygiene
+ M .agents/pipeline-core/scripts/featurectl.py
+ M .ai/feature-workspaces/pipeline/codex-e2e-runner-hardening--run-20260512-codex-e2e-hardening/execution.md
+ M .ai/feature-workspaces/pipeline/lifecycle-hygiene-profile-noise--20260512-lifecycle-hygiene/evidence/manifest.yaml
+ M .ai/feature-workspaces/pipeline/real-codex-showcase-debug-runner--run-20260512-codex-debug/execution.md
+ M .ai/feature-workspaces/pipeline/source-truth-hardening--20260512-source-truth/execution.md
+ M .ai/features/pipeline/codex-e2e-runner-hardening/execution.md
+ M .ai/features/pipeline/random-feature-stress-lab/execution.md
+ M .ai/features/pipeline/real-codex-showcase-debug-runner/execution.md
+ M .ai/features/pipeline/source-truth-hardening/execution.md
+ M tests/feature_pipeline/test_finish_promote.py
+ M tests/feature_pipeline/test_gates_and_evidence.py
+?? .ai/feature-workspaces/pipeline/lifecycle-hygiene-profile-noise--20260512-lifecycle-hygiene/evidence/S-002/

@@ -121,3 +121,4 @@ Feature run initialized at 2026-05-12T13:36:17Z. Planning artifacts are drafted 
 - 2026-05-12T14:10:14Z gate=review old_status=pending new_status=complete by=codex note=quality review recorded with no blocking findings
 - 2026-05-12T14:10:14Z gate=verification old_status=pending new_status=complete by=codex note=full tests passed: 128 passed
 - 2026-05-12T14:10:14Z gate=finish old_status=pending new_status=complete by=codex note=feature card and shared knowledge updates prepared
+- 2026-05-12T14:13:29Z promoted feature memory to .ai/features/pipeline/lifecycle-hygiene-profile-noise

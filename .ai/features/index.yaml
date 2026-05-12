@@ -5,6 +5,11 @@ features:
   status: complete
   path: .ai/features/pipeline/codex-e2e-runner-hardening
   run_id: run-20260512-codex-e2e-hardening
+- feature_key: pipeline/lifecycle-hygiene-profile-noise
+  title: Lifecycle hygiene and profile noise
+  status: complete
+  path: .ai/features/pipeline/lifecycle-hygiene-profile-noise
+  run_id: 20260512-lifecycle-hygiene
 - feature_key: pipeline/random-feature-stress-lab
   title: Random Feature Stress Lab
   status: complete

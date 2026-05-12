@@ -1,0 +1,8 @@
+python -m pytest tests/feature_pipeline
+128 passed in 38.39s
+
+python pipeline-lab/showcases/scripts/validate_pipeline_goals.py --passes 3 --report /tmp/lifecycle-goals.md
+failures: 0
+
+featurectl.py validate canonical/promoted pipeline artifacts
+all checked artifacts passed

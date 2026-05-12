@@ -1,0 +1,1 @@
+Review focus checked: duplicate completion now requires explicit --append-retry; finished/promoted execution logs require one Latest Status; legacy active Current/Next sections are rejected; historical duplicates are marked retry.
