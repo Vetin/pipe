@@ -1,0 +1,3 @@
+ M .ai/feature-workspaces/pipeline/portable-artifact-consistency--20260512-portable-consistency/evidence/manifest.yaml
+ M tests/feature_pipeline/test_artifact_formatting.py
+?? .ai/feature-workspaces/pipeline/portable-artifact-consistency--20260512-portable-consistency/evidence/S-003/

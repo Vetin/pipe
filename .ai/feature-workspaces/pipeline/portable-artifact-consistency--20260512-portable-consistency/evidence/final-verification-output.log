@@ -1,0 +1,19 @@
+python -m pytest tests/feature_pipeline -q
+144 passed, 145 subtests passed.
+
+git diff --check
+passed.
+
+featurectl.py validate --workspace .ai/feature-workspaces/pipeline/portable-artifact-consistency--20260512-portable-consistency
+validation: pass.
+
+Canonical feature validation
+artifact-readability-execution-semantics: pass.
+real-codex-showcase-debug-runner: pass.
+source-truth-hardening: pass.
+lifecycle-hygiene-profile-noise: pass.
+random-feature-stress-lab: pass.
+codex-e2e-runner-hardening: pass.
+
+python -m black --check .agents tests pipeline-lab
+not run: black is not installed in this environment.

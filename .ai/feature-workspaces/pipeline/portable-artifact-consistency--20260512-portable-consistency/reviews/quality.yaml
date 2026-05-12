@@ -1,0 +1,33 @@
+artifact_contract_version: 0.1.0
+review_id: REV-001
+tier: strict_review
+severity: note
+finding: Portable artifact consistency implementation is ready for promotion.
+artifact: workspace
+evidence: Full feature-pipeline suite passed with 144 tests and 145 subtests.
+recommendation: Promote after committing the completed feature workspace and canonical memory changes.
+blocking: false
+linked_requirement_ids:
+- FR-001
+- FR-002
+- FR-003
+- FR-004
+- FR-005
+- FR-006
+- FR-007
+linked_slice_ids:
+- S-001
+- S-002
+- S-003
+file_refs:
+- .agents/pipeline-core/scripts/featurectl.py
+- tests/feature_pipeline/test_featurectl_core.py
+- tests/feature_pipeline/test_finish_promote.py
+- tests/feature_pipeline/test_gates_and_evidence.py
+- tests/feature_pipeline/test_artifact_formatting.py
+reproduction_or_reasoning: >
+  Review checked source-truth synchronization, portable project profile values,
+  structured execution events, change_label evidence metadata, current-run-state
+  ordering, migrated canonical artifacts, and source readability tests.
+fix_verification_command: python -m pytest tests/feature_pipeline -q
+re_review_required: false

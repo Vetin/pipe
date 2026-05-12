@@ -90,6 +90,19 @@ class ArtifactFormattingTests(unittest.TestCase):
                 long_lines = [line for line in content.splitlines() if len(line) > 220]
                 self.assertEqual(long_lines, [])
 
+    def test_source_controlled_python_files_are_readable(self):
+        paths = [
+            ROOT / ".agents/pipeline-core/scripts/featurectl.py",
+            ROOT / ".agents/pipeline-core/scripts/pipelinebench.py",
+            *sorted((ROOT / "tests/feature_pipeline").glob("*.py")),
+        ]
+        for path in paths:
+            with self.subTest(path=path.relative_to(ROOT).as_posix()):
+                content = path.read_text(encoding="utf-8")
+                self.assertGreater(content.count("\n"), 10)
+                long_lines = [f"{index}: {len(line)}" for index, line in enumerate(content.splitlines(), start=1) if len(line) > 220]
+                self.assertEqual(long_lines, [])
+
     def test_source_controlled_knowledge_docs_capture_pipeline_lifecycle(self):
         architecture = (ROOT / ".ai/knowledge/architecture-overview.md").read_text(encoding="utf-8")
         module_map = (ROOT / ".ai/knowledge/module-map.md").read_text(encoding="utf-8")
