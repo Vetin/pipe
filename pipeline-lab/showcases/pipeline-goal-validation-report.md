@@ -3,7 +3,7 @@
 - Native run: `/Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/native-emulation-runs/20260512-native-debug`
 - Init profile run: `/Users/egormasnankin/work/harness-pipeline/pipeline-lab/showcases/init-profile-runs/20260512-init-profile`
 - Repeated passes: `3`
-- Generated at: `2026-05-11T23:57:15.301109+00:00`
+- Generated at: `2026-05-12T00:10:57.448076+00:00`
 
 ## Pass Summary
 
@@ -31,7 +31,9 @@
 | `nfp-11-finish` | pass | shared protocol present |
 | `nfp-12-promote` | pass | shared protocol present |
 | `architecture_mermaid_topology` | pass | architecture skill requires Mermaid topology and shared knowledge impact |
+| `architecture_shared_knowledge_decision_table` | pass | architecture skill requires shared knowledge decisions with evidence and future reuse |
 | `finish_shared_knowledge_updates` | pass | finish skill requires shared knowledge update reporting |
+| `finish_shared_knowledge_decision_table` | pass | finish skill requires shared knowledge decisions with evidence and future reuse |
 | `tdd_superpowers_subagent_flow` | pass | mandatory Superpowers subagent flow present |
 | `project-init` | pass | /init profile protocol present |
 
@@ -64,8 +66,8 @@
 - `pass` `twenty-enterprise-duplicate-merge-with-preview-conflict-rules-and-rollback_round3_artifacts`: round 3 artifacts exist
 - `pass` `init_project_index_exists`: project-index.yaml exists
 - `pass` `init_project_snapshot_exists`: project-snapshot.md exists
-- `pass` `init_source_count`: source files: 15
-- `pass` `init_test_count`: test files: 33
+- `pass` `init_source_count`: source files: 16
+- `pass` `init_test_count`: test files: 35
 - `pass` `init_feature_signals`: feature signals extracted
 - `pass` `init_feature_catalog`: feature catalog extracted
 - `pass` `init_current_feature_picture`: features overview describes current feature picture
@@ -93,9 +95,18 @@
 - `pass` `skill_nfp-11-finish`: shared protocol present
 - `pass` `skill_nfp-12-promote`: shared protocol present
 - `pass` `skill_architecture_mermaid_topology`: architecture skill requires Mermaid topology and shared knowledge impact
+- `pass` `skill_architecture_shared_knowledge_decision_table`: architecture skill requires shared knowledge decisions with evidence and future reuse
 - `pass` `skill_finish_shared_knowledge_updates`: finish skill requires shared knowledge update reporting
+- `pass` `skill_finish_shared_knowledge_decision_table`: finish skill requires shared knowledge decisions with evidence and future reuse
 - `pass` `skill_tdd_superpowers_subagent_flow`: mandatory Superpowers subagent flow present
 - `pass` `skill_project-init`: /init profile protocol present
+- `pass` `random_stress_summary_exists`: random stress summary exists
+- `pass` `random_stress_ten_features`: features: 10
+- `pass` `random_stress_ten_iterations`: iterations: 10
+- `pass` `random_stress_hundred_runs`: runs: 100
+- `pass` `random_stress_common_mistakes`: common shared-knowledge mistake detected
+- `pass` `random_stress_no_open_improvements`: open improvements: 0
+- `pass` `random_stress_side_by_side`: side-by-side knowledge report exists
 - `pass` `web_best_practices_doc`: web best-practices synthesis exists
 - `pass` `web_source_https://academy.openai.com/public/resources/skills`: source recorded: https://academy.openai.com/public/resources/skills
 - `pass` `web_source_https://github.com/github/spec-kit`: source recorded: https://github.com/github/spec-kit
@@ -137,8 +148,8 @@
 - `pass` `twenty-enterprise-duplicate-merge-with-preview-conflict-rules-and-rollback_round3_artifacts`: round 3 artifacts exist
 - `pass` `init_project_index_exists`: project-index.yaml exists
 - `pass` `init_project_snapshot_exists`: project-snapshot.md exists
-- `pass` `init_source_count`: source files: 15
-- `pass` `init_test_count`: test files: 33
+- `pass` `init_source_count`: source files: 16
+- `pass` `init_test_count`: test files: 35
 - `pass` `init_feature_signals`: feature signals extracted
 - `pass` `init_feature_catalog`: feature catalog extracted
 - `pass` `init_current_feature_picture`: features overview describes current feature picture
@@ -166,9 +177,18 @@
 - `pass` `skill_nfp-11-finish`: shared protocol present
 - `pass` `skill_nfp-12-promote`: shared protocol present
 - `pass` `skill_architecture_mermaid_topology`: architecture skill requires Mermaid topology and shared knowledge impact
+- `pass` `skill_architecture_shared_knowledge_decision_table`: architecture skill requires shared knowledge decisions with evidence and future reuse
 - `pass` `skill_finish_shared_knowledge_updates`: finish skill requires shared knowledge update reporting
+- `pass` `skill_finish_shared_knowledge_decision_table`: finish skill requires shared knowledge decisions with evidence and future reuse
 - `pass` `skill_tdd_superpowers_subagent_flow`: mandatory Superpowers subagent flow present
 - `pass` `skill_project-init`: /init profile protocol present
+- `pass` `random_stress_summary_exists`: random stress summary exists
+- `pass` `random_stress_ten_features`: features: 10
+- `pass` `random_stress_ten_iterations`: iterations: 10
+- `pass` `random_stress_hundred_runs`: runs: 100
+- `pass` `random_stress_common_mistakes`: common shared-knowledge mistake detected
+- `pass` `random_stress_no_open_improvements`: open improvements: 0
+- `pass` `random_stress_side_by_side`: side-by-side knowledge report exists
 - `pass` `web_best_practices_doc`: web best-practices synthesis exists
 - `pass` `web_source_https://academy.openai.com/public/resources/skills`: source recorded: https://academy.openai.com/public/resources/skills
 - `pass` `web_source_https://github.com/github/spec-kit`: source recorded: https://github.com/github/spec-kit
@@ -210,8 +230,8 @@
 - `pass` `twenty-enterprise-duplicate-merge-with-preview-conflict-rules-and-rollback_round3_artifacts`: round 3 artifacts exist
 - `pass` `init_project_index_exists`: project-index.yaml exists
 - `pass` `init_project_snapshot_exists`: project-snapshot.md exists
-- `pass` `init_source_count`: source files: 15
-- `pass` `init_test_count`: test files: 33
+- `pass` `init_source_count`: source files: 16
+- `pass` `init_test_count`: test files: 35
 - `pass` `init_feature_signals`: feature signals extracted
 - `pass` `init_feature_catalog`: feature catalog extracted
 - `pass` `init_current_feature_picture`: features overview describes current feature picture
@@ -239,9 +259,18 @@
 - `pass` `skill_nfp-11-finish`: shared protocol present
 - `pass` `skill_nfp-12-promote`: shared protocol present
 - `pass` `skill_architecture_mermaid_topology`: architecture skill requires Mermaid topology and shared knowledge impact
+- `pass` `skill_architecture_shared_knowledge_decision_table`: architecture skill requires shared knowledge decisions with evidence and future reuse
 - `pass` `skill_finish_shared_knowledge_updates`: finish skill requires shared knowledge update reporting
+- `pass` `skill_finish_shared_knowledge_decision_table`: finish skill requires shared knowledge decisions with evidence and future reuse
 - `pass` `skill_tdd_superpowers_subagent_flow`: mandatory Superpowers subagent flow present
 - `pass` `skill_project-init`: /init profile protocol present
+- `pass` `random_stress_summary_exists`: random stress summary exists
+- `pass` `random_stress_ten_features`: features: 10
+- `pass` `random_stress_ten_iterations`: iterations: 10
+- `pass` `random_stress_hundred_runs`: runs: 100
+- `pass` `random_stress_common_mistakes`: common shared-knowledge mistake detected
+- `pass` `random_stress_no_open_improvements`: open improvements: 0
+- `pass` `random_stress_side_by_side`: side-by-side knowledge report exists
 - `pass` `web_best_practices_doc`: web best-practices synthesis exists
 - `pass` `web_source_https://academy.openai.com/public/resources/skills`: source recorded: https://academy.openai.com/public/resources/skills
 - `pass` `web_source_https://github.com/github/spec-kit`: source recorded: https://github.com/github/spec-kit
