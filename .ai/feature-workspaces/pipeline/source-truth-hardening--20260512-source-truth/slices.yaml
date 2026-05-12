@@ -1,0 +1,153 @@
+artifact_contract_version: 0.1.0
+feature_key: pipeline/source-truth-hardening
+slices:
+  - id: S-001
+    title: Canonical memory and execution validation
+    linked_requirements: [FR-001, FR-002, FR-003, FR-004]
+    linked_acceptance_criteria: [AC-001, AC-002, AC-003]
+    linked_adrs: [ADR-001]
+    linked_contracts: [featurectl-validate]
+    dependencies: []
+    priority: 1
+    complexity: 5
+    critical_path: true
+    parallelizable: false
+    file_ownership:
+      - .agents/pipeline-core/scripts/featurectl.py
+      - tests/feature_pipeline/test_finish_promote.py
+    conflict_risk: medium
+    dependency_notes: Must land before promotion state repair can be validated.
+    expected_touchpoints:
+      - validate_workspace
+      - regenerate_feature_index
+      - render_features_overview
+    scope_confidence: high
+    test_strategy: Add failing tests for stale overview, draft canonical status, active promoted workspace drift, and stale latest status.
+    verification_commands:
+      - python -m pytest tests/feature_pipeline/test_finish_promote.py
+    review_focus:
+      - blocker wording
+      - backward compatibility with canonical memory
+    evidence_status: pending
+    status: pending
+    iteration_budget: 3
+    rollback_point: Revert validation helper and tests.
+    independent_verification: Run focused finish/promote tests and featurectl validate on this workspace.
+    failure_triage_notes: Distinguish historical artifact drift from new validation false positives.
+    tdd:
+      failing_test_file: tests/feature_pipeline/test_finish_promote.py
+      red_command: python -m pytest tests/feature_pipeline/test_finish_promote.py
+      expected_failure: New source-of-truth validation tests fail before implementation.
+      green_command: python -m pytest tests/feature_pipeline/test_finish_promote.py
+  - id: S-002
+    title: Atomic evidence completion
+    linked_requirements: [FR-005]
+    linked_acceptance_criteria: [AC-004]
+    linked_adrs: [ADR-001]
+    linked_contracts: [evidence-manifest]
+    dependencies: [S-001]
+    priority: 2
+    complexity: 3
+    critical_path: true
+    parallelizable: false
+    file_ownership:
+      - .agents/pipeline-core/scripts/featurectl.py
+      - tests/feature_pipeline/test_evidence_order.py
+    conflict_risk: low
+    dependency_notes: Uses existing evidence validation helpers.
+    expected_touchpoints:
+      - cmd_complete_slice
+      - validate_slice_evidence
+    scope_confidence: high
+    test_strategy: Add a missing-red regression that checks manifest content is unchanged after failed complete-slice.
+    verification_commands:
+      - python -m pytest tests/feature_pipeline/test_evidence_order.py
+    review_focus:
+      - no manifest write before validation pass
+    evidence_status: pending
+    status: pending
+    iteration_budget: 2
+    rollback_point: Revert complete-slice ordering change.
+    independent_verification: Compare manifest before and after failed completion.
+    failure_triage_notes: If timestamps fail instead, isolate from missing evidence mutation assertion.
+    tdd:
+      failing_test_file: tests/feature_pipeline/test_evidence_order.py
+      red_command: python -m pytest tests/feature_pipeline/test_evidence_order.py
+      expected_failure: Manifest mutation assertion fails before implementation.
+      green_command: python -m pytest tests/feature_pipeline/test_evidence_order.py
+  - id: S-003
+    title: Skill reference and policy alignment
+    linked_requirements: [FR-006, FR-007, FR-008]
+    linked_acceptance_criteria: [AC-005, AC-006]
+    linked_adrs: [ADR-002]
+    linked_contracts: [skill-doc-contract]
+    dependencies: [S-001]
+    priority: 3
+    complexity: 4
+    critical_path: false
+    parallelizable: true
+    file_ownership:
+      - .agents/skills
+      - .agents/pipeline-core/references/native-skill-protocol.md
+      - tests/feature_pipeline/test_methodology_contract.py
+    conflict_risk: medium
+    dependency_notes: Keep references pointing at .agents/pipeline-core/references.
+    expected_touchpoints:
+      - nfp skill files
+      - methodology contract tests
+    scope_confidence: medium
+    test_strategy: Update text-contract tests to reject legacy production references and require fallback wording.
+    verification_commands:
+      - python -m pytest tests/feature_pipeline/test_methodology_contract.py
+    review_focus:
+      - no production reference to skills/native-feature-pipeline/references
+      - fallback policy is explicit
+    evidence_status: pending
+    status: pending
+    iteration_budget: 3
+    rollback_point: Revert skill doc wording changes.
+    independent_verification: rg for legacy reference path in production skill docs.
+    failure_triage_notes: Keep tests allowing archived legacy docs only if not referenced by production skills.
+    tdd:
+      failing_test_file: tests/feature_pipeline/test_methodology_contract.py
+      red_command: python -m pytest tests/feature_pipeline/test_methodology_contract.py
+      expected_failure: Contract tests still expect legacy references before update.
+      green_command: python -m pytest tests/feature_pipeline/test_methodology_contract.py
+  - id: S-004
+    title: Project profile generated-output filtering
+    linked_requirements: [FR-009]
+    linked_acceptance_criteria: [AC-007]
+    linked_adrs: [ADR-001]
+    linked_contracts: [project-profile]
+    dependencies: [S-001]
+    priority: 4
+    complexity: 3
+    critical_path: false
+    parallelizable: true
+    file_ownership:
+      - .agents/pipeline-core/scripts/featurectl.py
+      - tests/feature_pipeline/test_featurectl_core.py
+    conflict_risk: low
+    dependency_notes: Reuses generated_or_vendor_path and feature_signal_candidate_path.
+    expected_touchpoints:
+      - generated_or_vendor_path
+      - feature_signal_candidate_path
+      - build_project_profile
+    scope_confidence: high
+    test_strategy: Add generated showcase artifact fixture and assert it is absent from feature signals.
+    verification_commands:
+      - python -m pytest tests/feature_pipeline/test_featurectl_core.py
+    review_focus:
+      - preserve real source examples
+      - filter generated benchmark output
+    evidence_status: pending
+    status: pending
+    iteration_budget: 2
+    rollback_point: Revert profile filter additions.
+    independent_verification: Run init in a temp repo with generated showcase docs.
+    failure_triage_notes: If no signals are found, add a control real feature doc.
+    tdd:
+      failing_test_file: tests/feature_pipeline/test_featurectl_core.py
+      red_command: python -m pytest tests/feature_pipeline/test_featurectl_core.py
+      expected_failure: Generated stress artifact appears in profile before implementation.
+      green_command: python -m pytest tests/feature_pipeline/test_featurectl_core.py
