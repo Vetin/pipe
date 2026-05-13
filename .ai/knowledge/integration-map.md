@@ -43,9 +43,15 @@ score artifacts.
 - Public raw check -> remote or file raw bytes: `pipelinebench.py
   check-public-raw` verifies physical newline counts for rendered source
   artifacts without executing fetched content.
+- GitHub Actions -> public raw check: `.github/workflows/pipeline-guardrails.yml`
+  runs wrapper help, compileall, artifact formatting tests, and commit-based raw
+  line-count checks on `main`.
 - CLI wrapper -> core module: top-level scripts stay small and stable while
   implementation details stay under focused `featurectl_core` and
   `pipelinebench_core` modules.
+- Feature cards -> central backlog: accepted cross-feature debt is copied to
+  `.ai/knowledge/pipeline-backlog.md` so it is retrievable without scanning
+  every canonical feature.
 
 ## External Integrations
 

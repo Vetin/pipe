@@ -2,7 +2,7 @@ artifact_contract_version: 0.1.0
 feature_key: pipeline/guardrail-polish-and-backlog-tracking
 run_id: run-20260513-8vs4
 current_step: promote
-lifecycle: promoted-readonly
+lifecycle: canonical
 read_only: true
 worktree:
   branch: feature/pipeline-guardrail-polish-and-backlog-tracking-run-20260513-8vs4

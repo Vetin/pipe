@@ -1,29 +1,31 @@
 artifact_contract_version: 0.1.0
 generated_by: featurectl.py promote canonical sync
-generated_at: '2026-05-13T16:51:31Z'
+generated_at: '2026-05-13T19:01:47Z'
 project:
   name: pipe
   root: .
   remote: git@github.com:Vetin/pipe.git
 counts:
-  tracked_files: 2228
-  profiled_files: 212
-  source_files: 26
+  tracked_files: 2326
+  profiled_files: 217
+  source_files: 29
   test_files: 37
-  doc_files: 92
+  doc_files: 93
   contract_files: 23
-  integration_files: 3
+  integration_files: 4
 package_manifests: []
 scripts: []
 module_dirs:
 - path: .agents
-  tracked_files: 101
+  tracked_files: 104
 - path: .ai
-  tracked_files: 60
+  tracked_files: 61
 - path: tests
   tracked_files: 37
 - path: pipeline-lab
   tracked_files: 9
+- path: .github
+  tracked_files: 1
 canonical_features:
 - feature_key: pipeline/artifact-readability-execution-semantics
   path: .ai/features/pipeline/artifact-readability-execution-semantics
@@ -35,6 +37,8 @@ canonical_features:
   path: .ai/features/pipeline/core-modularity-and-readable-events
 - feature_key: pipeline/event-schema-strictness-and-narrative-execution-logs
   path: .ai/features/pipeline/event-schema-strictness-and-narrative-execution-logs
+- feature_key: pipeline/guardrail-polish-and-backlog-tracking
+  path: .ai/features/pipeline/guardrail-polish-and-backlog-tracking
 - feature_key: pipeline/lifecycle-hygiene-profile-noise
   path: .ai/features/pipeline/lifecycle-hygiene-profile-noise
 - feature_key: pipeline/portable-artifact-consistency

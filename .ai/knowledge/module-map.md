@@ -16,7 +16,14 @@ Last reviewed: 2026-05-13
 - `.agents/pipeline-core/scripts/featurectl_core/validation.py`: workspace and
   artifact gate validation orchestration.
 - `.agents/pipeline-core/scripts/featurectl_core/validators/`: focused
-  canonical memory, execution-log, and event sidecar validators.
+  canonical memory, execution-log, event sidecar, gate, slice, and worktree
+  validators.
+- `.agents/pipeline-core/scripts/featurectl_core/validators/gates.py`: state
+  shape and gate-vocabulary validation.
+- `.agents/pipeline-core/scripts/featurectl_core/validators/slices.py`: slice
+  plan validation and feature requirement link checks.
+- `.agents/pipeline-core/scripts/featurectl_core/validators/worktree.py`:
+  current checkout and feature worktree alignment checks.
 - `.agents/pipeline-core/scripts/featurectl_core/evidence.py`: evidence
   manifest, red/green order, slice completion, and retry metadata.
 - `.agents/pipeline-core/scripts/featurectl_core/events.py`: Markdown event
@@ -64,6 +71,8 @@ Last reviewed: 2026-05-13
 - `.ai/knowledge`: retrieval layer for future agents, including canonical
   features, discovered signals, architecture, modules, integrations, tests, and
   ADR index.
+- `.ai/knowledge/pipeline-backlog.md`: accepted cross-feature verification debt
+  and future pipeline hardening work.
 
 ## Benchmark Modules
 

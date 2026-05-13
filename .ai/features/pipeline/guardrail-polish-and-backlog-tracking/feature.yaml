@@ -3,7 +3,7 @@ feature_key: pipeline/guardrail-polish-and-backlog-tracking
 domain: pipeline
 slug: guardrail-polish-and-backlog-tracking
 title: Guardrail polish and backlog tracking
-status: promoted-readonly
+status: complete
 run_id: run-20260513-8vs4
 branch: feature/pipeline-guardrail-polish-and-backlog-tracking-run-20260513-8vs4
 worktree: ../worktrees/pipeline-guardrail-polish-and-backlog-tracking-run-20260513-8vs4
@@ -14,4 +14,4 @@ keywords:
 - pipeline
 - guardrail-polish-and-backlog-tracking
 created_at: '2026-05-13T18:44:54Z'
-updated_at: '2026-05-13T19:01:47Z'
+updated_at: '2026-05-13T18:44:54Z'

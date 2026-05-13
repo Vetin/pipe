@@ -36,3 +36,8 @@ Last reviewed: 2026-05-13
   - Source: `.ai/features/pipeline/event-schema-strictness-and-narrative-execution-logs/adrs/ADR-007-strict-events-and-narrative-execution.md`
   - Decision: event sidecars use a strict event vocabulary, and generated
     execution entries are human summaries.
+- ADR-008 Guardrails, Events, And Backlog
+  - Source: `.ai/features/pipeline/guardrail-polish-and-backlog-tracking/adrs/ADR-008-guardrails-events-and-backlog.md`
+  - Decision: public raw checks are permanent guardrails, `events.yaml` remains
+    the exact event source, and durable verification debt is tracked in
+    `.ai/knowledge/pipeline-backlog.md`.

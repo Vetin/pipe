@@ -15,8 +15,8 @@ modules under `.agents/pipeline-core/scripts/featurectl_core/`:
 - `workspace`, profile, and docset behavior lives in `profile.py` and
   `docsets.py`.
 - Gate orchestration lives in `validation.py`; focused validators under
-  `featurectl_core/validators/` own canonical memory, event sidecar, and
-  execution-log checks.
+  `featurectl_core/validators/` own canonical memory, event sidecar,
+  execution-log, state/gate, slice, and worktree checks.
 - Evidence, event, and promotion behavior lives in `evidence.py`, `events.py`,
   and `promotion.py`.
 - YAML, Markdown, and shared process helpers live in `formatting.py` and
@@ -73,12 +73,12 @@ event history without scraping prose. `execution.md` remains the human-readable
 journal.
 
 `events.yaml` is the machine-readable event source of truth. `execution.md`
-summarizes the run for humans and should not be treated as the only parseable
-event source.
+summarizes the run for humans and should not mirror exact old/new status,
+attempt, reason, or supersedes fields that already live in the sidecar.
 
 Event sidecars use a strict event vocabulary. Validators reject unknown event
-types, unexpected fields, malformed UTC timestamps, and duplicate slice
-completion events.
+types, unexpected top-level fields, unexpected event fields, malformed UTC
+timestamps, and duplicate slice completion events.
 
 ## Shared Knowledge Retrieval
 
@@ -103,6 +103,17 @@ rather than curated documentation.
 
 `pipelinebench.py check-public-raw` provides an explicit public raw line-count
 check. Normal tests use file-backed fixtures so the suite remains offline.
+
+`.github/workflows/pipeline-guardrails.yml` runs wrapper help, compileall,
+artifact formatting tests, and the public raw check on `main` so raw regressions
+are not only manual validation notes.
+
+## Pipeline Backlog
+
+Accepted verification debt that spans more than one feature is tracked in
+`.ai/knowledge/pipeline-backlog.md`. Individual feature cards can still explain
+local debt, but future agents should use the central backlog for durable
+pipeline hardening work.
 
 ## Source Anchors
 

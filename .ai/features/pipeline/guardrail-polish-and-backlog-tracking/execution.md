@@ -143,6 +143,7 @@ None yet.
 - Completed `review` gate.
 - Completed `verification` gate.
 - Completed `finish` gate.
+- Promoted feature memory to `.ai/features/pipeline/guardrail-polish-and-backlog-tracking`.
 
 ## History
 

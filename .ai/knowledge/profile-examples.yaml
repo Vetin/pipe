@@ -1,6 +1,6 @@
 artifact_contract_version: 0.1.0
 generated_by: featurectl.py promote canonical sync
-generated_at: '2026-05-13T16:51:31Z'
+generated_at: '2026-05-13T19:01:47Z'
 contract_examples:
 - .agents/pipeline-core/references/native-skill-protocol.md
 - .agents/pipeline-core/scripts/featurectl_core/events.py
@@ -60,6 +60,7 @@ integration_examples:
 - .agents/pipeline-core/references/workflow-and-gates.md
 - .agents/pipeline-core/references/workflow-state-machine.md
 - .ai/knowledge/integration-map.md
+- .github/workflows/pipeline-guardrails.yml
 source_examples:
 - .agents/pipeline-core/scripts/featurectl.py
 - .agents/pipeline-core/scripts/featurectl_core/__init__.py
@@ -76,6 +77,9 @@ source_examples:
 - .agents/pipeline-core/scripts/featurectl_core/validators/canonical_memory.py
 - .agents/pipeline-core/scripts/featurectl_core/validators/events.py
 - .agents/pipeline-core/scripts/featurectl_core/validators/execution_log.py
+- .agents/pipeline-core/scripts/featurectl_core/validators/gates.py
+- .agents/pipeline-core/scripts/featurectl_core/validators/slices.py
+- .agents/pipeline-core/scripts/featurectl_core/validators/worktree.py
 - .agents/pipeline-core/scripts/pipelinebench.py
 - .agents/pipeline-core/scripts/pipelinebench_core/__init__.py
 - .agents/pipeline-core/scripts/pipelinebench_core/candidates.py
