@@ -1,0 +1,7 @@
+........................................................................... [ 48%]
+........................................................ [ 85%]
+.......................                                                  [100%]
+154 passed, 301 subtests passed in 48.18s
+
+Wrapper smoke: featurectl --help pass; pipelinebench --help pass; pipelinebench list-scenarios pass.
+Diff check: git diff --check pass.

@@ -1,0 +1,6 @@
+.F........F... [100%]
+FAILED tests/feature_pipeline/test_featurectl_core.py::FeatureCtlCoreTests::test_new_creates_worktree_workspace_and_core_artifacts
+KeyError: 'feature_key'
+FAILED tests/feature_pipeline/test_gates_and_evidence.py::GatesAndEvidenceTests::test_mark_stale_cascades_downstream_flags
+AssertionError: sidecar marked_stale list expectation did not match emitted event data
+2 failed, 17 passed in 4.92s

@@ -1,0 +1,4 @@
+F [100%]
+FAILED tests/feature_pipeline/test_artifact_formatting.py::ArtifactFormattingTests::test_core_implementations_are_split_by_responsibility
+AssertionError: missing pipelinebench_core/scenarios.py, score.py, report.py, candidates.py, and showcases.py
+1 failed in benchmark module boundary guard

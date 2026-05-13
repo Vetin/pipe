@@ -2,7 +2,7 @@ artifact_contract_version: 0.1.0
 feature_key: pipeline/core-modularity-and-readable-events
 run_id: 20260513-core-modularity-events
 current_step: promote
-lifecycle: promoted-readonly
+lifecycle: canonical
 read_only: true
 worktree:
   branch: feature/pipeline-core-modularity-and-readable-events-20260513-core-modularity-events

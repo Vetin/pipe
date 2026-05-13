@@ -1,0 +1,82 @@
+artifact_contract_version: 0.1.0
+feature_key: pipeline/core-modularity-and-readable-events
+completion_identity_policy:
+  diff_hash: hexadecimal git diff or commit-derived hash when available
+  change_label: semantic completion label when a real diff hash is unavailable
+slices:
+  S-001:
+    red:
+      timestamp: '2026-05-13T05:27:49Z'
+      command_file: S-001/01-red-command.txt
+      output_file: S-001/01-red-output.log
+      git_state_file: S-001/00-pre-red-git-state.txt
+    green:
+      timestamp: '2026-05-13T05:43:40Z'
+      command_file: S-001/03-green-command.txt
+      output_file: S-001/03-green-output.log
+      git_state_file: S-001/02-pre-green-git-state.txt
+    verification:
+      timestamp: '2026-05-13T05:43:45Z'
+      command_file: S-001/04-verification-command.txt
+      output_file: S-001/04-verification-output.log
+    review:
+      timestamp: '2026-05-13T05:43:49Z'
+      summary_file: S-001/05-review-summary.md
+    diff_hash: 102051a5d6fbf7a7ee7581b0d2cce583301cac7dee5ef090aa001843ca34c1b4
+  S-002:
+    red:
+      timestamp: '2026-05-13T05:44:18Z'
+      command_file: S-002/01-red-command.txt
+      output_file: S-002/01-red-output.log
+      git_state_file: S-002/00-pre-red-git-state.txt
+    green:
+      timestamp: '2026-05-13T05:44:50Z'
+      command_file: S-002/03-green-command.txt
+      output_file: S-002/03-green-output.log
+      git_state_file: S-002/02-pre-green-git-state.txt
+    verification:
+      timestamp: '2026-05-13T05:44:50Z'
+      command_file: S-002/04-verification-command.txt
+      output_file: S-002/04-verification-output.log
+    review:
+      timestamp: '2026-05-13T05:44:50Z'
+      summary_file: S-002/05-review-summary.md
+    diff_hash: 09ee5a6d27abb85bbee71ef000b9decfc924a66817dd1e7b8f1b1a678823cdc6
+  S-003:
+    red:
+      timestamp: '2026-05-13T05:45:03Z'
+      command_file: S-003/01-red-command.txt
+      output_file: S-003/01-red-output.log
+      git_state_file: S-003/00-pre-red-git-state.txt
+    green:
+      timestamp: '2026-05-13T05:45:20Z'
+      command_file: S-003/03-green-command.txt
+      output_file: S-003/03-green-output.log
+      git_state_file: S-003/02-pre-green-git-state.txt
+    verification:
+      timestamp: '2026-05-13T05:45:22Z'
+      command_file: S-003/04-verification-command.txt
+      output_file: S-003/04-verification-output.log
+    review:
+      timestamp: '2026-05-13T05:45:22Z'
+      summary_file: S-003/05-review-summary.md
+    diff_hash: 14c03ca7bbd2ca28dd83ff6d304c61fc68f5b72af7f8dad819d1daa3e9eb4bfe
+  S-004:
+    red:
+      timestamp: '2026-05-13T05:47:12Z'
+      command_file: S-004/01-red-command.txt
+      output_file: S-004/01-red-output.log
+      git_state_file: S-004/00-pre-red-git-state.txt
+    green:
+      timestamp: '2026-05-13T05:47:13Z'
+      command_file: S-004/03-green-command.txt
+      output_file: S-004/03-green-output.log
+      git_state_file: S-004/02-pre-green-git-state.txt
+    verification:
+      timestamp: '2026-05-13T05:47:12Z'
+      command_file: S-004/04-verification-command.txt
+      output_file: S-004/04-verification-output.log
+    review:
+      timestamp: '2026-05-13T05:47:12Z'
+      summary_file: S-004/05-review-summary.md
+    diff_hash: cf5de29463b0ea0b2092acf195f2cd04076032df836dfa88202388a96cf78764

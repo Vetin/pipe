@@ -1,0 +1,217 @@
+artifact_contract_version: 0.1.0
+slices:
+- id: S-001
+  title: Public raw and readability guardrail tightening
+  linked_requirements:
+  - FR-001
+  - FR-002
+  - FR-006
+  - FR-007
+  linked_acceptance_criteria:
+  - AC-001
+  - AC-002
+  linked_adrs: []
+  linked_contracts: []
+  dependencies: []
+  priority: 1
+  complexity: 3
+  critical_path: true
+  rationale: Confirm the public raw concern is resolved and tighten readable artifact rules.
+  files_owned:
+  - tests/feature_pipeline/test_artifact_formatting.py
+  - .ai/knowledge/architecture-overview.md
+  expected_touchpoints:
+  - .ai/features/pipeline/public-raw-artifact-guardrails/feature-card.md
+  - .gitignore
+  test_strategy: Add failing tests for 180-char curated Markdown, knowledge typo audit, and core module
+    thresholds.
+  tdd_commands:
+    red: python -m pytest tests/feature_pipeline/test_artifact_formatting.py -q
+    green: python -m pytest tests/feature_pipeline/test_artifact_formatting.py -q
+  verification_commands:
+  - python -m pytest tests/feature_pipeline/test_artifact_formatting.py -q
+  review_focus:
+  - public raw verification is evidence, not network-dependent test logic
+  - raw evidence logs are not over-scanned
+  evidence_status: complete
+  status: complete
+  iteration_budget: 3
+  rollback_point: pre-slice git state
+  independent_verification: fresh curl and shallow clone evidence
+  failure_triage_notes: classify failures as stale public raw, readability overreach, or missing guard
+  parallelizable: false
+  file_ownership:
+  - tests/feature_pipeline/test_artifact_formatting.py
+  conflict_risk: medium
+  dependency_notes: Must run before module extraction to set thresholds.
+  scope_confidence: high
+  tdd:
+    failing_test_file: tests/feature_pipeline/test_artifact_formatting.py
+    red_command: python -m pytest tests/feature_pipeline/test_artifact_formatting.py -q
+    expected_failure: module split and stricter markdown guards not implemented
+    green_command: python -m pytest tests/feature_pipeline/test_artifact_formatting.py -q
+- id: S-002
+  title: Featurectl core module split and event sidecar
+  linked_requirements:
+  - FR-003
+  - FR-005
+  - FR-009
+  linked_acceptance_criteria:
+  - AC-002
+  - AC-004
+  linked_adrs: []
+  linked_contracts: []
+  dependencies:
+  - S-001
+  priority: 2
+  complexity: 8
+  critical_path: true
+  rationale: Reduce featurectl maintainability risk and add parseable event history.
+  files_owned:
+  - .agents/pipeline-core/scripts/featurectl_core/
+  - tests/feature_pipeline/test_gates_and_evidence.py
+  - tests/feature_pipeline/test_finish_promote.py
+  expected_touchpoints:
+  - .agents/pipeline-core/scripts/featurectl.py
+  - .ai/feature-workspaces/pipeline/core-modularity-and-readable-events--20260513-core-modularity-events/events.yaml
+  test_strategy: Add failing tests for module files, cli size, and events.yaml behavior.
+  tdd_commands:
+    red: python -m pytest tests/feature_pipeline/test_gates_and_evidence.py tests/feature_pipeline/test_finish_promote.py
+      -q
+    green: python -m pytest tests/feature_pipeline/test_gates_and_evidence.py tests/feature_pipeline/test_finish_promote.py
+      -q
+  verification_commands:
+  - python .agents/pipeline-core/scripts/featurectl.py --help
+  - python -m pytest tests/feature_pipeline/test_gates_and_evidence.py tests/feature_pipeline/test_finish_promote.py
+    -q
+  review_focus:
+  - no CLI behavior changes
+  - events.yaml stays in sync with execution.md for new events
+  evidence_status: complete
+  status: complete
+  iteration_budget: 4
+  rollback_point: pre-slice git state
+  independent_verification: wrapper smoke command and event fixture inspection
+  failure_triage_notes: classify failures as import split, event sync, or legacy compatibility
+  parallelizable: false
+  file_ownership:
+  - .agents/pipeline-core/scripts/featurectl_core/
+  conflict_risk: high
+  dependency_notes: Depends on S-001 thresholds.
+  scope_confidence: medium
+  tdd:
+    failing_test_file: tests/feature_pipeline/test_gates_and_evidence.py
+    red_command: python -m pytest tests/feature_pipeline/test_gates_and_evidence.py tests/feature_pipeline/test_finish_promote.py
+      -q
+    expected_failure: events.yaml and featurectl module split missing
+    green_command: python -m pytest tests/feature_pipeline/test_gates_and_evidence.py tests/feature_pipeline/test_finish_promote.py
+      -q
+- id: S-003
+  title: Pipelinebench module split
+  linked_requirements:
+  - FR-004
+  - FR-005
+  linked_acceptance_criteria:
+  - AC-005
+  linked_adrs: []
+  linked_contracts: []
+  dependencies:
+  - S-001
+  priority: 3
+  complexity: 5
+  critical_path: true
+  rationale: Keep benchmark scoring, reports, candidates, and showcases from growing in one file.
+  files_owned:
+  - .agents/pipeline-core/scripts/pipelinebench_core/
+  - tests/feature_pipeline/test_pipelinebench.py
+  expected_touchpoints:
+  - .agents/pipeline-core/scripts/pipelinebench.py
+  test_strategy: Add failing tests for pipelinebench module files and CLI size.
+  tdd_commands:
+    red: python -m pytest tests/feature_pipeline/test_pipelinebench.py tests/feature_pipeline/test_artifact_formatting.py
+      -q
+    green: python -m pytest tests/feature_pipeline/test_pipelinebench.py tests/feature_pipeline/test_artifact_formatting.py
+      -q
+  verification_commands:
+  - python .agents/pipeline-core/scripts/pipelinebench.py list-scenarios
+  - python -m pytest tests/feature_pipeline/test_pipelinebench.py -q
+  review_focus:
+  - candidate isolation behavior remains unchanged
+  - soft scoring and showcase commands remain available
+  evidence_status: complete
+  status: complete
+  iteration_budget: 3
+  rollback_point: pre-slice git state
+  independent_verification: benchmark wrapper smoke command
+  failure_triage_notes: classify failures as benchmark import split or command regression
+  parallelizable: false
+  file_ownership:
+  - .agents/pipeline-core/scripts/pipelinebench_core/
+  conflict_risk: medium
+  dependency_notes: Can run after S-001 independently of S-002, but keep sequential for simpler imports.
+  scope_confidence: medium
+  tdd:
+    failing_test_file: tests/feature_pipeline/test_pipelinebench.py
+    red_command: python -m pytest tests/feature_pipeline/test_pipelinebench.py tests/feature_pipeline/test_artifact_formatting.py
+      -q
+    expected_failure: pipelinebench modules and threshold missing
+    green_command: python -m pytest tests/feature_pipeline/test_pipelinebench.py tests/feature_pipeline/test_artifact_formatting.py
+      -q
+- id: S-004
+  title: Context signal consumption and final knowledge updates
+  linked_requirements:
+  - FR-008
+  - FR-009
+  linked_acceptance_criteria:
+  - AC-003
+  - AC-006
+  - AC-007
+  linked_adrs: []
+  linked_contracts: []
+  dependencies:
+  - S-002
+  - S-003
+  priority: 4
+  complexity: 4
+  critical_path: true
+  rationale: Make future agents consume canonical and lab signal memory correctly.
+  files_owned:
+  - .agents/skills/nfp-01-context/SKILL.md
+  - tests/feature_pipeline/test_context_skill_contract.py
+  - .ai/knowledge/
+  expected_touchpoints:
+  - .ai/knowledge/architecture-overview.md
+  - .ai/knowledge/module-map.md
+  - .ai/knowledge/integration-map.md
+  test_strategy: Add failing tests for context signal rules and final knowledge line/section audit.
+  tdd_commands:
+    red: python -m pytest tests/feature_pipeline/test_context_skill_contract.py tests/feature_pipeline/test_artifact_formatting.py
+      -q
+    green: python -m pytest tests/feature_pipeline/test_context_skill_contract.py tests/feature_pipeline/test_artifact_formatting.py
+      -q
+  verification_commands:
+  - python -m pytest tests/feature_pipeline/test_context_skill_contract.py tests/feature_pipeline/test_artifact_formatting.py
+    -q
+  review_focus:
+  - future context does not treat lab signals as architecture truth
+  - knowledge docs document module split and event sidecar
+  evidence_status: complete
+  status: complete
+  iteration_budget: 3
+  rollback_point: pre-slice git state
+  independent_verification: inspect context skill and knowledge docs
+  failure_triage_notes: classify failures as context rule drift or knowledge doc regression
+  parallelizable: false
+  file_ownership:
+  - .agents/skills/nfp-01-context/SKILL.md
+  - tests/feature_pipeline/test_context_skill_contract.py
+  conflict_risk: low
+  dependency_notes: Final slice after module and event behavior exists.
+  scope_confidence: high
+  tdd:
+    failing_test_file: tests/feature_pipeline/test_context_skill_contract.py
+    red_command: python -m pytest tests/feature_pipeline/test_context_skill_contract.py tests/feature_pipeline/test_artifact_formatting.py
+      -q
+    expected_failure: context signal and knowledge sidecar rules not fully covered
+    green_command: python -m pytest tests/feature_pipeline/test_context_skill_contract.py tests/feature_pipeline/test_artifact_formatting.py
+      -q

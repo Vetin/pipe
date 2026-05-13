@@ -1,0 +1,1 @@
+Reviewed public raw/readability guardrails. Wrapper and gitignore raw behavior was verified before planning; artifact formatting tests now enforce readable Markdown/YAML, knowledge section presence, no evidence// typo, and module-size guardrails.

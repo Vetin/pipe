@@ -1,0 +1,1 @@
+Reviewed pipelinebench split. The wrapper still dispatches list-scenarios, pipelinebench tests pass, and candidate/score/report/showcase responsibilities now live outside the CLI parser module.

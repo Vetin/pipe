@@ -1,0 +1,39 @@
+## feature/pipeline-core-modularity-and-readable-events-20260513-core-modularity-events
+ M .agents/pipeline-core/scripts/featurectl_core/cli.py
+ M .agents/pipeline-core/scripts/pipelinebench_core/cli.py
+ M .agents/skills/nfp-03-architecture/SKILL.md
+ M .agents/skills/nfp-11-finish/SKILL.md
+ M .ai/feature-workspaces/pipeline/core-modularity-and-readable-events--20260513-core-modularity-events/execution.md
+ M .ai/feature-workspaces/pipeline/core-modularity-and-readable-events--20260513-core-modularity-events/slices.yaml
+ M .ai/features/pipeline/codex-e2e-runner-hardening/execution.md
+ M .ai/features/pipeline/codex-e2e-runner-hardening/feature-card.md
+ M .ai/features/pipeline/real-codex-showcase-debug-runner/feature-card.md
+ M .ai/features/pipeline/real-codex-showcase-debug-runner/reviews/verification-review.md
+ M .ai/knowledge/adr-index.md
+ M .ai/knowledge/architecture-overview.md
+ M .ai/knowledge/integration-map.md
+ M .ai/knowledge/module-map.md
+ M .ai/knowledge/tech-design-overview.md
+ M tests/feature_pipeline/test_artifact_formatting.py
+ M tests/feature_pipeline/test_context_skill_contract.py
+ M tests/feature_pipeline/test_featurectl_core.py
+ M tests/feature_pipeline/test_gates_and_evidence.py
+ M tests/feature_pipeline/test_methodology_contract.py
+?? .agents/pipeline-core/scripts/featurectl_core/docsets.py
+?? .agents/pipeline-core/scripts/featurectl_core/events.py
+?? .agents/pipeline-core/scripts/featurectl_core/evidence.py
+?? .agents/pipeline-core/scripts/featurectl_core/formatting.py
+?? .agents/pipeline-core/scripts/featurectl_core/profile.py
+?? .agents/pipeline-core/scripts/featurectl_core/promotion.py
+?? .agents/pipeline-core/scripts/featurectl_core/shared.py
+?? .agents/pipeline-core/scripts/featurectl_core/validation.py
+?? .agents/pipeline-core/scripts/pipelinebench_core/candidates.py
+?? .agents/pipeline-core/scripts/pipelinebench_core/commands.py
+?? .agents/pipeline-core/scripts/pipelinebench_core/common.py
+?? .agents/pipeline-core/scripts/pipelinebench_core/report.py
+?? .agents/pipeline-core/scripts/pipelinebench_core/scenarios.py
+?? .agents/pipeline-core/scripts/pipelinebench_core/score.py
+?? .agents/pipeline-core/scripts/pipelinebench_core/showcases.py
+?? .ai/feature-workspaces/pipeline/core-modularity-and-readable-events--20260513-core-modularity-events/adrs/
+?? .ai/feature-workspaces/pipeline/core-modularity-and-readable-events--20260513-core-modularity-events/events.yaml
+?? .ai/feature-workspaces/pipeline/core-modularity-and-readable-events--20260513-core-modularity-events/evidence/
