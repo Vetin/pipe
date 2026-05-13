@@ -136,6 +136,7 @@ None yet.
 - Completed slice `S-001` attempt 1; reason: initial.
 - Completed slice `S-002` attempt 1; reason: initial.
 - Completed slice `S-003`.
+- Completed slice `S-004`.
 
 ## History
 

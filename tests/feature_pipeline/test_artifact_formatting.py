@@ -299,6 +299,9 @@ class ArtifactFormattingTests(unittest.TestCase):
             "canonical_memory.py",
             "events.py",
             "execution_log.py",
+            "gates.py",
+            "slices.py",
+            "worktree.py",
         }
         pipelinebench_modules = {
             "scenarios.py",
@@ -313,13 +316,26 @@ class ArtifactFormattingTests(unittest.TestCase):
 
         limits = {
             FEATURECTL_CORE / "cli.py": 1500,
-            FEATURECTL_CORE / "validation.py": 650,
+            FEATURECTL_CORE / "validation.py": 450,
             PIPELINEBENCH_CORE / "cli.py": 260,
         }
         for path, limit in limits.items():
             with self.subTest(path=path.relative_to(ROOT).as_posix()):
                 line_count = len(path.read_text(encoding="utf-8").splitlines())
                 self.assertLessEqual(line_count, limit)
+
+    def test_pipeline_backlog_tracks_accepted_verification_debt(self):
+        backlog = ROOT / ".ai/knowledge/pipeline-backlog.md"
+        self.assertTrue(backlog.exists())
+        content = backlog.read_text(encoding="utf-8")
+
+        for expected in (
+            "## Active Backlog",
+            "Historical execution log migration",
+            "Showcase benchmark package split",
+            "Promotion event metadata expansion",
+        ):
+            self.assertIn(expected, content)
 
     def test_change_label_only_manifests_declare_identity_policy(self):
         manifests = [

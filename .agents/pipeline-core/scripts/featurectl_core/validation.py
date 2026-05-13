@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import re
 from pathlib import Path
 from typing import Any
 
@@ -12,21 +11,18 @@ from .formatting import read_yaml
 from .promotion import infer_worktree_path, resolve_configured_worktree_path
 from .shared import (
     CONTRACT_VERSION,
-    DEFAULT_GATES,
-    DEFAULT_STALE,
     FEATURE_REQUIRED_HEADINGS,
-    INACTIVE_WORKSPACE_LIFECYCLES,
     TECH_DESIGN_REQUIRED_HEADINGS,
-    VALID_GATE_STATES,
     VALID_STEPS,
-    VALID_WORKSPACE_LIFECYCLES,
     FeatureCtlError,
-    repo_root,
     run_git,
 )
 from .validators.canonical_memory import validate_repository_source_truth, workspace_inactive_lifecycle
 from .validators.events import validate_events_sidecar
 from .validators.execution_log import validate_execution_latest_status
+from .validators.gates import validate_state_shape
+from .validators.slices import validate_slices_file
+from .validators.worktree import validate_current_directory_is_worktree
 
 def status_blockers(root: Path, workspace: Path, feature: dict[str, Any], state: dict[str, Any]) -> list[str]:
     blockers: list[str] = []
@@ -127,32 +123,6 @@ def forbidden_file_blockers(workspace: Path) -> list[str]:
     return blockers
 
 
-def validate_state_shape(state: dict[str, Any]) -> list[str]:
-    blockers: list[str] = []
-    if state.get("artifact_contract_version") != CONTRACT_VERSION:
-        blockers.append("state.yaml artifact_contract_version mismatch")
-    if "next_skill" in state:
-        blockers.append("state.yaml must not contain next_skill")
-    gates = state.get("gates")
-    if not isinstance(gates, dict):
-        blockers.append("state.yaml gates must be a mapping")
-    else:
-        for gate in DEFAULT_GATES:
-            if gate not in gates:
-                blockers.append(f"state.yaml missing gate: {gate}")
-            elif gates[gate] not in VALID_GATE_STATES:
-                blockers.append(f"invalid gate status for {gate}: {gates[gate]}")
-    stale = state.get("stale")
-    if not isinstance(stale, dict):
-        blockers.append("state.yaml stale must be a mapping")
-    lifecycle = state.get("lifecycle")
-    if lifecycle is not None and lifecycle not in VALID_WORKSPACE_LIFECYCLES:
-        blockers.append(f"state.yaml invalid lifecycle: {lifecycle}")
-    if state.get("read_only") is not None and not isinstance(state.get("read_only"), bool):
-        blockers.append("state.yaml read_only must be boolean")
-    return blockers
-
-
 def validate_feature_contract_if_started(workspace: Path, state: dict[str, Any]) -> list[str]:
     gate = (state.get("gates") or {}).get("feature_contract")
     if gate not in {"drafted", "approved", "delegated", "complete"}:
@@ -240,130 +210,6 @@ def validate_docs_consulted(workspace: Path, step_label: str) -> list[str]:
         return [f"execution.md missing {marker}"]
     return []
 
-
-
-def validate_slices_file(path: Path, workspace: Path | None = None) -> list[str]:
-    blockers: list[str] = []
-    try:
-        data = read_yaml(path)
-    except FeatureCtlError as exc:
-        return [str(exc)]
-    if data.get("artifact_contract_version") != CONTRACT_VERSION:
-        blockers.append("slices.yaml artifact_contract_version mismatch")
-    slices = data.get("slices")
-    if isinstance(slices, dict):
-        slice_items = list(slices.values())
-    elif isinstance(slices, list):
-        slice_items = slices
-    else:
-        return blockers + ["slices.yaml slices must be a list or mapping"]
-    if not slice_items:
-        blockers.append("slices.yaml must include at least one slice")
-    feature_ids = extract_feature_ids(workspace / "feature.md") if workspace else {"FR": set(), "AC": set()}
-    seen_ids: set[str] = set()
-    all_ids = {item.get("id") for item in slice_items if isinstance(item, dict)}
-    for index, item in enumerate(slice_items, start=1):
-        prefix = f"slice {item.get('id', index) if isinstance(item, dict) else index}"
-        if not isinstance(item, dict):
-            blockers.append(f"{prefix} must be a mapping")
-            continue
-        slice_id = item.get("id")
-        if not isinstance(slice_id, str) or not re.match(r"^S-[0-9]{3}$", slice_id):
-            blockers.append(f"{prefix} id must match S-###")
-        elif slice_id in seen_ids:
-            blockers.append(f"{prefix} id is duplicated")
-        else:
-            seen_ids.add(slice_id)
-        for forbidden in ("allowed_files", "forbidden_files"):
-            if forbidden in item:
-                blockers.append(f"{prefix} must not use {forbidden} in v1")
-        for field in (
-            "id",
-            "title",
-            "linked_requirements",
-            "linked_acceptance_criteria",
-            "linked_adrs",
-            "linked_contracts",
-            "dependencies",
-            "priority",
-            "complexity",
-            "critical_path",
-            "parallelizable",
-            "file_ownership",
-            "conflict_risk",
-            "dependency_notes",
-            "expected_touchpoints",
-            "scope_confidence",
-            "test_strategy",
-            "verification_commands",
-            "review_focus",
-            "evidence_status",
-            "status",
-            "iteration_budget",
-            "rollback_point",
-            "independent_verification",
-            "failure_triage_notes",
-        ):
-            if field not in item:
-                blockers.append(f"{prefix} missing {field}")
-        if not item.get("linked_requirements"):
-            blockers.append(f"{prefix} must link requirements")
-        else:
-            for requirement in item.get("linked_requirements") or []:
-                if feature_ids["FR"] and requirement not in feature_ids["FR"]:
-                    blockers.append(f"{prefix} links unknown requirement {requirement}")
-        if not item.get("linked_acceptance_criteria"):
-            blockers.append(f"{prefix} must link acceptance criteria")
-        else:
-            for criterion in item.get("linked_acceptance_criteria") or []:
-                if feature_ids["AC"] and criterion not in feature_ids["AC"]:
-                    blockers.append(f"{prefix} links unknown acceptance criterion {criterion}")
-        if item.get("scope_confidence") not in {"low", "medium", "high"}:
-            blockers.append(f"{prefix} scope_confidence must be low, medium, or high")
-        if not isinstance(item.get("complexity"), int) or not 1 <= item.get("complexity", 0) <= 10:
-            blockers.append(f"{prefix} complexity must be an integer from 1 to 10")
-        if not isinstance(item.get("critical_path"), bool):
-            blockers.append(f"{prefix} critical_path must be true or false")
-        if not isinstance(item.get("parallelizable"), bool):
-            blockers.append(f"{prefix} parallelizable must be true or false")
-        if item.get("conflict_risk") not in {"low", "medium", "high"}:
-            blockers.append(f"{prefix} conflict_risk must be low, medium, or high")
-        file_ownership = item.get("file_ownership")
-        if not isinstance(file_ownership, list) or not file_ownership:
-            blockers.append(f"{prefix} file_ownership must be a non-empty list")
-        for field in ("dependency_notes", "test_strategy"):
-            if field in item and not str(item.get(field) or "").strip():
-                blockers.append(f"{prefix} {field} must not be empty")
-        for dependency in item.get("dependencies") or []:
-            if dependency not in all_ids:
-                blockers.append(f"{prefix} depends on unknown slice {dependency}")
-        tdd = item.get("tdd")
-        if not isinstance(tdd, dict):
-            blockers.append(f"{prefix} missing tdd mapping")
-        else:
-            for field in ("failing_test_file", "red_command", "expected_failure", "green_command"):
-                if not tdd.get(field):
-                    blockers.append(f"{prefix} tdd missing {field}")
-        if not item.get("verification_commands"):
-            blockers.append(f"{prefix} must include verification_commands")
-        if not isinstance(item.get("iteration_budget"), int) or item.get("iteration_budget", 0) < 1:
-            blockers.append(f"{prefix} iteration_budget must be a positive integer")
-        for field in ("rollback_point", "independent_verification", "failure_triage_notes"):
-            if field in item and not str(item.get(field) or "").strip():
-                blockers.append(f"{prefix} {field} must not be empty")
-    return blockers
-
-
-def extract_feature_ids(feature_path: Path) -> dict[str, set[str]]:
-    if not feature_path.exists():
-        return {"FR": set(), "AC": set()}
-    content = feature_path.read_text(encoding="utf-8")
-    return {
-        "FR": set(re.findall(r"\bFR-[0-9]{3}\b", content)),
-        "AC": set(re.findall(r"\bAC-[0-9]{3}\b", content)),
-    }
-
-
 def validate_readiness_minimum(workspace: Path, state: dict[str, Any]) -> list[str]:
     blockers: list[str] = []
     for artifact in ("feature.md", "architecture.md", "tech-design.md", "slices.yaml"):
@@ -387,14 +233,6 @@ def validate_implementation_minimum(state: dict[str, Any]) -> list[str]:
         if gates.get(gate) not in {"approved", "delegated"}:
             blockers.append(f"implementation requires {gate} gate approved or delegated")
     return blockers
-
-
-def validate_current_directory_is_worktree(workspace: Path) -> list[str]:
-    worktree_path = infer_worktree_path(workspace)
-    current_checkout = repo_root()
-    if current_checkout != worktree_path:
-        return [f"current checkout is not configured feature worktree: {worktree_path}"]
-    return []
 
 
 def validate_evidence_minimum(workspace: Path) -> list[str]:

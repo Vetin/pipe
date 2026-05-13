@@ -164,8 +164,8 @@ slices:
   review_focus:
   - maintainability
   - no unrelated historical rewrites
-  evidence_status: pending
-  status: pending
+  evidence_status: complete
+  status: complete
   iteration_budget: 6
   rollback_point: pre-slice git state
   independent_verification: Full suite and featurectl validation.
