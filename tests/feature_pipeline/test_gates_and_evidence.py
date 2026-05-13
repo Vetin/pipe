@@ -78,6 +78,43 @@ class GatesAndEvidenceTests(unittest.TestCase):
         self.assertFalse(list(workspace.rglob("approvals.yaml")))
         self.assertFalse(list(workspace.rglob("handoff.md")))
 
+    def test_events_schema_exists_and_describes_required_event_shapes(self):
+        schema_path = ROOT / ".agents/pipeline-core/scripts/schemas/events.schema.json"
+
+        self.assertTrue(schema_path.exists())
+        schema = yaml.safe_load(schema_path.read_text(encoding="utf-8"))
+        self.assertIn("events", schema["required"])
+        schema_text = schema_path.read_text(encoding="utf-8")
+        for token in (
+            "gate_status_changed",
+            "slice_completed",
+            "slice_retry_completed",
+            "feature_promoted",
+            "canonical_path",
+            "supersedes",
+        ):
+            self.assertIn(token, schema_text)
+
+    def test_validate_rejects_invalid_events_sidecar_records(self):
+        workspace = self.create_workspace("run-invalid-events")
+        events_path = workspace / "events.yaml"
+        events = yaml.safe_load(events_path.read_text(encoding="utf-8"))
+        events["events"].append(
+            {
+                "timestamp": "2026-05-13T15:20:00Z",
+                "event_type": "gate_status_changed",
+                "feature_key": "auth/reset-password",
+                "old_status": "pending",
+                "new_status": "approved",
+            }
+        )
+        events_path.write_text(yaml.safe_dump(events, sort_keys=False), encoding="utf-8")
+
+        result = run([sys.executable, str(SCRIPT), "validate", "--workspace", str(workspace)], self.repo, check=False)
+
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("events.yaml event 2 gate_status_changed missing gate", result.stdout)
+
     def test_mark_stale_cascades_downstream_flags(self):
         workspace = self.create_workspace("run-stale")
 

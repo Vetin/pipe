@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Native Feature Pipeline events sidecar",
+  "type": "object",
+  "required": ["artifact_contract_version", "feature_key", "events"],
+  "properties": {
+    "artifact_contract_version": { "const": "0.1.0" },
+    "feature_key": { "type": "string", "pattern": "^[a-z0-9-]+/[a-z0-9-]+$" },
+    "events": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/event" }
+    }
+  },
+  "$defs": {
+    "event": {
+      "type": "object",
+      "required": ["timestamp", "event_type", "feature_key"],
+      "properties": {
+        "timestamp": { "type": "string" },
+        "event_type": { "type": "string" },
+        "feature_key": { "type": "string" },
+        "gate": { "type": "string" },
+        "old_status": { "type": ["string", "null"] },
+        "new_status": { "type": "string" },
+        "slice": { "type": "string", "pattern": "^S-[0-9]{3}$" },
+        "attempt": { "type": "integer", "minimum": 1 },
+        "reason": { "type": ["string", "null"] },
+        "supersedes": { "type": "string" },
+        "canonical_path": { "type": "string" },
+        "artifact": { "type": "string" },
+        "marked_stale": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": { "event_type": { "const": "gate_status_changed" } },
+            "required": ["event_type"]
+          },
+          "then": { "required": ["gate", "old_status", "new_status"] }
+        },
+        {
+          "if": {
+            "properties": { "event_type": { "const": "slice_completed" } },
+            "required": ["event_type"]
+          },
+          "then": { "required": ["slice", "attempt", "reason"] }
+        },
+        {
+          "if": {
+            "properties": { "event_type": { "const": "slice_retry_completed" } },
+            "required": ["event_type"]
+          },
+          "then": { "required": ["slice", "attempt", "reason", "supersedes"] }
+        },
+        {
+          "if": {
+            "properties": { "event_type": { "const": "feature_promoted" } },
+            "required": ["event_type"]
+          },
+          "then": { "required": ["canonical_path"] }
+        },
+        {
+          "if": {
+            "properties": { "event_type": { "const": "incoming_variant_archived" } },
+            "required": ["event_type"]
+          },
+          "then": { "required": ["canonical_path"] }
+        },
+        {
+          "if": {
+            "properties": { "event_type": { "const": "artifact_marked_stale" } },
+            "required": ["event_type"]
+          },
+          "then": { "required": ["artifact", "marked_stale"] }
+        }
+      ],
+      "additionalProperties": true
+    }
+  }
+}

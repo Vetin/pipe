@@ -81,8 +81,8 @@ slices:
   review_focus:
   - schema matches emitted event records
   - validators fail with blocker messages, not exceptions
-  evidence_status: pending
-  status: pending
+  evidence_status: complete
+  status: complete
   iteration_budget: 4
   rollback_point: pre-slice git state
   independent_verification: mutate fixture events.yaml and validate failure

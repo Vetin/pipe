@@ -1,0 +1,4 @@
+## feature/pipeline-raw-schema-and-execution-boundary-hardening-20260513-raw-schema-exec-boundary
+ M .agents/pipeline-core/scripts/featurectl_core/validation.py
+ M tests/feature_pipeline/test_gates_and_evidence.py
+?? .agents/pipeline-core/scripts/schemas/events.schema.json
