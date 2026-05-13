@@ -263,6 +263,12 @@ class ArtifactFormattingTests(unittest.TestCase):
             "evidence.py",
             "promotion.py",
         }
+        validators_dir = FEATURECTL_CORE / "validators"
+        validator_modules = {
+            "canonical_memory.py",
+            "events.py",
+            "execution_log.py",
+        }
         pipelinebench_modules = {
             "scenarios.py",
             "score.py",
@@ -271,10 +277,12 @@ class ArtifactFormattingTests(unittest.TestCase):
             "showcases.py",
         }
         self.assertTrue(featurectl_modules.issubset({path.name for path in FEATURECTL_CORE.glob("*.py")}))
+        self.assertTrue(validator_modules.issubset({path.name for path in validators_dir.glob("*.py")}))
         self.assertTrue(pipelinebench_modules.issubset({path.name for path in PIPELINEBENCH_CORE.glob("*.py")}))
 
         limits = {
             FEATURECTL_CORE / "cli.py": 1500,
+            FEATURECTL_CORE / "validation.py": 650,
             PIPELINEBENCH_CORE / "cli.py": 260,
         }
         for path, limit in limits.items():

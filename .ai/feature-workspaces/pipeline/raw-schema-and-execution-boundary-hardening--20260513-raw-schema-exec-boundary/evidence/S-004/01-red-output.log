@@ -1,0 +1,36 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+_ ArtifactFormattingTests.test_core_implementations_are_split_by_responsibility _
+
+self = <test_artifact_formatting.ArtifactFormattingTests testMethod=test_core_implementations_are_split_by_responsibility>
+
+    def test_core_implementations_are_split_by_responsibility(self):
+        featurectl_modules = {
+            "formatting.py",
+            "events.py",
+            "profile.py",
+            "validation.py",
+            "evidence.py",
+            "promotion.py",
+        }
+        validators_dir = FEATURECTL_CORE / "validators"
+        validator_modules = {
+            "canonical_memory.py",
+            "events.py",
+            "execution_log.py",
+        }
+        pipelinebench_modules = {
+            "scenarios.py",
+            "score.py",
+            "report.py",
+            "candidates.py",
+            "showcases.py",
+        }
+        self.assertTrue(featurectl_modules.issubset({path.name for path in FEATURECTL_CORE.glob("*.py")}))
+>       self.assertTrue(validator_modules.issubset({path.name for path in validators_dir.glob("*.py")}))
+E       AssertionError: False is not true
+
+tests/feature_pipeline/test_artifact_formatting.py:280: AssertionError
+=========================== short test summary info ============================
+FAILED tests/feature_pipeline/test_artifact_formatting.py::ArtifactFormattingTests::test_core_implementations_are_split_by_responsibility
+1 failed in 0.11s

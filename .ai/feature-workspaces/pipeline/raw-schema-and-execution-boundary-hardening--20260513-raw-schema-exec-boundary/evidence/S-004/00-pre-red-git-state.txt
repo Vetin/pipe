@@ -1,0 +1,5 @@
+## feature/pipeline-raw-schema-and-execution-boundary-hardening-20260513-raw-schema-exec-boundary
+ M .agents/pipeline-core/scripts/featurectl_core/validation.py
+ M .ai/feature-workspaces/pipeline/raw-schema-and-execution-boundary-hardening--20260513-raw-schema-exec-boundary/slices.yaml
+ M tests/feature_pipeline/test_artifact_formatting.py
+?? .agents/pipeline-core/scripts/featurectl_core/validators/
