@@ -23,6 +23,7 @@ Planned steps:
 
 - Implementation became allowed after `implementation` changed from `blocked`
   to `approved`; reason: planning-gates-approved-for-tdd.
+- Implementation became allowed after `implementation` changed from `approved` to `complete`; reason: all-slices-complete.
 
 ## Non-Delegable Checkpoints
 
@@ -147,6 +148,10 @@ None yet.
 - Completed slice `S-001` attempt 1; reason: initial.
 - Completed slice `S-002` attempt 1; reason: initial.
 - Completed slice `S-003` attempt 1; reason: initial.
+- Gate `implementation` changed from `approved` to `complete` by `codex`; note: all-slices-complete.
+- Gate `review` changed from `pending` to `complete` by `codex`; note: strict-review-passed.
+- Gate `verification` changed from `pending` to `complete` by `codex`; note: full-feature-pipeline-suite-passed.
+- Gate `finish` changed from `pending` to `complete` by `codex`; note: feature-card-ready.
 
 ## History
 
@@ -155,7 +160,7 @@ None yet.
 
 ## Current Run State
 
-Current step: context
-Next recommended skill: nfp-01-context
+Current step: finish
+Next recommended skill: nfp-12-promote
 Blocking issues: none
-Last updated: 2026-05-13T16:35:05Z
+Last updated: 2026-05-13T16:58:00Z
