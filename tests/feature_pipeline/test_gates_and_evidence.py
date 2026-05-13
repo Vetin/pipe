@@ -84,6 +84,7 @@ class GatesAndEvidenceTests(unittest.TestCase):
         self.assertTrue(schema_path.exists())
         schema = yaml.safe_load(schema_path.read_text(encoding="utf-8"))
         self.assertIn("events", schema["required"])
+        self.assertFalse(schema["additionalProperties"])
         event_schema = schema["$defs"]["event"]
         self.assertFalse(event_schema["additionalProperties"])
         self.assertEqual(
@@ -169,6 +170,18 @@ class GatesAndEvidenceTests(unittest.TestCase):
         self.assertIn("events.yaml event 2 has unknown event_type unexpected_event", result.stdout)
         self.assertIn("events.yaml event 3 has unexpected field extra", result.stdout)
         self.assertIn("events.yaml event 4 timestamp must be an RFC3339 UTC timestamp ending in Z", result.stdout)
+
+    def test_validate_rejects_unexpected_events_sidecar_top_level_fields(self):
+        workspace = self.create_workspace("run-events-top-level")
+        events_path = workspace / "events.yaml"
+        events = yaml.safe_load(events_path.read_text(encoding="utf-8"))
+        events["debug"] = "not-allowed"
+        events_path.write_text(yaml.safe_dump(events, sort_keys=False), encoding="utf-8")
+
+        result = run([sys.executable, str(SCRIPT), "validate", "--workspace", str(workspace)], self.repo, check=False)
+
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("events.yaml has unexpected top-level field debug", result.stdout)
 
     def test_mark_stale_cascades_downstream_flags(self):
         workspace = self.create_workspace("run-stale")

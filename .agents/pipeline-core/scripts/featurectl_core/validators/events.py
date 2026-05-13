@@ -11,6 +11,7 @@ from ..shared import CONTRACT_VERSION, FeatureCtlError
 
 TIMESTAMP_PATTERN = re.compile(r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$")
 BASE_EVENT_FIELDS = {"timestamp", "event_type", "feature_key"}
+TOP_LEVEL_FIELDS = {"artifact_contract_version", "feature_key", "events"}
 EVENT_FIELDS = {
     "run_initialized": {"step", "next"},
     "gate_status_changed": {"gate", "old_status", "new_status", "by", "note"},
@@ -52,6 +53,9 @@ def validate_events_sidecar(workspace: Path, feature: dict[str, Any]) -> list[st
         blockers.append("events.yaml artifact_contract_version mismatch")
     if data.get("feature_key") != expected_feature_key:
         blockers.append("events.yaml feature_key mismatch")
+    for field in data:
+        if field not in TOP_LEVEL_FIELDS:
+            blockers.append(f"events.yaml has unexpected top-level field {field}")
     events = data.get("events")
     if not isinstance(events, list):
         return [*blockers, "events.yaml events must be a list"]

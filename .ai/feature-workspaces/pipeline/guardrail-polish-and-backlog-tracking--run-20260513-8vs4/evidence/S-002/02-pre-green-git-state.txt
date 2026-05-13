@@ -1,0 +1,1 @@
+/tmp/guardrail-s002-git-state-green.log

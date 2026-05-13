@@ -78,8 +78,8 @@ slices:
   review_focus:
   - historical event sidecar compatibility
   - clear blocker messages
-  evidence_status: pending
-  status: pending
+  evidence_status: complete
+  status: complete
   iteration_budget: 4
   rollback_point: pre-slice git state
   independent_verification: Inject bad top-level key into a fixture and validate failure.

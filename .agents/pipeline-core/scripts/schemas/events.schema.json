@@ -3,6 +3,7 @@
   "title": "Native Feature Pipeline events sidecar",
   "type": "object",
   "required": ["artifact_contract_version", "feature_key", "events"],
+  "additionalProperties": false,
   "properties": {
     "artifact_contract_version": { "const": "0.1.0" },
     "feature_key": { "type": "string", "pattern": "^[a-z0-9-]+/[a-z0-9-]+$" },
