@@ -1,0 +1,1 @@
+python .agents/pipeline-core/scripts/featurectl.py validate --workspace .ai/features/pipeline/raw-schema-and-execution-boundary-hardening && python .agents/pipeline-core/scripts/featurectl.py validate --workspace .ai/features/pipeline/core-modularity-and-readable-events && python -m pytest tests/feature_pipeline/test_gates_and_evidence.py -q

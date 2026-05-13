@@ -84,6 +84,23 @@ class GatesAndEvidenceTests(unittest.TestCase):
         self.assertTrue(schema_path.exists())
         schema = yaml.safe_load(schema_path.read_text(encoding="utf-8"))
         self.assertIn("events", schema["required"])
+        event_schema = schema["$defs"]["event"]
+        self.assertFalse(event_schema["additionalProperties"])
+        self.assertEqual(
+            set(event_schema["properties"]["event_type"]["enum"]),
+            {
+                "run_initialized",
+                "gate_status_changed",
+                "slice_completed",
+                "slice_retry_completed",
+                "feature_promoted",
+                "incoming_variant_archived",
+                "artifact_marked_stale",
+                "public_raw_verified",
+                "verification_completed",
+                "review_completed",
+            },
+        )
         schema_text = schema_path.read_text(encoding="utf-8")
         for token in (
             "gate_status_changed",
@@ -114,6 +131,44 @@ class GatesAndEvidenceTests(unittest.TestCase):
 
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("events.yaml event 2 gate_status_changed missing gate", result.stdout)
+
+    def test_validate_rejects_unknown_event_type_extra_fields_and_bad_timestamp(self):
+        workspace = self.create_workspace("run-strict-events")
+        events_path = workspace / "events.yaml"
+        events = yaml.safe_load(events_path.read_text(encoding="utf-8"))
+        events["events"].extend(
+            [
+                {
+                    "timestamp": "2026-05-13T15:20:00Z",
+                    "event_type": "unexpected_event",
+                    "feature_key": "auth/reset-password",
+                },
+                {
+                    "timestamp": "2026-05-13T15:21:00Z",
+                    "event_type": "slice_completed",
+                    "feature_key": "auth/reset-password",
+                    "slice": "S-001",
+                    "attempt": 1,
+                    "reason": "initial",
+                    "extra": "not-allowed",
+                },
+                {
+                    "timestamp": "not-a-dateZ",
+                    "event_type": "review_completed",
+                    "feature_key": "auth/reset-password",
+                    "review_id": "R-001",
+                    "result": "passed",
+                },
+            ]
+        )
+        events_path.write_text(yaml.safe_dump(events, sort_keys=False), encoding="utf-8")
+
+        result = run([sys.executable, str(SCRIPT), "validate", "--workspace", str(workspace)], self.repo, check=False)
+
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("events.yaml event 2 has unknown event_type unexpected_event", result.stdout)
+        self.assertIn("events.yaml event 3 has unexpected field extra", result.stdout)
+        self.assertIn("events.yaml event 4 timestamp must be an RFC3339 UTC timestamp ending in Z", result.stdout)
 
     def test_mark_stale_cascades_downstream_flags(self):
         workspace = self.create_workspace("run-stale")

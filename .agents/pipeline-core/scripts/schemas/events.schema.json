@@ -16,12 +16,33 @@
       "type": "object",
       "required": ["timestamp", "event_type", "feature_key"],
       "properties": {
-        "timestamp": { "type": "string" },
-        "event_type": { "type": "string" },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$"
+        },
+        "event_type": {
+          "enum": [
+            "run_initialized",
+            "gate_status_changed",
+            "slice_completed",
+            "slice_retry_completed",
+            "feature_promoted",
+            "incoming_variant_archived",
+            "artifact_marked_stale",
+            "public_raw_verified",
+            "verification_completed",
+            "review_completed"
+          ]
+        },
         "feature_key": { "type": "string" },
+        "step": { "type": "string" },
+        "next": { "type": "string" },
         "gate": { "type": "string" },
         "old_status": { "type": ["string", "null"] },
         "new_status": { "type": "string" },
+        "by": { "type": ["string", "null"] },
+        "note": { "type": ["string", "null"] },
         "slice": { "type": "string", "pattern": "^S-[0-9]{3}$" },
         "attempt": { "type": "integer", "minimum": 1 },
         "reason": { "type": ["string", "null"] },
@@ -31,9 +52,23 @@
         "marked_stale": {
           "type": "array",
           "items": { "type": "string" }
-        }
+        },
+        "wrappers": { "type": "string" },
+        "gitignore": { "type": "string" },
+        "index_lines": { "type": "integer", "minimum": 0 },
+        "clone_formatting_tests": { "type": "string" },
+        "result": { "type": "string" },
+        "command": { "type": "string" },
+        "review_id": { "type": "string" }
       },
       "allOf": [
+        {
+          "if": {
+            "properties": { "event_type": { "const": "run_initialized" } },
+            "required": ["event_type"]
+          },
+          "then": { "required": ["step", "next"] }
+        },
         {
           "if": {
             "properties": { "event_type": { "const": "gate_status_changed" } },
@@ -75,9 +110,32 @@
             "required": ["event_type"]
           },
           "then": { "required": ["artifact", "marked_stale"] }
+        },
+        {
+          "if": {
+            "properties": { "event_type": { "const": "public_raw_verified" } },
+            "required": ["event_type"]
+          },
+          "then": {
+            "required": ["wrappers", "gitignore", "index_lines", "clone_formatting_tests"]
+          }
+        },
+        {
+          "if": {
+            "properties": { "event_type": { "const": "verification_completed" } },
+            "required": ["event_type"]
+          },
+          "then": { "required": ["result"] }
+        },
+        {
+          "if": {
+            "properties": { "event_type": { "const": "review_completed" } },
+            "required": ["event_type"]
+          },
+          "then": { "required": ["review_id", "result"] }
         }
       ],
-      "additionalProperties": true
+      "additionalProperties": false
     }
   }
 }

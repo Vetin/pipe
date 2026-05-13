@@ -1,0 +1,5 @@
+## feature/pipeline-event-schema-strictness-and-narrative-execution-logs-20260513-event-schema-narrative
+ M .agents/pipeline-core/scripts/featurectl_core/validators/events.py
+ M .agents/pipeline-core/scripts/schemas/events.schema.json
+ M tests/feature_pipeline/test_gates_and_evidence.py
+?? .ai/feature-workspaces/pipeline/event-schema-strictness-and-narrative-execution-logs--20260513-event-schema-narrative/evidence/

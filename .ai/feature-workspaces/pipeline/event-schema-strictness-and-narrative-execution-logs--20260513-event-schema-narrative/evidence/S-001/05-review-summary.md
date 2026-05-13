@@ -1,0 +1,1 @@
+Reviewed strict event schema and validator. Existing canonical event records remain valid; unknown event types, unexpected fields, and malformed timestamps now fail validation.

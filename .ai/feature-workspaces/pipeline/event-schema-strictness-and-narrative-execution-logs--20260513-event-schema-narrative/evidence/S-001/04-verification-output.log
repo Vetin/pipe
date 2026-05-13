@@ -1,0 +1,2 @@
+canonical event sidecars validate: pass
+pytest: 12 passed
