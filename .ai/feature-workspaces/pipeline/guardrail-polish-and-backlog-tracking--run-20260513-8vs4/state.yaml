@@ -1,0 +1,32 @@
+artifact_contract_version: 0.1.0
+feature_key: pipeline/guardrail-polish-and-backlog-tracking
+run_id: run-20260513-8vs4
+current_step: context
+lifecycle: active
+read_only: false
+worktree:
+  branch: feature/pipeline-guardrail-polish-and-backlog-tracking-run-20260513-8vs4
+  path: ../worktrees/pipeline-guardrail-polish-and-backlog-tracking-run-20260513-8vs4
+gates:
+  feature_contract: approved
+  architecture: approved
+  tech_design: approved
+  slicing_readiness: approved
+  implementation: approved
+  review: pending
+  verification: pending
+  finish: pending
+stale:
+  feature: false
+  architecture: false
+  tech_design: false
+  slices: false
+  evidence: false
+  review: false
+  feature_card: true
+  canonical_docs: true
+  index: false
+active_slice: null
+locks:
+  owner: null
+  acquired_at: null
