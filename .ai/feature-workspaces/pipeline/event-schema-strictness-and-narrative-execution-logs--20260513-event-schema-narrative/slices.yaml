@@ -1,0 +1,140 @@
+artifact_contract_version: 0.1.0
+feature_key: pipeline/event-schema-strictness-and-narrative-execution-logs
+slices:
+  - id: S-001
+    title: Strict events schema and validator
+    linked_requirements:
+      - FR-001
+      - FR-002
+      - FR-003
+      - FR-004
+    linked_acceptance_criteria:
+      - AC-001
+      - AC-002
+      - AC-003
+      - AC-004
+    linked_adrs: []
+    linked_contracts:
+      - .agents/pipeline-core/scripts/schemas/events.schema.json
+    dependencies: []
+    priority: 1
+    complexity: 4
+    critical_path: true
+    parallelizable: false
+    file_ownership:
+      - .agents/pipeline-core/scripts/schemas/events.schema.json
+      - .agents/pipeline-core/scripts/featurectl_core/validators/events.py
+      - tests/feature_pipeline/test_gates_and_evidence.py
+    conflict_risk: medium
+    dependency_notes: Validator changes must preserve existing event sidecars.
+    expected_touchpoints:
+      - .ai/features/pipeline/raw-schema-and-execution-boundary-hardening/events.yaml
+    scope_confidence: high
+    test_strategy: Add failing validation tests for unknown event type, fields, and timestamps.
+    tdd:
+      failing_test_file: tests/feature_pipeline/test_gates_and_evidence.py
+      red_command: python -m pytest tests/feature_pipeline/test_gates_and_evidence.py -q
+      expected_failure: permissive events validator accepts invalid records
+      green_command: python -m pytest tests/feature_pipeline/test_gates_and_evidence.py -q
+    verification_commands:
+      - python -m pytest tests/feature_pipeline/test_gates_and_evidence.py -q
+    review_focus:
+      - strictness without breaking current records
+      - schema and validator agreement
+    evidence_status: pending
+    status: pending
+    iteration_budget: 3
+    rollback_point: pre-slice git state
+    independent_verification: validate current canonical events.yaml files
+    failure_triage_notes: classify failures as schema drift, validator drift, or fixture drift
+  - id: S-002
+    title: Narrative execution log boundary
+    linked_requirements:
+      - FR-004
+      - FR-005
+      - FR-006
+    linked_acceptance_criteria:
+      - AC-004
+      - AC-005
+      - AC-006
+    linked_adrs: []
+    linked_contracts: []
+    dependencies:
+      - S-001
+    priority: 2
+    complexity: 5
+    critical_path: true
+    parallelizable: false
+    file_ownership:
+      - .agents/pipeline-core/scripts/featurectl_core/events.py
+      - .agents/pipeline-core/scripts/featurectl_core/profile.py
+      - .agents/pipeline-core/scripts/featurectl_core/cli.py
+      - tests/feature_pipeline/test_gates_and_evidence.py
+      - tests/feature_pipeline/test_featurectl_core.py
+    conflict_risk: medium
+    dependency_notes: Uses strict sidecar events from S-001.
+    expected_touchpoints:
+      - tests/feature_pipeline/test_finish_promote.py
+    scope_confidence: medium
+    test_strategy: Update CLI tests to assert narrative logs and machine sidecar records.
+    tdd:
+      failing_test_file: tests/feature_pipeline/test_gates_and_evidence.py
+      red_command: python -m pytest tests/feature_pipeline/test_gates_and_evidence.py tests/feature_pipeline/test_featurectl_core.py -q
+      expected_failure: execution.md still stores machine-style event lines
+      green_command: python -m pytest tests/feature_pipeline/test_gates_and_evidence.py tests/feature_pipeline/test_featurectl_core.py tests/feature_pipeline/test_finish_promote.py -q
+    verification_commands:
+      - python -m pytest tests/feature_pipeline/test_gates_and_evidence.py tests/feature_pipeline/test_featurectl_core.py tests/feature_pipeline/test_finish_promote.py -q
+    review_focus:
+      - events.yaml remains complete
+      - execution.md remains readable
+      - implementation gate run-plan transition is explicit
+    evidence_status: pending
+    status: pending
+    iteration_budget: 4
+    rollback_point: pre-slice git state
+    independent_verification: inspect generated execution.md and events.yaml
+    failure_triage_notes: classify failures as event sync, narrative rendering, or legacy assertion drift
+  - id: S-003
+    title: Public raw benchmark check
+    linked_requirements:
+      - FR-007
+      - FR-008
+    linked_acceptance_criteria:
+      - AC-007
+      - AC-008
+    linked_adrs: []
+    linked_contracts: []
+    dependencies:
+      - S-001
+    priority: 3
+    complexity: 3
+    critical_path: false
+    parallelizable: false
+    file_ownership:
+      - .agents/pipeline-core/scripts/pipelinebench_core/cli.py
+      - .agents/pipeline-core/scripts/pipelinebench_core/commands.py
+      - .agents/pipeline-core/scripts/pipelinebench_core/raw_checks.py
+      - tests/feature_pipeline/test_pipelinebench.py
+    conflict_risk: low
+    dependency_notes: Independent of execution narrative after event schema is stable.
+    expected_touchpoints:
+      - .agents/pipeline-core/scripts/pipelinebench_core/__init__.py
+    scope_confidence: high
+    test_strategy: Add offline file-backed raw check fixture.
+    tdd:
+      failing_test_file: tests/feature_pipeline/test_pipelinebench.py
+      red_command: python -m pytest tests/feature_pipeline/test_pipelinebench.py -q
+      expected_failure: check-public-raw command missing
+      green_command: python -m pytest tests/feature_pipeline/test_pipelinebench.py -q
+    verification_commands:
+      - python -m pytest tests/feature_pipeline/test_pipelinebench.py -q
+    review_focus:
+      - no network required in tests
+      - command is explicit and failure output is actionable
+    evidence_status: pending
+    status: pending
+    iteration_budget: 3
+    rollback_point: pre-slice git state
+    independent_verification: run check-public-raw against file:// fixture and GitHub raw URL
+    failure_triage_notes: classify failures as CLI wiring, URL fetch, or line-count threshold issue
+
