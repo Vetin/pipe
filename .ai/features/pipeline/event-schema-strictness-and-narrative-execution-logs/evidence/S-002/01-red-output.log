@@ -1,0 +1,599 @@
+..F..FFFF..........F.....F..FFFF.......F.F....F.F....                    [100%]
+=================================== FAILURES ===================================
+_ GatesAndEvidenceTests.test_complete_slice_retry_requires_reason_and_records_attempt _
+
+self = <test_gates_and_evidence.GatesAndEvidenceTests testMethod=test_complete_slice_retry_requires_reason_and_records_attempt>
+
+    def test_complete_slice_retry_requires_reason_and_records_attempt(self):
+        workspace = self.ready_workspace("run-retry-complete")
+    
+        self.record_full_evidence(workspace)
+        run(
+            [
+                sys.executable,
+                str(SCRIPT),
+                "complete-slice",
+                "--workspace",
+                str(workspace),
+                "--slice",
+                "S-001",
+                "--diff-hash",
+                "abc123",
+            ],
+            self.repo,
+        )
+        missing_reason = run(
+            [
+                sys.executable,
+                str(SCRIPT),
+                "complete-slice",
+                "--workspace",
+                str(workspace),
+                "--slice",
+                "S-001",
+                "--diff-hash",
+                "changed456",
+                "--append-retry",
+            ],
+            self.repo,
+            check=False,
+        )
+        self.assertNotEqual(missing_reason.returncode, 0)
+        self.assertIn("--append-retry requires --retry-reason", missing_reason.stderr)
+    
+        retry = run(
+            [
+                sys.executable,
+                str(SCRIPT),
+                "complete-slice",
+                "--workspace",
+                str(workspace),
+                "--slice",
+                "S-001",
+                "--diff-hash",
+                "changed456",
+                "--append-retry",
+                "--retry-reason",
+                "rerun-after-review",
+            ],
+            self.repo,
+        )
+    
+        self.assertIn("slice_complete: S-001", retry.stdout)
+        manifest = yaml.safe_load((workspace / "evidence/manifest.yaml").read_text(encoding="utf-8"))
+        execution = (workspace / "execution.md").read_text(encoding="utf-8")
+        events = yaml.safe_load((workspace / "events.yaml").read_text(encoding="utf-8"))
+        self.assertEqual(manifest["slices"]["S-001"]["retries"][0]["attempt"], 2)
+        self.assertEqual(manifest["slices"]["S-001"]["retries"][0]["reason"], "rerun-after-review")
+        self.assertEqual(manifest["slices"]["S-001"]["retries"][0]["change_label"], "changed456")
+        self.assertNotIn("diff_hash", manifest["slices"]["S-001"]["retries"][0])
+>       self.assertIn("Completed retry for slice `S-001` attempt 2", execution)
+E       AssertionError: 'Completed retry for slice `S-001` attempt 2' not found in '# Execution Log: auth/reset-password\n\n## User Request\n\nReset Password\n\n## Run Plan\n\nMode: planning autorun\nStop point: feature_contract\nImplementation allowed: no\n\nPlanned steps:\n\n1. Context discovery\n2. Feature contract\n3. Architecture\n4. Technical design\n5. Slicing\n6. Readiness summary\n\n## Non-Delegable Checkpoints\n\nStop and ask user before:\n\n- destructive command\n- production data migration\n- new production dependency\n- public API breaking change\n- security model change\n- credential/secret handling\n- paid external service\n- license-impacting dependency\n\n## Clarifying Questions\n\nNone currently recorded.\n\n## Assumptions\n\nNone currently recorded.\n\n## Docs Consulted\n\nNone yet.\n\n## Event Log\n\n- 2026-05-13T16:43:27Z event_type=run_initialized step=context next=nfp-01-context\n- 2026-05-13T16:43:28Z event_type=slice_completed slice=S-001 attempt=1 reason=initial\n- 2026-05-13T16:43:28Z event_type=slice_retry_completed slice=S-001 attempt=2 reason=rerun-after-review supersedes=attempt-1\n\n## History\n\n- Initial current step: context\n- Initial next step: nfp-01-context\n\n## Current Run State\n\nCurrent step: context\nNext recommended skill: nfp-01-context\nBlocking issues: none\nLast updated: 2026-05-13T16:43:27Z\n\n\n## Docs Consulted: Architecture\n\n- `.ai/knowledge/architecture-overview.md`: reused known boundary.\n\n## Docs Consulted: Feature Contract\n\n- `.agents/pipeline-core/references/generated-templates/feature-template.md`: used required contract sections.\n\n## Docs Consulted: Technical Design\n\n- `.ai/knowledge/tech-design-overview.md`: reused implementation artifact rules.\n\n## Docs Consulted: Slicing\n\n- `.agents/pipeline-core/references/generated-templates/slice-template.yaml`: used required TDD slice fields.\n'
+
+tests/feature_pipeline/test_gates_and_evidence.py:367: AssertionError
+_ GatesAndEvidenceTests.test_gate_set_updates_state_and_execution_without_approvals_file _
+
+self = <test_gates_and_evidence.GatesAndEvidenceTests testMethod=test_gate_set_updates_state_and_execution_without_approvals_file>
+
+    def test_gate_set_updates_state_and_execution_without_approvals_file(self):
+        workspace = self.create_workspace()
+    
+        result = run(
+            [
+                sys.executable,
+                str(SCRIPT),
+                "gate",
+                "set",
+                "--workspace",
+                str(workspace),
+                "--gate",
+                "feature_contract",
+                "--status",
+                "approved",
+                "--by",
+                "user",
+                "--note",
+                "Approved",
+            ],
+            self.repo,
+        )
+    
+        state = yaml.safe_load((workspace / "state.yaml").read_text(encoding="utf-8"))
+        execution = (workspace / "execution.md").read_text(encoding="utf-8")
+        events = yaml.safe_load((workspace / "events.yaml").read_text(encoding="utf-8"))
+        self.assertIn("status: approved", result.stdout)
+        self.assertEqual(state["gates"]["feature_contract"], "approved")
+        self.assertEqual(state["gates"]["architecture"], "pending")
+>       self.assertIn("Gate `feature_contract` changed from `pending` to `approved` by `user`", execution)
+E       AssertionError: 'Gate `feature_contract` changed from `pending` to `approved` by `user`' not found in '# Execution Log: auth/reset-password\n\n## User Request\n\nReset Password\n\n## Run Plan\n\nMode: planning autorun\nStop point: feature_contract\nImplementation allowed: no\n\nPlanned steps:\n\n1. Context discovery\n2. Feature contract\n3. Architecture\n4. Technical design\n5. Slicing\n6. Readiness summary\n\n## Non-Delegable Checkpoints\n\nStop and ask user before:\n\n- destructive command\n- production data migration\n- new production dependency\n- public API breaking change\n- security model change\n- credential/secret handling\n- paid external service\n- license-impacting dependency\n\n## Clarifying Questions\n\nNone currently recorded.\n\n## Assumptions\n\nNone currently recorded.\n\n## Docs Consulted\n\nNone yet.\n\n## Event Log\n\n- 2026-05-13T16:43:28Z event_type=run_initialized step=context next=nfp-01-context\n- 2026-05-13T16:43:28Z event_type=gate_status_changed gate=feature_contract old_status=pending new_status=approved by=user note=Approved\n\n## History\n\n- Initial current step: context\n- Initial next step: nfp-01-context\n\n## Current Run State\n\nCurrent step: context\nNext recommended skill: nfp-01-context\nBlocking issues: none\nLast updated: 2026-05-13T16:43:28Z\n'
+
+tests/feature_pipeline/test_gates_and_evidence.py:72: AssertionError
+__ GatesAndEvidenceTests.test_implementation_gate_records_run_plan_transition __
+
+self = <test_gates_and_evidence.GatesAndEvidenceTests testMethod=test_implementation_gate_records_run_plan_transition>
+
+    def test_implementation_gate_records_run_plan_transition(self):
+        workspace = self.create_workspace("run-plan-transition")
+    
+        run(
+            [
+                sys.executable,
+                str(SCRIPT),
+                "gate",
+                "set",
+                "--workspace",
+                str(workspace),
+                "--gate",
+                "implementation",
+                "--status",
+                "approved",
+                "--by",
+                "user",
+                "--note",
+                "planning gates approved",
+            ],
+            self.repo,
+        )
+    
+        execution = (workspace / "execution.md").read_text(encoding="utf-8")
+>       self.assertIn("## Run Plan Updates", execution)
+E       AssertionError: '## Run Plan Updates' not found in '# Execution Log: auth/reset-password\n\n## User Request\n\nReset Password\n\n## Run Plan\n\nMode: planning autorun\nStop point: feature_contract\nImplementation allowed: no\n\nPlanned steps:\n\n1. Context discovery\n2. Feature contract\n3. Architecture\n4. Technical design\n5. Slicing\n6. Readiness summary\n\n## Non-Delegable Checkpoints\n\nStop and ask user before:\n\n- destructive command\n- production data migration\n- new production dependency\n- public API breaking change\n- security model change\n- credential/secret handling\n- paid external service\n- license-impacting dependency\n\n## Clarifying Questions\n\nNone currently recorded.\n\n## Assumptions\n\nNone currently recorded.\n\n## Docs Consulted\n\nNone yet.\n\n## Event Log\n\n- 2026-05-13T16:43:29Z event_type=run_initialized step=context next=nfp-01-context\n- 2026-05-13T16:43:29Z event_type=gate_status_changed gate=implementation old_status=blocked new_status=approved by=user note=planning-gates-approved\n\n## History\n\n- Initial current step: context\n- Initial next step: nfp-01-context\n\n## Current Run State\n\nCurrent step: context\nNext recommended skill: nfp-01-context\nBlocking issues: none\nLast updated: 2026-05-13T16:43:29Z\n'
+
+tests/feature_pipeline/test_gates_and_evidence.py:397: AssertionError
+_______ GatesAndEvidenceTests.test_mark_stale_cascades_downstream_flags ________
+
+self = <test_gates_and_evidence.GatesAndEvidenceTests testMethod=test_mark_stale_cascades_downstream_flags>
+
+    def test_mark_stale_cascades_downstream_flags(self):
+        workspace = self.create_workspace("run-stale")
+    
+        run(
+            [
+                sys.executable,
+                str(SCRIPT),
+                "mark-stale",
+                "--workspace",
+                str(workspace),
+                "--artifact",
+                "architecture",
+                "--reason",
+                "changed ADR",
+            ],
+            self.repo,
+        )
+    
+        state = yaml.safe_load((workspace / "state.yaml").read_text(encoding="utf-8"))
+        execution = (workspace / "execution.md").read_text(encoding="utf-8")
+        events = yaml.safe_load((workspace / "events.yaml").read_text(encoding="utf-8"))
+        self.assertTrue(state["stale"]["tech_design"])
+        self.assertTrue(state["stale"]["slices"])
+        self.assertTrue(state["stale"]["evidence"])
+        self.assertTrue(state["stale"]["feature_card"])
+        self.assertTrue(state["stale"]["canonical_docs"])
+        self.assertFalse(state["stale"]["feature"])
+>       self.assertIn("Marked `architecture` stale", execution)
+E       AssertionError: 'Marked `architecture` stale' not found in '# Execution Log: auth/reset-password\n\n## User Request\n\nReset Password\n\n## Run Plan\n\nMode: planning autorun\nStop point: feature_contract\nImplementation allowed: no\n\nPlanned steps:\n\n1. Context discovery\n2. Feature contract\n3. Architecture\n4. Technical design\n5. Slicing\n6. Readiness summary\n\n## Non-Delegable Checkpoints\n\nStop and ask user before:\n\n- destructive command\n- production data migration\n- new production dependency\n- public API breaking change\n- security model change\n- credential/secret handling\n- paid external service\n- license-impacting dependency\n\n## Clarifying Questions\n\nNone currently recorded.\n\n## Assumptions\n\nNone currently recorded.\n\n## Docs Consulted\n\nNone yet.\n\n## Event Log\n\n- 2026-05-13T16:43:29Z event_type=run_initialized step=context next=nfp-01-context\n- 2026-05-13T16:43:29Z event_type=artifact_marked_stale artifact=architecture marked_stale=tech_design,slices,evidence,feature_card,canonical_docs reason=changed-ADR\n\n## History\n\n- Initial current step: context\n- Initial next step: nfp-01-context\n\n## Current Run State\n\nCurrent step: context\nNext recommended skill: nfp-01-context\nBlocking issues: none\nLast updated: 2026-05-13T16:43:29Z\n'
+
+tests/feature_pipeline/test_gates_and_evidence.py:200: AssertionError
+________ GatesAndEvidenceTests.test_record_evidence_and_complete_slice _________
+
+self = <test_gates_and_evidence.GatesAndEvidenceTests testMethod=test_record_evidence_and_complete_slice>
+
+    def test_record_evidence_and_complete_slice(self):
+        workspace = self.ready_workspace()
+    
+        self.record_full_evidence(workspace)
+        result = run(
+            [
+                sys.executable,
+                str(SCRIPT),
+                "complete-slice",
+                "--workspace",
+                str(workspace),
+                "--slice",
+                "S-001",
+                "--diff-hash",
+                "abc123",
+            ],
+            self.repo,
+        )
+    
+        self.assertIn("slice_complete: S-001", result.stdout)
+        manifest = yaml.safe_load((workspace / "evidence/manifest.yaml").read_text(encoding="utf-8"))
+        slices = yaml.safe_load((workspace / "slices.yaml").read_text(encoding="utf-8"))
+        events = yaml.safe_load((workspace / "events.yaml").read_text(encoding="utf-8"))
+        self.assertIn("completion_identity_policy", manifest)
+        self.assertEqual(manifest["slices"]["S-001"]["diff_hash"], "abc123")
+        self.assertEqual(slices["slices"][0]["status"], "complete")
+        self.assertEqual(slices["slices"][0]["evidence_status"], "complete")
+        execution = (workspace / "execution.md").read_text(encoding="utf-8")
+>       self.assertIn("Completed slice `S-001` attempt 1", execution)
+E       AssertionError: 'Completed slice `S-001` attempt 1' not found in '# Execution Log: auth/reset-password\n\n## User Request\n\nReset Password\n\n## Run Plan\n\nMode: planning autorun\nStop point: feature_contract\nImplementation allowed: no\n\nPlanned steps:\n\n1. Context discovery\n2. Feature contract\n3. Architecture\n4. Technical design\n5. Slicing\n6. Readiness summary\n\n## Non-Delegable Checkpoints\n\nStop and ask user before:\n\n- destructive command\n- production data migration\n- new production dependency\n- public API breaking change\n- security model change\n- credential/secret handling\n- paid external service\n- license-impacting dependency\n\n## Clarifying Questions\n\nNone currently recorded.\n\n## Assumptions\n\nNone currently recorded.\n\n## Docs Consulted\n\nNone yet.\n\n## Event Log\n\n- 2026-05-13T16:43:29Z event_type=run_initialized step=context next=nfp-01-context\n- 2026-05-13T16:43:29Z event_type=slice_completed slice=S-001 attempt=1 reason=initial\n\n## History\n\n- Initial current step: context\n- Initial next step: nfp-01-context\n\n## Current Run State\n\nCurrent step: context\nNext recommended skill: nfp-01-context\nBlocking issues: none\nLast updated: 2026-05-13T16:43:29Z\n\n\n## Docs Consulted: Architecture\n\n- `.ai/knowledge/architecture-overview.md`: reused known boundary.\n\n## Docs Consulted: Feature Contract\n\n- `.agents/pipeline-core/references/generated-templates/feature-template.md`: used required contract sections.\n\n## Docs Consulted: Technical Design\n\n- `.ai/knowledge/tech-design-overview.md`: reused implementation artifact rules.\n\n## Docs Consulted: Slicing\n\n- `.agents/pipeline-core/references/generated-templates/slice-template.yaml`: used required TDD slice fields.\n'
+
+tests/feature_pipeline/test_gates_and_evidence.py:234: AssertionError
+__ FeatureCtlCoreTests.test_new_creates_worktree_workspace_and_core_artifacts __
+
+self = <test_featurectl_core.FeatureCtlCoreTests testMethod=test_new_creates_worktree_workspace_and_core_artifacts>
+
+    def test_new_creates_worktree_workspace_and_core_artifacts(self):
+        result = self.new_feature("run-20260511-test")
+    
+        workspace = self.workspace("run-20260511-test")
+        self.assertIn("feature_key: auth/reset-password", result.stdout)
+        self.assertTrue((self.tempdir / "worktrees/auth-reset-password-run-20260511-test").is_dir())
+        self.assertTrue(workspace.is_dir())
+        self.assertTrue((workspace / "apex.md").exists())
+        self.assertTrue((workspace / "feature.yaml").exists())
+        self.assertTrue((workspace / "state.yaml").exists())
+        self.assertTrue((workspace / "execution.md").exists())
+        self.assertFalse(list(workspace.rglob("approvals.yaml")))
+        self.assertFalse(list(workspace.rglob("handoff.md")))
+    
+        feature = yaml.safe_load((workspace / "feature.yaml").read_text(encoding="utf-8"))
+        state = yaml.safe_load((workspace / "state.yaml").read_text(encoding="utf-8"))
+        apex = (workspace / "apex.md").read_text(encoding="utf-8")
+        execution = (workspace / "execution.md").read_text(encoding="utf-8")
+        events = yaml.safe_load((workspace / "events.yaml").read_text(encoding="utf-8"))
+        self.assertEqual(feature["artifact_contract_version"], "0.1.0")
+        self.assertEqual(feature["feature_key"], "auth/reset-password")
+        self.assertEqual(feature["domain"], "auth")
+        self.assertEqual(feature["slug"], "reset-password")
+        self.assertEqual(feature["title"], "Reset Password")
+        self.assertEqual(feature["status"], "draft")
+        self.assertEqual(feature["branch"], "feature/auth-reset-password-run-20260511-test")
+        self.assertEqual(feature["canonical_path"], ".ai/features/auth/reset-password")
+        self.assertEqual(feature["workspace_path"], ".ai/feature-workspaces/auth/reset-password--run-20260511-test")
+        self.assertEqual(state["current_step"], "context")
+        self.assertNotIn("next_skill", state)
+        self.assertEqual(state["gates"]["implementation"], "blocked")
+        self.assertIn("`events.yaml` - machine-readable execution events", apex)
+        self.assertLess(apex.index("events.yaml"), apex.index("evidence/manifest.yaml"))
+        self.assertIn("## Current Run State", execution)
+        self.assertIn("## Event Log", execution)
+        self.assertIn("## History", execution)
+        self.assertLess(execution.index("## Event Log"), execution.index("## Current Run State"))
+        self.assertLess(execution.index("## History"), execution.index("## Current Run State"))
+        self.assertNotIn("## Latest Status", execution)
+>       self.assertIn("Initialized the run; next step `nfp-01-context`", execution)
+E       AssertionError: 'Initialized the run; next step `nfp-01-context`' not found in '# Execution Log: auth/reset-password\n\n## User Request\n\nReset Password\n\n## Run Plan\n\nMode: planning autorun\nStop point: feature_contract\nImplementation allowed: no\n\nPlanned steps:\n\n1. Context discovery\n2. Feature contract\n3. Architecture\n4. Technical design\n5. Slicing\n6. Readiness summary\n\n## Non-Delegable Checkpoints\n\nStop and ask user before:\n\n- destructive command\n- production data migration\n- new production dependency\n- public API breaking change\n- security model change\n- credential/secret handling\n- paid external service\n- license-impacting dependency\n\n## Clarifying Questions\n\nNone currently recorded.\n\n## Assumptions\n\nNone currently recorded.\n\n## Docs Consulted\n\nNone yet.\n\n## Event Log\n\n- 2026-05-13T16:43:31Z event_type=run_initialized step=context next=nfp-01-context\n\n## History\n\n- Initial current step: context\n- Initial next step: nfp-01-context\n\n## Current Run State\n\nCurrent step: context\nNext recommended skill: nfp-01-context\nBlocking issues: none\nLast updated: 2026-05-13T16:43:31Z\n'
+
+tests/feature_pipeline/test_featurectl_core.py:263: AssertionError
+_ GatesAndEvidenceTests.test_complete_slice_retry_requires_reason_and_records_attempt _
+
+self = <test_gates_and_evidence.GatesAndEvidenceTests testMethod=test_complete_slice_retry_requires_reason_and_records_attempt>
+
+    def test_complete_slice_retry_requires_reason_and_records_attempt(self):
+        workspace = self.ready_workspace("run-retry-complete")
+    
+        self.record_full_evidence(workspace)
+        run(
+            [
+                sys.executable,
+                str(SCRIPT),
+                "complete-slice",
+                "--workspace",
+                str(workspace),
+                "--slice",
+                "S-001",
+                "--diff-hash",
+                "abc123",
+            ],
+            self.repo,
+        )
+        missing_reason = run(
+            [
+                sys.executable,
+                str(SCRIPT),
+                "complete-slice",
+                "--workspace",
+                str(workspace),
+                "--slice",
+                "S-001",
+                "--diff-hash",
+                "changed456",
+                "--append-retry",
+            ],
+            self.repo,
+            check=False,
+        )
+        self.assertNotEqual(missing_reason.returncode, 0)
+        self.assertIn("--append-retry requires --retry-reason", missing_reason.stderr)
+    
+        retry = run(
+            [
+                sys.executable,
+                str(SCRIPT),
+                "complete-slice",
+                "--workspace",
+                str(workspace),
+                "--slice",
+                "S-001",
+                "--diff-hash",
+                "changed456",
+                "--append-retry",
+                "--retry-reason",
+                "rerun-after-review",
+            ],
+            self.repo,
+        )
+    
+        self.assertIn("slice_complete: S-001", retry.stdout)
+        manifest = yaml.safe_load((workspace / "evidence/manifest.yaml").read_text(encoding="utf-8"))
+        execution = (workspace / "execution.md").read_text(encoding="utf-8")
+        events = yaml.safe_load((workspace / "events.yaml").read_text(encoding="utf-8"))
+        self.assertEqual(manifest["slices"]["S-001"]["retries"][0]["attempt"], 2)
+        self.assertEqual(manifest["slices"]["S-001"]["retries"][0]["reason"], "rerun-after-review")
+        self.assertEqual(manifest["slices"]["S-001"]["retries"][0]["change_label"], "changed456")
+        self.assertNotIn("diff_hash", manifest["slices"]["S-001"]["retries"][0])
+>       self.assertIn("Completed retry for slice `S-001` attempt 2", execution)
+E       AssertionError: 'Completed retry for slice `S-001` attempt 2' not found in '# Execution Log: auth/reset-password\n\n## User Request\n\nReset Password\n\n## Run Plan\n\nMode: planning autorun\nStop point: feature_contract\nImplementation allowed: no\n\nPlanned steps:\n\n1. Context discovery\n2. Feature contract\n3. Architecture\n4. Technical design\n5. Slicing\n6. Readiness summary\n\n## Non-Delegable Checkpoints\n\nStop and ask user before:\n\n- destructive command\n- production data migration\n- new production dependency\n- public API breaking change\n- security model change\n- credential/secret handling\n- paid external service\n- license-impacting dependency\n\n## Clarifying Questions\n\nNone currently recorded.\n\n## Assumptions\n\nNone currently recorded.\n\n## Docs Consulted\n\nNone yet.\n\n## Event Log\n\n- 2026-05-13T16:43:33Z event_type=run_initialized step=context next=nfp-01-context\n- 2026-05-13T16:43:33Z event_type=slice_completed slice=S-001 attempt=1 reason=initial\n- 2026-05-13T16:43:33Z event_type=slice_retry_completed slice=S-001 attempt=2 reason=rerun-after-review supersedes=attempt-1\n\n## History\n\n- Initial current step: context\n- Initial next step: nfp-01-context\n\n## Current Run State\n\nCurrent step: context\nNext recommended skill: nfp-01-context\nBlocking issues: none\nLast updated: 2026-05-13T16:43:33Z\n\n\n## Docs Consulted: Architecture\n\n- `.ai/knowledge/architecture-overview.md`: reused known boundary.\n\n## Docs Consulted: Feature Contract\n\n- `.agents/pipeline-core/references/generated-templates/feature-template.md`: used required contract sections.\n\n## Docs Consulted: Technical Design\n\n- `.ai/knowledge/tech-design-overview.md`: reused implementation artifact rules.\n\n## Docs Consulted: Slicing\n\n- `.agents/pipeline-core/references/generated-templates/slice-template.yaml`: used required TDD slice fields.\n'
+
+tests/feature_pipeline/test_gates_and_evidence.py:367: AssertionError
+_ GatesAndEvidenceTests.test_gate_set_updates_state_and_execution_without_approvals_file _
+
+self = <test_gates_and_evidence.GatesAndEvidenceTests testMethod=test_gate_set_updates_state_and_execution_without_approvals_file>
+
+    def test_gate_set_updates_state_and_execution_without_approvals_file(self):
+        workspace = self.create_workspace()
+    
+        result = run(
+            [
+                sys.executable,
+                str(SCRIPT),
+                "gate",
+                "set",
+                "--workspace",
+                str(workspace),
+                "--gate",
+                "feature_contract",
+                "--status",
+                "approved",
+                "--by",
+                "user",
+                "--note",
+                "Approved",
+            ],
+            self.repo,
+        )
+    
+        state = yaml.safe_load((workspace / "state.yaml").read_text(encoding="utf-8"))
+        execution = (workspace / "execution.md").read_text(encoding="utf-8")
+        events = yaml.safe_load((workspace / "events.yaml").read_text(encoding="utf-8"))
+        self.assertIn("status: approved", result.stdout)
+        self.assertEqual(state["gates"]["feature_contract"], "approved")
+        self.assertEqual(state["gates"]["architecture"], "pending")
+>       self.assertIn("Gate `feature_contract` changed from `pending` to `approved` by `user`", execution)
+E       AssertionError: 'Gate `feature_contract` changed from `pending` to `approved` by `user`' not found in '# Execution Log: auth/reset-password\n\n## User Request\n\nReset Password\n\n## Run Plan\n\nMode: planning autorun\nStop point: feature_contract\nImplementation allowed: no\n\nPlanned steps:\n\n1. Context discovery\n2. Feature contract\n3. Architecture\n4. Technical design\n5. Slicing\n6. Readiness summary\n\n## Non-Delegable Checkpoints\n\nStop and ask user before:\n\n- destructive command\n- production data migration\n- new production dependency\n- public API breaking change\n- security model change\n- credential/secret handling\n- paid external service\n- license-impacting dependency\n\n## Clarifying Questions\n\nNone currently recorded.\n\n## Assumptions\n\nNone currently recorded.\n\n## Docs Consulted\n\nNone yet.\n\n## Event Log\n\n- 2026-05-13T16:43:34Z event_type=run_initialized step=context next=nfp-01-context\n- 2026-05-13T16:43:34Z event_type=gate_status_changed gate=feature_contract old_status=pending new_status=approved by=user note=Approved\n\n## History\n\n- Initial current step: context\n- Initial next step: nfp-01-context\n\n## Current Run State\n\nCurrent step: context\nNext recommended skill: nfp-01-context\nBlocking issues: none\nLast updated: 2026-05-13T16:43:34Z\n'
+
+tests/feature_pipeline/test_gates_and_evidence.py:72: AssertionError
+__ GatesAndEvidenceTests.test_implementation_gate_records_run_plan_transition __
+
+self = <test_gates_and_evidence.GatesAndEvidenceTests testMethod=test_implementation_gate_records_run_plan_transition>
+
+    def test_implementation_gate_records_run_plan_transition(self):
+        workspace = self.create_workspace("run-plan-transition")
+    
+        run(
+            [
+                sys.executable,
+                str(SCRIPT),
+                "gate",
+                "set",
+                "--workspace",
+                str(workspace),
+                "--gate",
+                "implementation",
+                "--status",
+                "approved",
+                "--by",
+                "user",
+                "--note",
+                "planning gates approved",
+            ],
+            self.repo,
+        )
+    
+        execution = (workspace / "execution.md").read_text(encoding="utf-8")
+>       self.assertIn("## Run Plan Updates", execution)
+E       AssertionError: '## Run Plan Updates' not found in '# Execution Log: auth/reset-password\n\n## User Request\n\nReset Password\n\n## Run Plan\n\nMode: planning autorun\nStop point: feature_contract\nImplementation allowed: no\n\nPlanned steps:\n\n1. Context discovery\n2. Feature contract\n3. Architecture\n4. Technical design\n5. Slicing\n6. Readiness summary\n\n## Non-Delegable Checkpoints\n\nStop and ask user before:\n\n- destructive command\n- production data migration\n- new production dependency\n- public API breaking change\n- security model change\n- credential/secret handling\n- paid external service\n- license-impacting dependency\n\n## Clarifying Questions\n\nNone currently recorded.\n\n## Assumptions\n\nNone currently recorded.\n\n## Docs Consulted\n\nNone yet.\n\n## Event Log\n\n- 2026-05-13T16:43:34Z event_type=run_initialized step=context next=nfp-01-context\n- 2026-05-13T16:43:34Z event_type=gate_status_changed gate=implementation old_status=blocked new_status=approved by=user note=planning-gates-approved\n\n## History\n\n- Initial current step: context\n- Initial next step: nfp-01-context\n\n## Current Run State\n\nCurrent step: context\nNext recommended skill: nfp-01-context\nBlocking issues: none\nLast updated: 2026-05-13T16:43:34Z\n'
+
+tests/feature_pipeline/test_gates_and_evidence.py:397: AssertionError
+_______ GatesAndEvidenceTests.test_mark_stale_cascades_downstream_flags ________
+
+self = <test_gates_and_evidence.GatesAndEvidenceTests testMethod=test_mark_stale_cascades_downstream_flags>
+
+    def test_mark_stale_cascades_downstream_flags(self):
+        workspace = self.create_workspace("run-stale")
+    
+        run(
+            [
+                sys.executable,
+                str(SCRIPT),
+                "mark-stale",
+                "--workspace",
+                str(workspace),
+                "--artifact",
+                "architecture",
+                "--reason",
+                "changed ADR",
+            ],
+            self.repo,
+        )
+    
+        state = yaml.safe_load((workspace / "state.yaml").read_text(encoding="utf-8"))
+        execution = (workspace / "execution.md").read_text(encoding="utf-8")
+        events = yaml.safe_load((workspace / "events.yaml").read_text(encoding="utf-8"))
+        self.assertTrue(state["stale"]["tech_design"])
+        self.assertTrue(state["stale"]["slices"])
+        self.assertTrue(state["stale"]["evidence"])
+        self.assertTrue(state["stale"]["feature_card"])
+        self.assertTrue(state["stale"]["canonical_docs"])
+        self.assertFalse(state["stale"]["feature"])
+>       self.assertIn("Marked `architecture` stale", execution)
+E       AssertionError: 'Marked `architecture` stale' not found in '# Execution Log: auth/reset-password\n\n## User Request\n\nReset Password\n\n## Run Plan\n\nMode: planning autorun\nStop point: feature_contract\nImplementation allowed: no\n\nPlanned steps:\n\n1. Context discovery\n2. Feature contract\n3. Architecture\n4. Technical design\n5. Slicing\n6. Readiness summary\n\n## Non-Delegable Checkpoints\n\nStop and ask user before:\n\n- destructive command\n- production data migration\n- new production dependency\n- public API breaking change\n- security model change\n- credential/secret handling\n- paid external service\n- license-impacting dependency\n\n## Clarifying Questions\n\nNone currently recorded.\n\n## Assumptions\n\nNone currently recorded.\n\n## Docs Consulted\n\nNone yet.\n\n## Event Log\n\n- 2026-05-13T16:43:34Z event_type=run_initialized step=context next=nfp-01-context\n- 2026-05-13T16:43:34Z event_type=artifact_marked_stale artifact=architecture marked_stale=tech_design,slices,evidence,feature_card,canonical_docs reason=changed-ADR\n\n## History\n\n- Initial current step: context\n- Initial next step: nfp-01-context\n\n## Current Run State\n\nCurrent step: context\nNext recommended skill: nfp-01-context\nBlocking issues: none\nLast updated: 2026-05-13T16:43:34Z\n'
+
+tests/feature_pipeline/test_gates_and_evidence.py:200: AssertionError
+________ GatesAndEvidenceTests.test_record_evidence_and_complete_slice _________
+
+self = <test_gates_and_evidence.GatesAndEvidenceTests testMethod=test_record_evidence_and_complete_slice>
+
+    def test_record_evidence_and_complete_slice(self):
+        workspace = self.ready_workspace()
+    
+        self.record_full_evidence(workspace)
+        result = run(
+            [
+                sys.executable,
+                str(SCRIPT),
+                "complete-slice",
+                "--workspace",
+                str(workspace),
+                "--slice",
+                "S-001",
+                "--diff-hash",
+                "abc123",
+            ],
+            self.repo,
+        )
+    
+        self.assertIn("slice_complete: S-001", result.stdout)
+        manifest = yaml.safe_load((workspace / "evidence/manifest.yaml").read_text(encoding="utf-8"))
+        slices = yaml.safe_load((workspace / "slices.yaml").read_text(encoding="utf-8"))
+        events = yaml.safe_load((workspace / "events.yaml").read_text(encoding="utf-8"))
+        self.assertIn("completion_identity_policy", manifest)
+        self.assertEqual(manifest["slices"]["S-001"]["diff_hash"], "abc123")
+        self.assertEqual(slices["slices"][0]["status"], "complete")
+        self.assertEqual(slices["slices"][0]["evidence_status"], "complete")
+        execution = (workspace / "execution.md").read_text(encoding="utf-8")
+>       self.assertIn("Completed slice `S-001` attempt 1", execution)
+E       AssertionError: 'Completed slice `S-001` attempt 1' not found in '# Execution Log: auth/reset-password\n\n## User Request\n\nReset Password\n\n## Run Plan\n\nMode: planning autorun\nStop point: feature_contract\nImplementation allowed: no\n\nPlanned steps:\n\n1. Context discovery\n2. Feature contract\n3. Architecture\n4. Technical design\n5. Slicing\n6. Readiness summary\n\n## Non-Delegable Checkpoints\n\nStop and ask user before:\n\n- destructive command\n- production data migration\n- new production dependency\n- public API breaking change\n- security model change\n- credential/secret handling\n- paid external service\n- license-impacting dependency\n\n## Clarifying Questions\n\nNone currently recorded.\n\n## Assumptions\n\nNone currently recorded.\n\n## Docs Consulted\n\nNone yet.\n\n## Event Log\n\n- 2026-05-13T16:43:35Z event_type=run_initialized step=context next=nfp-01-context\n- 2026-05-13T16:43:35Z event_type=slice_completed slice=S-001 attempt=1 reason=initial\n\n## History\n\n- Initial current step: context\n- Initial next step: nfp-01-context\n\n## Current Run State\n\nCurrent step: context\nNext recommended skill: nfp-01-context\nBlocking issues: none\nLast updated: 2026-05-13T16:43:35Z\n\n\n## Docs Consulted: Architecture\n\n- `.ai/knowledge/architecture-overview.md`: reused known boundary.\n\n## Docs Consulted: Feature Contract\n\n- `.agents/pipeline-core/references/generated-templates/feature-template.md`: used required contract sections.\n\n## Docs Consulted: Technical Design\n\n- `.ai/knowledge/tech-design-overview.md`: reused implementation artifact rules.\n\n## Docs Consulted: Slicing\n\n- `.agents/pipeline-core/references/generated-templates/slice-template.yaml`: used required TDD slice fields.\n'
+
+tests/feature_pipeline/test_gates_and_evidence.py:234: AssertionError
+_ FinishPromoteTests.test_promote_archive_as_variant_archives_incoming_workspace _
+
+self = <test_finish_promote.FinishPromoteTests testMethod=test_promote_archive_as_variant_archives_incoming_workspace>
+
+    def test_promote_archive_as_variant_archives_incoming_workspace(self):
+        first = self.completed_workspace("run-promote-archive-first")
+        run([sys.executable, str(SCRIPT), "promote", "--workspace", str(first)], self.repo)
+        second = self.completed_workspace("run-promote-archive-second")
+    
+        result = run(
+            [sys.executable, str(SCRIPT), "promote", "--workspace", str(second), "--conflict", "archive-as-variant"],
+            self.repo,
+        )
+    
+        self.assertIn("promotion: archived-variant", result.stdout)
+        archived = self.repo / ".ai/features-archive/auth/reset-password/run-promote-archive-second"
+        canonical = yaml.safe_load((self.repo / ".ai/features/auth/reset-password/feature.yaml").read_text(encoding="utf-8"))
+        source_feature = yaml.safe_load((second / "feature.yaml").read_text(encoding="utf-8"))
+        source_state = yaml.safe_load((second / "state.yaml").read_text(encoding="utf-8"))
+        archive_execution = (archived / "execution.md").read_text(encoding="utf-8")
+        self.assertTrue((archived / "feature.yaml").exists())
+        self.assertEqual(canonical["run_id"], "run-promote-archive-first")
+        self.assertEqual(source_feature["status"], "archived")
+        self.assertEqual(source_state["lifecycle"], "archived")
+        self.assertTrue(source_state["read_only"])
+>       self.assertIn("Archived incoming variant for `.ai/features/auth/reset-password`", archive_execution)
+E       AssertionError: 'Archived incoming variant for `.ai/features/auth/reset-password`' not found in '# Execution Log: auth/reset-password\n\n## User Request\n\nReset Password\n\n## Run Plan\n\nMode: planning autorun\nStop point: feature_contract\nImplementation allowed: no\n\nPlanned steps:\n\n1. Context discovery\n2. Feature contract\n3. Architecture\n4. Technical design\n5. Slicing\n6. Readiness summary\n\n## Non-Delegable Checkpoints\n\nStop and ask user before:\n\n- destructive command\n- production data migration\n- new production dependency\n- public API breaking change\n- security model change\n- credential/secret handling\n- paid external service\n- license-impacting dependency\n\n## Clarifying Questions\n\nNone currently recorded.\n\n## Assumptions\n\nNone currently recorded.\n\n## Docs Consulted\n\nNone yet.\n\n## Event Log\n\n- 2026-05-13T16:43:38Z event_type=run_initialized step=context next=nfp-01-context\n- 2026-05-13T16:43:38Z event_type=slice_completed slice=S-001 attempt=1 reason=initial\n- 2026-05-13T16:43:38Z event_type=incoming_variant_archived canonical_path=.ai/features/auth/reset-password\n\n## History\n\n- Initial current step: context\n- Initial next step: nfp-01-context\n\n## Docs Consulted: Architecture\n\n- `.ai/knowledge/architecture-overview.md`: reused known boundary.\n\n## Docs Consulted: Feature Contract\n\n- `.agents/pipeline-core/references/generated-templates/feature-template.md`: used required contract sections.\n\n## Docs Consulted: Technical Design\n\n- `.ai/knowledge/tech-design-overview.md`: reused implementation artifact rules.\n\n## Docs Consulted: Slicing\n\n- `.agents/pipeline-core/references/generated-templates/slice-template.yaml`: used required TDD slice fields.\n\n## Current Run State\n\nCurrent step: promote\nNext recommended skill: nfp-12-promote\nBlocking issues: none\nLast updated: 2026-05-13T16:43:38Z\n'
+
+tests/feature_pipeline/test_finish_promote.py:316: AssertionError
+____ FinishPromoteTests.test_promote_copies_workspace_and_regenerates_index ____
+
+self = <test_finish_promote.FinishPromoteTests testMethod=test_promote_copies_workspace_and_regenerates_index>
+
+    def test_promote_copies_workspace_and_regenerates_index(self):
+        workspace = self.completed_workspace("run-promote")
+    
+        result = run([sys.executable, str(SCRIPT), "promote", "--workspace", str(workspace)], self.repo)
+    
+        canonical = self.repo / ".ai/features/auth/reset-password"
+        index = yaml.safe_load((self.repo / ".ai/features/index.yaml").read_text(encoding="utf-8"))
+        overview = (self.repo / ".ai/features/overview.md").read_text(encoding="utf-8")
+        self.assertIn("promotion: complete", result.stdout)
+        self.assertTrue((canonical / "feature-card.md").exists())
+        self.assertEqual(index["features"][0]["feature_key"], "auth/reset-password")
+        self.assertEqual(index["features"][0]["path"], ".ai/features/auth/reset-password")
+        self.assertIn("auth/reset-password", overview)
+        self.assertEqual(yaml.safe_load((canonical / "feature.yaml").read_text(encoding="utf-8"))["status"], "complete")
+        knowledge_features = (self.repo / ".ai/knowledge/features-overview.md").read_text(encoding="utf-8")
+        project_index = yaml.safe_load((self.repo / ".ai/knowledge/project-index.yaml").read_text(encoding="utf-8"))
+        self.assertIn("auth/reset-password", knowledge_features)
+        self.assertIn("auth/reset-password", {item["feature_key"] for item in project_index["canonical_features"]})
+        source_feature = yaml.safe_load((workspace / "feature.yaml").read_text(encoding="utf-8"))
+        source_state = yaml.safe_load((workspace / "state.yaml").read_text(encoding="utf-8"))
+        canonical_state = yaml.safe_load((canonical / "state.yaml").read_text(encoding="utf-8"))
+        canonical_execution = (canonical / "execution.md").read_text(encoding="utf-8")
+        self.assertEqual(source_feature["status"], "promoted-readonly")
+        self.assertEqual(source_state["lifecycle"], "promoted-readonly")
+        self.assertTrue(source_state["read_only"])
+        self.assertEqual(source_state["gates"]["implementation"], "complete")
+        self.assertEqual(canonical_state["gates"]["implementation"], "complete")
+>       self.assertIn("Promoted feature memory to `.ai/features/auth/reset-password`", canonical_execution)
+E       AssertionError: 'Promoted feature memory to `.ai/features/auth/reset-password`' not found in '# Execution Log: auth/reset-password\n\n## User Request\n\nReset Password\n\n## Run Plan\n\nMode: planning autorun\nStop point: feature_contract\nImplementation allowed: no\n\nPlanned steps:\n\n1. Context discovery\n2. Feature contract\n3. Architecture\n4. Technical design\n5. Slicing\n6. Readiness summary\n\n## Non-Delegable Checkpoints\n\nStop and ask user before:\n\n- destructive command\n- production data migration\n- new production dependency\n- public API breaking change\n- security model change\n- credential/secret handling\n- paid external service\n- license-impacting dependency\n\n## Clarifying Questions\n\nNone currently recorded.\n\n## Assumptions\n\nNone currently recorded.\n\n## Docs Consulted\n\nNone yet.\n\n## Event Log\n\n- 2026-05-13T16:43:39Z event_type=run_initialized step=context next=nfp-01-context\n- 2026-05-13T16:43:39Z event_type=slice_completed slice=S-001 attempt=1 reason=initial\n- 2026-05-13T16:43:39Z event_type=feature_promoted canonical_path=.ai/features/auth/reset-password\n\n## History\n\n- Initial current step: context\n- Initial next step: nfp-01-context\n\n## Docs Consulted: Architecture\n\n- `.ai/knowledge/architecture-overview.md`: reused known boundary.\n\n## Docs Consulted: Feature Contract\n\n- `.agents/pipeline-core/references/generated-templates/feature-template.md`: used required contract sections.\n\n## Docs Consulted: Technical Design\n\n- `.ai/knowledge/tech-design-overview.md`: reused implementation artifact rules.\n\n## Docs Consulted: Slicing\n\n- `.agents/pipeline-core/references/generated-templates/slice-template.yaml`: used required TDD slice fields.\n\n## Current Run State\n\nCurrent step: promote\nNext recommended skill: nfp-12-promote\nBlocking issues: none\nLast updated: 2026-05-13T16:43:39Z\n'
+
+tests/feature_pipeline/test_finish_promote.py:105: AssertionError
+__ FinishPromoteTests.test_validate_rejects_duplicate_completed_slice_events ___
+
+self = <test_finish_promote.FinishPromoteTests testMethod=test_validate_rejects_duplicate_completed_slice_events>
+
+    def test_validate_rejects_duplicate_completed_slice_events(self):
+        workspace = self.completed_workspace("run-duplicate-slice-complete")
+        events_path = workspace / "events.yaml"
+        events = yaml.safe_load(events_path.read_text(encoding="utf-8"))
+        events["events"].append(
+            {
+                "timestamp": "2026-05-12T13:01:00Z",
+                "event_type": "slice_completed",
+                "feature_key": "auth/reset-password",
+                "slice": "S-001",
+                "attempt": 1,
+                "reason": "initial",
+            }
+        )
+        events_path.write_text(yaml.safe_dump(events, sort_keys=False), encoding="utf-8")
+    
+        result = run([sys.executable, str(SCRIPT), "validate", "--workspace", str(workspace)], self.repo, check=False)
+    
+>       self.assertNotEqual(result.returncode, 0)
+E       AssertionError: 0 == 0
+
+tests/feature_pipeline/test_finish_promote.py:246: AssertionError
+__ FinishPromoteTests.test_validate_rejects_machine_event_fields_in_execution __
+
+self = <test_finish_promote.FinishPromoteTests testMethod=test_validate_rejects_machine_event_fields_in_execution>
+
+    def test_validate_rejects_machine_event_fields_in_execution(self):
+        workspace = self.completed_workspace("run-machine-fields-in-execution")
+        execution_path = workspace / "execution.md"
+        execution = execution_path.read_text(encoding="utf-8")
+        execution = execution.replace(
+            "\n## History",
+            "\n- 2026-05-12T13:01:00Z event_type=slice_completed slice=S-001 attempt=1\n\n## History",
+        )
+        execution_path.write_text(execution, encoding="utf-8")
+    
+        result = run([sys.executable, str(SCRIPT), "validate", "--workspace", str(workspace)], self.repo, check=False)
+    
+        self.assertNotEqual(result.returncode, 0)
+>       self.assertIn("execution.md contains machine event fields; use events.yaml", result.stdout)
+E       AssertionError: 'execution.md contains machine event fields; use events.yaml' not found in 'validation: fail\n- execution.md duplicate completed slice event for S-001\n- execution.md completed slice event for S-001 missing reason=initial\n'
+
+tests/feature_pipeline/test_finish_promote.py:262: AssertionError
+=========================== short test summary info ============================
+FAILED tests/feature_pipeline/test_gates_and_evidence.py::GatesAndEvidenceTests::test_complete_slice_retry_requires_reason_and_records_attempt
+FAILED tests/feature_pipeline/test_gates_and_evidence.py::GatesAndEvidenceTests::test_gate_set_updates_state_and_execution_without_approvals_file
+FAILED tests/feature_pipeline/test_gates_and_evidence.py::GatesAndEvidenceTests::test_implementation_gate_records_run_plan_transition
+FAILED tests/feature_pipeline/test_gates_and_evidence.py::GatesAndEvidenceTests::test_mark_stale_cascades_downstream_flags
+FAILED tests/feature_pipeline/test_gates_and_evidence.py::GatesAndEvidenceTests::test_record_evidence_and_complete_slice
+FAILED tests/feature_pipeline/test_featurectl_core.py::FeatureCtlCoreTests::test_new_creates_worktree_workspace_and_core_artifacts
+FAILED tests/feature_pipeline/test_finish_promote.py::GatesAndEvidenceTests::test_complete_slice_retry_requires_reason_and_records_attempt
+FAILED tests/feature_pipeline/test_finish_promote.py::GatesAndEvidenceTests::test_gate_set_updates_state_and_execution_without_approvals_file
+FAILED tests/feature_pipeline/test_finish_promote.py::GatesAndEvidenceTests::test_implementation_gate_records_run_plan_transition
+FAILED tests/feature_pipeline/test_finish_promote.py::GatesAndEvidenceTests::test_mark_stale_cascades_downstream_flags
+FAILED tests/feature_pipeline/test_finish_promote.py::GatesAndEvidenceTests::test_record_evidence_and_complete_slice
+FAILED tests/feature_pipeline/test_finish_promote.py::FinishPromoteTests::test_promote_archive_as_variant_archives_incoming_workspace
+FAILED tests/feature_pipeline/test_finish_promote.py::FinishPromoteTests::test_promote_copies_workspace_and_regenerates_index
+FAILED tests/feature_pipeline/test_finish_promote.py::FinishPromoteTests::test_validate_rejects_duplicate_completed_slice_events
+FAILED tests/feature_pipeline/test_finish_promote.py::FinishPromoteTests::test_validate_rejects_machine_event_fields_in_execution
+15 failed, 38 passed in 19.23s

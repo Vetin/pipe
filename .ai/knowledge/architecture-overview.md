@@ -76,6 +76,10 @@ journal.
 summarizes the run for humans and should not be treated as the only parseable
 event source.
 
+Event sidecars use a strict event vocabulary. Validators reject unknown event
+types, unexpected fields, malformed UTC timestamps, and duplicate slice
+completion events.
+
 ## Shared Knowledge Retrieval
 
 Agents should read `.ai/knowledge/features-overview.md` first for canonical
@@ -96,6 +100,9 @@ text inspection alone. Source-controlled canonical YAML, Markdown, `.gitignore`,
 and Python files are guarded against collapsed one-line serialization. Raw
 command-output evidence logs remain exempt because they preserve command output
 rather than curated documentation.
+
+`pipelinebench.py check-public-raw` provides an explicit public raw line-count
+check. Normal tests use file-backed fixtures so the suite remains offline.
 
 ## Source Anchors
 

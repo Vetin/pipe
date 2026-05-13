@@ -20,6 +20,11 @@ features:
   status: complete
   path: .ai/features/pipeline/core-modularity-and-readable-events
   run_id: 20260513-core-modularity-events
+- feature_key: pipeline/event-schema-strictness-and-narrative-execution-logs
+  title: Event Schema Strictness And Narrative Execution Logs
+  status: complete
+  path: .ai/features/pipeline/event-schema-strictness-and-narrative-execution-logs
+  run_id: 20260513-event-schema-narrative
 - feature_key: pipeline/lifecycle-hygiene-profile-noise
   title: Lifecycle hygiene and profile noise
   status: complete

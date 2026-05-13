@@ -1,0 +1,5 @@
+## feature/pipeline-event-schema-strictness-and-narrative-execution-logs-20260513-event-schema-narrative
+ M .agents/pipeline-core/scripts/pipelinebench_core/cli.py
+ M .agents/pipeline-core/scripts/pipelinebench_core/commands.py
+ M tests/feature_pipeline/test_pipelinebench.py
+?? .agents/pipeline-core/scripts/pipelinebench_core/raw_checks.py

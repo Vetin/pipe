@@ -1,6 +1,6 @@
 artifact_contract_version: 0.1.0
 generated_by: featurectl.py promote canonical sync
-generated_at: '2026-05-13T15:43:20Z'
+generated_at: '2026-05-13T16:51:31Z'
 contract_examples:
 - .agents/pipeline-core/references/native-skill-protocol.md
 - .agents/pipeline-core/scripts/featurectl_core/events.py
@@ -82,6 +82,7 @@ source_examples:
 - .agents/pipeline-core/scripts/pipelinebench_core/cli.py
 - .agents/pipeline-core/scripts/pipelinebench_core/commands.py
 - .agents/pipeline-core/scripts/pipelinebench_core/common.py
+- .agents/pipeline-core/scripts/pipelinebench_core/raw_checks.py
 - .agents/pipeline-core/scripts/pipelinebench_core/report.py
 - .agents/pipeline-core/scripts/pipelinebench_core/scenarios.py
 - .agents/pipeline-core/scripts/pipelinebench_core/score.py

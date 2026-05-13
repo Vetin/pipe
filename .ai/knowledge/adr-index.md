@@ -32,3 +32,7 @@ Last reviewed: 2026-05-13
   - Source: `.ai/features/pipeline/raw-schema-and-execution-boundary-hardening/adrs/ADR-006-events-schema-and-execution-boundary.md`
   - Decision: `events.yaml` is the machine-readable event source of truth;
     `execution.md` is the human-readable journal.
+- ADR-007 Strict Events And Narrative Execution
+  - Source: `.ai/features/pipeline/event-schema-strictness-and-narrative-execution-logs/adrs/ADR-007-strict-events-and-narrative-execution.md`
+  - Decision: event sidecars use a strict event vocabulary, and generated
+    execution entries are human summaries.

@@ -40,6 +40,9 @@ score artifacts.
 - Benchmark score -> skill iteration: hard checks catch structural regressions;
   manual soft scores capture architecture clarity, module communication, reuse,
   ADR usefulness, and review quality.
+- Public raw check -> remote or file raw bytes: `pipelinebench.py
+  check-public-raw` verifies physical newline counts for rendered source
+  artifacts without executing fetched content.
 - CLI wrapper -> core module: top-level scripts stay small and stable while
   implementation details stay under focused `featurectl_core` and
   `pipelinebench_core` modules.

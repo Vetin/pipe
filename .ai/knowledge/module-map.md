@@ -43,6 +43,8 @@ Last reviewed: 2026-05-13
   comparison report rendering.
 - `.agents/pipeline-core/scripts/pipelinebench_core/candidates.py`: candidate
   skill isolation.
+- `.agents/pipeline-core/scripts/pipelinebench_core/raw_checks.py`: explicit
+  public raw artifact line-count verification.
 - `.agents/pipeline-core/scripts/pipelinebench_core/showcases.py`: experimental
   showcase execution.
 - `pipeline-lab/showcases/scripts/run_init_profile_showcases.py`: repeated

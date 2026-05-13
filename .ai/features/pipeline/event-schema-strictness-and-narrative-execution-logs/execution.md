@@ -152,6 +152,7 @@ None yet.
 - Gate `review` changed from `pending` to `complete` by `codex`; note: strict-review-passed.
 - Gate `verification` changed from `pending` to `complete` by `codex`; note: full-feature-pipeline-suite-passed.
 - Gate `finish` changed from `pending` to `complete` by `codex`; note: feature-card-ready.
+- Promoted feature memory to `.ai/features/pipeline/event-schema-strictness-and-narrative-execution-logs`.
 
 ## History
 

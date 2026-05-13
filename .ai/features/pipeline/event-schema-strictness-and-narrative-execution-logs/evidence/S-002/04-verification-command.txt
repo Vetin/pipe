@@ -1,0 +1,1 @@
+python -m py_compile featurectl_core event modules && python -m pytest gates/featurectl/finish suites

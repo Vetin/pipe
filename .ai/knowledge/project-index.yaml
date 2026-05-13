@@ -1,14 +1,14 @@
 artifact_contract_version: 0.1.0
 generated_by: featurectl.py promote canonical sync
-generated_at: '2026-05-13T15:43:20Z'
+generated_at: '2026-05-13T16:51:31Z'
 project:
   name: pipe
   root: .
   remote: git@github.com:Vetin/pipe.git
 counts:
-  tracked_files: 2134
-  profiled_files: 211
-  source_files: 25
+  tracked_files: 2228
+  profiled_files: 212
+  source_files: 26
   test_files: 37
   doc_files: 92
   contract_files: 23
@@ -17,7 +17,7 @@ package_manifests: []
 scripts: []
 module_dirs:
 - path: .agents
-  tracked_files: 100
+  tracked_files: 101
 - path: .ai
   tracked_files: 60
 - path: tests
@@ -33,6 +33,8 @@ canonical_features:
   path: .ai/features/pipeline/codex-e2e-runner-hardening
 - feature_key: pipeline/core-modularity-and-readable-events
   path: .ai/features/pipeline/core-modularity-and-readable-events
+- feature_key: pipeline/event-schema-strictness-and-narrative-execution-logs
+  path: .ai/features/pipeline/event-schema-strictness-and-narrative-execution-logs
 - feature_key: pipeline/lifecycle-hygiene-profile-noise
   path: .ai/features/pipeline/lifecycle-hygiene-profile-noise
 - feature_key: pipeline/portable-artifact-consistency

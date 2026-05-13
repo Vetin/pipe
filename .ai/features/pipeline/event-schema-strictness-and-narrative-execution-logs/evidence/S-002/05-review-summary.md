@@ -1,0 +1,1 @@
+Reviewed narrative execution boundary. execution.md now receives human summaries, events.yaml receives machine records, and implementation gate approval records a Run Plan Updates section.

@@ -1,0 +1,152 @@
+.FF......                                                                [100%]
+=================================== FAILURES ===================================
+_____ PipelineBenchTests.test_check_public_raw_accepts_file_backed_fixture _____
+
+self = <test_pipelinebench.PipelineBenchTests testMethod=test_check_public_raw_accepts_file_backed_fixture>
+
+    def test_check_public_raw_accepts_file_backed_fixture(self):
+        raw_root = self.tempdir / "raw"
+        guarded = raw_root / ".agents/pipeline-core/scripts/featurectl.py"
+        guarded.parent.mkdir(parents=True)
+        guarded.write_text("#!/usr/bin/env python3\n\n\"\"\"Wrapper.\"\"\"\n\nprint('ok')\n", encoding="utf-8")
+        index = raw_root / ".ai/features/index.yaml"
+        index.parent.mkdir(parents=True)
+        index.write_text("artifact_contract_version: 0.1.0\nfeatures:\n- feature_key: a/b\n  status: complete\n", encoding="utf-8")
+    
+>       result = run(
+            [
+                sys.executable,
+                str(BENCH),
+                "check-public-raw",
+                "--base-url",
+                raw_root.as_uri(),
+                "--path",
+                ".agents/pipeline-core/scripts/featurectl.py",
+                "--path",
+                ".ai/features/index.yaml",
+                "--min-lines",
+                "3",
+            ],
+            self.repo,
+        )
+
+tests/feature_pipeline/test_pipelinebench.py:201: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/feature_pipeline/test_pipelinebench.py:34: in run
+    return subprocess.run(cmd, cwd=cwd, check=check, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+input = None, capture_output = False, timeout = None, check = True
+popenargs = (['/opt/homebrew/opt/python@3.11/bin/python3.11', '/Users/egormasnankin/work/worktrees/pipeline-event-schema-strictnes...-base-url', 'file:///var/folders/w6/b5vcsrs11zn_qf4gvnqw7fzc0000gn/T/pipelinebench-test-sbx5r_t0/raw', '--path', ...],)
+kwargs = {'cwd': PosixPath('/var/folders/w6/b5vcsrs11zn_qf4gvnqw7fzc0000gn/T/pipelinebench-test-sbx5r_t0/repo'), 'stderr': -1, 'stdout': -1, 'text': True}
+process = <Popen: returncode: 2 args: ['/opt/homebrew/opt/python@3.11/bin/python3.11',...>
+stdout = ''
+stderr = "usage: pipelinebench.py [-h]\n                        {init-lab,list-scenarios,score-run,compare-runs,generate-report...rom 'init-lab', 'list-scenarios', 'score-run', 'compare-runs', 'generate-report', 'add-regression', 'run-showcases')\n"
+retcode = 2
+
+    def run(*popenargs,
+            input=None, capture_output=False, timeout=None, check=False, **kwargs):
+        """Run command with arguments and return a CompletedProcess instance.
+    
+        The returned instance will have attributes args, returncode, stdout and
+        stderr. By default, stdout and stderr are not captured, and those attributes
+        will be None. Pass stdout=PIPE and/or stderr=PIPE in order to capture them,
+        or pass capture_output=True to capture both.
+    
+        If check is True and the exit code was non-zero, it raises a
+        CalledProcessError. The CalledProcessError object will have the return code
+        in the returncode attribute, and output & stderr attributes if those streams
+        were captured.
+    
+        If timeout is given, and the process takes too long, a TimeoutExpired
+        exception will be raised.
+    
+        There is an optional argument "input", allowing you to
+        pass bytes or a string to the subprocess's stdin.  If you use this argument
+        you may not also use the Popen constructor's "stdin" argument, as
+        it will be used internally.
+    
+        By default, all communication is in bytes, and therefore any "input" should
+        be bytes, and the stdout and stderr will be bytes. If in text mode, any
+        "input" should be a string, and stdout and stderr will be strings decoded
+        according to locale encoding, or by "encoding" if set. Text mode is
+        triggered by setting any of text, encoding, errors or universal_newlines.
+    
+        The other arguments are the same as for the Popen constructor.
+        """
+        if input is not None:
+            if kwargs.get('stdin') is not None:
+                raise ValueError('stdin and input arguments may not both be used.')
+            kwargs['stdin'] = PIPE
+    
+        if capture_output:
+            if kwargs.get('stdout') is not None or kwargs.get('stderr') is not None:
+                raise ValueError('stdout and stderr arguments may not be used '
+                                 'with capture_output.')
+            kwargs['stdout'] = PIPE
+            kwargs['stderr'] = PIPE
+    
+        with Popen(*popenargs, **kwargs) as process:
+            try:
+                stdout, stderr = process.communicate(input, timeout=timeout)
+            except TimeoutExpired as exc:
+                process.kill()
+                if _mswindows:
+                    # Windows accumulates the output in a single blocking
+                    # read() call run on child threads, with the timeout
+                    # being done in a join() on those threads.  communicate()
+                    # _after_ kill() is required to collect that and add it
+                    # to the exception.
+                    exc.stdout, exc.stderr = process.communicate()
+                else:
+                    # POSIX _communicate already populated the output so
+                    # far into the TimeoutExpired exception.
+                    process.wait()
+                raise
+            except:  # Including KeyboardInterrupt, communicate handled that.
+                process.kill()
+                # We don't call process.wait() as .__exit__ does that for us.
+                raise
+            retcode = process.poll()
+            if check and retcode:
+>               raise CalledProcessError(retcode, process.args,
+                                         output=stdout, stderr=stderr)
+E               subprocess.CalledProcessError: Command '['/opt/homebrew/opt/python@3.11/bin/python3.11', '/Users/egormasnankin/work/worktrees/pipeline-event-schema-strictness-and-narrative-execution-logs-20260513-event-schema-narrative/.agents/pipeline-core/scripts/pipelinebench.py', 'check-public-raw', '--base-url', 'file:///var/folders/w6/b5vcsrs11zn_qf4gvnqw7fzc0000gn/T/pipelinebench-test-sbx5r_t0/raw', '--path', '.agents/pipeline-core/scripts/featurectl.py', '--path', '.ai/features/index.yaml', '--min-lines', '3']' returned non-zero exit status 2.
+
+/opt/homebrew/Cellar/python@3.11/3.11.13/Frameworks/Python.framework/Versions/3.11/lib/python3.11/subprocess.py:571: CalledProcessError
+_______ PipelineBenchTests.test_check_public_raw_fails_on_collapsed_file _______
+
+self = <test_pipelinebench.PipelineBenchTests testMethod=test_check_public_raw_fails_on_collapsed_file>
+
+    def test_check_public_raw_fails_on_collapsed_file(self):
+        raw_root = self.tempdir / "raw-collapsed"
+        guarded = raw_root / ".gitignore"
+        guarded.parent.mkdir(parents=True)
+        guarded.write_text("pipeline-lab/runs/ worktrees/\n", encoding="utf-8")
+    
+        result = run(
+            [
+                sys.executable,
+                str(BENCH),
+                "check-public-raw",
+                "--base-url",
+                raw_root.as_uri(),
+                "--path",
+                ".gitignore",
+                "--min-lines",
+                "3",
+            ],
+            self.repo,
+            check=False,
+        )
+    
+        self.assertNotEqual(result.returncode, 0)
+>       self.assertIn(".gitignore has 1 lines; expected at least 3", result.stderr)
+E       AssertionError: '.gitignore has 1 lines; expected at least 3' not found in "usage: pipelinebench.py [-h]\n                        {init-lab,list-scenarios,score-run,compare-runs,generate-report,add-regression,run-showcases}\n                        ...\npipelinebench.py: error: argument command: invalid choice: 'check-public-raw' (choose from 'init-lab', 'list-scenarios', 'score-run', 'compare-runs', 'generate-report', 'add-regression', 'run-showcases')\n"
+
+tests/feature_pipeline/test_pipelinebench.py:244: AssertionError
+=========================== short test summary info ============================
+FAILED tests/feature_pipeline/test_pipelinebench.py::PipelineBenchTests::test_check_public_raw_accepts_file_backed_fixture
+FAILED tests/feature_pipeline/test_pipelinebench.py::PipelineBenchTests::test_check_public_raw_fails_on_collapsed_file
+2 failed, 7 passed in 2.42s
