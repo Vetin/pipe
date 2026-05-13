@@ -1,0 +1,10 @@
+python -m pytest tests/feature_pipeline -q
+
+Result:
+172 passed, 383 subtests passed in 49.78s
+
+Additional verification performed during slices:
+- public raw line-count guardrail passed
+- featurectl workspace validation passed
+- focused artifact formatting tests passed
+- focused gate and event tests passed

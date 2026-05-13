@@ -70,3 +70,35 @@ events:
   attempt: 1
   reason: initial
   feature_key: pipeline/guardrail-polish-and-backlog-tracking
+- timestamp: '2026-05-13T19:00:42Z'
+  event_type: gate_status_changed
+  gate: implementation
+  old_status: approved
+  new_status: complete
+  by: codex
+  note: all-slices-complete
+  feature_key: pipeline/guardrail-polish-and-backlog-tracking
+- timestamp: '2026-05-13T19:00:42Z'
+  event_type: gate_status_changed
+  gate: review
+  old_status: pending
+  new_status: complete
+  by: codex
+  note: strict-review-passed
+  feature_key: pipeline/guardrail-polish-and-backlog-tracking
+- timestamp: '2026-05-13T19:00:42Z'
+  event_type: gate_status_changed
+  gate: verification
+  old_status: pending
+  new_status: complete
+  by: codex
+  note: full-suite-passed
+  feature_key: pipeline/guardrail-polish-and-backlog-tracking
+- timestamp: '2026-05-13T19:00:42Z'
+  event_type: gate_status_changed
+  gate: finish
+  old_status: pending
+  new_status: complete
+  by: codex
+  note: feature-card-ready
+  feature_key: pipeline/guardrail-polish-and-backlog-tracking

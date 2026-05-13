@@ -20,7 +20,9 @@ Planned steps:
 6. Readiness summary
 
 ## Run Plan Updates
-- Implementation became allowed after `implementation` changed from `blocked` to `approved`; reason: planning-gates-approved-for-implementation.
+
+- Implementation became allowed after planning gates were approved.
+- Implementation completed after all slices finished.
 
 ## Non-Delegable Checkpoints
 
@@ -128,15 +130,19 @@ None yet.
 ## Event Log
 
 - Initialized the run; next step `nfp-01-context`.
-- Gate `feature_contract` changed from `pending` to `approved` by `codex`; note: review-findings-converted-to-contract.
-- Gate `architecture` changed from `pending` to `approved` by `codex`; note: guardrail-architecture-approved.
-- Gate `tech_design` changed from `pending` to `approved` by `codex`; note: implementation-design-approved.
-- Gate `implementation` changed from `blocked` to `approved` by `codex`; note: planning-gates-approved-for-implementation.
-- Gate `slicing_readiness` changed from `pending` to `approved` by `codex`; note: slices-ready-for-tdd.
-- Completed slice `S-001` attempt 1; reason: initial.
-- Completed slice `S-002` attempt 1; reason: initial.
+- Approved `feature_contract` gate.
+- Approved `architecture` gate.
+- Approved `tech_design` gate.
+- Approved `implementation` gate.
+- Approved `slicing_readiness` gate.
+- Completed slice `S-001`.
+- Completed slice `S-002`.
 - Completed slice `S-003`.
 - Completed slice `S-004`.
+- Completed `implementation` gate.
+- Completed `review` gate.
+- Completed `verification` gate.
+- Completed `finish` gate.
 
 ## History
 
@@ -145,7 +151,7 @@ None yet.
 
 ## Current Run State
 
-Current step: context
-Next recommended skill: nfp-01-context
+Current step: finish
+Next recommended skill: nfp-12-promote
 Blocking issues: none
-Last updated: 2026-05-13T18:44:54Z
+Last updated: 2026-05-13T19:01:01Z
