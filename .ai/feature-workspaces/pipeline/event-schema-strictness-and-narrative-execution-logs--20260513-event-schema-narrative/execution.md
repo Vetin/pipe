@@ -19,6 +19,11 @@ Planned steps:
 5. Slicing
 6. Readiness summary
 
+## Run Plan Updates
+
+- Implementation became allowed after `implementation` changed from `blocked`
+  to `approved`; reason: planning-gates-approved-for-tdd.
+
 ## Non-Delegable Checkpoints
 
 Stop and ask user before:
@@ -128,13 +133,19 @@ None yet.
 
 ## Event Log
 
-- 2026-05-13T16:35:05Z event_type=run_initialized step=context next=nfp-01-context
-- 2026-05-13T16:39:02Z event_type=gate_status_changed gate=feature_contract old_status=pending new_status=approved by=codex note=confirmed-findings-converted-to-contract
-- 2026-05-13T16:39:02Z event_type=gate_status_changed gate=architecture old_status=pending new_status=approved by=codex note=event-boundary-architecture-approved
-- 2026-05-13T16:39:02Z event_type=gate_status_changed gate=tech_design old_status=pending new_status=approved by=codex note=implementation-design-approved
-- 2026-05-13T16:39:02Z event_type=gate_status_changed gate=slicing_readiness old_status=pending new_status=approved by=codex note=tdd-slices-ready
-- 2026-05-13T16:39:13Z event_type=gate_status_changed gate=implementation old_status=blocked new_status=approved by=codex note=planning-gates-approved-for-tdd
-- 2026-05-13T16:41:35Z event_type=slice_completed slice=S-001 attempt=1 reason=initial
+- Initialized the run; next step `nfp-01-context`.
+- Gate `feature_contract` changed from `pending` to `approved` by `codex`;
+  note: confirmed-findings-converted-to-contract.
+- Gate `architecture` changed from `pending` to `approved` by `codex`;
+  note: event-boundary-architecture-approved.
+- Gate `tech_design` changed from `pending` to `approved` by `codex`;
+  note: implementation-design-approved.
+- Gate `slicing_readiness` changed from `pending` to `approved` by `codex`;
+  note: tdd-slices-ready.
+- Gate `implementation` changed from `blocked` to `approved` by `codex`;
+  note: planning-gates-approved-for-tdd.
+- Completed slice `S-001` attempt 1; reason: initial.
+- Completed slice `S-002` attempt 1; reason: initial.
 
 ## History
 

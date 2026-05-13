@@ -13,6 +13,10 @@ def append_execution_event(workspace: Path, section: str, line: str) -> None:
     path = workspace / "execution.md"
     existing = path.read_text(encoding="utf-8") if path.exists() else ""
     event_line = normalize_execution_event_line(section, line)
+    event = parse_execution_event_line(event_line)
+    if event:
+        append_events_sidecar_record(workspace, event)
+    summary_line = summarize_event_record(event) if event else event_line
     if "## Event Log" not in existing:
         insert_at = existing.find("\n## History")
         event_section = "\n\n## Event Log\n\n"
@@ -22,17 +26,16 @@ def append_execution_event(workspace: Path, section: str, line: str) -> None:
             existing = existing[:insert_at].rstrip() + event_section + existing[insert_at:]
     event_match = re.search(r"^## Event Log\s*$", existing, flags=re.MULTILINE)
     if not event_match:
-        write_text(path, existing.rstrip() + "\n" + event_line + "\n")
+        write_text(path, existing.rstrip() + "\n" + summary_line + "\n")
         return
     after_heading = existing[event_match.end() :]
     next_heading = re.search(r"\n##\s+", after_heading)
     if next_heading:
         insert_at = event_match.end() + next_heading.start()
-        updated = existing[:insert_at].rstrip() + "\n" + event_line + "\n" + existing[insert_at:]
+        updated = existing[:insert_at].rstrip() + "\n" + summary_line + "\n" + existing[insert_at:]
     else:
-        updated = existing.rstrip() + "\n" + event_line + "\n"
+        updated = existing.rstrip() + "\n" + summary_line + "\n"
     path.write_text(updated, encoding="utf-8")
-    append_events_sidecar(workspace, event_line)
 
 
 def initialize_events_sidecar(workspace: Path) -> None:
@@ -47,6 +50,16 @@ def initialize_events_sidecar(workspace: Path) -> None:
         if event:
             event.setdefault("feature_key", feature_key)
             events.append(event)
+    if not events:
+        events.append(
+            {
+                "timestamp": utc_now(),
+                "event_type": "run_initialized",
+                "feature_key": feature_key,
+                "step": "context",
+                "next": "nfp-01-context",
+            }
+        )
     write_events_sidecar(workspace, events)
 
 
@@ -72,6 +85,10 @@ def append_events_sidecar(workspace: Path, line: str) -> None:
     event = parse_execution_event_line(line)
     if not event:
         return
+    append_events_sidecar_record(workspace, event)
+
+
+def append_events_sidecar_record(workspace: Path, event: dict[str, Any]) -> None:
     data = read_events_sidecar(workspace)
     event.setdefault("feature_key", data["feature_key"])
     data.setdefault("events", []).append(event)
@@ -145,3 +162,80 @@ def format_event_value(value: Any) -> str:
     text = re.sub(r"\s+", "-", text)
     text = re.sub(r"[^A-Za-z0-9_./,:=-]+", "-", text)
     return text.strip("-") or "none"
+
+
+def summarize_event_record(event: dict[str, Any] | None) -> str:
+    if not event:
+        return f"- Recorded pipeline event at {utc_now()}."
+    event_type = event.get("event_type")
+    if event_type == "run_initialized":
+        return f"- Initialized the run; next step `{event.get('next')}`."
+    if event_type == "gate_status_changed":
+        return (
+            f"- Gate `{event.get('gate')}` changed from `{event.get('old_status')}` "
+            f"to `{event.get('new_status')}` by `{event.get('by')}`; note: {event.get('note')}."
+        )
+    if event_type == "artifact_marked_stale":
+        marked = event.get("marked_stale") or []
+        affected = ", ".join(str(item) for item in marked) if isinstance(marked, list) else str(marked)
+        return f"- Marked `{event.get('artifact')}` stale; affected: {affected}; reason: {event.get('reason')}."
+    if event_type == "slice_completed":
+        return f"- Completed slice `{event.get('slice')}` attempt {event.get('attempt')}; reason: {event.get('reason')}."
+    if event_type == "slice_retry_completed":
+        return (
+            f"- Completed retry for slice `{event.get('slice')}` attempt {event.get('attempt')}; "
+            f"reason: {event.get('reason')}; supersedes {event.get('supersedes')}."
+        )
+    if event_type == "feature_promoted":
+        return f"- Promoted feature memory to `{event.get('canonical_path')}`."
+    if event_type == "incoming_variant_archived":
+        return f"- Archived incoming variant for `{event.get('canonical_path')}`."
+    if event_type == "public_raw_verified":
+        return f"- Verified public raw artifacts; index lines: {event.get('index_lines')}."
+    if event_type == "verification_completed":
+        return f"- Verification completed with result `{event.get('result')}`."
+    if event_type == "review_completed":
+        return f"- Review `{event.get('review_id')}` completed with result `{event.get('result')}`."
+    return f"- Recorded `{event_type}` event in `events.yaml`."
+
+
+def append_run_plan_update(
+    workspace: Path,
+    *,
+    gate: str,
+    old_status: Any,
+    new_status: Any,
+    reason: str | None,
+) -> None:
+    if gate != "implementation" or new_status not in {"approved", "delegated", "complete"}:
+        return
+    path = workspace / "execution.md"
+    if not path.exists():
+        return
+    execution = path.read_text(encoding="utf-8")
+    update = (
+        f"- Implementation became allowed after `implementation` changed from "
+        f"`{old_status}` to `{new_status}`; reason: {format_event_value(reason or 'none')}."
+    )
+    if update in execution:
+        return
+    if "## Run Plan Updates" not in execution:
+        insert_at = execution.find("\n## Non-Delegable Checkpoints")
+        section = "\n\n## Run Plan Updates\n\n"
+        if insert_at == -1:
+            execution = execution.rstrip() + section
+        else:
+            execution = execution[:insert_at].rstrip() + section + execution[insert_at:]
+    execution = execution.replace("## Run Plan Updates\n\nNone currently recorded.\n", "## Run Plan Updates\n\n")
+    match = re.search(r"^## Run Plan Updates\s*$", execution, flags=re.MULTILINE)
+    if not match:
+        write_text(path, execution.rstrip() + "\n" + update + "\n")
+        return
+    after_heading = execution[match.end() :]
+    next_heading = re.search(r"\n##\s+", after_heading)
+    if next_heading:
+        insert_at = match.end() + next_heading.start()
+        execution = execution[:insert_at].rstrip() + "\n" + update + "\n" + execution[insert_at:]
+    else:
+        execution = execution.rstrip() + "\n" + update + "\n"
+    write_text(path, execution)

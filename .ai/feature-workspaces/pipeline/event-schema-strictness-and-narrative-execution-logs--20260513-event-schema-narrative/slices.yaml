@@ -91,8 +91,8 @@ slices:
   - events.yaml remains complete
   - execution.md remains readable
   - implementation gate run-plan transition is explicit
-  evidence_status: pending
-  status: pending
+  evidence_status: complete
+  status: complete
   iteration_budget: 4
   rollback_point: pre-slice git state
   independent_verification: inspect generated execution.md and events.yaml

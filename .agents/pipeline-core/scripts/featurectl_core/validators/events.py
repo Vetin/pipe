@@ -55,8 +55,14 @@ def validate_events_sidecar(workspace: Path, feature: dict[str, Any]) -> list[st
     events = data.get("events")
     if not isinstance(events, list):
         return [*blockers, "events.yaml events must be a list"]
+    completed_slices: set[str] = set()
     for index, event in enumerate(events, start=1):
         blockers.extend(validate_event_record(index, event, expected_feature_key))
+        if isinstance(event, dict) and event.get("event_type") == "slice_completed":
+            slice_id = str(event.get("slice") or "")
+            if slice_id in completed_slices:
+                blockers.append(f"events.yaml duplicate completed slice event for {slice_id}")
+            completed_slices.add(slice_id)
     return blockers
 
 

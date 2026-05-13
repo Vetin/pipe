@@ -12,7 +12,7 @@ from pathlib import Path
 from typing import Any
 
 from .docsets import load_docset, missing_docs, next_skill_for_step, normalize_step_name, print_docs
-from .events import append_execution_event, initialize_events_sidecar, render_execution_event
+from .events import append_execution_event, append_run_plan_update, initialize_events_sidecar, render_execution_event
 from .evidence import (
     add_slice_commit_metadata,
     current_git_state,
@@ -340,6 +340,13 @@ def cmd_gate_set(args: argparse.Namespace) -> None:
             by=args.actor,
             note=args.note or "none",
         ),
+    )
+    append_run_plan_update(
+        workspace,
+        gate=args.gate,
+        old_status=old_status,
+        new_status=args.status,
+        reason=args.note,
     )
     print(f"gate: {args.gate}")
     print(f"status: {args.status}")

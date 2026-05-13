@@ -69,8 +69,8 @@ class GatesAndEvidenceTests(unittest.TestCase):
         self.assertIn("status: approved", result.stdout)
         self.assertEqual(state["gates"]["feature_contract"], "approved")
         self.assertEqual(state["gates"]["architecture"], "pending")
-        self.assertIn("event_type=gate_status_changed", execution)
-        self.assertIn("gate=feature_contract old_status=pending new_status=approved by=user", execution)
+        self.assertIn("Gate `feature_contract` changed from `pending` to `approved` by `user`", execution)
+        self.assertNotIn("event_type=gate_status_changed", execution)
         self.assertEqual(events["events"][-1]["event_type"], "gate_status_changed")
         self.assertEqual(events["events"][-1]["gate"], "feature_contract")
         self.assertEqual(events["events"][-1]["old_status"], "pending")
@@ -197,8 +197,8 @@ class GatesAndEvidenceTests(unittest.TestCase):
         self.assertTrue(state["stale"]["feature_card"])
         self.assertTrue(state["stale"]["canonical_docs"])
         self.assertFalse(state["stale"]["feature"])
-        self.assertIn("event_type=artifact_marked_stale", execution)
-        self.assertIn("artifact=architecture", execution)
+        self.assertIn("Marked `architecture` stale", execution)
+        self.assertNotIn("event_type=artifact_marked_stale", execution)
         self.assertEqual(events["events"][-1]["event_type"], "artifact_marked_stale")
         self.assertEqual(events["events"][-1]["artifact"], "architecture")
         self.assertEqual(events["events"][-1]["marked_stale"], ["tech_design", "slices", "evidence", "feature_card", "canonical_docs"])
@@ -230,10 +230,9 @@ class GatesAndEvidenceTests(unittest.TestCase):
         self.assertEqual(manifest["slices"]["S-001"]["diff_hash"], "abc123")
         self.assertEqual(slices["slices"][0]["status"], "complete")
         self.assertEqual(slices["slices"][0]["evidence_status"], "complete")
-        self.assertIn(
-            "event_type=slice_completed slice=S-001 attempt=1 reason=initial",
-            (workspace / "execution.md").read_text(encoding="utf-8"),
-        )
+        execution = (workspace / "execution.md").read_text(encoding="utf-8")
+        self.assertIn("Completed slice `S-001` attempt 1", execution)
+        self.assertNotIn("event_type=slice_completed", execution)
         self.assertEqual(events["events"][-1]["event_type"], "slice_completed")
         self.assertEqual(events["events"][-1]["slice"], "S-001")
         self.assertEqual(events["events"][-1]["attempt"], 1)
@@ -365,13 +364,38 @@ class GatesAndEvidenceTests(unittest.TestCase):
         self.assertEqual(manifest["slices"]["S-001"]["retries"][0]["reason"], "rerun-after-review")
         self.assertEqual(manifest["slices"]["S-001"]["retries"][0]["change_label"], "changed456")
         self.assertNotIn("diff_hash", manifest["slices"]["S-001"]["retries"][0])
-        self.assertIn(
-            "event_type=slice_retry_completed slice=S-001 attempt=2 reason=rerun-after-review supersedes=attempt-1",
-            execution,
-        )
+        self.assertIn("Completed retry for slice `S-001` attempt 2", execution)
+        self.assertNotIn("event_type=slice_retry_completed", execution)
         self.assertEqual(events["events"][-1]["event_type"], "slice_retry_completed")
         self.assertEqual(events["events"][-1]["attempt"], 2)
         self.assertEqual(events["events"][-1]["supersedes"], "attempt-1")
+
+    def test_implementation_gate_records_run_plan_transition(self):
+        workspace = self.create_workspace("run-plan-transition")
+
+        run(
+            [
+                sys.executable,
+                str(SCRIPT),
+                "gate",
+                "set",
+                "--workspace",
+                str(workspace),
+                "--gate",
+                "implementation",
+                "--status",
+                "approved",
+                "--by",
+                "user",
+                "--note",
+                "planning gates approved",
+            ],
+            self.repo,
+        )
+
+        execution = (workspace / "execution.md").read_text(encoding="utf-8")
+        self.assertIn("## Run Plan Updates", execution)
+        self.assertIn("Implementation became allowed after `implementation` changed from `blocked` to `approved`", execution)
 
     def test_complete_slice_fails_when_green_is_before_red(self):
         workspace = self.ready_workspace("run-bad-order")

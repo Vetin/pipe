@@ -1026,6 +1026,10 @@ Planned steps:
 5. Slicing
 6. Readiness summary
 
+## Run Plan Updates
+
+None currently recorded.
+
 ## Non-Delegable Checkpoints
 
 Stop and ask user before:
@@ -1053,7 +1057,7 @@ None yet.
 
 ## Event Log
 
-- {now} event_type=run_initialized step=context next=nfp-01-context
+- Initialized the run; next step `nfp-01-context`.
 
 ## History
 

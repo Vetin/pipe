@@ -102,8 +102,8 @@ class FinishPromoteTests(unittest.TestCase):
         self.assertTrue(source_state["read_only"])
         self.assertEqual(source_state["gates"]["implementation"], "complete")
         self.assertEqual(canonical_state["gates"]["implementation"], "complete")
-        self.assertIn("event_type=feature_promoted", canonical_execution)
-        self.assertIn("canonical_path=.ai/features/auth/reset-password", canonical_execution)
+        self.assertIn("Promoted feature memory to `.ai/features/auth/reset-password`", canonical_execution)
+        self.assertNotIn("event_type=feature_promoted", canonical_execution)
         validation = run([sys.executable, str(SCRIPT), "validate", "--workspace", str(canonical)], self.repo)
         self.assertIn("validation: pass", validation.stdout)
         workspace_validation = run([sys.executable, str(SCRIPT), "validate", "--workspace", str(workspace)], self.repo)
@@ -227,6 +227,27 @@ class FinishPromoteTests(unittest.TestCase):
 
     def test_validate_rejects_duplicate_completed_slice_events(self):
         workspace = self.completed_workspace("run-duplicate-slice-complete")
+        events_path = workspace / "events.yaml"
+        events = yaml.safe_load(events_path.read_text(encoding="utf-8"))
+        events["events"].append(
+            {
+                "timestamp": "2026-05-12T13:01:00Z",
+                "event_type": "slice_completed",
+                "feature_key": "auth/reset-password",
+                "slice": "S-001",
+                "attempt": 1,
+                "reason": "initial",
+            }
+        )
+        events_path.write_text(yaml.safe_dump(events, sort_keys=False), encoding="utf-8")
+
+        result = run([sys.executable, str(SCRIPT), "validate", "--workspace", str(workspace)], self.repo, check=False)
+
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("events.yaml duplicate completed slice event for S-001", result.stdout)
+
+    def test_validate_rejects_machine_event_fields_in_execution(self):
+        workspace = self.completed_workspace("run-machine-fields-in-execution")
         execution_path = workspace / "execution.md"
         execution = execution_path.read_text(encoding="utf-8")
         execution = execution.replace(
@@ -238,37 +259,28 @@ class FinishPromoteTests(unittest.TestCase):
         result = run([sys.executable, str(SCRIPT), "validate", "--workspace", str(workspace)], self.repo, check=False)
 
         self.assertNotEqual(result.returncode, 0)
-        self.assertIn("execution.md duplicate completed slice event for S-001", result.stdout)
-
-    def test_validate_rejects_unstructured_completed_slice_events(self):
-        workspace = self.completed_workspace("run-unstructured-slice-complete")
-        execution_path = workspace / "execution.md"
-        execution = execution_path.read_text(encoding="utf-8")
-        execution = execution.replace(
-            "event_type=slice_completed slice=S-001 attempt=1 reason=initial",
-            "completed slice S-001 with evidence",
-        )
-        execution_path.write_text(execution, encoding="utf-8")
-
-        result = run([sys.executable, str(SCRIPT), "validate", "--workspace", str(workspace)], self.repo, check=False)
-
-        self.assertNotEqual(result.returncode, 0)
-        self.assertIn("execution.md unstructured completed slice event for S-001; use event_type=slice_completed", result.stdout)
+        self.assertIn("execution.md contains machine event fields; use events.yaml", result.stdout)
 
     def test_validate_rejects_retry_without_attempt_or_reason(self):
         workspace = self.completed_workspace("run-retry-without-semantics")
-        execution_path = workspace / "execution.md"
-        execution = execution_path.read_text(encoding="utf-8")
-        execution = execution.replace(
-            "\n## History",
-            "\n- 2026-05-12T13:01:00Z completed slice S-001 with evidence retry\n\n## History",
+        events_path = workspace / "events.yaml"
+        events = yaml.safe_load(events_path.read_text(encoding="utf-8"))
+        events["events"].append(
+            {
+                "timestamp": "2026-05-12T13:01:00Z",
+                "event_type": "slice_retry_completed",
+                "feature_key": "auth/reset-password",
+                "slice": "S-001",
+                "supersedes": "attempt-1",
+            }
         )
-        execution_path.write_text(execution, encoding="utf-8")
+        events_path.write_text(yaml.safe_dump(events, sort_keys=False), encoding="utf-8")
 
         result = run([sys.executable, str(SCRIPT), "validate", "--workspace", str(workspace)], self.repo, check=False)
 
         self.assertNotEqual(result.returncode, 0)
-        self.assertIn("execution.md unstructured completed slice event for S-001; use event_type=slice_completed", result.stdout)
+        self.assertIn("events.yaml event 3 slice_retry_completed missing attempt", result.stdout)
+        self.assertIn("events.yaml event 3 slice_retry_completed missing reason", result.stdout)
 
     def test_promote_conflict_aborts_by_default(self):
         first = self.completed_workspace("run-promote-first")
@@ -301,8 +313,8 @@ class FinishPromoteTests(unittest.TestCase):
         self.assertEqual(source_feature["status"], "archived")
         self.assertEqual(source_state["lifecycle"], "archived")
         self.assertTrue(source_state["read_only"])
-        self.assertIn("event_type=incoming_variant_archived", archive_execution)
-        self.assertIn("canonical_path=.ai/features/auth/reset-password", archive_execution)
+        self.assertIn("Archived incoming variant for `.ai/features/auth/reset-password`", archive_execution)
+        self.assertNotIn("event_type=incoming_variant_archived", archive_execution)
 
     def completed_workspace(self, run_id="run-finish"):
         workspace = self.create_workspace(run_id)
