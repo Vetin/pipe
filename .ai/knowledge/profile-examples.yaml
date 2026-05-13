@@ -1,13 +1,15 @@
 artifact_contract_version: 0.1.0
 generated_by: featurectl.py promote canonical sync
-generated_at: '2026-05-13T05:50:51Z'
+generated_at: '2026-05-13T15:43:20Z'
 contract_examples:
 - .agents/pipeline-core/references/native-skill-protocol.md
 - .agents/pipeline-core/scripts/featurectl_core/events.py
+- .agents/pipeline-core/scripts/featurectl_core/validators/events.py
 - .agents/pipeline-core/scripts/schemas/.gitkeep
 - .agents/pipeline-core/scripts/schemas/benchmark.schema.json
 - .agents/pipeline-core/scripts/schemas/docset.schema.json
 - .agents/pipeline-core/scripts/schemas/evaluation-result.schema.json
+- .agents/pipeline-core/scripts/schemas/events.schema.json
 - .agents/pipeline-core/scripts/schemas/evidence.schema.json
 - .agents/pipeline-core/scripts/schemas/feature.schema.json
 - .agents/pipeline-core/scripts/schemas/index.schema.json
@@ -70,6 +72,10 @@ source_examples:
 - .agents/pipeline-core/scripts/featurectl_core/promotion.py
 - .agents/pipeline-core/scripts/featurectl_core/shared.py
 - .agents/pipeline-core/scripts/featurectl_core/validation.py
+- .agents/pipeline-core/scripts/featurectl_core/validators/__init__.py
+- .agents/pipeline-core/scripts/featurectl_core/validators/canonical_memory.py
+- .agents/pipeline-core/scripts/featurectl_core/validators/events.py
+- .agents/pipeline-core/scripts/featurectl_core/validators/execution_log.py
 - .agents/pipeline-core/scripts/pipelinebench.py
 - .agents/pipeline-core/scripts/pipelinebench_core/__init__.py
 - .agents/pipeline-core/scripts/pipelinebench_core/candidates.py

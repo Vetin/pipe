@@ -2,7 +2,7 @@ artifact_contract_version: 0.1.0
 feature_key: pipeline/raw-schema-and-execution-boundary-hardening
 run_id: 20260513-raw-schema-exec-boundary
 current_step: promote
-lifecycle: promoted-readonly
+lifecycle: canonical
 read_only: true
 worktree:
   branch: feature/pipeline-raw-schema-and-execution-boundary-hardening-20260513-raw-schema-exec-boundary

@@ -1,0 +1,3 @@
+py_compile featurectl_core and validators: pass
+......................................................         [100%]
+54 passed, 226 subtests passed in 21.95s

@@ -14,8 +14,11 @@ modules under `.agents/pipeline-core/scripts/featurectl_core/`:
 - `cli.py` owns argument parsing and command dispatch.
 - `workspace`, profile, and docset behavior lives in `profile.py` and
   `docsets.py`.
-- Gate, validation, evidence, event, and promotion behavior lives in
-  `validation.py`, `evidence.py`, `events.py`, and `promotion.py`.
+- Gate orchestration lives in `validation.py`; focused validators under
+  `featurectl_core/validators/` own canonical memory, event sidecar, and
+  execution-log checks.
+- Evidence, event, and promotion behavior lives in `evidence.py`, `events.py`,
+  and `promotion.py`.
 - YAML, Markdown, and shared process helpers live in `formatting.py` and
   `shared.py`.
 
@@ -68,6 +71,10 @@ New workspaces also include `events.yaml`. This sidecar mirrors parseable event
 records from the Markdown event log so validators and benchmarks can consume
 event history without scraping prose. `execution.md` remains the human-readable
 journal.
+
+`events.yaml` is the machine-readable event source of truth. `execution.md`
+summarizes the run for humans and should not be treated as the only parseable
+event source.
 
 ## Shared Knowledge Retrieval
 

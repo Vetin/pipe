@@ -1,0 +1,1 @@
+Reviewed events schema and validation. events.schema.json documents base and event-specific fields, and featurectl validation rejects malformed events.yaml records with blocker messages.

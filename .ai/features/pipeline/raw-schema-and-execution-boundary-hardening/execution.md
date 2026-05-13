@@ -121,6 +121,7 @@ None yet.
 - 2026-05-13T15:41:18Z event_type=gate_status_changed gate=review old_status=pending new_status=complete by=codex note=final-quality-review-passed
 - 2026-05-13T15:41:18Z event_type=gate_status_changed gate=verification old_status=pending new_status=complete by=codex note=full-feature-pipeline-suite-passed
 - 2026-05-13T15:41:18Z event_type=gate_status_changed gate=finish old_status=pending new_status=complete by=codex note=feature-card-and-shared-knowledge-ready
+- 2026-05-13T15:43:20Z event_type=feature_promoted canonical_path=.ai/features/pipeline/raw-schema-and-execution-boundary-hardening
 
 ## History
 

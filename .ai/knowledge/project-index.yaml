@@ -1,23 +1,23 @@
 artifact_contract_version: 0.1.0
 generated_by: featurectl.py promote canonical sync
-generated_at: '2026-05-13T05:50:51Z'
+generated_at: '2026-05-13T15:43:20Z'
 project:
   name: pipe
   root: .
   remote: git@github.com:Vetin/pipe.git
 counts:
-  tracked_files: 2027
-  profiled_files: 206
-  source_files: 21
+  tracked_files: 2134
+  profiled_files: 211
+  source_files: 25
   test_files: 37
   doc_files: 92
-  contract_files: 21
+  contract_files: 23
   integration_files: 3
 package_manifests: []
 scripts: []
 module_dirs:
 - path: .agents
-  tracked_files: 95
+  tracked_files: 100
 - path: .ai
   tracked_files: 60
 - path: tests
@@ -41,6 +41,8 @@ canonical_features:
   path: .ai/features/pipeline/public-raw-artifact-guardrails
 - feature_key: pipeline/random-feature-stress-lab
   path: .ai/features/pipeline/random-feature-stress-lab
+- feature_key: pipeline/raw-schema-and-execution-boundary-hardening
+  path: .ai/features/pipeline/raw-schema-and-execution-boundary-hardening
 - feature_key: pipeline/real-codex-showcase-debug-runner
   path: .ai/features/pipeline/real-codex-showcase-debug-runner
 - feature_key: pipeline/source-truth-hardening

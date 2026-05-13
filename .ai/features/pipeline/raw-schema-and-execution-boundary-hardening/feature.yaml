@@ -3,7 +3,7 @@ feature_key: pipeline/raw-schema-and-execution-boundary-hardening
 domain: pipeline
 slug: raw-schema-and-execution-boundary-hardening
 title: Raw Schema And Execution Boundary Hardening
-status: promoted-readonly
+status: complete
 run_id: 20260513-raw-schema-exec-boundary
 branch: feature/pipeline-raw-schema-and-execution-boundary-hardening-20260513-raw-schema-exec-boundary
 worktree: ../worktrees/pipeline-raw-schema-and-execution-boundary-hardening-20260513-raw-schema-exec-boundary
@@ -14,4 +14,4 @@ keywords:
 - pipeline
 - raw-schema-and-execution-boundary-hardening
 created_at: '2026-05-13T15:15:40Z'
-updated_at: '2026-05-13T15:43:20Z'
+updated_at: '2026-05-13T15:15:40Z'

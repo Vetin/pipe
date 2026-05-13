@@ -1,0 +1,95 @@
+......F...................F..............F...........           [100%]
+=================================== FAILURES ===================================
+__ FeatureCtlCoreTests.test_new_creates_worktree_workspace_and_core_artifacts __
+
+self = <test_featurectl_core.FeatureCtlCoreTests testMethod=test_new_creates_worktree_workspace_and_core_artifacts>
+
+    def test_new_creates_worktree_workspace_and_core_artifacts(self):
+        result = self.new_feature("run-20260511-test")
+    
+        workspace = self.workspace("run-20260511-test")
+        self.assertIn("feature_key: auth/reset-password", result.stdout)
+        self.assertTrue((self.tempdir / "worktrees/auth-reset-password-run-20260511-test").is_dir())
+        self.assertTrue(workspace.is_dir())
+        self.assertTrue((workspace / "apex.md").exists())
+        self.assertTrue((workspace / "feature.yaml").exists())
+        self.assertTrue((workspace / "state.yaml").exists())
+        self.assertTrue((workspace / "execution.md").exists())
+        self.assertFalse(list(workspace.rglob("approvals.yaml")))
+        self.assertFalse(list(workspace.rglob("handoff.md")))
+    
+        feature = yaml.safe_load((workspace / "feature.yaml").read_text(encoding="utf-8"))
+        state = yaml.safe_load((workspace / "state.yaml").read_text(encoding="utf-8"))
+        apex = (workspace / "apex.md").read_text(encoding="utf-8")
+        execution = (workspace / "execution.md").read_text(encoding="utf-8")
+        events = yaml.safe_load((workspace / "events.yaml").read_text(encoding="utf-8"))
+        self.assertEqual(feature["artifact_contract_version"], "0.1.0")
+        self.assertEqual(feature["feature_key"], "auth/reset-password")
+        self.assertEqual(feature["domain"], "auth")
+        self.assertEqual(feature["slug"], "reset-password")
+        self.assertEqual(feature["title"], "Reset Password")
+        self.assertEqual(feature["status"], "draft")
+        self.assertEqual(feature["branch"], "feature/auth-reset-password-run-20260511-test")
+        self.assertEqual(feature["canonical_path"], ".ai/features/auth/reset-password")
+        self.assertEqual(feature["workspace_path"], ".ai/feature-workspaces/auth/reset-password--run-20260511-test")
+        self.assertEqual(state["current_step"], "context")
+        self.assertNotIn("next_skill", state)
+        self.assertEqual(state["gates"]["implementation"], "blocked")
+>       self.assertIn("`events.yaml` - machine-readable execution events", apex)
+E       AssertionError: '`events.yaml` - machine-readable execution events' not found in '# Apex: auth/reset-password\n\n## Read Order\n\n1. `feature.yaml` - identity and paths\n2. `state.yaml` - machine state\n3. `execution.md` - run plan, approvals, docs consulted, next step\n4. `feature.md` - product contract\n5. `architecture.md` - system design\n6. `tech-design.md` - implementation design\n7. `slices.yaml` - TDD execution plan\n8. `evidence/manifest.yaml` - evidence index\n9. `reviews/` - review results\n\n## Main Artifacts\n\n- Feature contract: `feature.md`\n- Architecture: `architecture.md`\n- Technical design: `tech-design.md`\n- Implementation plan: `slices.yaml`\n- ADRs: `adrs/`\n- Contracts: `contracts/`\n- Evidence: `evidence/`\n- Reviews: `reviews/`\n- Execution log: `execution.md`\n\n## Current Status\n\nSee `state.yaml`.\n\n## Next Action\n\nSee `execution.md`.\n'
+
+tests/feature_pipeline/test_featurectl_core.py:255: AssertionError
+____ FinishPromoteTests.test_promote_copies_workspace_and_regenerates_index ____
+
+self = <test_finish_promote.FinishPromoteTests testMethod=test_promote_copies_workspace_and_regenerates_index>
+
+    def test_promote_copies_workspace_and_regenerates_index(self):
+        workspace = self.completed_workspace("run-promote")
+    
+        result = run([sys.executable, str(SCRIPT), "promote", "--workspace", str(workspace)], self.repo)
+    
+        canonical = self.repo / ".ai/features/auth/reset-password"
+        index = yaml.safe_load((self.repo / ".ai/features/index.yaml").read_text(encoding="utf-8"))
+        overview = (self.repo / ".ai/features/overview.md").read_text(encoding="utf-8")
+        self.assertIn("promotion: complete", result.stdout)
+        self.assertTrue((canonical / "feature-card.md").exists())
+        self.assertEqual(index["features"][0]["feature_key"], "auth/reset-password")
+        self.assertEqual(index["features"][0]["path"], ".ai/features/auth/reset-password")
+        self.assertIn("auth/reset-password", overview)
+        self.assertEqual(yaml.safe_load((canonical / "feature.yaml").read_text(encoding="utf-8"))["status"], "complete")
+        knowledge_features = (self.repo / ".ai/knowledge/features-overview.md").read_text(encoding="utf-8")
+        project_index = yaml.safe_load((self.repo / ".ai/knowledge/project-index.yaml").read_text(encoding="utf-8"))
+        self.assertIn("auth/reset-password", knowledge_features)
+        self.assertIn("auth/reset-password", {item["feature_key"] for item in project_index["canonical_features"]})
+        source_feature = yaml.safe_load((workspace / "feature.yaml").read_text(encoding="utf-8"))
+        source_state = yaml.safe_load((workspace / "state.yaml").read_text(encoding="utf-8"))
+        canonical_state = yaml.safe_load((canonical / "state.yaml").read_text(encoding="utf-8"))
+        canonical_execution = (canonical / "execution.md").read_text(encoding="utf-8")
+        self.assertEqual(source_feature["status"], "promoted-readonly")
+        self.assertEqual(source_state["lifecycle"], "promoted-readonly")
+        self.assertTrue(source_state["read_only"])
+>       self.assertEqual(source_state["gates"]["implementation"], "complete")
+E       AssertionError: 'blocked' != 'complete'
+E       - blocked
+E       + complete
+
+tests/feature_pipeline/test_finish_promote.py:103: AssertionError
+_ ArtifactFormattingTests.test_core_modularity_canonical_artifacts_capture_event_boundary _
+
+self = <test_artifact_formatting.ArtifactFormattingTests testMethod=test_core_modularity_canonical_artifacts_capture_event_boundary>
+
+    def test_core_modularity_canonical_artifacts_capture_event_boundary(self):
+        feature_dir = ROOT / ".ai/features/pipeline/core-modularity-and-readable-events"
+        apex = (feature_dir / "apex.md").read_text(encoding="utf-8")
+        state = yaml.safe_load((feature_dir / "state.yaml").read_text(encoding="utf-8"))
+        execution = (feature_dir / "execution.md").read_text(encoding="utf-8")
+    
+>       self.assertIn("`events.yaml` - machine-readable execution events", apex)
+E       AssertionError: '`events.yaml` - machine-readable execution events' not found in '# Apex: pipeline/core-modularity-and-readable-events\n\n## Read Order\n\n1. `feature.yaml` - identity and paths\n2. `state.yaml` - machine state\n3. `execution.md` - run plan, approvals, docs consulted, next step\n4. `feature.md` - product contract\n5. `architecture.md` - system design\n6. `tech-design.md` - implementation design\n7. `slices.yaml` - TDD execution plan\n8. `evidence/manifest.yaml` - evidence index\n9. `reviews/` - review results\n\n## Main Artifacts\n\n- Feature contract: `feature.md`\n- Architecture: `architecture.md`\n- Technical design: `tech-design.md`\n- Implementation plan: `slices.yaml`\n- ADRs: `adrs/`\n- Contracts: `contracts/`\n- Evidence: `evidence/`\n- Reviews: `reviews/`\n- Execution log: `execution.md`\n\n## Current Status\n\nSee `state.yaml`.\n\n## Next Action\n\nSee `execution.md`.\n'
+
+tests/feature_pipeline/test_artifact_formatting.py:343: AssertionError
+=========================== short test summary info ============================
+FAILED tests/feature_pipeline/test_featurectl_core.py::FeatureCtlCoreTests::test_new_creates_worktree_workspace_and_core_artifacts
+FAILED tests/feature_pipeline/test_finish_promote.py::FinishPromoteTests::test_promote_copies_workspace_and_regenerates_index
+FAILED tests/feature_pipeline/test_artifact_formatting.py::ArtifactFormattingTests::test_core_modularity_canonical_artifacts_capture_event_boundary
+3 failed, 50 passed, 225 subtests passed in 18.53s

@@ -1,0 +1,31 @@
+....F......... [100%]
+=================================== FAILURES ===================================
+_ ArtifactFormattingTests.test_formatting_helpers_raise_featurectl_error_and_preserve_unicode _
+
+self = <test_artifact_formatting.ArtifactFormattingTests testMethod=test_formatting_helpers_raise_featurectl_error_and_preserve_unicode>
+
+    def test_formatting_helpers_raise_featurectl_error_and_preserve_unicode(self):
+        sys.path.insert(0, str(ROOT / ".agents/pipeline-core/scripts"))
+        try:
+            formatting = import_module("featurectl_core.formatting")
+            shared = import_module("featurectl_core.shared")
+        finally:
+            sys.path.pop(0)
+    
+        missing = Path(self.tempdir.name) / "missing.yaml"
+        with self.assertRaises(shared.FeatureCtlError):
+>           formatting.read_yaml(missing)
+
+tests/feature_pipeline/test_artifact_formatting.py:244: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def read_yaml(path: Path) -> dict[str, Any]:
+        if not path.exists():
+>           raise FeatureCtlError(f"missing YAML file: {path}")
+                  ^^^^^^^^^^^^^^^
+E           NameError: name 'FeatureCtlError' is not defined
+
+.agents/pipeline-core/scripts/featurectl_core/formatting.py:15: NameError
+=========================== short test summary info ============================
+FAILED tests/feature_pipeline/test_artifact_formatting.py::ArtifactFormattingTests::test_formatting_helpers_raise_featurectl_error_and_preserve_unicode
+1 failed, 13 passed, 225 subtests passed in 1.52s

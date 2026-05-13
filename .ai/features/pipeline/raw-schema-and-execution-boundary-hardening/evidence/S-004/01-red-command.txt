@@ -1,0 +1,1 @@
+python -m pytest tests/feature_pipeline/test_artifact_formatting.py::ArtifactFormattingTests::test_core_implementations_are_split_by_responsibility -q

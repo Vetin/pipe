@@ -13,8 +13,10 @@ Last reviewed: 2026-05-13
   command dispatch for the feature control plane.
 - `.agents/pipeline-core/scripts/featurectl_core/profile.py`: init tree,
   project profile, knowledge rendering, and initial workspace prose.
-- `.agents/pipeline-core/scripts/featurectl_core/validation.py`: workspace,
-  lifecycle, source-truth, and artifact gate validation.
+- `.agents/pipeline-core/scripts/featurectl_core/validation.py`: workspace and
+  artifact gate validation orchestration.
+- `.agents/pipeline-core/scripts/featurectl_core/validators/`: focused
+  canonical memory, execution-log, and event sidecar validators.
 - `.agents/pipeline-core/scripts/featurectl_core/evidence.py`: evidence
   manifest, red/green order, slice completion, and retry metadata.
 - `.agents/pipeline-core/scripts/featurectl_core/events.py`: Markdown event

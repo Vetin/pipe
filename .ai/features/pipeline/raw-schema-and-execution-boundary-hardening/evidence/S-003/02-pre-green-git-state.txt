@@ -1,0 +1,13 @@
+## feature/pipeline-raw-schema-and-execution-boundary-hardening-20260513-raw-schema-exec-boundary
+ M .agents/pipeline-core/scripts/featurectl_core/cli.py
+ M .agents/pipeline-core/scripts/featurectl_core/profile.py
+ M .agents/pipeline-core/scripts/featurectl_core/promotion.py
+ M .ai/feature-workspaces/pipeline/raw-schema-and-execution-boundary-hardening--20260513-raw-schema-exec-boundary/apex.md
+ M .ai/feature-workspaces/pipeline/raw-schema-and-execution-boundary-hardening--20260513-raw-schema-exec-boundary/evidence/manifest.yaml
+ M .ai/features/pipeline/core-modularity-and-readable-events/apex.md
+ M .ai/features/pipeline/core-modularity-and-readable-events/execution.md
+ M .ai/features/pipeline/core-modularity-and-readable-events/state.yaml
+ M tests/feature_pipeline/test_artifact_formatting.py
+ M tests/feature_pipeline/test_featurectl_core.py
+ M tests/feature_pipeline/test_finish_promote.py
+?? .ai/feature-workspaces/pipeline/raw-schema-and-execution-boundary-hardening--20260513-raw-schema-exec-boundary/evidence/S-003/

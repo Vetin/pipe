@@ -1,7 +1,7 @@
 # Feature Overview
 
 Status: generated
-Generated at: 2026-05-13T05:50:50Z
+Generated at: 2026-05-13T15:43:20Z
 
 ## Canonical Features
 
@@ -13,5 +13,6 @@ Generated at: 2026-05-13T05:50:50Z
 - `pipeline/portable-artifact-consistency` (complete) from `.ai/features/pipeline/portable-artifact-consistency`; run `20260512-portable-consistency`
 - `pipeline/public-raw-artifact-guardrails` (complete) from `.ai/features/pipeline/public-raw-artifact-guardrails`; run `20260512-public-raw-guardrails`
 - `pipeline/random-feature-stress-lab` (complete) from `.ai/features/pipeline/random-feature-stress-lab`; run `run-20260512-stress`
+- `pipeline/raw-schema-and-execution-boundary-hardening` (complete) from `.ai/features/pipeline/raw-schema-and-execution-boundary-hardening`; run `20260513-raw-schema-exec-boundary`
 - `pipeline/real-codex-showcase-debug-runner` (complete) from `.ai/features/pipeline/real-codex-showcase-debug-runner`; run `run-20260512-codex-debug`
 - `pipeline/source-truth-hardening` (complete) from `.ai/features/pipeline/source-truth-hardening`; run `20260512-source-truth`

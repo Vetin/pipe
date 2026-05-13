@@ -28,3 +28,7 @@ Last reviewed: 2026-05-13
   - Decision: CLI wrappers stay stable while control-plane internals move into
     focused modules, and new workspaces maintain a parseable `events.yaml`
     sidecar beside human-readable `execution.md`.
+- ADR-006 Events Schema And Execution Boundary
+  - Source: `.ai/features/pipeline/raw-schema-and-execution-boundary-hardening/adrs/ADR-006-events-schema-and-execution-boundary.md`
+  - Decision: `events.yaml` is the machine-readable event source of truth;
+    `execution.md` is the human-readable journal.
