@@ -1,0 +1,1 @@
+Reviewed formatting helper fix. read_yaml now raises FeatureCtlError for expected YAML failures, write_yaml preserves Unicode, and raw-byte guardrails assert physical multiline files from disk.

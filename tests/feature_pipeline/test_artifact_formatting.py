@@ -3,6 +3,7 @@ import sys
 import tempfile
 import unittest
 import py_compile
+from importlib import import_module
 from pathlib import Path
 
 import yaml
@@ -211,6 +212,47 @@ class ArtifactFormattingTests(unittest.TestCase):
                 self.assertIn("raise SystemExit(main())", content)
         self.assertTrue((ROOT / ".agents/pipeline-core/scripts/featurectl_core/cli.py").exists())
         self.assertTrue((ROOT / ".agents/pipeline-core/scripts/pipelinebench_core/cli.py").exists())
+
+    def test_public_raw_guarded_files_are_physical_multiline_bytes(self):
+        paths = [
+            ROOT / ".agents/pipeline-core/scripts/featurectl.py",
+            ROOT / ".agents/pipeline-core/scripts/pipelinebench.py",
+            ROOT / ".gitignore",
+            ROOT / ".ai/features/index.yaml",
+            ROOT / ".ai/features/pipeline/core-modularity-and-readable-events/events.yaml",
+        ]
+        for path in paths:
+            with self.subTest(path=path.relative_to(ROOT).as_posix()):
+                raw = path.read_bytes()
+                self.assertGreater(raw.count(b"\n"), 4)
+                self.assertNotIn(b"#!/usr/bin/env python3 \"\"\"", raw.splitlines()[0])
+        featurectl_first_line = (ROOT / ".agents/pipeline-core/scripts/featurectl.py").read_text(
+            encoding="utf-8"
+        ).splitlines()[0]
+        self.assertEqual(featurectl_first_line, "#!/usr/bin/env python3")
+
+    def test_formatting_helpers_raise_featurectl_error_and_preserve_unicode(self):
+        sys.path.insert(0, str(ROOT / ".agents/pipeline-core/scripts"))
+        try:
+            formatting = import_module("featurectl_core.formatting")
+            shared = import_module("featurectl_core.shared")
+        finally:
+            sys.path.pop(0)
+
+        missing = Path(self.tempdir.name) / "missing.yaml"
+        with self.assertRaises(shared.FeatureCtlError):
+            formatting.read_yaml(missing)
+
+        non_mapping = Path(self.tempdir.name) / "list.yaml"
+        non_mapping.write_text("- item\n", encoding="utf-8")
+        with self.assertRaises(shared.FeatureCtlError):
+            formatting.read_yaml(non_mapping)
+
+        unicode_yaml = Path(self.tempdir.name) / "unicode.yaml"
+        formatting.write_yaml(unicode_yaml, {"title": "Привет мир"})
+        content = unicode_yaml.read_text(encoding="utf-8")
+        self.assertIn("Привет мир", content)
+        self.assertNotIn("\\u041f", content)
 
     def test_core_implementations_are_split_by_responsibility(self):
         featurectl_modules = {

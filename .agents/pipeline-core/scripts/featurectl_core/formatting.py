@@ -5,6 +5,8 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any
 
+from .shared import FeatureCtlError
+
 try:
     import yaml
 except ImportError as exc:  # pragma: no cover - exercised only on missing deps.
@@ -23,7 +25,7 @@ def read_yaml(path: Path) -> dict[str, Any]:
 def write_yaml(path: Path, data: dict[str, Any]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", encoding="utf-8") as handle:
-        yaml.safe_dump(data, handle, sort_keys=False, allow_unicode=False, default_flow_style=False, width=100)
+        yaml.safe_dump(data, handle, sort_keys=False, allow_unicode=True, default_flow_style=False, width=100)
 
 
 def write_text(path: Path, content: str) -> None:

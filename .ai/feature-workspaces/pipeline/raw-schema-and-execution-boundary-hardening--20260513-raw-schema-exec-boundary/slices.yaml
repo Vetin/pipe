@@ -31,8 +31,8 @@ slices:
   review_focus:
   - expected errors are FeatureCtlError
   - Unicode YAML stays readable
-  evidence_status: pending
-  status: pending
+  evidence_status: complete
+  status: complete
   iteration_budget: 3
   rollback_point: pre-slice git state
   independent_verification: py_compile and local raw-byte assertions
@@ -124,10 +124,13 @@ slices:
   - .ai/knowledge/
   test_strategy: Add tests for apex events.yaml and implementation gate complete.
   tdd_commands:
-    red: python -m pytest tests/feature_pipeline/test_featurectl_core.py tests/feature_pipeline/test_finish_promote.py -q
-    green: python -m pytest tests/feature_pipeline/test_featurectl_core.py tests/feature_pipeline/test_finish_promote.py -q
+    red: python -m pytest tests/feature_pipeline/test_featurectl_core.py tests/feature_pipeline/test_finish_promote.py
+      -q
+    green: python -m pytest tests/feature_pipeline/test_featurectl_core.py tests/feature_pipeline/test_finish_promote.py
+      -q
   verification_commands:
-  - python -m pytest tests/feature_pipeline/test_featurectl_core.py tests/feature_pipeline/test_finish_promote.py -q
+  - python -m pytest tests/feature_pipeline/test_featurectl_core.py tests/feature_pipeline/test_finish_promote.py
+    -q
   review_focus:
   - events.yaml is machine source of truth
   - execution.md remains readable narrative
@@ -145,6 +148,8 @@ slices:
   scope_confidence: high
   tdd:
     failing_test_file: tests/feature_pipeline/test_featurectl_core.py
-    red_command: python -m pytest tests/feature_pipeline/test_featurectl_core.py tests/feature_pipeline/test_finish_promote.py -q
+    red_command: python -m pytest tests/feature_pipeline/test_featurectl_core.py tests/feature_pipeline/test_finish_promote.py
+      -q
     expected_failure: apex and implementation gate lifecycle not normalized
-    green_command: python -m pytest tests/feature_pipeline/test_featurectl_core.py tests/feature_pipeline/test_finish_promote.py -q
+    green_command: python -m pytest tests/feature_pipeline/test_featurectl_core.py tests/feature_pipeline/test_finish_promote.py
+      -q

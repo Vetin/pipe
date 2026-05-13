@@ -1,0 +1,25 @@
+artifact_contract_version: 0.1.0
+feature_key: pipeline/raw-schema-and-execution-boundary-hardening
+completion_identity_policy:
+  diff_hash: hexadecimal git diff or commit-derived hash when available
+  change_label: semantic completion label when a real diff hash is unavailable
+slices:
+  S-001:
+    red:
+      timestamp: '2026-05-13T15:19:46Z'
+      command_file: S-001/01-red-command.txt
+      output_file: S-001/01-red-output.log
+      git_state_file: S-001/00-pre-red-git-state.txt
+    green:
+      timestamp: '2026-05-13T15:19:47Z'
+      command_file: S-001/03-green-command.txt
+      output_file: S-001/03-green-output.log
+      git_state_file: S-001/02-pre-green-git-state.txt
+    verification:
+      timestamp: '2026-05-13T15:19:46Z'
+      command_file: S-001/04-verification-command.txt
+      output_file: S-001/04-verification-output.log
+    review:
+      timestamp: '2026-05-13T15:19:46Z'
+      summary_file: S-001/05-review-summary.md
+    diff_hash: d653e4d89fee10c9559854a050bcf9f3b0e9f8f073aafbf406425deb5f571789
