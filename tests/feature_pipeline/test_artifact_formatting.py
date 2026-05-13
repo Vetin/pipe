@@ -334,6 +334,18 @@ class ArtifactFormattingTests(unittest.TestCase):
         ):
             self.assertIn(adr, adr_index)
 
+    def test_core_modularity_canonical_artifacts_capture_event_boundary(self):
+        feature_dir = ROOT / ".ai/features/pipeline/core-modularity-and-readable-events"
+        apex = (feature_dir / "apex.md").read_text(encoding="utf-8")
+        state = yaml.safe_load((feature_dir / "state.yaml").read_text(encoding="utf-8"))
+        execution = (feature_dir / "execution.md").read_text(encoding="utf-8")
+
+        self.assertIn("`events.yaml` - machine-readable execution events", apex)
+        self.assertLess(apex.index("events.yaml"), apex.index("evidence/manifest.yaml"))
+        self.assertEqual(state["gates"]["implementation"], "complete")
+        self.assertIn("events.yaml is the machine event source", execution)
+        self.assertIn("execution.md is the human-readable journal", execution)
+
 
 if __name__ == "__main__":
     unittest.main()

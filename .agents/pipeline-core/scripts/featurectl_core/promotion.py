@@ -94,6 +94,8 @@ def update_feature_status(
             state["lifecycle"] = lifecycle
         if read_only is not None:
             state["read_only"] = read_only
+        if current_step == "promote" and state.setdefault("gates", {}).get("finish") == "complete":
+            state["gates"]["implementation"] = "complete"
         state.setdefault("stale", {})["index"] = False
         if current_step == "promote":
             state.setdefault("stale", {})["canonical_docs"] = False

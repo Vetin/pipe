@@ -12,7 +12,7 @@ gates:
   architecture: approved
   tech_design: approved
   slicing_readiness: approved
-  implementation: approved
+  implementation: complete
   review: complete
   verification: complete
   finish: complete

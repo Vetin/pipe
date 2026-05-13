@@ -1,0 +1,1 @@
+Reviewed apex, promotion gate lifecycle, and canonical boundary backfill. New workspaces list events.yaml before evidence, promotion normalizes implementation to complete, and core-modularity canonical memory documents events.yaml as machine event source.

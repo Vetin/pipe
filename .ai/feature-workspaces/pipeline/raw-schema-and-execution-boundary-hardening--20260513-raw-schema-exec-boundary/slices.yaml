@@ -134,8 +134,8 @@ slices:
   review_focus:
   - events.yaml is machine source of truth
   - execution.md remains readable narrative
-  evidence_status: pending
-  status: pending
+  evidence_status: complete
+  status: complete
   iteration_budget: 3
   rollback_point: pre-slice git state
   independent_verification: inspect canonical apex/state/events

@@ -976,8 +976,9 @@ def render_apex(feature_key: str) -> str:
 5. `architecture.md` - system design
 6. `tech-design.md` - implementation design
 7. `slices.yaml` - TDD execution plan
-8. `evidence/manifest.yaml` - evidence index
-9. `reviews/` - review results
+8. `events.yaml` - machine-readable execution events
+9. `evidence/manifest.yaml` - evidence index
+10. `reviews/` - review results
 
 ## Main Artifacts
 
@@ -990,6 +991,7 @@ def render_apex(feature_key: str) -> str:
 - Evidence: `evidence/`
 - Reviews: `reviews/`
 - Execution log: `execution.md`
+- Machine events: `events.yaml`
 
 ## Current Status
 

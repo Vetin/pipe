@@ -237,6 +237,7 @@ class FeatureCtlCoreTests(unittest.TestCase):
 
         feature = yaml.safe_load((workspace / "feature.yaml").read_text(encoding="utf-8"))
         state = yaml.safe_load((workspace / "state.yaml").read_text(encoding="utf-8"))
+        apex = (workspace / "apex.md").read_text(encoding="utf-8")
         execution = (workspace / "execution.md").read_text(encoding="utf-8")
         events = yaml.safe_load((workspace / "events.yaml").read_text(encoding="utf-8"))
         self.assertEqual(feature["artifact_contract_version"], "0.1.0")
@@ -251,6 +252,8 @@ class FeatureCtlCoreTests(unittest.TestCase):
         self.assertEqual(state["current_step"], "context")
         self.assertNotIn("next_skill", state)
         self.assertEqual(state["gates"]["implementation"], "blocked")
+        self.assertIn("`events.yaml` - machine-readable execution events", apex)
+        self.assertLess(apex.index("events.yaml"), apex.index("evidence/manifest.yaml"))
         self.assertIn("## Current Run State", execution)
         self.assertIn("## Event Log", execution)
         self.assertIn("## History", execution)

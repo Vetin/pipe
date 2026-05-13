@@ -534,6 +534,7 @@ def cmd_promote(args: argparse.Namespace) -> None:
     promoted_state["lifecycle"] = "canonical"
     promoted_state["read_only"] = True
     promoted_state.setdefault("gates", {})["finish"] = "complete"
+    promoted_state.setdefault("gates", {})["implementation"] = "complete"
     promoted_state.setdefault("stale", {})["canonical_docs"] = False
     promoted_state.setdefault("stale", {})["index"] = False
     write_yaml(promoted_state_path, promoted_state)

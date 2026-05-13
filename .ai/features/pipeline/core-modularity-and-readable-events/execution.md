@@ -136,6 +136,10 @@ None yet.
   - Decision or pattern reused: separate featurectl, pipelinebench, context, and
     readability changes into explicit slices.
   - Confidence: high.
+## Event Boundary
+
+events.yaml is the machine event source. execution.md is the human-readable journal.
+Validators and benchmark tooling should prefer events.yaml for structured events and use this file for narrative context.
 
 ## Event Log
 
