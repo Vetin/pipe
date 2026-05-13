@@ -128,6 +128,37 @@ class ArtifactFormattingTests(unittest.TestCase):
                 ]
                 self.assertEqual(long_lines, [])
 
+    def test_source_controlled_yaml_avoids_repeated_blank_lines(self):
+        paths = [
+            ROOT / ".ai/features/index.yaml",
+            ROOT / ".ai/knowledge/project-index.yaml",
+            ROOT / ".ai/knowledge/profile-examples.yaml",
+            *sorted((ROOT / ".ai/features").glob("*/*/feature.yaml")),
+            *sorted((ROOT / ".ai/features").glob("*/*/state.yaml")),
+            *sorted((ROOT / ".ai/features").glob("*/*/events.yaml")),
+            *sorted((ROOT / ".ai/features").glob("*/*/evidence/manifest.yaml")),
+        ]
+        self.assertTrue(paths)
+        for path in paths:
+            with self.subTest(path=path.relative_to(ROOT).as_posix()):
+                content = path.read_text(encoding="utf-8")
+                self.assertNotIn("\n\n\n", content)
+                self.assertNotRegex(content, r"(?m)^[ \t]+$")
+
+    def test_pipeline_guardrail_workflow_keeps_public_raw_checks_permanent(self):
+        workflow = ROOT / ".github/workflows/pipeline-guardrails.yml"
+        self.assertTrue(workflow.exists())
+        content = workflow.read_text(encoding="utf-8")
+
+        for expected in (
+            "python .agents/pipeline-core/scripts/featurectl.py --help",
+            "python .agents/pipeline-core/scripts/pipelinebench.py --help",
+            "python -m compileall .agents/pipeline-core/scripts",
+            "python .agents/pipeline-core/scripts/pipelinebench.py check-public-raw",
+            "tests/feature_pipeline/test_artifact_formatting.py",
+        ):
+            self.assertIn(expected, content)
+
     def test_curated_markdown_uses_reviewable_line_lengths(self):
         paths = [
             *sorted((ROOT / ".ai/knowledge").glob("*.md")),
