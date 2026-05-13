@@ -58,3 +58,9 @@ events:
   attempt: 1
   reason: initial
   feature_key: pipeline/guardrail-polish-and-backlog-tracking
+- timestamp: '2026-05-13T18:54:38Z'
+  event_type: slice_completed
+  slice: S-003
+  attempt: 1
+  reason: initial
+  feature_key: pipeline/guardrail-polish-and-backlog-tracking

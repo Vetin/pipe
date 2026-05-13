@@ -171,21 +171,23 @@ def summarize_event_record(event: dict[str, Any] | None) -> str:
     if event_type == "run_initialized":
         return f"- Initialized the run; next step `{event.get('next')}`."
     if event_type == "gate_status_changed":
-        return (
-            f"- Gate `{event.get('gate')}` changed from `{event.get('old_status')}` "
-            f"to `{event.get('new_status')}` by `{event.get('by')}`; note: {event.get('note')}."
-        )
+        status = str(event.get("new_status") or "updated")
+        verb = {
+            "approved": "Approved",
+            "complete": "Completed",
+            "delegated": "Delegated",
+            "drafted": "Drafted",
+            "blocked": "Blocked",
+            "reopened": "Reopened",
+            "stale": "Marked stale",
+        }.get(status, "Updated")
+        return f"- {verb} `{event.get('gate')}` gate."
     if event_type == "artifact_marked_stale":
-        marked = event.get("marked_stale") or []
-        affected = ", ".join(str(item) for item in marked) if isinstance(marked, list) else str(marked)
-        return f"- Marked `{event.get('artifact')}` stale; affected: {affected}; reason: {event.get('reason')}."
+        return f"- Marked `{event.get('artifact')}` stale."
     if event_type == "slice_completed":
-        return f"- Completed slice `{event.get('slice')}` attempt {event.get('attempt')}; reason: {event.get('reason')}."
+        return f"- Completed slice `{event.get('slice')}`."
     if event_type == "slice_retry_completed":
-        return (
-            f"- Completed retry for slice `{event.get('slice')}` attempt {event.get('attempt')}; "
-            f"reason: {event.get('reason')}; supersedes {event.get('supersedes')}."
-        )
+        return f"- Completed retry for slice `{event.get('slice')}`."
     if event_type == "feature_promoted":
         return f"- Promoted feature memory to `{event.get('canonical_path')}`."
     if event_type == "incoming_variant_archived":
@@ -213,10 +215,12 @@ def append_run_plan_update(
     if not path.exists():
         return
     execution = path.read_text(encoding="utf-8")
-    update = (
-        f"- Implementation became allowed after `implementation` changed from "
-        f"`{old_status}` to `{new_status}`; reason: {format_event_value(reason or 'none')}."
-    )
+    if new_status in {"approved", "delegated"}:
+        update = "- Implementation became allowed after planning gates were approved."
+    elif new_status == "complete":
+        update = "- Implementation completed after all slices finished."
+    else:
+        update = f"- Implementation status changed to `{new_status}`."
     if update in execution:
         return
     if "## Run Plan Updates" not in execution:
