@@ -1,0 +1,1 @@
+Reviewed pipelinebench public raw check. Tests use file-backed fixtures; manual verification checked current GitHub raw line counts for wrappers, .gitignore, index.yaml, and events.yaml.

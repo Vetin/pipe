@@ -8,6 +8,7 @@ import sys
 
 from .commands import (
     cmd_add_regression,
+    cmd_check_public_raw,
     cmd_compare_runs,
     cmd_generate_report,
     cmd_init_lab,
@@ -49,6 +50,12 @@ def main(argv: list[str] | None = None) -> int:
     regression_parser.add_argument("--name", required=True)
     regression_parser.add_argument("--note", required=True)
     regression_parser.set_defaults(func=cmd_add_regression)
+
+    raw_parser = subparsers.add_parser("check-public-raw", help="verify public raw artifact line counts")
+    raw_parser.add_argument("--base-url", default="https://raw.githubusercontent.com/Vetin/pipe/main")
+    raw_parser.add_argument("--path", action="append")
+    raw_parser.add_argument("--min-lines", type=int, default=5)
+    raw_parser.set_defaults(func=cmd_check_public_raw)
 
     showcase_parser = subparsers.add_parser("run-showcases", help="score 10 showcase scenarios side by side")
     showcase_parser.add_argument("--output-dir", required=True)

@@ -189,6 +189,60 @@ class PipelineBenchTests(unittest.TestCase):
         self.assertIn("report:", result.stdout)
         self.assertIn("Pipeline Benchmark Report", report.read_text(encoding="utf-8"))
 
+    def test_check_public_raw_accepts_file_backed_fixture(self):
+        raw_root = self.tempdir / "raw"
+        guarded = raw_root / ".agents/pipeline-core/scripts/featurectl.py"
+        guarded.parent.mkdir(parents=True)
+        guarded.write_text("#!/usr/bin/env python3\n\n\"\"\"Wrapper.\"\"\"\n\nprint('ok')\n", encoding="utf-8")
+        index = raw_root / ".ai/features/index.yaml"
+        index.parent.mkdir(parents=True)
+        index.write_text("artifact_contract_version: 0.1.0\nfeatures:\n- feature_key: a/b\n  status: complete\n", encoding="utf-8")
+
+        result = run(
+            [
+                sys.executable,
+                str(BENCH),
+                "check-public-raw",
+                "--base-url",
+                raw_root.as_uri(),
+                "--path",
+                ".agents/pipeline-core/scripts/featurectl.py",
+                "--path",
+                ".ai/features/index.yaml",
+                "--min-lines",
+                "3",
+            ],
+            self.repo,
+        )
+
+        self.assertIn("raw_check: pass", result.stdout)
+        self.assertIn(".agents/pipeline-core/scripts/featurectl.py: 5 lines", result.stdout)
+
+    def test_check_public_raw_fails_on_collapsed_file(self):
+        raw_root = self.tempdir / "raw-collapsed"
+        guarded = raw_root / ".gitignore"
+        guarded.parent.mkdir(parents=True)
+        guarded.write_text("pipeline-lab/runs/ worktrees/\n", encoding="utf-8")
+
+        result = run(
+            [
+                sys.executable,
+                str(BENCH),
+                "check-public-raw",
+                "--base-url",
+                raw_root.as_uri(),
+                "--path",
+                ".gitignore",
+                "--min-lines",
+                "3",
+            ],
+            self.repo,
+            check=False,
+        )
+
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn(".gitignore has 1 lines; expected at least 3", result.stderr)
+
     def test_candidate_skill_isolation_paths_exist_and_do_not_use_skill_md(self):
         quarantine = ROOT / ".agents/skill-lab/quarantine"
         self.assertTrue(quarantine.is_dir())

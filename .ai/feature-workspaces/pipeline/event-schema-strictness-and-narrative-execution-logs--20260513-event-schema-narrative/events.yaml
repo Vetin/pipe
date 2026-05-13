@@ -58,3 +58,9 @@ events:
   attempt: 1
   reason: initial
   feature_key: pipeline/event-schema-strictness-and-narrative-execution-logs
+- timestamp: '2026-05-13T16:48:28Z'
+  event_type: slice_completed
+  slice: S-003
+  attempt: 1
+  reason: initial
+  feature_key: pipeline/event-schema-strictness-and-narrative-execution-logs

@@ -1,0 +1,1 @@
+python .agents/pipeline-core/scripts/pipelinebench.py check-public-raw --min-lines 5 && python -m py_compile .agents/pipeline-core/scripts/pipelinebench_core/*.py

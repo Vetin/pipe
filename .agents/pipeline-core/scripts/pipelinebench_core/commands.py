@@ -7,6 +7,7 @@ from pathlib import Path
 
 from .candidates import normalize_candidate_path, validate_candidate_path
 from .common import BenchError, CONTRACT_VERSION, normalize_score_path, read_yaml, repo_root, utc_now, write_yaml
+from .raw_checks import DEFAULT_RAW_BASE_URL, DEFAULT_RAW_PATHS, check_public_raw_paths
 from .report import format_soft_scores, markdown_table_cell
 from .scenarios import SCENARIOS, ensure_lab_initialized, scenario_doc, scorecard_doc
 from .score import parse_manual_soft_scores, score_workspace
@@ -98,6 +99,22 @@ def cmd_add_regression(args: argparse.Namespace) -> None:
     data.setdefault("regressions", []).append({"name": args.name, "note": args.note, "created_at": utc_now()})
     write_yaml(path, data)
     print(f"regression_added: {args.name}")
+
+
+def cmd_check_public_raw(args: argparse.Namespace) -> None:
+    paths = args.path or DEFAULT_RAW_PATHS
+    results = check_public_raw_paths(args.base_url, paths, args.min_lines)
+    failures = [result for result in results if not result.passed]
+    for result in results:
+        print(f"{result.path}: {result.line_count} lines")
+    if failures:
+        failure_text = "; ".join(
+            f"{result.path} has {result.line_count} lines; expected at least {args.min_lines}"
+            for result in failures
+        )
+        raise BenchError(failure_text)
+    print("raw_check: pass")
+
 
 def cmd_run_showcases(args: argparse.Namespace) -> None:
     if args.iterations < 10:
