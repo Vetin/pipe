@@ -65,11 +65,16 @@ class GatesAndEvidenceTests(unittest.TestCase):
 
         state = yaml.safe_load((workspace / "state.yaml").read_text(encoding="utf-8"))
         execution = (workspace / "execution.md").read_text(encoding="utf-8")
+        events = yaml.safe_load((workspace / "events.yaml").read_text(encoding="utf-8"))
         self.assertIn("status: approved", result.stdout)
         self.assertEqual(state["gates"]["feature_contract"], "approved")
         self.assertEqual(state["gates"]["architecture"], "pending")
         self.assertIn("event_type=gate_status_changed", execution)
         self.assertIn("gate=feature_contract old_status=pending new_status=approved by=user", execution)
+        self.assertEqual(events["events"][-1]["event_type"], "gate_status_changed")
+        self.assertEqual(events["events"][-1]["gate"], "feature_contract")
+        self.assertEqual(events["events"][-1]["old_status"], "pending")
+        self.assertEqual(events["events"][-1]["new_status"], "approved")
         self.assertFalse(list(workspace.rglob("approvals.yaml")))
         self.assertFalse(list(workspace.rglob("handoff.md")))
 
@@ -93,6 +98,7 @@ class GatesAndEvidenceTests(unittest.TestCase):
 
         state = yaml.safe_load((workspace / "state.yaml").read_text(encoding="utf-8"))
         execution = (workspace / "execution.md").read_text(encoding="utf-8")
+        events = yaml.safe_load((workspace / "events.yaml").read_text(encoding="utf-8"))
         self.assertTrue(state["stale"]["tech_design"])
         self.assertTrue(state["stale"]["slices"])
         self.assertTrue(state["stale"]["evidence"])
@@ -101,6 +107,9 @@ class GatesAndEvidenceTests(unittest.TestCase):
         self.assertFalse(state["stale"]["feature"])
         self.assertIn("event_type=artifact_marked_stale", execution)
         self.assertIn("artifact=architecture", execution)
+        self.assertEqual(events["events"][-1]["event_type"], "artifact_marked_stale")
+        self.assertEqual(events["events"][-1]["artifact"], "architecture")
+        self.assertEqual(events["events"][-1]["marked_stale"], ["tech_design", "slices", "evidence", "feature_card", "canonical_docs"])
 
     def test_record_evidence_and_complete_slice(self):
         workspace = self.ready_workspace()
@@ -124,6 +133,7 @@ class GatesAndEvidenceTests(unittest.TestCase):
         self.assertIn("slice_complete: S-001", result.stdout)
         manifest = yaml.safe_load((workspace / "evidence/manifest.yaml").read_text(encoding="utf-8"))
         slices = yaml.safe_load((workspace / "slices.yaml").read_text(encoding="utf-8"))
+        events = yaml.safe_load((workspace / "events.yaml").read_text(encoding="utf-8"))
         self.assertIn("completion_identity_policy", manifest)
         self.assertEqual(manifest["slices"]["S-001"]["diff_hash"], "abc123")
         self.assertEqual(slices["slices"][0]["status"], "complete")
@@ -132,6 +142,9 @@ class GatesAndEvidenceTests(unittest.TestCase):
             "event_type=slice_completed slice=S-001 attempt=1 reason=initial",
             (workspace / "execution.md").read_text(encoding="utf-8"),
         )
+        self.assertEqual(events["events"][-1]["event_type"], "slice_completed")
+        self.assertEqual(events["events"][-1]["slice"], "S-001")
+        self.assertEqual(events["events"][-1]["attempt"], 1)
 
     def test_complete_slice_stores_semantic_label_outside_diff_hash(self):
         workspace = self.ready_workspace("run-semantic-label")
@@ -255,6 +268,7 @@ class GatesAndEvidenceTests(unittest.TestCase):
         self.assertIn("slice_complete: S-001", retry.stdout)
         manifest = yaml.safe_load((workspace / "evidence/manifest.yaml").read_text(encoding="utf-8"))
         execution = (workspace / "execution.md").read_text(encoding="utf-8")
+        events = yaml.safe_load((workspace / "events.yaml").read_text(encoding="utf-8"))
         self.assertEqual(manifest["slices"]["S-001"]["retries"][0]["attempt"], 2)
         self.assertEqual(manifest["slices"]["S-001"]["retries"][0]["reason"], "rerun-after-review")
         self.assertEqual(manifest["slices"]["S-001"]["retries"][0]["change_label"], "changed456")
@@ -263,6 +277,9 @@ class GatesAndEvidenceTests(unittest.TestCase):
             "event_type=slice_retry_completed slice=S-001 attempt=2 reason=rerun-after-review supersedes=attempt-1",
             execution,
         )
+        self.assertEqual(events["events"][-1]["event_type"], "slice_retry_completed")
+        self.assertEqual(events["events"][-1]["attempt"], 2)
+        self.assertEqual(events["events"][-1]["supersedes"], "attempt-1")
 
     def test_complete_slice_fails_when_green_is_before_red(self):
         workspace = self.ready_workspace("run-bad-order")

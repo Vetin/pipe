@@ -32,6 +32,17 @@ class ContextSkillContractTests(unittest.TestCase):
         self.assertIn("business analysis", content)
         self.assertIn("No implementation code is changed", content)
 
+    def test_context_skill_prioritizes_canonical_memory_over_lab_signals(self):
+        content = (ROOT / ".agents/skills/nfp-01-context/SKILL.md").read_text(encoding="utf-8")
+
+        features_index = content.index(".ai/knowledge/features-overview.md")
+        discovered_index = content.index(".ai/knowledge/discovered-signals.md")
+        self.assertLess(features_index, discovered_index)
+        self.assertIn("Canonical feature memory is the first retrieval layer", content)
+        self.assertIn("Treat `kind: lab_signal` entries as pipeline-lab or benchmark context only", content)
+        self.assertIn("Do not use lab signals as product architecture evidence", content)
+        self.assertIn("verify it by reading the cited source path", content)
+
 
 if __name__ == "__main__":
     unittest.main()

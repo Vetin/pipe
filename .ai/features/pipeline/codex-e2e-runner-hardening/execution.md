@@ -137,11 +137,15 @@ iteration_id: I-001
 - red command: `python -m pytest tests/feature_pipeline/test_codex_e2e_runner.py`
 - red result: `environment_failure` because pytest was not installed; installed pytest with `python -m pip install --user pytest`.
 - fallback red command: `python -m unittest tests.feature_pipeline.test_codex_e2e_runner`
-- fallback red result: `test_expected`; new tests failed for missing template source support, manifest metadata, prompt profile CLI, replacement guard, and source contract validation.
+- fallback red result: `test_expected`.
+- failed expectations: template source support, manifest metadata, prompt
+  profile CLI, replacement guard, and source contract validation.
 - green command: `python -m pytest tests/feature_pipeline/test_codex_e2e_runner.py`
 - green result: pass, 9 tests.
-- verification: `python .agents/pipeline-core/scripts/featurectl.py validate --workspace .ai/feature-workspaces/pipeline/codex-e2e-runner-hardening--run-20260512-codex-e2e-hardening` passed.
-- additional verification: dry-run self-contained `codex-real-smoke-cases.yaml` fixture produced a manifest with `source_repo_kind: template_path`, `prompt_profile: outcome-smoke`, and `path_mode: actual`.
+- verification: `featurectl.py validate --workspace ...` passed.
+- additional verification: dry-run self-contained `codex-real-smoke-cases.yaml`
+  fixture produced `source_repo_kind: template_path`,
+  `prompt_profile: outcome-smoke`, and `path_mode: actual`.
 - files changed: runner, focused tests, toy-greeting fixture, real smoke case config, S-001 evidence.
 - subagent note: this host session did not expose a subagent execution tool, so implementation and review evidence were produced directly in-session.
 - next action: commit S-001 and mark the slice complete.
@@ -193,12 +197,15 @@ Docs Consulted: TDD Implementation
 
 iteration_id: I-002
 - slice: S-002
-- pre-red state: worktree had project knowledge refresh changes from `featurectl.py init --profile-project`; these `.ai/knowledge/*` changes were left untouched and unstaged.
+- pre-red state: worktree had project knowledge refresh changes from
+  `featurectl.py init --profile-project`; these `.ai/knowledge/*` changes were
+  left untouched and unstaged.
 - red command: `python -m pytest tests/feature_pipeline/test_codex_debug_runner.py tests/feature_pipeline/test_pipeline_goal_validation.py`
 - red result: `test_expected`; new tests failed for missing `--prompt-profile`, missing `--portable-output`, and missing portable-output goal validation.
 - green command: `python -m pytest tests/feature_pipeline/test_codex_debug_runner.py tests/feature_pipeline/test_pipeline_goal_validation.py`
 - green result: pass, 7 tests.
-- verification: `python .agents/pipeline-core/scripts/featurectl.py validate --workspace .ai/feature-workspaces/pipeline/codex-e2e-runner-hardening--run-20260512-codex-e2e-hardening --implementation` passed.
+- verification: `featurectl.py validate --workspace ... --implementation`
+  passed.
 - files changed: debug runner, pipeline goal validator, focused debug/goal tests, S-002 evidence.
 - review: spec compliance pass and code quality pass recorded in `evidence/S-002/05-review-summary.md`.
 - subagent note: this host session did not expose a subagent execution tool, so implementation and review evidence were produced directly in-session.

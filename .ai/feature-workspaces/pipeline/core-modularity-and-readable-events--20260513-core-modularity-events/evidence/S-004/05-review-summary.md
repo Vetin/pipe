@@ -1,0 +1,1 @@
+Reviewed context signal and shared knowledge updates. nfp-01 keeps canonical memory before lab signals, nfp-03/nfp-11 now require events.yaml consideration for execution-history features, and knowledge docs describe the module split plus event sidecar.

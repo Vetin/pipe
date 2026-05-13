@@ -3,22 +3,24 @@
 Status: curated
 Confidence: medium
 Needs human review: yes
-Last reviewed: 2026-05-12
+Last reviewed: 2026-05-13
 
 ## Pipeline Artifact Flow
 
 The primary integration is file-based and repository-local:
 
 ```text
-user request -> nfp skills -> featurectl.py wrapper -> featurectl_core -> feature workspace -> canonical feature memory -> .ai/knowledge
+user request -> nfp skills -> featurectl.py wrapper -> featurectl_core modules -> feature workspace -> canonical feature memory -> .ai/knowledge
 ```
 
-`featurectl.py` is a stable wrapper; `featurectl_core/cli.py` mutates
-machine-readable artifacts and validation status. `nfp-*` skills write the
-narrative planning, review, and finish artifacts around those files.
-`pipelinebench.py` is a stable wrapper; `pipelinebench_core/cli.py` reads
-completed feature workspaces or canonical features and writes benchmark score
-artifacts.
+`featurectl.py` is a stable wrapper. Focused `featurectl_core` modules mutate
+machine-readable artifacts, validation status, evidence manifests, and the
+parseable `events.yaml` sidecar. `nfp-*` skills write narrative planning,
+review, and finish artifacts around those files.
+
+`pipelinebench.py` is a stable wrapper. Focused `pipelinebench_core` modules
+read completed feature workspaces or canonical features and write benchmark
+score artifacts.
 
 ## Runtime Boundaries
 
@@ -33,11 +35,14 @@ artifacts.
 - Project profile -> init showcase runner: repeated repository profiling reads
   stable counts and modules from `project-index.yaml` while reading feature
   signal names from `discovered-signals.md`.
+- Execution event log -> validators and benchmarks: `execution.md` remains the
+  human-readable journal, while `events.yaml` provides structured event records.
 - Benchmark score -> skill iteration: hard checks catch structural regressions;
   manual soft scores capture architecture clarity, module communication, reuse,
   ADR usefulness, and review quality.
 - CLI wrapper -> core module: top-level scripts stay small and stable while
-  implementation details move under `featurectl_core` and `pipelinebench_core`.
+  implementation details stay under focused `featurectl_core` and
+  `pipelinebench_core` modules.
 
 ## External Integrations
 

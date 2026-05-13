@@ -11,6 +11,8 @@ import yaml
 ROOT = Path(__file__).resolve().parents[2]
 SCRIPT = ROOT / ".agents/pipeline-core/scripts/featurectl.py"
 PIPELINEBENCH = ROOT / ".agents/pipeline-core/scripts/pipelinebench.py"
+FEATURECTL_CORE = ROOT / ".agents/pipeline-core/scripts/featurectl_core"
+PIPELINEBENCH_CORE = ROOT / ".agents/pipeline-core/scripts/pipelinebench_core"
 
 
 def run(cmd, cwd, check=True):
@@ -125,6 +127,34 @@ class ArtifactFormattingTests(unittest.TestCase):
                 ]
                 self.assertEqual(long_lines, [])
 
+    def test_curated_markdown_uses_reviewable_line_lengths(self):
+        paths = [
+            *sorted((ROOT / ".ai/knowledge").glob("*.md")),
+            *sorted((ROOT / ".ai/features").glob("*/*/feature-card.md")),
+            *sorted((ROOT / ".ai/features").glob("*/*/execution.md")),
+            *sorted((ROOT / ".ai/features").glob("*/*/reviews/*.md")),
+        ]
+        self.assertTrue(paths)
+        for path in paths:
+            in_code = False
+            failures = []
+            for index, line in enumerate(path.read_text(encoding="utf-8").splitlines(), start=1):
+                if line.startswith("```"):
+                    in_code = not in_code
+                if in_code or line.startswith("|"):
+                    continue
+                if len(line) > 180:
+                    failures.append(f"{index}: {len(line)}")
+            with self.subTest(path=path.relative_to(ROOT).as_posix()):
+                self.assertEqual(failures, [])
+
+    def test_knowledge_docs_have_sections_and_no_known_typos(self):
+        for path in sorted((ROOT / ".ai/knowledge").glob("*.md")):
+            content = path.read_text(encoding="utf-8")
+            with self.subTest(path=path.relative_to(ROOT).as_posix()):
+                self.assertIn("## ", content)
+                self.assertNotIn("evidence//", content)
+
     def test_gitignore_is_line_based(self):
         lines = (ROOT / ".gitignore").read_text(encoding="utf-8").splitlines()
         required = {
@@ -181,6 +211,34 @@ class ArtifactFormattingTests(unittest.TestCase):
                 self.assertIn("raise SystemExit(main())", content)
         self.assertTrue((ROOT / ".agents/pipeline-core/scripts/featurectl_core/cli.py").exists())
         self.assertTrue((ROOT / ".agents/pipeline-core/scripts/pipelinebench_core/cli.py").exists())
+
+    def test_core_implementations_are_split_by_responsibility(self):
+        featurectl_modules = {
+            "formatting.py",
+            "events.py",
+            "profile.py",
+            "validation.py",
+            "evidence.py",
+            "promotion.py",
+        }
+        pipelinebench_modules = {
+            "scenarios.py",
+            "score.py",
+            "report.py",
+            "candidates.py",
+            "showcases.py",
+        }
+        self.assertTrue(featurectl_modules.issubset({path.name for path in FEATURECTL_CORE.glob("*.py")}))
+        self.assertTrue(pipelinebench_modules.issubset({path.name for path in PIPELINEBENCH_CORE.glob("*.py")}))
+
+        limits = {
+            FEATURECTL_CORE / "cli.py": 1500,
+            PIPELINEBENCH_CORE / "cli.py": 260,
+        }
+        for path, limit in limits.items():
+            with self.subTest(path=path.relative_to(ROOT).as_posix()):
+                line_count = len(path.read_text(encoding="utf-8").splitlines())
+                self.assertLessEqual(line_count, limit)
 
     def test_change_label_only_manifests_declare_identity_policy(self):
         manifests = [

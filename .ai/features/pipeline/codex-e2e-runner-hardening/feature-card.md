@@ -41,12 +41,14 @@ rewrites committed reports with `$ROOT`, `$RUN_DIR`, and `$WORK_ROOT` tokens.
 
 - `python -m pytest tests/feature_pipeline/test_codex_e2e_runner.py tests/feature_pipeline/test_codex_debug_runner.py tests/feature_pipeline/test_pipeline_goal_validation.py`
 - `python pipeline-lab/showcases/scripts/validate_pipeline_goals.py --passes 3 --report pipeline-lab/showcases/pipeline-goal-validation-report.md`
-- `python .agents/pipeline-core/scripts/featurectl.py validate --workspace .ai/feature-workspaces/pipeline/codex-e2e-runner-hardening--run-20260512-codex-e2e-hardening --implementation`
+- `python .agents/pipeline-core/scripts/featurectl.py validate --workspace ... --implementation`
 
 ## Manual Validation
 
 - Regenerated `pipeline-lab/showcases/codex-debug-runs/20260512-debug` in mock mode with `--portable-output`; no local absolute paths remain in text artifacts.
-- Ran real Codex fixture smoke with `--codex-arg=-m --codex-arg=gpt-5.3-codex-spark`; the run completed with `uses_real_codex: true`, `returncode: 0`, `timed_out: false`, and all four debug artifacts present.
+- Ran real Codex fixture smoke with fast model arguments.
+- The run completed with `uses_real_codex: true`, `returncode: 0`,
+  `timed_out: false`, and all four debug artifacts present.
 
 ## Reviews
 

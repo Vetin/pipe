@@ -3,19 +3,46 @@
 Status: curated
 Confidence: medium
 Needs human review: yes
-Last reviewed: 2026-05-12
+Last reviewed: 2026-05-13
 
 ## Pipeline Control Modules
 
 - `.agents/pipeline-core/scripts/featurectl.py`: stable command-line entrypoint
   for the deterministic pipeline control plane.
-- `.agents/pipeline-core/scripts/featurectl_core/cli.py`: workspace, gate,
-  evidence, validation, promotion, and project-profile implementation.
+- `.agents/pipeline-core/scripts/featurectl_core/cli.py`: argument parser and
+  command dispatch for the feature control plane.
+- `.agents/pipeline-core/scripts/featurectl_core/profile.py`: init tree,
+  project profile, knowledge rendering, and initial workspace prose.
+- `.agents/pipeline-core/scripts/featurectl_core/validation.py`: workspace,
+  lifecycle, source-truth, and artifact gate validation.
+- `.agents/pipeline-core/scripts/featurectl_core/evidence.py`: evidence
+  manifest, red/green order, slice completion, and retry metadata.
+- `.agents/pipeline-core/scripts/featurectl_core/events.py`: Markdown event
+  rendering plus parseable `events.yaml` sidecar synchronization.
+- `.agents/pipeline-core/scripts/featurectl_core/promotion.py`: canonical
+  index, overview, status, latest-state, and worktree path helpers.
+- `.agents/pipeline-core/scripts/featurectl_core/docsets.py`: pipeline docset
+  lookup and step normalization.
+- `.agents/pipeline-core/scripts/featurectl_core/formatting.py`: shared YAML
+  and text writers with readable block-style serialization.
+- `.agents/pipeline-core/scripts/featurectl_core/shared.py`: constants,
+  git helpers, slugging, time, and workspace resolution.
 - `.agents/pipeline-core/scripts/pipelinebench.py`: stable command-line
   entrypoint for benchmark scoring and reports.
-- `.agents/pipeline-core/scripts/pipelinebench_core/cli.py`: offline benchmark
-  scoring, candidate isolation checks, showcase comparison, and manual
-  soft-score report generation.
+- `.agents/pipeline-core/scripts/pipelinebench_core/cli.py`: benchmark argument
+  parser.
+- `.agents/pipeline-core/scripts/pipelinebench_core/commands.py`: benchmark
+  command handlers.
+- `.agents/pipeline-core/scripts/pipelinebench_core/scenarios.py`: scenario
+  discovery and listing.
+- `.agents/pipeline-core/scripts/pipelinebench_core/score.py`: hard checks and
+  manual soft-score loading.
+- `.agents/pipeline-core/scripts/pipelinebench_core/report.py`: score and
+  comparison report rendering.
+- `.agents/pipeline-core/scripts/pipelinebench_core/candidates.py`: candidate
+  skill isolation.
+- `.agents/pipeline-core/scripts/pipelinebench_core/showcases.py`: experimental
+  showcase execution.
 - `pipeline-lab/showcases/scripts/run_init_profile_showcases.py`: repeated
   project-init showcase runner. It reads compact project metadata from
   `project-index.yaml` and feature signal/catalog data from

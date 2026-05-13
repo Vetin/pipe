@@ -1,0 +1,3 @@
+## feature/pipeline-core-modularity-and-readable-events-20260513-core-modularity-events
+ M tests/feature_pipeline/test_artifact_formatting.py
+?? .ai/feature-workspaces/pipeline/core-modularity-and-readable-events--20260513-core-modularity-events/evidence/

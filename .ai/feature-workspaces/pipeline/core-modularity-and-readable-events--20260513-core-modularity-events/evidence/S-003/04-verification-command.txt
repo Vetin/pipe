@@ -1,0 +1,1 @@
+python .agents/pipeline-core/scripts/pipelinebench.py list-scenarios && python -m pytest tests/feature_pipeline/test_pipelinebench.py -q

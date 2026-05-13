@@ -3,7 +3,7 @@
 Status: curated
 Confidence: medium
 Needs human review: yes
-Last reviewed: 2026-05-12
+Last reviewed: 2026-05-13
 
 ## Promoted Pipeline Decisions
 
@@ -23,3 +23,8 @@ Last reviewed: 2026-05-12
   - Source: `.ai/features/pipeline/artifact-readability-execution-semantics/adrs/ADR-004-manual-benchmark-soft-scoring.md`
   - Decision: `pipelinebench.py` keeps hard checks deterministic and accepts
     manual soft-score YAML as reviewer data.
+- ADR-005 Core Modules And Event Sidecar
+  - Source: `.ai/features/pipeline/core-modularity-and-readable-events/adrs/ADR-005-core-modules-and-event-sidecar.md`
+  - Decision: CLI wrappers stay stable while control-plane internals move into
+    focused modules, and new workspaces maintain a parseable `events.yaml`
+    sidecar beside human-readable `execution.md`.

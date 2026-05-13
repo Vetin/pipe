@@ -1,0 +1,1 @@
+python -m pytest tests/feature_pipeline/test_methodology_contract.py::MethodologyContractTests::test_architecture_and_finish_include_event_sidecar_knowledge -q

@@ -38,6 +38,9 @@ Responsibilities:
 - update living documentation summaries when appropriate
 - capture shared-knowledge updates in `feature-card.md` so future agents can
   see what changed without replaying the full transcript
+- when the feature touches pipeline execution history, confirm whether
+  `events.yaml` parseable event history changed and record how it relates to
+  the human-readable `execution.md` journal
 - include a `Shared Knowledge Decision Table` with `Decision`, `Evidence`, and
   `Future reuse` columns for every updated, confirmed unchanged, or deferred
   `.ai/knowledge` file
@@ -65,6 +68,8 @@ Workflow:
    `.ai/knowledge/integration-map.md` were updated, confirmed unchanged, or
    deferred. Each row must include the `Decision`, `Evidence`, and
    `Future reuse` value.
+   For execution-event changes, include whether `events.yaml` was created,
+   validated, promoted, or left unchanged.
 9. Set the finish gate to `complete`.
 10. Run `featurectl.py validate --workspace <workspace>`.
 

@@ -36,6 +36,10 @@ Responsibilities:
 - draw a high-level Mermaid feature topology showing actors, entry points,
   services/modules, data stores, events, and external systems before detailed
   design begins
+- for pipeline features that create or consume execution events, show both
+  `execution.md` and `events.yaml` in the topology
+- execution.md remains the human-readable journal while `events.yaml` is
+  parseable event history
 - identify which `.ai/knowledge` summaries the feature should update at finish
   so future feature work can reuse the architecture picture
 - include a `Shared Knowledge Decision Table` with one row per relevant
@@ -106,6 +110,8 @@ Workflow:
    read from the top of the feature without implementation detail. It must show
    at least actor/client, entrypoint, affected services/modules, persistence or
    event/audit path, and external integration when applicable.
+   If the feature touches pipeline execution history, include `execution.md`,
+   `events.yaml`, and the module that keeps them synchronized.
 8. In `Shared Knowledge Impact`, include a `Shared Knowledge Decision Table`.
    For each `.ai/knowledge` file, state whether finish should update it,
    confirm it unchanged, or defer it; cite the artifact or source evidence; and

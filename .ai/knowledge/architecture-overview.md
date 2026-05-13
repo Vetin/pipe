@@ -3,22 +3,26 @@
 Status: curated
 Confidence: medium
 Needs human review: yes
-Last reviewed: 2026-05-12
+Last reviewed: 2026-05-13
 
 ## Control Plane
 
 The Native Feature Pipeline control plane exposes a stable wrapper at
-`.agents/pipeline-core/scripts/featurectl.py`. The implementation lives in
-`.agents/pipeline-core/scripts/featurectl_core/cli.py`. It creates feature
-workspaces, tracks gates, records evidence, validates source-of-truth
-consistency, updates current run state, and promotes completed feature memory.
+`.agents/pipeline-core/scripts/featurectl.py`. The wrapper delegates to focused
+modules under `.agents/pipeline-core/scripts/featurectl_core/`:
+
+- `cli.py` owns argument parsing and command dispatch.
+- `workspace`, profile, and docset behavior lives in `profile.py` and
+  `docsets.py`.
+- Gate, validation, evidence, event, and promotion behavior lives in
+  `validation.py`, `evidence.py`, `events.py`, and `promotion.py`.
+- YAML, Markdown, and shared process helpers live in `formatting.py` and
+  `shared.py`.
 
 `.agents/pipeline-core/scripts/pipelinebench.py` is the stable benchmark
-wrapper. The implementation lives in
-`.agents/pipeline-core/scripts/pipelinebench_core/cli.py`. It scores completed
-workspaces with deterministic hard checks and optional manual soft scores for
-skill-quality comparison. Soft-score YAML is local reviewer input and is never
-executed.
+wrapper. It delegates to focused modules under `pipelinebench_core/` for
+scenarios, scoring, reports, candidate isolation, showcase execution, and
+command dispatch. Soft-score YAML is local reviewer input and is never executed.
 
 ## Artifact Lifecycle
 
@@ -38,8 +42,9 @@ flowchart LR
   Finish --> Canonical[canonical feature memory]
   Canonical --> Knowledge[.ai/knowledge retrieval layer]
   Workspace --> Readonly[promoted-readonly run evidence]
-  FeatureCtl[featurectl.py wrapper] --> FeatureCtlCore[featurectl_core cli]
-  Bench[pipelinebench.py wrapper] --> BenchCore[pipelinebench_core cli]
+  FeatureCtl[featurectl.py wrapper] --> FeatureCtlCore[featurectl_core modules]
+  FeatureCtlCore --> Events[events.yaml sidecar]
+  Bench[pipelinebench.py wrapper] --> BenchCore[pipelinebench_core modules]
   BenchCore --> Score[hard checks plus manual soft scores]
 ```
 
@@ -58,6 +63,11 @@ and reason.
 promotion, and retry events belong in the event log. Deprecated `## Latest
 Status`, active `## Current Step`, and active `## Next Step` sections are invalid
 for finished or promoted work.
+
+New workspaces also include `events.yaml`. This sidecar mirrors parseable event
+records from the Markdown event log so validators and benchmarks can consume
+event history without scraping prose. `execution.md` remains the human-readable
+journal.
 
 ## Shared Knowledge Retrieval
 
@@ -83,9 +93,9 @@ rather than curated documentation.
 ## Source Anchors
 
 - `.agents/pipeline-core/scripts/featurectl.py`
-- `.agents/pipeline-core/scripts/featurectl_core/cli.py`
+- `.agents/pipeline-core/scripts/featurectl_core/`
 - `.agents/pipeline-core/scripts/pipelinebench.py`
-- `.agents/pipeline-core/scripts/pipelinebench_core/cli.py`
+- `.agents/pipeline-core/scripts/pipelinebench_core/`
 - `.agents/skills/nfp-01-context/SKILL.md`
 - `pipeline-lab/showcases/scripts/run_init_profile_showcases.py`
 - `.ai/features/pipeline/lifecycle-hygiene-profile-noise/architecture.md`

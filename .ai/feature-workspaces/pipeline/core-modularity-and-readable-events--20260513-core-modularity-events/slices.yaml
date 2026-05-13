@@ -23,7 +23,8 @@ slices:
   expected_touchpoints:
   - .ai/features/pipeline/public-raw-artifact-guardrails/feature-card.md
   - .gitignore
-  test_strategy: Add failing tests for 180-char curated Markdown, knowledge typo audit, and core module thresholds.
+  test_strategy: Add failing tests for 180-char curated Markdown, knowledge typo audit, and core module
+    thresholds.
   tdd_commands:
     red: python -m pytest tests/feature_pipeline/test_artifact_formatting.py -q
     green: python -m pytest tests/feature_pipeline/test_artifact_formatting.py -q
@@ -32,8 +33,8 @@ slices:
   review_focus:
   - public raw verification is evidence, not network-dependent test logic
   - raw evidence logs are not over-scanned
-  evidence_status: pending
-  status: pending
+  evidence_status: complete
+  status: complete
   iteration_budget: 3
   rollback_point: pre-slice git state
   independent_verification: fresh curl and shallow clone evidence
@@ -75,16 +76,19 @@ slices:
   - .ai/feature-workspaces/pipeline/core-modularity-and-readable-events--20260513-core-modularity-events/events.yaml
   test_strategy: Add failing tests for module files, cli size, and events.yaml behavior.
   tdd_commands:
-    red: python -m pytest tests/feature_pipeline/test_gates_and_evidence.py tests/feature_pipeline/test_finish_promote.py -q
-    green: python -m pytest tests/feature_pipeline/test_gates_and_evidence.py tests/feature_pipeline/test_finish_promote.py -q
+    red: python -m pytest tests/feature_pipeline/test_gates_and_evidence.py tests/feature_pipeline/test_finish_promote.py
+      -q
+    green: python -m pytest tests/feature_pipeline/test_gates_and_evidence.py tests/feature_pipeline/test_finish_promote.py
+      -q
   verification_commands:
   - python .agents/pipeline-core/scripts/featurectl.py --help
-  - python -m pytest tests/feature_pipeline/test_gates_and_evidence.py tests/feature_pipeline/test_finish_promote.py -q
+  - python -m pytest tests/feature_pipeline/test_gates_and_evidence.py tests/feature_pipeline/test_finish_promote.py
+    -q
   review_focus:
   - no CLI behavior changes
   - events.yaml stays in sync with execution.md for new events
-  evidence_status: pending
-  status: pending
+  evidence_status: complete
+  status: complete
   iteration_budget: 4
   rollback_point: pre-slice git state
   independent_verification: wrapper smoke command and event fixture inspection
@@ -97,9 +101,11 @@ slices:
   scope_confidence: medium
   tdd:
     failing_test_file: tests/feature_pipeline/test_gates_and_evidence.py
-    red_command: python -m pytest tests/feature_pipeline/test_gates_and_evidence.py tests/feature_pipeline/test_finish_promote.py -q
+    red_command: python -m pytest tests/feature_pipeline/test_gates_and_evidence.py tests/feature_pipeline/test_finish_promote.py
+      -q
     expected_failure: events.yaml and featurectl module split missing
-    green_command: python -m pytest tests/feature_pipeline/test_gates_and_evidence.py tests/feature_pipeline/test_finish_promote.py -q
+    green_command: python -m pytest tests/feature_pipeline/test_gates_and_evidence.py tests/feature_pipeline/test_finish_promote.py
+      -q
 - id: S-003
   title: Pipelinebench module split
   linked_requirements:
@@ -122,16 +128,18 @@ slices:
   - .agents/pipeline-core/scripts/pipelinebench.py
   test_strategy: Add failing tests for pipelinebench module files and CLI size.
   tdd_commands:
-    red: python -m pytest tests/feature_pipeline/test_pipelinebench.py tests/feature_pipeline/test_artifact_formatting.py -q
-    green: python -m pytest tests/feature_pipeline/test_pipelinebench.py tests/feature_pipeline/test_artifact_formatting.py -q
+    red: python -m pytest tests/feature_pipeline/test_pipelinebench.py tests/feature_pipeline/test_artifact_formatting.py
+      -q
+    green: python -m pytest tests/feature_pipeline/test_pipelinebench.py tests/feature_pipeline/test_artifact_formatting.py
+      -q
   verification_commands:
   - python .agents/pipeline-core/scripts/pipelinebench.py list-scenarios
   - python -m pytest tests/feature_pipeline/test_pipelinebench.py -q
   review_focus:
   - candidate isolation behavior remains unchanged
   - soft scoring and showcase commands remain available
-  evidence_status: pending
-  status: pending
+  evidence_status: complete
+  status: complete
   iteration_budget: 3
   rollback_point: pre-slice git state
   independent_verification: benchmark wrapper smoke command
@@ -144,9 +152,11 @@ slices:
   scope_confidence: medium
   tdd:
     failing_test_file: tests/feature_pipeline/test_pipelinebench.py
-    red_command: python -m pytest tests/feature_pipeline/test_pipelinebench.py tests/feature_pipeline/test_artifact_formatting.py -q
+    red_command: python -m pytest tests/feature_pipeline/test_pipelinebench.py tests/feature_pipeline/test_artifact_formatting.py
+      -q
     expected_failure: pipelinebench modules and threshold missing
-    green_command: python -m pytest tests/feature_pipeline/test_pipelinebench.py tests/feature_pipeline/test_artifact_formatting.py -q
+    green_command: python -m pytest tests/feature_pipeline/test_pipelinebench.py tests/feature_pipeline/test_artifact_formatting.py
+      -q
 - id: S-004
   title: Context signal consumption and final knowledge updates
   linked_requirements:
@@ -175,15 +185,18 @@ slices:
   - .ai/knowledge/integration-map.md
   test_strategy: Add failing tests for context signal rules and final knowledge line/section audit.
   tdd_commands:
-    red: python -m pytest tests/feature_pipeline/test_context_skill_contract.py tests/feature_pipeline/test_artifact_formatting.py -q
-    green: python -m pytest tests/feature_pipeline/test_context_skill_contract.py tests/feature_pipeline/test_artifact_formatting.py -q
+    red: python -m pytest tests/feature_pipeline/test_context_skill_contract.py tests/feature_pipeline/test_artifact_formatting.py
+      -q
+    green: python -m pytest tests/feature_pipeline/test_context_skill_contract.py tests/feature_pipeline/test_artifact_formatting.py
+      -q
   verification_commands:
-  - python -m pytest tests/feature_pipeline/test_context_skill_contract.py tests/feature_pipeline/test_artifact_formatting.py -q
+  - python -m pytest tests/feature_pipeline/test_context_skill_contract.py tests/feature_pipeline/test_artifact_formatting.py
+    -q
   review_focus:
   - future context does not treat lab signals as architecture truth
   - knowledge docs document module split and event sidecar
-  evidence_status: pending
-  status: pending
+  evidence_status: complete
+  status: complete
   iteration_budget: 3
   rollback_point: pre-slice git state
   independent_verification: inspect context skill and knowledge docs
@@ -197,6 +210,8 @@ slices:
   scope_confidence: high
   tdd:
     failing_test_file: tests/feature_pipeline/test_context_skill_contract.py
-    red_command: python -m pytest tests/feature_pipeline/test_context_skill_contract.py tests/feature_pipeline/test_artifact_formatting.py -q
+    red_command: python -m pytest tests/feature_pipeline/test_context_skill_contract.py tests/feature_pipeline/test_artifact_formatting.py
+      -q
     expected_failure: context signal and knowledge sidecar rules not fully covered
-    green_command: python -m pytest tests/feature_pipeline/test_context_skill_contract.py tests/feature_pipeline/test_artifact_formatting.py -q
+    green_command: python -m pytest tests/feature_pipeline/test_context_skill_contract.py tests/feature_pipeline/test_artifact_formatting.py
+      -q

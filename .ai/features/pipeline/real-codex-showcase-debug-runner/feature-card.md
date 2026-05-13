@@ -57,7 +57,9 @@ python pipeline-lab/showcases/scripts/run_codex_debug_pipeline.py \
 
 ## Reviews
 
-- `reviews/debug-runner-review.yaml` records a non-blocking note: real full-pipeline smoke is timeout-sensitive and should remain an operator diagnostic unless a narrower real case is introduced.
+- `reviews/debug-runner-review.yaml` records a non-blocking note.
+- Real full-pipeline smoke is timeout-sensitive and should remain an operator
+  diagnostic unless a narrower real case is introduced.
 - `reviews/verification-review.md` records final manual validation and verification debt.
 
 ## Verification Debt

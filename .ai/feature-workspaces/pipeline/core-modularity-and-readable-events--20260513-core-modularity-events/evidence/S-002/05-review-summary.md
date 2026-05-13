@@ -1,0 +1,1 @@
+Reviewed featurectl split and events.yaml sidecar. Wrapper command still resolves core package, focused modules compile, gate/stale/slice/promotion tests pass, and events.yaml mirrors new Markdown event log entries for new workspaces.

@@ -246,6 +246,15 @@ class MethodologyContractTests(unittest.TestCase):
         for token in ("## Shared Knowledge Updates", ".ai/knowledge/features-overview.md", ".ai/knowledge/architecture-overview.md"):
             self.assertIn(token, finish)
 
+    def test_architecture_and_finish_include_event_sidecar_knowledge(self):
+        architecture = (ROOT / ".agents/skills/nfp-03-architecture/SKILL.md").read_text(encoding="utf-8")
+        finish = (ROOT / ".agents/skills/nfp-11-finish/SKILL.md").read_text(encoding="utf-8")
+
+        self.assertIn("events.yaml", architecture)
+        self.assertIn("execution.md remains the human-readable journal", architecture)
+        self.assertIn("events.yaml", finish)
+        self.assertIn("parseable event history", finish)
+
     def test_review_schema_requires_traceable_findings(self):
         schema = yaml.safe_load((ROOT / ".agents/pipeline-core/scripts/schemas/review.schema.json").read_text(encoding="utf-8"))
         required = set(schema["required"])
