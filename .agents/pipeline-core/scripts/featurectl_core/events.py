@@ -118,6 +118,118 @@ def write_events_sidecar(workspace: Path, events: list[dict[str, Any]]) -> None:
     )
 
 
+def rewrite_execution_event_summary(workspace: Path) -> None:
+    execution_path = workspace / "execution.md"
+    if not execution_path.exists():
+        return
+    events = read_events_sidecar(workspace).get("events") or []
+    summary_lines = render_compact_event_summary(events)
+    replace_execution_event_log(workspace, summary_lines)
+
+
+def render_compact_event_summary(events: list[dict[str, Any]]) -> list[str]:
+    if not events:
+        return ["- No structured execution events were recorded."]
+
+    lines: list[str] = []
+    if any(event.get("event_type") == "run_initialized" for event in events):
+        lines.append("- Initialized the run.")
+
+    planning_gates = {"feature_contract", "architecture", "tech_design", "slicing_readiness"}
+    approved_planning = {
+        str(event.get("gate"))
+        for event in events
+        if event.get("event_type") == "gate_status_changed"
+        and event.get("new_status") in {"approved", "delegated"}
+        and str(event.get("gate")) in planning_gates
+    }
+    if approved_planning == planning_gates:
+        lines.append("- Approved planning gates.")
+    elif approved_planning:
+        lines.append(f"- Approved planning gates: {format_backticked_list(sorted(approved_planning))}.")
+
+    completed_slices = sorted(
+        {
+            str(event.get("slice"))
+            for event in events
+            if event.get("event_type") in {"slice_completed", "slice_retry_completed"}
+            and event.get("slice")
+        }
+    )
+    if completed_slices:
+        lines.append(f"- Completed slices {format_slice_summary(completed_slices)}.")
+
+    delivery_gates = ("implementation", "review", "verification", "finish")
+    completed_delivery = [
+        gate
+        for gate in delivery_gates
+        if any(
+            event.get("event_type") == "gate_status_changed"
+            and event.get("gate") == gate
+            and event.get("new_status") == "complete"
+            for event in events
+        )
+    ]
+    if completed_delivery:
+        lines.append(f"- Completed delivery gates: {format_backticked_list(completed_delivery)}.")
+
+    if any(event.get("event_type") == "review_completed" for event in events):
+        lines.append("- Completed review.")
+    if any(event.get("event_type") == "verification_completed" for event in events):
+        lines.append("- Completed verification.")
+
+    promotion_events = [event for event in events if event.get("event_type") == "feature_promoted"]
+    if promotion_events:
+        canonical_path = promotion_events[-1].get("canonical_path")
+        lines.append(f"- Promoted canonical feature memory to `{canonical_path}`.")
+
+    archive_events = [event for event in events if event.get("event_type") == "incoming_variant_archived"]
+    if archive_events:
+        canonical_path = archive_events[-1].get("canonical_path")
+        lines.append(f"- Archived incoming variant for `{canonical_path}`.")
+
+    return lines or ["- Recorded structured execution events in `events.yaml`."]
+
+
+def format_slice_summary(slice_ids: list[str]) -> str:
+    if len(slice_ids) == 1:
+        return f"`{slice_ids[0]}`"
+    return f"{format_backticked_list(slice_ids)}"
+
+
+def format_backticked_list(values: list[str]) -> str:
+    quoted = [f"`{value}`" for value in values]
+    if len(quoted) == 1:
+        return quoted[0]
+    if len(quoted) == 2:
+        return f"{quoted[0]} and {quoted[1]}"
+    return ", ".join(quoted[:-1]) + f", and {quoted[-1]}"
+
+
+def replace_execution_event_log(workspace: Path, summary_lines: list[str]) -> None:
+    execution_path = workspace / "execution.md"
+    execution = execution_path.read_text(encoding="utf-8")
+    body = "\n".join(summary_lines).rstrip()
+    section = f"## Event Log\n\n{body}\n"
+    match = re.search(r"^## Event Log\s*$", execution, flags=re.MULTILINE)
+    if not match:
+        insert_at = execution.find("\n## History")
+        if insert_at == -1:
+            write_text(execution_path, execution.rstrip() + "\n\n" + section)
+            return
+        updated = execution[:insert_at].rstrip() + "\n\n" + section + execution[insert_at:]
+        write_text(execution_path, updated)
+        return
+
+    after_heading = execution[match.end() :]
+    next_heading = re.search(r"\n##\s+", after_heading)
+    if next_heading:
+        updated = execution[: match.start()].rstrip() + "\n\n" + section + after_heading[next_heading.start() :]
+    else:
+        updated = execution[: match.start()].rstrip() + "\n\n" + section
+    write_text(execution_path, updated)
+
+
 def feature_key_for_workspace(workspace: Path) -> str:
     feature_path = workspace / "feature.yaml"
     if feature_path.exists():

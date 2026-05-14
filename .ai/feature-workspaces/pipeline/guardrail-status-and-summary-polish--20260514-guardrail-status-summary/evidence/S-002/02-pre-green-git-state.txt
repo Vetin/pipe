@@ -1,0 +1,5 @@
+ M .agents/pipeline-core/scripts/featurectl_core/cli.py
+ M .agents/pipeline-core/scripts/featurectl_core/events.py
+ M .ai/feature-workspaces/pipeline/guardrail-status-and-summary-polish--20260514-guardrail-status-summary/evidence/manifest.yaml
+ M tests/feature_pipeline/test_finish_promote.py
+?? .ai/feature-workspaces/pipeline/guardrail-status-and-summary-polish--20260514-guardrail-status-summary/evidence/S-002/

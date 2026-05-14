@@ -12,7 +12,13 @@ from pathlib import Path
 from typing import Any
 
 from .docsets import load_docset, missing_docs, next_skill_for_step, normalize_step_name, print_docs
-from .events import append_execution_event, append_run_plan_update, initialize_events_sidecar, render_execution_event
+from .events import (
+    append_execution_event,
+    append_run_plan_update,
+    initialize_events_sidecar,
+    render_execution_event,
+    rewrite_execution_event_summary,
+)
 from .evidence import (
     add_slice_commit_metadata,
     current_git_state,
@@ -555,5 +561,6 @@ def cmd_promote(args: argparse.Namespace) -> None:
         "Summary",
         render_execution_event("feature_promoted", canonical_path=feature["canonical_path"]),
     )
+    rewrite_execution_event_summary(canonical)
     print("promotion: complete")
     print(f"canonical_path: {feature['canonical_path']}")

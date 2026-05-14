@@ -1,0 +1,1 @@
+Reviewed promotion summary compaction. events.yaml remains authoritative; execution.md is rewritten only in canonical promotion path. No critical findings.

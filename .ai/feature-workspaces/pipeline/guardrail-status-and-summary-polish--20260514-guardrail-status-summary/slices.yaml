@@ -92,8 +92,8 @@ slices:
   review_focus:
   - no loss of machine event records
   - compact summary remains readable
-  evidence_status: pending
-  status: pending
+  evidence_status: complete
+  status: complete
   iteration_budget: 4
   rollback_point: pre-slice git state
   independent_verification: Compare promoted execution.md and events.yaml.
