@@ -111,23 +111,11 @@ None currently recorded.
 
 ## Event Log
 
-- Initialized the run; next step `nfp-01-context`.
-- Approved `feature_contract` gate.
-- Approved `architecture` gate.
-- Approved `tech_design` gate.
-- Approved `slicing_readiness` gate.
-- Approved `implementation` gate.
-- Completed slice `S-001`.
-- Completed slice `S-002`.
-- Completed retry for slice `S-002`.
-- Completed slice `S-003`.
-- Completed slice `S-004`.
-- Completed `implementation` gate.
-- Completed retry for slice `S-004`.
-- Completed `review` gate.
-- Completed `verification` gate.
-- Moved current step to `finish`.
-- Completed `finish` gate.
+- Initialized the run.
+- Approved planning gates.
+- Completed slices `S-001`, `S-002`, `S-003`, and `S-004`.
+- Completed delivery gates: `implementation`, `review`, `verification`, and `finish`.
+- Promoted canonical feature memory to `.ai/features/pipeline/manual-check-readiness-controls`.
 
 ## History
 

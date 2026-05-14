@@ -1,17 +1,17 @@
 artifact_contract_version: 0.1.0
 generated_by: featurectl.py promote canonical sync
-generated_at: '2026-05-14T19:23:19Z'
+generated_at: '2026-05-14T22:48:58Z'
 project:
   name: pipe
   root: .
   remote: git@github.com:Vetin/pipe.git
 counts:
-  tracked_files: 2421
-  profiled_files: 219
+  tracked_files: 2520
+  profiled_files: 224
   source_files: 30
-  test_files: 37
-  doc_files: 94
-  contract_files: 23
+  test_files: 40
+  doc_files: 95
+  contract_files: 24
   integration_files: 4
 package_manifests: []
 scripts: []
@@ -21,9 +21,9 @@ module_dirs:
 - path: .ai
   tracked_files: 62
 - path: tests
-  tracked_files: 37
+  tracked_files: 40
 - path: pipeline-lab
-  tracked_files: 9
+  tracked_files: 11
 - path: .github
   tracked_files: 1
 canonical_features:
@@ -43,6 +43,8 @@ canonical_features:
   path: .ai/features/pipeline/guardrail-status-and-summary-polish
 - feature_key: pipeline/lifecycle-hygiene-profile-noise
   path: .ai/features/pipeline/lifecycle-hygiene-profile-noise
+- feature_key: pipeline/manual-check-readiness-controls
+  path: .ai/features/pipeline/manual-check-readiness-controls
 - feature_key: pipeline/portable-artifact-consistency
   path: .ai/features/pipeline/portable-artifact-consistency
 - feature_key: pipeline/public-raw-artifact-guardrails

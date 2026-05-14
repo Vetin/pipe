@@ -40,6 +40,11 @@ features:
   status: complete
   path: .ai/features/pipeline/lifecycle-hygiene-profile-noise
   run_id: 20260512-lifecycle-hygiene
+- feature_key: pipeline/manual-check-readiness-controls
+  title: Manual Check Readiness Controls
+  status: complete
+  path: .ai/features/pipeline/manual-check-readiness-controls
+  run_id: 20260515-manual-check-readiness
 - feature_key: pipeline/portable-artifact-consistency
   title: Portable Artifact Consistency
   status: complete

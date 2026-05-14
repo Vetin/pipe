@@ -1,6 +1,6 @@
 artifact_contract_version: 0.1.0
 generated_by: featurectl.py promote canonical sync
-generated_at: '2026-05-14T19:23:19Z'
+generated_at: '2026-05-14T22:48:58Z'
 contract_examples:
 - .agents/pipeline-core/references/native-skill-protocol.md
 - .agents/pipeline-core/scripts/featurectl_core/events.py
@@ -25,6 +25,7 @@ contract_examples:
 - tests/feature_pipeline/test_context_skill_contract.py
 - tests/feature_pipeline/test_feature_contract_path.py
 - tests/feature_pipeline/test_methodology_contract.py
+- tests/feature_pipeline/test_skill_contracts.py
 doc_examples:
 - .agents/pipeline-core/references/README.md
 - .agents/pipeline-core/references/artifact-model.md
@@ -109,6 +110,7 @@ test_examples:
 - tests/feature_pipeline/test_gate_status.py
 - tests/feature_pipeline/test_gates_and_evidence.py
 - tests/feature_pipeline/test_init_profile_showcases.py
+- tests/feature_pipeline/test_manual_check_preflight.py
 - tests/feature_pipeline/test_methodology_contract.py
 - tests/feature_pipeline/test_native_feature_emulation.py
 - tests/feature_pipeline/test_native_feature_judge.py
@@ -119,7 +121,6 @@ test_examples:
 - tests/feature_pipeline/test_planning_readiness.py
 - tests/feature_pipeline/test_promotion.py
 - tests/feature_pipeline/test_random_feature_stress.py
+- tests/feature_pipeline/test_real_codex_conversation.py
 - tests/feature_pipeline/test_real_showcase_runner.py
 - tests/feature_pipeline/test_review_blocking.py
-- tests/feature_pipeline/test_review_verification.py
-- tests/feature_pipeline/test_showcases.py

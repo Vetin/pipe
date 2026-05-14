@@ -1,0 +1,1 @@
+Reviewed opt-in real Codex test gating, preflight command coverage, manual pass criteria, and mock e2e compatibility. Default suite will not invoke real Codex unless RUN_REAL_CODEX_E2E=1.

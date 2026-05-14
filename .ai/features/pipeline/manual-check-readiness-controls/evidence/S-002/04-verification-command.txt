@@ -1,0 +1,1 @@
+python .agents/pipeline-core/scripts/featurectl.py validate --workspace .ai/feature-workspaces/pipeline/manual-check-readiness-controls--20260515-manual-check-readiness --evidence

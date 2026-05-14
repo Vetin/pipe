@@ -1,7 +1,7 @@
 # Feature Overview
 
 Status: generated
-Generated at: 2026-05-14T19:23:19Z
+Generated at: 2026-05-14T22:48:58Z
 
 ## Canonical Features
 
@@ -13,6 +13,7 @@ Generated at: 2026-05-14T19:23:19Z
 - `pipeline/guardrail-polish-and-backlog-tracking` (complete) from `.ai/features/pipeline/guardrail-polish-and-backlog-tracking`; run `run-20260513-8vs4`
 - `pipeline/guardrail-status-and-summary-polish` (complete) from `.ai/features/pipeline/guardrail-status-and-summary-polish`; run `20260514-guardrail-status-summary`
 - `pipeline/lifecycle-hygiene-profile-noise` (complete) from `.ai/features/pipeline/lifecycle-hygiene-profile-noise`; run `20260512-lifecycle-hygiene`
+- `pipeline/manual-check-readiness-controls` (complete) from `.ai/features/pipeline/manual-check-readiness-controls`; run `20260515-manual-check-readiness`
 - `pipeline/portable-artifact-consistency` (complete) from `.ai/features/pipeline/portable-artifact-consistency`; run `20260512-portable-consistency`
 - `pipeline/public-raw-artifact-guardrails` (complete) from `.ai/features/pipeline/public-raw-artifact-guardrails`; run `20260512-public-raw-guardrails`
 - `pipeline/random-feature-stress-lab` (complete) from `.ai/features/pipeline/random-feature-stress-lab`; run `run-20260512-stress`

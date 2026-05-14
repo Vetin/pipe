@@ -1,0 +1,1 @@
+Reviewed legacy fixture updates: Docs Consulted examples now use explicit path bullets and workspace-local docs so canonical copies remain self-validating. Full feature_pipeline suite passes.

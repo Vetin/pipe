@@ -1,0 +1,31 @@
+artifact_contract_version: 0.1.0
+review_id: REV-001
+tier: strict_review
+severity: note
+finding: No blocking spec-compliance findings remain.
+artifact: workspace
+evidence: Full feature-pipeline suite and slice evidence manifest.
+recommendation: Proceed to verification and finish.
+blocking: false
+linked_requirement_ids:
+  - FR-001
+  - FR-002
+  - FR-003
+  - FR-004
+linked_slice_ids:
+  - S-001
+  - S-002
+  - S-003
+  - S-004
+file_refs:
+  - .agents/pipeline-core/scripts/featurectl_core/cli.py
+  - .agents/pipeline-core/scripts/featurectl_core/validation.py
+  - .agents/skills/nfp-06-readiness/SKILL.md
+  - tests/feature_pipeline/test_skill_contracts.py
+reproduction_or_reasoning: >
+  The implementation covers step mutation, planning-package validation,
+  scope-change handling, docs-consulted proof, manual preflight, real Codex
+  opt-in scaffolding, skill contracts, and artifact documentation. Focused and
+  full-suite validation pass.
+fix_verification_command: python -m pytest tests/feature_pipeline -q
+re_review_required: false

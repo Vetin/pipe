@@ -1,0 +1,5 @@
+ M .ai/feature-workspaces/pipeline/manual-check-readiness-controls--20260515-manual-check-readiness/evidence/manifest.yaml
+?? .ai/feature-workspaces/pipeline/manual-check-readiness-controls--20260515-manual-check-readiness/evidence/S-003/
+?? pipeline-lab/manual-check/
+?? tests/feature_pipeline/test_manual_check_preflight.py
+?? tests/feature_pipeline/test_real_codex_conversation.py

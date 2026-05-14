@@ -1,0 +1,11 @@
+ M .agents/pipeline-core/scripts/featurectl_core/cli.py
+ M .agents/pipeline-core/scripts/featurectl_core/events.py
+ M .agents/pipeline-core/scripts/featurectl_core/validation.py
+ M .agents/pipeline-core/scripts/featurectl_core/validators/events.py
+ M .agents/pipeline-core/scripts/schemas/events.schema.json
+ M .ai/feature-workspaces/pipeline/manual-check-readiness-controls--20260515-manual-check-readiness/events.yaml
+ M .ai/feature-workspaces/pipeline/manual-check-readiness-controls--20260515-manual-check-readiness/execution.md
+ M .ai/feature-workspaces/pipeline/manual-check-readiness-controls--20260515-manual-check-readiness/state.yaml
+ M tests/feature_pipeline/test_featurectl_core.py
+ M tests/feature_pipeline/test_planning_readiness.py
+?? .ai/feature-workspaces/pipeline/manual-check-readiness-controls--20260515-manual-check-readiness/evidence/
