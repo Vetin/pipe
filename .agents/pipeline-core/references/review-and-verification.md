@@ -27,10 +27,21 @@
 
 ## Native Artifact Influence
 
-`reviews/*.yaml`, `reviews/verification-review.md`, `evidence/`, and
-`verification-attempts.md` or equivalent `execution.md` entries.
+`reviews/*.yaml`, `reviews/*-review.md`, `reviews/verification-review.md`,
+`evidence/`, and `verification-attempts.md` or equivalent `execution.md`
+entries.
 Native emulation reports compare review coverage side by side so weak prompt
 iterations are visible.
+
+Review artifact boundary:
+
+- `reviews/*.yaml` are YAML findings and are the machine-readable source for
+  severity, blocking state, linked requirements, linked slices, file
+  references, reproduction or reasoning, fix verification, and re-review state.
+- `reviews/*-review.md` are Markdown summaries for human/LLM narrative,
+  reviewer assumptions, zero-finding explanations, and residual-risk context.
+- Markdown summaries do not satisfy the review gate without YAML findings or a
+  note-level YAML record.
 
 ## Native Skill Influence
 

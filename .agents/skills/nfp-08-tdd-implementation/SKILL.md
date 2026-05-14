@@ -7,8 +7,9 @@ pipeline_contract_version: '0.1.0'
 
 # NFP 08 TDD Implementation
 
-Use this skill to implement slices with mandatory Superpowers-style subagent
-execution, red-green-refactor evidence, and two-stage review.
+Use this skill to implement slices with a subagent-first Superpowers-style
+flow, red-green-refactor evidence, and two-stage review. When subagents are not
+available, use the documented sequential fallback and record why.
 
 Methodology:
 
@@ -80,6 +81,23 @@ Subagent Flow Policy:
   implementer report, changed files, and evidence paths.
 - A slice is complete only after red, green, verification, spec review, code
   quality review, commit or diff hash, and `featurectl.py complete-slice`.
+
+## Subagent Availability
+
+Every implementation run must record this section in `execution.md` before the
+first slice changes tests or production code:
+
+```yaml
+subagents_used: yes | no
+fallback_reason: "<required when subagents_used is no>"
+substituted_roles:
+  - implementer
+  - spec_reviewer
+  - code_quality_reviewer
+```
+
+If `subagents_used: no`, the main agent must run the roles sequentially, record
+separate review outputs, and preserve the same evidence schema.
 
 Before implementation:
 
@@ -178,4 +196,32 @@ When all planned slices are complete:
 2. Resolve all final reviewer findings through the same implementer/re-review
    loop.
 3. Run `featurectl.py validate --workspace <workspace> --implementation`.
+
+## Skill Contract
+
+Inputs:
+- `apex.md`, `feature.yaml`, `state.yaml`, `execution.md`, `feature.md`,
+  `architecture.md`, `tech-design.md`, `slices.yaml`, approved gates, and clean
+  worktree status.
+
+Owned artifacts:
+- Tests and implementation files for the active slice, `evidence/`,
+  `evidence/manifest.yaml`, slice status in `slices.yaml`, and implementation
+  checkpoints in `execution.md`.
+
+Forbidden actions:
+- Do not write production code before the expected red failure, skip review,
+  continue past scope change, create `approvals.yaml` or `handoff.md`, or mutate
+  `state.yaml` manually.
+
+Validation command:
+- `python .agents/pipeline-core/scripts/featurectl.py validate --workspace <workspace> --implementation`
+
+Docs consulted requirement:
+- Append `Docs Consulted: TDD Implementation` to `execution.md` with explicit
+  path bullets, `Used for`, and `Confidence` entries.
+
+Next step fallback:
+- Print `Next skill: nfp-09-review` when all slices are complete and automatic
+  handoff does not happen.
 4. Hand off to `nfp-09-review`.

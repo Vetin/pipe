@@ -37,6 +37,9 @@ Responsibilities:
 - explain zero-finding reviews with inspected artifacts, commands, and risk
   lenses used
 - write review files under `reviews/`
+- write `reviews/*.yaml` for machine-readable findings and
+  `reviews/*-review.md` Markdown summaries for human review narrative when a
+  review lens needs explanation
 - block verification for critical findings
 
 Subagent Review Policy:
@@ -77,12 +80,15 @@ Workflow:
    observability, and plan drift.
 7. Write structured findings as `reviews/*.yaml` using severity `critical`,
    `major`, `minor`, or `note`.
-8. Mark critical findings as `blocking: true`.
-9. If no findings are written, create a note-level review record explaining why
+8. Write Markdown summaries as `reviews/*-review.md` when the review needs
+   narrative context; `reviews/verification-review.md` remains required during
+   verification.
+9. Mark critical findings as `blocking: true`.
+10. If no findings are written, create a note-level review record explaining why
    no blocking or soft findings remain and cite evidence.
-10. Set the review gate to `blocked` if critical blocking findings exist;
+11. Set the review gate to `blocked` if critical blocking findings exist;
    otherwise set it to `complete`.
-11. Run `featurectl.py validate --workspace <workspace> --review`.
+12. Run `featurectl.py validate --workspace <workspace> --review`.
 
 Critical findings block verification.
 
@@ -95,6 +101,13 @@ Structured finding requirements:
 - `fix_verification_command`
 - `re_review_required`
 
+Review artifact boundary:
+
+- `reviews/*.yaml` are required for machine-readable findings.
+- `reviews/*-review.md` are Markdown summaries for human/LLM review narrative.
+- Markdown summaries do not satisfy the review gate without YAML findings or a
+  note-level YAML record.
+
 Re-review loop:
 
 - After fixes, update or add review evidence showing each blocking finding is
@@ -103,3 +116,29 @@ Re-review loop:
   evidence and verification command.
 
 If review passes, hand off to `nfp-10-verification`.
+
+## Skill Contract
+
+Inputs:
+- `apex.md`, `feature.yaml`, `state.yaml`, `execution.md`, `feature.md`,
+  `architecture.md`, `tech-design.md`, `slices.yaml`, changed files, and
+  `evidence/manifest.yaml`.
+
+Owned artifacts:
+- `reviews/*.yaml`, optional `reviews/*-review.md` Markdown summaries, review
+  gate state, and review decisions in `execution.md`.
+
+Forbidden actions:
+- Do not clear critical findings by severity edits only, skip fix verification,
+  create `approvals.yaml` or `handoff.md`, or mutate `state.yaml` manually.
+
+Validation command:
+- `python .agents/pipeline-core/scripts/featurectl.py validate --workspace <workspace> --review`
+
+Docs consulted requirement:
+- Append `Docs Consulted: Review` to `execution.md` with explicit path bullets,
+  `Used for`, and `Confidence` entries.
+
+Next step fallback:
+- Print `Next skill: nfp-10-verification` when automatic handoff does not
+  happen.

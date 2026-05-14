@@ -104,3 +104,30 @@ If automatic handoff does not happen, print:
 Next skill: nfp-03-architecture.
 Continue with that skill.
 ```
+
+## Skill Contract
+
+Inputs:
+- `apex.md`, `feature.yaml`, `state.yaml`, `execution.md`, context findings,
+  inspected source paths, and user clarifications.
+
+Owned artifacts:
+- `feature.md`, feature-contract gate notes, and feature-contract decisions in
+  `execution.md`.
+
+Forbidden actions:
+- Do not draft architecture, technical design, slices, implementation code,
+  `approvals.yaml`, or `handoff.md`.
+- Do not mutate `state.yaml` manually; use `featurectl.py gate set` for gate
+  state.
+
+Validation command:
+- `python .agents/pipeline-core/scripts/featurectl.py validate --workspace <workspace>`
+
+Docs consulted requirement:
+- Append `Docs Consulted: Feature Contract` to `execution.md` with explicit path
+  bullets, `Used for`, and `Confidence` entries.
+
+Next step fallback:
+- Print `Next skill: nfp-03-architecture` when automatic handoff does not
+  happen.

@@ -116,3 +116,29 @@ If automatic handoff does not happen, print:
 Next skill: nfp-02-feature-contract.
 Continue with that skill.
 ```
+
+## Skill Contract
+
+Inputs:
+- `apex.md`, `feature.yaml`, `state.yaml`, `execution.md`, `.ai/knowledge`,
+  `.ai/features`, source files, tests, docs, and ADRs.
+
+Owned artifacts:
+- Context findings in `execution.md` and refreshed `.ai/knowledge` profile
+  artifacts when project knowledge is missing or stale.
+
+Forbidden actions:
+- Do not invent architecture, write downstream planning artifacts, implement
+  code, create `approvals.yaml` or `handoff.md`, or mutate `state.yaml`
+  manually.
+
+Validation command:
+- `python .agents/pipeline-core/scripts/featurectl.py validate --workspace <workspace>`
+
+Docs consulted requirement:
+- Append `Docs Consulted: Context` to `execution.md` with explicit path bullets,
+  `Used for`, and `Confidence` entries.
+
+Next step fallback:
+- Print `Next skill: nfp-02-feature-contract` when automatic handoff does not
+  happen.

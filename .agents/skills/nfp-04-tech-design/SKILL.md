@@ -86,3 +86,27 @@ If automatic handoff does not happen, print:
 Next skill: nfp-05-slicing.
 Continue with that skill.
 ```
+
+## Skill Contract
+
+Inputs:
+- `apex.md`, `feature.yaml`, `state.yaml`, `execution.md`, `feature.md`,
+  `architecture.md`, ADRs, contracts, inspected source paths, and test context.
+
+Owned artifacts:
+- `tech-design.md`, contracts under `contracts/` when needed, and technical
+  design decisions in `execution.md`.
+
+Forbidden actions:
+- Do not create slices, implementation code, `approvals.yaml`, or `handoff.md`.
+- Do not mutate `state.yaml` manually; use `featurectl.py gate set`.
+
+Validation command:
+- `python .agents/pipeline-core/scripts/featurectl.py validate --workspace <workspace>`
+
+Docs consulted requirement:
+- Append `Docs Consulted: Technical Design` to `execution.md` with explicit
+  path bullets, `Used for`, and `Confidence` entries.
+
+Next step fallback:
+- Print `Next skill: nfp-05-slicing` when automatic handoff does not happen.

@@ -68,3 +68,27 @@ Workflow:
 8. Confirm `.ai/features/index.yaml` contains the promoted feature key.
 
 Do not implement merge or replace conflict behavior in v1.
+
+## Skill Contract
+
+Inputs:
+- `apex.md`, `feature.yaml`, `state.yaml`, `execution.md`, `events.yaml`,
+  `feature-card.md`, reviews, evidence, and canonical index state.
+
+Owned artifacts:
+- Canonical feature memory under `.ai/features/<domain>/<slug>/`, feature
+  indexes, promoted-readonly workspace state, and promotion events.
+
+Forbidden actions:
+- Do not replace an existing canonical feature without explicit future support,
+  create `approvals.yaml` or `handoff.md`, or mutate `state.yaml` manually.
+
+Validation command:
+- `python .agents/pipeline-core/scripts/featurectl.py validate --workspace <workspace>`
+
+Docs consulted requirement:
+- Append `Docs Consulted: Promote` to `execution.md` with explicit path bullets,
+  `Used for`, and `Confidence` entries.
+
+Next step fallback:
+- Print final promotion status and canonical paths; there is no next NFP skill.

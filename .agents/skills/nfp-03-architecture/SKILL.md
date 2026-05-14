@@ -136,3 +136,29 @@ If automatic handoff does not happen, print:
 Next skill: nfp-04-tech-design.
 Continue with that skill.
 ```
+
+## Skill Contract
+
+Inputs:
+- `apex.md`, `feature.yaml`, `state.yaml`, `execution.md`, `feature.md`,
+  context findings, inspected source paths, and existing ADRs.
+
+Owned artifacts:
+- `architecture.md`, significant ADRs under `adrs/`, diagrams, and architecture
+  decisions in `execution.md`.
+
+Forbidden actions:
+- Do not write technical design, implementation slices, code, `approvals.yaml`,
+  or `handoff.md`.
+- Do not mutate `state.yaml` manually; use `featurectl.py gate set`.
+
+Validation command:
+- `python .agents/pipeline-core/scripts/featurectl.py validate --workspace <workspace>`
+
+Docs consulted requirement:
+- Append `Docs Consulted: Architecture` to `execution.md` with explicit path
+  bullets, `Used for`, and `Confidence` entries.
+
+Next step fallback:
+- Print `Next skill: nfp-04-tech-design` when automatic handoff does not
+  happen.

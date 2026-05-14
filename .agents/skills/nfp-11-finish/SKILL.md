@@ -91,3 +91,27 @@ Feature memory must include:
 - commands that prove final state
 - plan drift notes explaining what changed from `feature.md`,
   `architecture.md`, `tech-design.md`, and `slices.yaml`
+
+## Skill Contract
+
+Inputs:
+- `apex.md`, `feature.yaml`, `state.yaml`, `execution.md`, all planning
+  artifacts, `events.yaml`, reviews, evidence, and final verification output.
+
+Owned artifacts:
+- `feature-card.md`, final summary in `execution.md`, shared knowledge update
+  notes, and finish gate state.
+
+Forbidden actions:
+- Do not promote canonical memory, claim completion without fresh verification,
+  create `approvals.yaml` or `handoff.md`, or mutate `state.yaml` manually.
+
+Validation command:
+- `python .agents/pipeline-core/scripts/featurectl.py validate --workspace <workspace>`
+
+Docs consulted requirement:
+- Append `Docs Consulted: Finish` to `execution.md` with explicit path bullets,
+  `Used for`, and `Confidence` entries.
+
+Next step fallback:
+- Print `Next skill: nfp-12-promote` when automatic handoff does not happen.

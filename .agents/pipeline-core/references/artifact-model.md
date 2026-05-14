@@ -25,15 +25,31 @@
 ## Native Artifact Influence
 
 - `feature.yaml`: identity, run id, branch, canonical path.
-- `state.yaml`: minimal machine state, gates, stale flags, active slice.
-- `execution.md`: run plan, questions, assumptions, docs consulted, decisions,
-  scope changes, iteration ledger, next step.
+- `state.yaml`: minimal machine state, gates, stale flags, current step,
+  lifecycle, active slice, and worktree identity.
+- `events.yaml`: machine-readable event history and append-only replay source
+  for gate changes, step transitions, scope changes, slice completion, review,
+  verification, promotion, and public raw guardrails.
+- `execution.md`: human-readable run journal for run plan, questions,
+  assumptions, docs consulted, decisions, narrative event summaries,
+  scope-change rationale, iteration ledger, and next action.
+- `scope-change.md`: durable scope-change history when implementation or review
+  discovers that earlier planning artifacts must be revisited.
 - `feature-card.md`: compact retrieval memory for future agents.
 - `architecture.md` and `tech-design.md`: the domain/logical design split, with
   invariants and state transitions separated from implementation interfaces,
   migrations, queues/jobs, feature flags, and verification surfaces.
 - `slices.yaml`: dependency-aware task graph that links requirements to owned
   files, tests, red/green evidence, rollback notes, and status.
+
+`events.yaml` is authoritative for machine-readable event replay.
+`execution.md` remains the human-readable run journal. Validators may require
+both, but agents should not maintain two competing machine logs.
+
+Review artifacts have two forms:
+
+- `reviews/*.yaml` are machine-readable findings.
+- `reviews/*-review.md` are Markdown summaries for human/LLM narrative.
 
 ## Native Skill Influence
 

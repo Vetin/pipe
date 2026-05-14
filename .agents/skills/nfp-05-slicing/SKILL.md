@@ -86,3 +86,27 @@ If automatic handoff does not happen, print:
 Next skill: nfp-06-readiness.
 Continue with that skill.
 ```
+
+## Skill Contract
+
+Inputs:
+- `apex.md`, `feature.yaml`, `state.yaml`, `execution.md`, `feature.md`,
+  `architecture.md`, `tech-design.md`, ADRs, and test strategy.
+
+Owned artifacts:
+- `slices.yaml`, slice dependency/risk notes, and slicing decisions in
+  `execution.md`.
+
+Forbidden actions:
+- Do not use `allowed_files` or `forbidden_files`, implement code, create
+  `approvals.yaml` or `handoff.md`, or mutate `state.yaml` manually.
+
+Validation command:
+- `python .agents/pipeline-core/scripts/featurectl.py validate --workspace <workspace>`
+
+Docs consulted requirement:
+- Append `Docs Consulted: Slicing` to `execution.md` with explicit path bullets,
+  `Used for`, and `Confidence` entries.
+
+Next step fallback:
+- Print `Next skill: nfp-06-readiness` when automatic handoff does not happen.

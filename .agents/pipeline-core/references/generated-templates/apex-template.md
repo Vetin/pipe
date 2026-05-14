@@ -9,8 +9,9 @@
 5. `architecture.md`
 6. `tech-design.md`
 7. `slices.yaml`
-8. `evidence/manifest.yaml`
-9. `reviews/`
+8. `events.yaml` — machine-readable execution events
+9. `evidence/manifest.yaml`
+10. `reviews/`
 
 ## Next Action
 

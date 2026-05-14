@@ -1,14 +1,16 @@
 # Execution Log: <feature_key>
 
+events.yaml = machine-readable event source of truth.
+execution.md = human-readable run narrative.
+
 ## User Request
 ## Run Plan
 ## Non-Delegable Checkpoints
 ## Clarifying Questions
 ## Assumptions
 ## Docs Consulted
-## Gate Events
+## Event Summary
 ## Scope Changes
 ## Iteration Ledger
-## Current Step
-## Next Step
+## Current Run State
 ## Summary

@@ -84,3 +84,27 @@ implementation code in this step. If automatic handoff does not happen, print:
 Next skill: nfp-01-context.
 Continue with that skill.
 ```
+
+## Skill Contract
+
+Inputs:
+- User request, repository root, and any existing active workspace context.
+
+Owned artifacts:
+- `feature.yaml`, `state.yaml`, `apex.md`, `execution.md`, and initial
+  `events.yaml` scaffold created through `featurectl.py new`.
+
+Forbidden actions:
+- Do not write feature prose, architecture, technical design, slices,
+  implementation code, `approvals.yaml`, or `handoff.md`.
+- Do not mutate `state.yaml` manually.
+
+Validation command:
+- `python .agents/pipeline-core/scripts/featurectl.py validate --workspace <workspace>`
+
+Docs consulted requirement:
+- Append `Docs Consulted: Intake` to `execution.md` with explicit path bullets,
+  `Used for`, and `Confidence` entries.
+
+Next step fallback:
+- Print `Next skill: nfp-01-context` when automatic handoff does not happen.

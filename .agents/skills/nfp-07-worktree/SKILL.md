@@ -58,3 +58,27 @@ If automatic handoff does not happen, print:
 Next skill: nfp-08-tdd-implementation.
 Continue with that skill.
 ```
+
+## Skill Contract
+
+Inputs:
+- `apex.md`, `feature.yaml`, `state.yaml`, `execution.md`, approved planning
+  gates, branch state, and current git status.
+
+Owned artifacts:
+- Worktree safety checkpoint notes in `execution.md`.
+
+Forbidden actions:
+- Do not implement code, create `approvals.yaml` or `handoff.md`, bypass dirty
+  worktree blockers, or mutate `state.yaml` manually.
+
+Validation command:
+- `python .agents/pipeline-core/scripts/featurectl.py worktree-status --workspace <workspace>`
+
+Docs consulted requirement:
+- Append `Docs Consulted: Worktree` to `execution.md` with explicit path
+  bullets, `Used for`, and `Confidence` entries.
+
+Next step fallback:
+- Print `Next skill: nfp-08-tdd-implementation` when automatic handoff does
+  not happen.

@@ -25,7 +25,9 @@ Methodology:
 
 Responsibilities:
 
-- run `featurectl.py validate --readiness`
+- run `featurectl.py validate --planning-package` for planning-stop workflows
+- run `featurectl.py validate --readiness` and
+  `featurectl.py validate --implementation` before implementation starts
 - analyze the planning package for duplicate, ambiguous, underspecified,
   inconsistent, uncovered, and constitution-risk findings
 - validate slice dependencies, complexity, critical path, file ownership,
@@ -57,14 +59,23 @@ Workflow:
    - slice dependencies with cycles, bottlenecks, or missing owners
    - unmitigated destructive, security, public-contract, migration, or data
      loss risks
-6. Run:
+6. For planning-stop workflows, run:
+
+   ```bash
+   python .agents/pipeline-core/scripts/featurectl.py validate --workspace <workspace> --planning-package
+   ```
+
+   This validates artifact completeness and Docs Consulted proof without
+   requiring approval gates.
+7. For implementation-start workflows, run:
 
    ```bash
    python .agents/pipeline-core/scripts/featurectl.py validate --workspace <workspace> --readiness
+   python .agents/pipeline-core/scripts/featurectl.py validate --workspace <workspace> --implementation
    ```
 
-7. If validation fails, summarize blockers and stop.
-8. If validation passes, summarize assumptions, residual risks, critical path,
+8. If validation fails, summarize blockers and stop.
+9. If validation passes, summarize assumptions, residual risks, critical path,
    parallelization opportunities, and conflict-risk controls, then ask for implementation
    approval unless the user already explicitly delegated that gate.
 
@@ -77,3 +88,27 @@ If approved or delegated, print:
 Next skill: nfp-07-worktree.
 Continue with that skill.
 ```
+
+## Skill Contract
+
+Inputs:
+- `apex.md`, `feature.yaml`, `state.yaml`, `execution.md`, `feature.md`,
+  `architecture.md`, `tech-design.md`, `slices.yaml`, gates, and stale flags.
+
+Owned artifacts:
+- Readiness findings and approval/delegation notes in `execution.md`.
+
+Forbidden actions:
+- Do not approve gates silently, implement code, create `approvals.yaml` or
+  `handoff.md`, or mutate `state.yaml` manually.
+
+Validation command:
+- Planning-stop: `python .agents/pipeline-core/scripts/featurectl.py validate --workspace <workspace> --planning-package`
+- Implementation-start: `python .agents/pipeline-core/scripts/featurectl.py validate --workspace <workspace> --implementation`
+
+Docs consulted requirement:
+- Append `Docs Consulted: Readiness` to `execution.md` with explicit path
+  bullets, `Used for`, and `Confidence` entries.
+
+Next step fallback:
+- Print `Next skill: nfp-07-worktree` when automatic handoff does not happen.

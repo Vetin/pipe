@@ -75,3 +75,28 @@ Loop-aware verification:
 - Final verification must run after the last implementation or review iteration.
 
 If verification passes, hand off to `nfp-11-finish`.
+
+## Skill Contract
+
+Inputs:
+- `apex.md`, `feature.yaml`, `state.yaml`, `execution.md`, planning artifacts,
+  changed files, reviews, and evidence manifest.
+
+Owned artifacts:
+- `reviews/verification-review.md`, final verification output under
+  `evidence/`, verification gate state, and verification notes in
+  `execution.md`.
+
+Forbidden actions:
+- Do not mark blocked verification as success, ignore critical review findings,
+  create `approvals.yaml` or `handoff.md`, or mutate `state.yaml` manually.
+
+Validation command:
+- `python .agents/pipeline-core/scripts/featurectl.py validate --workspace <workspace> --review`
+
+Docs consulted requirement:
+- Append `Docs Consulted: Verification` to `execution.md` with explicit path
+  bullets, `Used for`, and `Confidence` entries.
+
+Next step fallback:
+- Print `Next skill: nfp-11-finish` when automatic handoff does not happen.

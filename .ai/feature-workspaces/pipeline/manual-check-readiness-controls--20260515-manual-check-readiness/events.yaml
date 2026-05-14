@@ -78,3 +78,9 @@ events:
   attempt: 1
   reason: initial
   feature_key: pipeline/manual-check-readiness-controls
+- timestamp: '2026-05-14T22:36:25Z'
+  event_type: slice_completed
+  slice: S-004
+  attempt: 1
+  reason: initial
+  feature_key: pipeline/manual-check-readiness-controls
