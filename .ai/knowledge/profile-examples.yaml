@@ -1,6 +1,6 @@
 artifact_contract_version: 0.1.0
 generated_by: featurectl.py promote canonical sync
-generated_at: '2026-05-13T19:01:47Z'
+generated_at: '2026-05-14T19:23:19Z'
 contract_examples:
 - .agents/pipeline-core/references/native-skill-protocol.md
 - .agents/pipeline-core/scripts/featurectl_core/events.py
@@ -78,6 +78,7 @@ source_examples:
 - .agents/pipeline-core/scripts/featurectl_core/validators/events.py
 - .agents/pipeline-core/scripts/featurectl_core/validators/execution_log.py
 - .agents/pipeline-core/scripts/featurectl_core/validators/gates.py
+- .agents/pipeline-core/scripts/featurectl_core/validators/review.py
 - .agents/pipeline-core/scripts/featurectl_core/validators/slices.py
 - .agents/pipeline-core/scripts/featurectl_core/validators/worktree.py
 - .agents/pipeline-core/scripts/pipelinebench.py

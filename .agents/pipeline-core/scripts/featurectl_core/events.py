@@ -351,7 +351,7 @@ def append_run_plan_update(
     next_heading = re.search(r"\n##\s+", after_heading)
     if next_heading:
         insert_at = match.end() + next_heading.start()
-        execution = execution[:insert_at].rstrip() + "\n" + update + "\n" + execution[insert_at:]
+        execution = execution[:insert_at].rstrip() + "\n\n" + update + "\n" + execution[insert_at:]
     else:
-        execution = execution.rstrip() + "\n" + update + "\n"
+        execution = execution.rstrip() + "\n\n" + update + "\n"
     write_text(path, execution)

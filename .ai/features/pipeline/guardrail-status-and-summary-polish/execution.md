@@ -114,19 +114,11 @@ None currently recorded.
 
 ## Event Log
 
-- Initialized the run; next step `nfp-01-context`.
-- Approved `feature_contract` gate.
-- Approved `architecture` gate.
-- Approved `tech_design` gate.
-- Approved `slicing_readiness` gate.
-- Approved `implementation` gate.
-- Completed slice `S-001`.
-- Completed slice `S-002`.
-- Completed slice `S-003`.
-- Completed `implementation` gate.
-- Completed `review` gate.
-- Completed `verification` gate.
-- Completed `finish` gate.
+- Initialized the run.
+- Approved planning gates.
+- Completed slices `S-001`, `S-002`, and `S-003`.
+- Completed delivery gates: `implementation`, `review`, `verification`, and `finish`.
+- Promoted canonical feature memory to `.ai/features/pipeline/guardrail-status-and-summary-polish`.
 
 ## History
 

@@ -1,0 +1,12 @@
+ M .agents/pipeline-core/scripts/featurectl_core/validation.py
+ M .ai/feature-workspaces/pipeline/guardrail-status-and-summary-polish--20260514-guardrail-status-summary/events.yaml
+ M .ai/feature-workspaces/pipeline/guardrail-status-and-summary-polish--20260514-guardrail-status-summary/execution.md
+ M .ai/feature-workspaces/pipeline/guardrail-status-and-summary-polish--20260514-guardrail-status-summary/state.yaml
+ M .ai/knowledge/architecture-overview.md
+ M .ai/knowledge/integration-map.md
+ M .ai/knowledge/module-map.md
+ M .ai/knowledge/pipeline-backlog.md
+ M tests/feature_pipeline/test_artifact_formatting.py
+?? .agents/pipeline-core/scripts/featurectl_core/validators/review.py
+?? .ai/feature-workspaces/pipeline/guardrail-status-and-summary-polish--20260514-guardrail-status-summary/evidence/
+?? .ai/knowledge/pipeline-guardrails-status.md

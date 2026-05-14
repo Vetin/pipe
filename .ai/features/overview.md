@@ -1,7 +1,7 @@
 # Feature Overview
 
 Status: generated
-Generated at: 2026-05-13T19:01:47Z
+Generated at: 2026-05-14T19:23:19Z
 
 ## Canonical Features
 
@@ -11,6 +11,7 @@ Generated at: 2026-05-13T19:01:47Z
 - `pipeline/core-modularity-and-readable-events` (complete) from `.ai/features/pipeline/core-modularity-and-readable-events`; run `20260513-core-modularity-events`
 - `pipeline/event-schema-strictness-and-narrative-execution-logs` (complete) from `.ai/features/pipeline/event-schema-strictness-and-narrative-execution-logs`; run `20260513-event-schema-narrative`
 - `pipeline/guardrail-polish-and-backlog-tracking` (complete) from `.ai/features/pipeline/guardrail-polish-and-backlog-tracking`; run `run-20260513-8vs4`
+- `pipeline/guardrail-status-and-summary-polish` (complete) from `.ai/features/pipeline/guardrail-status-and-summary-polish`; run `20260514-guardrail-status-summary`
 - `pipeline/lifecycle-hygiene-profile-noise` (complete) from `.ai/features/pipeline/lifecycle-hygiene-profile-noise`; run `20260512-lifecycle-hygiene`
 - `pipeline/portable-artifact-consistency` (complete) from `.ai/features/pipeline/portable-artifact-consistency`; run `20260512-portable-consistency`
 - `pipeline/public-raw-artifact-guardrails` (complete) from `.ai/features/pipeline/public-raw-artifact-guardrails`; run `20260512-public-raw-guardrails`
