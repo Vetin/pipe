@@ -108,6 +108,10 @@ check. Normal tests use file-backed fixtures so the suite remains offline.
 artifact formatting tests, and the public raw check on `main` so raw regressions
 are not only manual validation notes.
 
+`.ai/knowledge/pipeline-guardrails-status.md` records the durable status and
+thresholds for those checks so future agents can distinguish stale review-cache
+reports from clean-checkout verification.
+
 ## Pipeline Backlog
 
 Accepted verification debt that spans more than one feature is tracked in

@@ -142,6 +142,7 @@ class ArtifactFormattingTests(unittest.TestCase):
         for path in paths:
             with self.subTest(path=path.relative_to(ROOT).as_posix()):
                 content = path.read_text(encoding="utf-8")
+                self.assertNotIn("\n\n", content)
                 self.assertNotIn("\n\n\n", content)
                 self.assertNotRegex(content, r"(?m)^[ \t]+$")
 
@@ -156,6 +157,25 @@ class ArtifactFormattingTests(unittest.TestCase):
             "python -m compileall .agents/pipeline-core/scripts",
             "python .agents/pipeline-core/scripts/pipelinebench.py check-public-raw",
             "tests/feature_pipeline/test_artifact_formatting.py",
+        ):
+            self.assertIn(expected, content)
+
+    def test_pipeline_guardrail_status_document_tracks_public_raw_trust(self):
+        status = ROOT / ".ai/knowledge/pipeline-guardrails-status.md"
+        self.assertTrue(status.exists())
+        content = status.read_text(encoding="utf-8")
+
+        for expected in (
+            "# Pipeline Guardrails Status",
+            "Pipeline Guardrails",
+            "check-public-raw",
+            "featurectl.py --help",
+            "pipelinebench.py --help",
+            "python -m compileall .agents/pipeline-core/scripts",
+            "tests/feature_pipeline/test_artifact_formatting.py",
+            "wrapper files: more than 5 lines",
+            ".gitignore: more than 10 lines",
+            ".ai/features/index.yaml: more than 5 lines",
         ):
             self.assertIn(expected, content)
 
@@ -300,6 +320,7 @@ class ArtifactFormattingTests(unittest.TestCase):
             "events.py",
             "execution_log.py",
             "gates.py",
+            "review.py",
             "slices.py",
             "worktree.py",
         }
@@ -334,6 +355,8 @@ class ArtifactFormattingTests(unittest.TestCase):
             "Historical execution log migration",
             "Showcase benchmark package split",
             "Promotion event metadata expansion",
+            "- Reason:\n",
+            "- Suggested next step:\n",
         ):
             self.assertIn(expected, content)
 

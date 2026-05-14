@@ -46,6 +46,9 @@ score artifacts.
 - GitHub Actions -> public raw check: `.github/workflows/pipeline-guardrails.yml`
   runs wrapper help, compileall, artifact formatting tests, and commit-based raw
   line-count checks on `main`.
+- Public raw status -> future agents:
+  `.ai/knowledge/pipeline-guardrails-status.md` records the expected commands,
+  thresholds, and latest local review status for clean-checkout trust.
 - CLI wrapper -> core module: top-level scripts stay small and stable while
   implementation details stay under focused `featurectl_core` and
   `pipelinebench_core` modules.

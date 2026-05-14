@@ -41,3 +41,17 @@ events:
   - -execution-compaction
   - -and-validator-extraction
   feature_key: pipeline/guardrail-status-and-summary-polish
+- timestamp: '2026-05-14T19:14:31Z'
+  event_type: gate_status_changed
+  gate: implementation
+  old_status: blocked
+  new_status: approved
+  by: codex
+  note: Planning-gates-approved--implementation-slices-may-start
+  feature_key: pipeline/guardrail-status-and-summary-polish
+- timestamp: '2026-05-14T19:16:57Z'
+  event_type: slice_completed
+  slice: S-001
+  attempt: 1
+  reason: initial
+  feature_key: pipeline/guardrail-status-and-summary-polish

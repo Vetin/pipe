@@ -12,7 +12,7 @@ gates:
   architecture: approved
   tech_design: approved
   slicing_readiness: approved
-  implementation: blocked
+  implementation: approved
   review: pending
   verification: pending
   finish: pending

@@ -20,6 +20,8 @@ Last reviewed: 2026-05-13
   validators.
 - `.agents/pipeline-core/scripts/featurectl_core/validators/gates.py`: state
   shape and gate-vocabulary validation.
+- `.agents/pipeline-core/scripts/featurectl_core/validators/review.py`: review
+  artifact schema, blocker, severity, and re-review validation.
 - `.agents/pipeline-core/scripts/featurectl_core/validators/slices.py`: slice
   plan validation and feature requirement link checks.
 - `.agents/pipeline-core/scripts/featurectl_core/validators/worktree.py`:
@@ -73,6 +75,8 @@ Last reviewed: 2026-05-13
   ADR index.
 - `.ai/knowledge/pipeline-backlog.md`: accepted cross-feature verification debt
   and future pipeline hardening work.
+- `.ai/knowledge/pipeline-guardrails-status.md`: durable public raw, wrapper,
+  compile, artifact-formatting, and workflow guardrail status.
 
 ## Benchmark Modules
 
