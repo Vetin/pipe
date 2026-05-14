@@ -1,0 +1,43 @@
+artifact_contract_version: 0.1.0
+feature_key: pipeline/guardrail-status-and-summary-polish
+events:
+- timestamp: '2026-05-14T19:09:59Z'
+  event_type: run_initialized
+  feature_key: pipeline/guardrail-status-and-summary-polish
+  step: context
+  next: nfp-01-context
+- timestamp: '2026-05-14T19:13:37Z'
+  event_type: gate_status_changed
+  gate: feature_contract
+  old_status: pending
+  new_status: approved
+  by: codex
+  note: Feature-contract-matches-review-findings-and-bounded-scope
+  feature_key: pipeline/guardrail-status-and-summary-polish
+- timestamp: '2026-05-14T19:13:37Z'
+  event_type: gate_status_changed
+  gate: architecture
+  old_status: pending
+  new_status: approved
+  by: codex
+  note: Architecture-preserves-event-sidecar-boundary-and-raw-guardrail-topology
+  feature_key: pipeline/guardrail-status-and-summary-polish
+- timestamp: '2026-05-14T19:13:37Z'
+  event_type: gate_status_changed
+  gate: tech_design
+  old_status: pending
+  new_status: approved
+  by: codex
+  note: Design-keeps-CLI-contracts-stable
+  feature_key: pipeline/guardrail-status-and-summary-polish
+- timestamp: '2026-05-14T19:13:37Z'
+  event_type: gate_status_changed
+  gate: slicing_readiness
+  old_status: pending
+  new_status: approved
+  by: codex
+  note:
+  - Slices-cover-status-docs
+  - -execution-compaction
+  - -and-validator-extraction
+  feature_key: pipeline/guardrail-status-and-summary-polish
