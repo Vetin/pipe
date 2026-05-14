@@ -40,9 +40,9 @@ None currently recorded.
 
 None currently recorded.
 
-## Docs Consulted
+## Docs Consulted Summary
 
-None yet.
+See step-specific sections below.
 
 ## Docs Consulted: Intake
 

@@ -401,6 +401,18 @@ class ArtifactFormattingTests(unittest.TestCase):
         self.assertIn("events.yaml is the machine event source", execution)
         self.assertIn("execution.md is the human-readable journal", execution)
 
+    def test_canonical_execution_docs_consulted_summary_is_not_stale(self):
+        execution_logs = sorted((ROOT / ".ai/features").glob("*/*/execution.md"))
+        self.assertTrue(execution_logs)
+
+        stale_block = "## Docs Consulted\n\nNone yet."
+        for path in execution_logs:
+            content = path.read_text(encoding="utf-8")
+            if "## Docs Consulted:" not in content:
+                continue
+            with self.subTest(path=path.relative_to(ROOT).as_posix()):
+                self.assertNotIn(stale_block, content)
+
 
 if __name__ == "__main__":
     unittest.main()

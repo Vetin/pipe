@@ -40,7 +40,9 @@ None currently recorded.
 
 None currently recorded.
 
-## Docs Consulted
+## Docs Consulted Summary
+
+See step-specific sections below.
 
 ## Docs Consulted: Context
 
