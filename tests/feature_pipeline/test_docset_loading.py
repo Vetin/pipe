@@ -279,11 +279,15 @@ None for this sample.
 
 ## Docs Consulted: Architecture
 
-- `.ai/knowledge/architecture-overview.md`: reused worktree-first boundary.
+- `.ai/knowledge/architecture-overview.md`
+  - Used for: reused worktree-first boundary.
+  - Confidence: high.
 
 ## Docs Consulted: Feature Contract
 
-- `.agents/pipeline-core/references/generated-templates/feature-template.md`: used required sections.
+- `.ai/knowledge/project-index.yaml`
+  - Used for: used generated project profile as fixture context.
+  - Confidence: high.
 """
             )
 

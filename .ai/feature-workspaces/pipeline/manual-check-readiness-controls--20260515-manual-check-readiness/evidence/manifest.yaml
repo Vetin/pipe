@@ -73,15 +73,20 @@ slices:
       output_file: S-004/01-red-output.log
       git_state_file: S-004/00-pre-red-git-state.txt
     green:
-      timestamp: '2026-05-14T22:36:25Z'
+      timestamp: '2026-05-14T22:46:47Z'
       command_file: S-004/03-green-command.txt
       output_file: S-004/03-green-output.log
       git_state_file: S-004/02-pre-green-git-state.txt
     verification:
-      timestamp: '2026-05-14T22:36:25Z'
+      timestamp: '2026-05-14T22:46:47Z'
       command_file: S-004/04-verification-command.txt
       output_file: S-004/04-verification-output.log
     review:
-      timestamp: '2026-05-14T22:36:25Z'
+      timestamp: '2026-05-14T22:46:47Z'
       summary_file: S-004/05-review-summary.md
     diff_hash: 4f012cfab2f6f5f65ca299fb701c51661873f08a94c0c4cc57c5900b64f189e1
+    retries:
+    - timestamp: '2026-05-14T22:46:48Z'
+      attempt: 2
+      reason: legacy Docs Consulted fixture compatibility
+      diff_hash: c8e092887f9eb0c81f60407a91e9ebcbf9c61a8d666f857dab6eb779fe751daa

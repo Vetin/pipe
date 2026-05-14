@@ -1,1 +1,1 @@
-Reviewed uniform skill contract fields, readiness planning/implementation modes, subagent availability evidence, review YAML/Markdown boundary, and official artifact docs. No unresolved blockers found.
+Reviewed legacy fixture updates: Docs Consulted examples now use explicit path bullets and workspace-local docs so canonical copies remain self-validating. Full feature_pipeline suite passes.

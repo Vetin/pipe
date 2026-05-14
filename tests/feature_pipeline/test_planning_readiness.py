@@ -225,10 +225,6 @@ class PlanningReadinessTests(unittest.TestCase):
 
 
 def write_planning_artifacts(workspace):
-    worktree = workspace
-    while worktree.name != ".ai":
-        worktree = worktree.parent
-    worktree = worktree.parent
     docs = {
         "docs/context/architecture-overview.md": "# Architecture Overview\n",
         "docs/context/feature-template.md": "# Feature Template\n",
@@ -236,7 +232,7 @@ def write_planning_artifacts(workspace):
         "docs/context/slice-template.yaml": "artifact_contract_version: 0.1.0\n",
     }
     for rel, content in docs.items():
-        path = worktree / rel
+        path = workspace / rel
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(content, encoding="utf-8")
 

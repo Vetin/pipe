@@ -1,1 +1,1 @@
-python -m pytest tests/feature_pipeline/test_skill_contracts.py tests/feature_pipeline/test_manual_check_preflight.py tests/feature_pipeline/test_real_codex_conversation.py tests/feature_pipeline/test_planning_readiness.py tests/feature_pipeline/test_gates_and_evidence.py -q && python -m compileall -q .agents/skills .agents/pipeline-core/scripts tests/feature_pipeline pipeline-lab/manual-check && git diff --check
+python -m pytest tests/feature_pipeline -q

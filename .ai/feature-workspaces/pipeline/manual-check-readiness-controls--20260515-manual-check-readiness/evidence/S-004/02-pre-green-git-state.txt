@@ -1,21 +1,6 @@
- M .agents/pipeline-core/references/artifact-model.md
- M .agents/pipeline-core/references/generated-templates/apex-template.md
- M .agents/pipeline-core/references/generated-templates/execution-template.md
- M .agents/pipeline-core/references/review-and-verification.md
- M .agents/pipeline-core/references/workflow-state-machine.md
- M .agents/skills/nfp-00-intake/SKILL.md
- M .agents/skills/nfp-01-context/SKILL.md
- M .agents/skills/nfp-02-feature-contract/SKILL.md
- M .agents/skills/nfp-03-architecture/SKILL.md
- M .agents/skills/nfp-04-tech-design/SKILL.md
- M .agents/skills/nfp-05-slicing/SKILL.md
- M .agents/skills/nfp-06-readiness/SKILL.md
- M .agents/skills/nfp-07-worktree/SKILL.md
- M .agents/skills/nfp-08-tdd-implementation/SKILL.md
- M .agents/skills/nfp-09-review/SKILL.md
- M .agents/skills/nfp-10-verification/SKILL.md
- M .agents/skills/nfp-11-finish/SKILL.md
- M .agents/skills/nfp-12-promote/SKILL.md
- M .ai/feature-workspaces/pipeline/manual-check-readiness-controls--20260515-manual-check-readiness/evidence/manifest.yaml
-?? .ai/feature-workspaces/pipeline/manual-check-readiness-controls--20260515-manual-check-readiness/evidence/S-004/
-?? tests/feature_pipeline/test_skill_contracts.py
+ M .ai/feature-workspaces/pipeline/manual-check-readiness-controls--20260515-manual-check-readiness/events.yaml
+ M .ai/feature-workspaces/pipeline/manual-check-readiness-controls--20260515-manual-check-readiness/execution.md
+ M .ai/feature-workspaces/pipeline/manual-check-readiness-controls--20260515-manual-check-readiness/state.yaml
+ M tests/feature_pipeline/test_docset_loading.py
+ M tests/feature_pipeline/test_feature_contract_path.py
+ M tests/feature_pipeline/test_planning_readiness.py

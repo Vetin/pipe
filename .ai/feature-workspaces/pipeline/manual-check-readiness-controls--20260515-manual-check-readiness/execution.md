@@ -23,6 +23,8 @@ Planned steps:
 
 - Implementation became allowed after planning gates were approved.
 
+- Implementation completed after all slices finished.
+
 ## Non-Delegable Checkpoints
 
 Stop and ask user before:
@@ -120,6 +122,8 @@ None currently recorded.
 - Completed retry for slice `S-002`.
 - Completed slice `S-003`.
 - Completed slice `S-004`.
+- Completed `implementation` gate.
+- Completed retry for slice `S-004`.
 
 ## History
 

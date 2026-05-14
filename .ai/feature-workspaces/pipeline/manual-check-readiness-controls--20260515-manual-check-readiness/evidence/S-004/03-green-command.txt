@@ -1,1 +1,1 @@
-python -m pytest tests/feature_pipeline/test_skill_contracts.py -q
+python -m pytest tests/feature_pipeline -q

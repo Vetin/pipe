@@ -84,3 +84,18 @@ events:
   attempt: 1
   reason: initial
   feature_key: pipeline/manual-check-readiness-controls
+- timestamp: '2026-05-14T22:36:43Z'
+  event_type: gate_status_changed
+  gate: implementation
+  old_status: approved
+  new_status: complete
+  by: codex
+  note: All-four-implementation-slices-completed-with-red/green/verification/review-evidence
+  feature_key: pipeline/manual-check-readiness-controls
+- timestamp: '2026-05-14T22:46:48Z'
+  event_type: slice_retry_completed
+  slice: S-004
+  attempt: 2
+  reason: legacy-Docs-Consulted-fixture-compatibility
+  supersedes: attempt-1
+  feature_key: pipeline/manual-check-readiness-controls

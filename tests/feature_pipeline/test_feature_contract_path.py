@@ -40,8 +40,9 @@ class FeatureContractPathTests(unittest.TestCase):
             content = (ROOT / f".agents/skills/{skill}/SKILL.md").read_text(encoding="utf-8")
             self.assertIn("version: '0.1.0'", content)
             self.assertIn("pipeline_contract_version: '0.1.0'", content)
-            self.assertNotIn("approvals.yaml", content)
-            self.assertNotIn("handoff.md", content)
+            self.assertIn("Forbidden actions:", content)
+            self.assertIn("approvals.yaml", content)
+            self.assertIn("handoff.md", content)
 
         feature_contract = (ROOT / ".agents/skills/nfp-02-feature-contract/SKILL.md").read_text(encoding="utf-8")
         self.assertIn("FR-001", feature_contract)
@@ -149,7 +150,9 @@ Users who forget passwords cannot regain access without support.
 
 ## Docs Consulted: Feature Contract
 
-- `.agents/pipeline-core/references/generated-templates/feature-template.md`: used required sections.
+- `README.md`
+  - Used for: used repository fixture context before drafting the feature contract.
+  - Confidence: high.
 """
             )
 
