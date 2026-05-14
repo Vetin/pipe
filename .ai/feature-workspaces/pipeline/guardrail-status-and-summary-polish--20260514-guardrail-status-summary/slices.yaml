@@ -137,8 +137,8 @@ slices:
   review_focus:
   - no circular imports
   - validation.py remains orchestration
-  evidence_status: pending
-  status: pending
+  evidence_status: complete
+  status: complete
   iteration_budget: 3
   rollback_point: pre-slice git state
   independent_verification: Compile featurectl_core and run review tests.

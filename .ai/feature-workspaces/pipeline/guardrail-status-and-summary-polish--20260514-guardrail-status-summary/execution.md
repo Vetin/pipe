@@ -120,6 +120,7 @@ None currently recorded.
 - Approved `implementation` gate.
 - Completed slice `S-001`.
 - Completed slice `S-002`.
+- Completed slice `S-003`.
 
 ## History
 

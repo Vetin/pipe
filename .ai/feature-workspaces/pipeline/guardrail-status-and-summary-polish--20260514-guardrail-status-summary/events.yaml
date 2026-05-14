@@ -61,3 +61,9 @@ events:
   attempt: 1
   reason: initial
   feature_key: pipeline/guardrail-status-and-summary-polish
+- timestamp: '2026-05-14T19:20:01Z'
+  event_type: slice_completed
+  slice: S-003
+  attempt: 1
+  reason: initial
+  feature_key: pipeline/guardrail-status-and-summary-polish

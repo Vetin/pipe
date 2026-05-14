@@ -1,0 +1,1 @@
+Reviewed validator extraction. validate_review_minimum moved to validators/review.py, validation.py is 323 lines, blocker messages preserved by tests. No critical findings.
