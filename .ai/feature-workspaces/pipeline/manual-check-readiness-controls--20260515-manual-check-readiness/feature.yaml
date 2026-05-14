@@ -1,0 +1,17 @@
+artifact_contract_version: 0.1.0
+feature_key: pipeline/manual-check-readiness-controls
+domain: pipeline
+slug: manual-check-readiness-controls
+title: Manual Check Readiness Controls
+status: draft
+run_id: 20260515-manual-check-readiness
+branch: feature/pipeline-manual-check-readiness-controls-20260515-manual-check-readiness
+worktree: ../worktrees/pipeline-manual-check-readiness-controls-20260515-manual-check-readiness
+canonical_path: .ai/features/pipeline/manual-check-readiness-controls
+workspace_path: .ai/feature-workspaces/pipeline/manual-check-readiness-controls--20260515-manual-check-readiness
+aliases: []
+keywords:
+- pipeline
+- manual-check-readiness-controls
+created_at: '2026-05-14T22:18:01Z'
+updated_at: '2026-05-14T22:18:01Z'

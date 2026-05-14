@@ -1,0 +1,47 @@
+artifact_contract_version: 0.1.0
+feature_key: pipeline/manual-check-readiness-controls
+events:
+- timestamp: '2026-05-14T22:18:01Z'
+  event_type: run_initialized
+  feature_key: pipeline/manual-check-readiness-controls
+  step: context
+  next: nfp-01-context
+- timestamp: '2026-05-14T22:21:10Z'
+  event_type: gate_status_changed
+  gate: feature_contract
+  old_status: pending
+  new_status: approved
+  by: codex
+  note: Review-findings-converted-into-bounded-feature-contract
+  feature_key: pipeline/manual-check-readiness-controls
+- timestamp: '2026-05-14T22:21:10Z'
+  event_type: gate_status_changed
+  gate: architecture
+  old_status: pending
+  new_status: approved
+  by: codex
+  note: Architecture-maps-manual-check-blockers-to-control-plane-commands
+  feature_key: pipeline/manual-check-readiness-controls
+- timestamp: '2026-05-14T22:21:10Z'
+  event_type: gate_status_changed
+  gate: tech_design
+  old_status: pending
+  new_status: approved
+  by: codex
+  note: Design-preserves-existing-CLI-contracts
+  feature_key: pipeline/manual-check-readiness-controls
+- timestamp: '2026-05-14T22:21:10Z'
+  event_type: gate_status_changed
+  gate: slicing_readiness
+  old_status: pending
+  new_status: approved
+  by: codex
+  note:
+  - Slices-cover-step
+  - -planning
+  - -scope
+  - -docs
+  - -real-e2e
+  - -preflight
+  - -and-skill-contracts
+  feature_key: pipeline/manual-check-readiness-controls
