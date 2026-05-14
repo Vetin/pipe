@@ -49,6 +49,19 @@ record local debt, but durable cross-feature work belongs here.
   Add optional metadata first, then promote it to required
   after canonical features are backfilled.
 
+### Real Codex behavioral e2e regularization
+
+- Source: `pipeline/manual-check-readiness-controls`
+- Status: accepted debt
+- Reason:
+  The repository now has an opt-in real Codex behavioral e2e scaffold, but it is
+  intentionally not part of the default suite because it requires a local Codex
+  binary and can be slow or environment-sensitive.
+- Suggested next step:
+  Run the opt-in test in a trusted local or CI environment with
+  `RUN_REAL_CODEX_E2E=1 CODEX_BIN=codex`, then decide whether to publish a
+  scheduled/manual workflow for it.
+
 ## Closed Backlog
 
 No closed backlog items have been recorded yet.

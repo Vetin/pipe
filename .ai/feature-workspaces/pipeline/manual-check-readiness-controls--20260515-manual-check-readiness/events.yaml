@@ -99,3 +99,40 @@ events:
   reason: legacy-Docs-Consulted-fixture-compatibility
   supersedes: attempt-1
   feature_key: pipeline/manual-check-readiness-controls
+- timestamp: '2026-05-14T22:47:35Z'
+  event_type: gate_status_changed
+  gate: review
+  old_status: pending
+  new_status: complete
+  by: codex
+  note: Strict-review-completed-with-machine-readable-findings-and-Markdown-summary
+  feature_key: pipeline/manual-check-readiness-controls
+- timestamp: '2026-05-14T22:47:35Z'
+  event_type: gate_status_changed
+  gate: verification
+  old_status: pending
+  new_status: complete
+  by: codex
+  note:
+  - Full-feature_pipeline-suite-passed:-185-passed
+  - -1-skipped
+  - -440-subtests
+  feature_key: pipeline/manual-check-readiness-controls
+- timestamp: '2026-05-14T22:48:30Z'
+  event_type: step_changed
+  old_step: context
+  new_step: finish
+  by: codex
+  note: Final-feature-card-and-shared-knowledge-updates-prepared
+  feature_key: pipeline/manual-check-readiness-controls
+- timestamp: '2026-05-14T22:48:44Z'
+  event_type: gate_status_changed
+  gate: finish
+  old_status: pending
+  new_status: complete
+  by: codex
+  note:
+  - Feature-card
+  - -verification-review
+  - -and-shared-knowledge-updates-complete
+  feature_key: pipeline/manual-check-readiness-controls

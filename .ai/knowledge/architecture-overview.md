@@ -112,6 +112,29 @@ are not only manual validation notes.
 thresholds for those checks so future agents can distinguish stale review-cache
 reports from clean-checkout verification.
 
+## Manual Check Readiness Controls
+
+Manual checking is supported by three layers:
+
+- deterministic feature-pipeline tests for `featurectl.py`, schemas, gates,
+  evidence, promotion, skills, and artifact formatting;
+- mock prompt-runner tests that validate Codex command wiring and native prompt
+  shape without invoking a real Codex binary;
+- opt-in real Codex behavioral tests under
+  `tests/feature_pipeline/test_real_codex_conversation.py`.
+
+`pipeline-lab/manual-check/preflight.sh` composes `featurectl.py status`,
+`validate`, `validate --planning-package`, `validate --implementation`,
+`worktree-status`, and git status commands for a specific workspace. This keeps
+manual checking repeatable without hiding whether implementation readiness is
+expected to pass or remain blocked.
+
+The control plane now exposes `featurectl.py step set` for current-step changes
+and `featurectl.py scope-change` for plan drift discovered during
+implementation or review. Scope changes write `scope-change.md`, update stale
+flags, record `scope_changed` in `events.yaml`, and block implementation until
+the affected artifacts are refreshed.
+
 ## Pipeline Backlog
 
 Accepted verification debt that spans more than one feature is tracked in

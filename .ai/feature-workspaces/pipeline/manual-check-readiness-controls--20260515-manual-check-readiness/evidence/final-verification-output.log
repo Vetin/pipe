@@ -1,0 +1,5 @@
+python -m pytest tests/feature_pipeline -q
+185 passed, 1 skipped, 440 subtests passed in 70.64s
+
+git diff --check
+passed
