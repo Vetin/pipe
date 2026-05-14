@@ -1,189 +1,199 @@
 artifact_contract_version: 0.1.0
 feature_key: pipeline/manual-check-readiness-controls
 slices:
-  - id: S-001
-    title: Step transitions and planning-package readiness
-    linked_requirements:
-      - FR-001
-      - FR-002
-      - FR-003
-    linked_acceptance_criteria:
-      - AC-001
-      - AC-002
-    linked_adrs:
-      - ADR-010
-    linked_contracts: []
-    dependencies: []
-    priority: 1
-    complexity: 5
-    critical_path: true
-    parallelizable: false
-    file_ownership:
-      - .agents/pipeline-core/scripts/featurectl_core/cli.py
-      - .agents/pipeline-core/scripts/featurectl_core/validation.py
-      - tests/feature_pipeline/test_featurectl_core.py
-      - tests/feature_pipeline/test_planning_readiness.py
-    conflict_risk: medium
-    dependency_notes: Step command must land before scope-change and manual preflight.
-    expected_touchpoints:
-      - step set command
-      - validate --planning-package mode
-      - implementation readiness unchanged
-    scope_confidence: high
-    test_strategy: Add red tests for missing command and planning-package mode.
-    tdd:
-      failing_test_file: tests/feature_pipeline/test_featurectl_core.py
-      red_command: python -m pytest tests/feature_pipeline/test_featurectl_core.py tests/feature_pipeline/test_planning_readiness.py -q
-      expected_failure: featurectl lacks step set and validate --planning-package.
-      green_command: python -m pytest tests/feature_pipeline/test_featurectl_core.py tests/feature_pipeline/test_planning_readiness.py -q
-    verification_commands:
-      - python -m pytest tests/feature_pipeline/test_featurectl_core.py tests/feature_pipeline/test_planning_readiness.py -q
-    review_focus:
-      - machine state mutation through featurectl only
-      - implementation readiness remains strict
-    evidence_status: pending
-    status: pending
-    iteration_budget: 4
-    rollback_point: pre-slice git state
-    independent_verification: Inspect state.yaml and events.yaml after step set.
-    failure_triage_notes: Separate parser failures from transition validation failures.
-  - id: S-002
-    title: Scope-change command and docs-consulted proof
-    linked_requirements:
-      - FR-004
-      - FR-005
-    linked_acceptance_criteria:
-      - AC-003
-      - AC-004
-    linked_adrs:
-      - ADR-010
-    linked_contracts: []
-    dependencies:
-      - S-001
-    priority: 2
-    complexity: 6
-    critical_path: true
-    parallelizable: false
-    file_ownership:
-      - .agents/pipeline-core/scripts/featurectl_core/cli.py
-      - .agents/pipeline-core/scripts/featurectl_core/validation.py
-      - tests/feature_pipeline/test_gates_and_evidence.py
-      - tests/feature_pipeline/test_planning_readiness.py
-    conflict_risk: medium
-    dependency_notes: Scope-change uses step transitions and stale flags.
-    expected_touchpoints:
-      - scope-change.md
-      - structured docs consulted validation
-      - stale implementation blocking
-    scope_confidence: medium
-    test_strategy: Add red tests for marker-only docs consulted and scope-change command.
-    tdd:
-      failing_test_file: tests/feature_pipeline/test_planning_readiness.py
-      red_command: python -m pytest tests/feature_pipeline/test_planning_readiness.py tests/feature_pipeline/test_gates_and_evidence.py -q
-      expected_failure: marker-only docs consulted passes or scope-change command missing.
-      green_command: python -m pytest tests/feature_pipeline/test_planning_readiness.py tests/feature_pipeline/test_gates_and_evidence.py -q
-    verification_commands:
-      - python -m pytest tests/feature_pipeline/test_planning_readiness.py tests/feature_pipeline/test_gates_and_evidence.py -q
-    review_focus:
-      - docs proof should use existing file paths
-      - scope-change must not clear unrelated stale flags
-    evidence_status: pending
-    status: pending
-    iteration_budget: 5
-    rollback_point: pre-slice git state
-    independent_verification: Run scope-change and validate implementation blockers.
-    failure_triage_notes: Check docs parser and stale target mapping first.
-  - id: S-003
-    title: Real Codex e2e scaffold and manual preflight
-    linked_requirements:
-      - FR-008
-      - FR-010
-    linked_acceptance_criteria:
-      - AC-005
-      - AC-007
-    linked_adrs: []
-    linked_contracts: []
-    dependencies:
-      - S-002
-    priority: 3
-    complexity: 5
-    critical_path: true
-    parallelizable: false
-    file_ownership:
-      - tests/feature_pipeline/test_real_codex_conversation.py
-      - pipeline-lab/manual-check/preflight.sh
-      - pipeline-lab/manual-check/README.md
-      - tests/feature_pipeline/test_manual_check_preflight.py
-    conflict_risk: low
-    dependency_notes: Preflight depends on planning-package mode.
-    expected_touchpoints:
-      - opt-in e2e env gate
-      - captured run artifacts
-      - manual preflight command
-    scope_confidence: medium
-    test_strategy: Default tests assert skip behavior and preflight command structure.
-    tdd:
-      failing_test_file: tests/feature_pipeline/test_real_codex_conversation.py
-      red_command: python -m pytest tests/feature_pipeline/test_real_codex_conversation.py tests/feature_pipeline/test_manual_check_preflight.py -q
-      expected_failure: missing optional real e2e scaffold or preflight script.
-      green_command: python -m pytest tests/feature_pipeline/test_real_codex_conversation.py tests/feature_pipeline/test_manual_check_preflight.py -q
-    verification_commands:
-      - python -m pytest tests/feature_pipeline/test_real_codex_conversation.py tests/feature_pipeline/test_manual_check_preflight.py -q
-    review_focus:
-      - real e2e stays opt-in
-      - manual preflight is non-destructive
-    evidence_status: pending
-    status: pending
-    iteration_budget: 4
-    rollback_point: pre-slice git state
-    independent_verification: Run default tests and inspect skipped real e2e reason.
-    failure_triage_notes: Avoid invoking real Codex unless env vars are set.
-  - id: S-004
-    title: Skill contracts and official artifact docs
-    linked_requirements:
-      - FR-006
-      - FR-007
-      - FR-009
-    linked_acceptance_criteria:
-      - AC-006
-      - AC-008
-    linked_adrs:
-      - ADR-010
-    linked_contracts: []
-    dependencies:
-      - S-003
-    priority: 4
-    complexity: 5
-    critical_path: true
-    parallelizable: false
-    file_ownership:
-      - .agents/skills/
-      - .agents/pipeline-core/references/
-      - .ai/knowledge/
-      - tests/feature_pipeline/test_skill_contracts.py
-    conflict_risk: medium
-    dependency_notes: Skill docs should reflect implemented command behavior.
-    expected_touchpoints:
-      - events.yaml source-of-truth docs
-      - review YAML vs Markdown summary docs
-      - subagent fallback docs
-      - skill contract tests
-    scope_confidence: medium
-    test_strategy: Add tests requiring operational sections in every nfp skill.
-    tdd:
-      failing_test_file: tests/feature_pipeline/test_skill_contracts.py
-      red_command: python -m pytest tests/feature_pipeline/test_skill_contracts.py -q
-      expected_failure: missing uniform skill contract expectations.
-      green_command: python -m pytest tests/feature_pipeline/test_skill_contracts.py -q
-    verification_commands:
-      - python -m pytest tests/feature_pipeline/test_skill_contracts.py tests/feature_pipeline/test_artifact_formatting.py -q
-      - python -m pytest tests/feature_pipeline -q
-    review_focus:
-      - skill wording matches featurectl behavior
-      - no direct-skill invocation requirement added to nested prompts
-    evidence_status: pending
-    status: pending
-    iteration_budget: 5
-    rollback_point: pre-slice git state
-    independent_verification: Full suite and featurectl validation.
-    failure_triage_notes: Fix skill docs before loosening tests.
+- id: S-001
+  title: Step transitions and planning-package readiness
+  linked_requirements:
+  - FR-001
+  - FR-002
+  - FR-003
+  linked_acceptance_criteria:
+  - AC-001
+  - AC-002
+  linked_adrs:
+  - ADR-010
+  linked_contracts: []
+  dependencies: []
+  priority: 1
+  complexity: 5
+  critical_path: true
+  parallelizable: false
+  file_ownership:
+  - .agents/pipeline-core/scripts/featurectl_core/cli.py
+  - .agents/pipeline-core/scripts/featurectl_core/validation.py
+  - tests/feature_pipeline/test_featurectl_core.py
+  - tests/feature_pipeline/test_planning_readiness.py
+  conflict_risk: medium
+  dependency_notes: Step command must land before scope-change and manual preflight.
+  expected_touchpoints:
+  - step set command
+  - validate --planning-package mode
+  - implementation readiness unchanged
+  scope_confidence: high
+  test_strategy: Add red tests for missing command and planning-package mode.
+  tdd:
+    failing_test_file: tests/feature_pipeline/test_featurectl_core.py
+    red_command: python -m pytest tests/feature_pipeline/test_featurectl_core.py tests/feature_pipeline/test_planning_readiness.py
+      -q
+    expected_failure: featurectl lacks step set and validate --planning-package.
+    green_command: python -m pytest tests/feature_pipeline/test_featurectl_core.py tests/feature_pipeline/test_planning_readiness.py
+      -q
+  verification_commands:
+  - python -m pytest tests/feature_pipeline/test_featurectl_core.py tests/feature_pipeline/test_planning_readiness.py
+    -q
+  review_focus:
+  - machine state mutation through featurectl only
+  - implementation readiness remains strict
+  evidence_status: complete
+  status: complete
+  iteration_budget: 4
+  rollback_point: pre-slice git state
+  independent_verification: Inspect state.yaml and events.yaml after step set.
+  failure_triage_notes: Separate parser failures from transition validation failures.
+- id: S-002
+  title: Scope-change command and docs-consulted proof
+  linked_requirements:
+  - FR-004
+  - FR-005
+  linked_acceptance_criteria:
+  - AC-003
+  - AC-004
+  linked_adrs:
+  - ADR-010
+  linked_contracts: []
+  dependencies:
+  - S-001
+  priority: 2
+  complexity: 6
+  critical_path: true
+  parallelizable: false
+  file_ownership:
+  - .agents/pipeline-core/scripts/featurectl_core/cli.py
+  - .agents/pipeline-core/scripts/featurectl_core/validation.py
+  - tests/feature_pipeline/test_gates_and_evidence.py
+  - tests/feature_pipeline/test_planning_readiness.py
+  conflict_risk: medium
+  dependency_notes: Scope-change uses step transitions and stale flags.
+  expected_touchpoints:
+  - scope-change.md
+  - structured docs consulted validation
+  - stale implementation blocking
+  scope_confidence: medium
+  test_strategy: Add red tests for marker-only docs consulted and scope-change command.
+  tdd:
+    failing_test_file: tests/feature_pipeline/test_planning_readiness.py
+    red_command: python -m pytest tests/feature_pipeline/test_planning_readiness.py tests/feature_pipeline/test_gates_and_evidence.py
+      -q
+    expected_failure: marker-only docs consulted passes or scope-change command missing.
+    green_command: python -m pytest tests/feature_pipeline/test_planning_readiness.py tests/feature_pipeline/test_gates_and_evidence.py
+      -q
+  verification_commands:
+  - python -m pytest tests/feature_pipeline/test_planning_readiness.py tests/feature_pipeline/test_gates_and_evidence.py
+    -q
+  review_focus:
+  - docs proof should use existing file paths
+  - scope-change must not clear unrelated stale flags
+  evidence_status: pending
+  status: pending
+  iteration_budget: 5
+  rollback_point: pre-slice git state
+  independent_verification: Run scope-change and validate implementation blockers.
+  failure_triage_notes: Check docs parser and stale target mapping first.
+- id: S-003
+  title: Real Codex e2e scaffold and manual preflight
+  linked_requirements:
+  - FR-008
+  - FR-010
+  linked_acceptance_criteria:
+  - AC-005
+  - AC-007
+  linked_adrs: []
+  linked_contracts: []
+  dependencies:
+  - S-002
+  priority: 3
+  complexity: 5
+  critical_path: true
+  parallelizable: false
+  file_ownership:
+  - tests/feature_pipeline/test_real_codex_conversation.py
+  - pipeline-lab/manual-check/preflight.sh
+  - pipeline-lab/manual-check/README.md
+  - tests/feature_pipeline/test_manual_check_preflight.py
+  conflict_risk: low
+  dependency_notes: Preflight depends on planning-package mode.
+  expected_touchpoints:
+  - opt-in e2e env gate
+  - captured run artifacts
+  - manual preflight command
+  scope_confidence: medium
+  test_strategy: Default tests assert skip behavior and preflight command structure.
+  tdd:
+    failing_test_file: tests/feature_pipeline/test_real_codex_conversation.py
+    red_command: python -m pytest tests/feature_pipeline/test_real_codex_conversation.py tests/feature_pipeline/test_manual_check_preflight.py
+      -q
+    expected_failure: missing optional real e2e scaffold or preflight script.
+    green_command: python -m pytest tests/feature_pipeline/test_real_codex_conversation.py tests/feature_pipeline/test_manual_check_preflight.py
+      -q
+  verification_commands:
+  - python -m pytest tests/feature_pipeline/test_real_codex_conversation.py tests/feature_pipeline/test_manual_check_preflight.py
+    -q
+  review_focus:
+  - real e2e stays opt-in
+  - manual preflight is non-destructive
+  evidence_status: pending
+  status: pending
+  iteration_budget: 4
+  rollback_point: pre-slice git state
+  independent_verification: Run default tests and inspect skipped real e2e reason.
+  failure_triage_notes: Avoid invoking real Codex unless env vars are set.
+- id: S-004
+  title: Skill contracts and official artifact docs
+  linked_requirements:
+  - FR-006
+  - FR-007
+  - FR-009
+  linked_acceptance_criteria:
+  - AC-006
+  - AC-008
+  linked_adrs:
+  - ADR-010
+  linked_contracts: []
+  dependencies:
+  - S-003
+  priority: 4
+  complexity: 5
+  critical_path: true
+  parallelizable: false
+  file_ownership:
+  - .agents/skills/
+  - .agents/pipeline-core/references/
+  - .ai/knowledge/
+  - tests/feature_pipeline/test_skill_contracts.py
+  conflict_risk: medium
+  dependency_notes: Skill docs should reflect implemented command behavior.
+  expected_touchpoints:
+  - events.yaml source-of-truth docs
+  - review YAML vs Markdown summary docs
+  - subagent fallback docs
+  - skill contract tests
+  scope_confidence: medium
+  test_strategy: Add tests requiring operational sections in every nfp skill.
+  tdd:
+    failing_test_file: tests/feature_pipeline/test_skill_contracts.py
+    red_command: python -m pytest tests/feature_pipeline/test_skill_contracts.py -q
+    expected_failure: missing uniform skill contract expectations.
+    green_command: python -m pytest tests/feature_pipeline/test_skill_contracts.py -q
+  verification_commands:
+  - python -m pytest tests/feature_pipeline/test_skill_contracts.py tests/feature_pipeline/test_artifact_formatting.py
+    -q
+  - python -m pytest tests/feature_pipeline -q
+  review_focus:
+  - skill wording matches featurectl behavior
+  - no direct-skill invocation requirement added to nested prompts
+  evidence_status: pending
+  status: pending
+  iteration_budget: 5
+  rollback_point: pre-slice git state
+  independent_verification: Full suite and featurectl validation.
+  failure_triage_notes: Fix skill docs before loosening tests.

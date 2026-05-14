@@ -25,6 +25,7 @@
         "event_type": {
           "enum": [
             "run_initialized",
+            "step_changed",
             "gate_status_changed",
             "slice_completed",
             "slice_retry_completed",
@@ -39,6 +40,8 @@
         "feature_key": { "type": "string" },
         "step": { "type": "string" },
         "next": { "type": "string" },
+        "old_step": { "type": ["string", "null"] },
+        "new_step": { "type": "string" },
         "gate": { "type": "string" },
         "old_status": { "type": ["string", "null"] },
         "new_status": { "type": "string" },
@@ -69,6 +72,13 @@
             "required": ["event_type"]
           },
           "then": { "required": ["step", "next"] }
+        },
+        {
+          "if": {
+            "properties": { "event_type": { "const": "step_changed" } },
+            "required": ["event_type"]
+          },
+          "then": { "required": ["old_step", "new_step"] }
         },
         {
           "if": {

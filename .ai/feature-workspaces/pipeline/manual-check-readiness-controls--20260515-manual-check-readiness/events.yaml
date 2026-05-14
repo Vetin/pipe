@@ -45,3 +45,17 @@ events:
   - -preflight
   - -and-skill-contracts
   feature_key: pipeline/manual-check-readiness-controls
+- timestamp: '2026-05-14T22:21:18Z'
+  event_type: gate_status_changed
+  gate: implementation
+  old_status: blocked
+  new_status: approved
+  by: codex
+  note: Planning-gates-approved--implementation-slices-may-start
+  feature_key: pipeline/manual-check-readiness-controls
+- timestamp: '2026-05-14T22:23:43Z'
+  event_type: slice_completed
+  slice: S-001
+  attempt: 1
+  reason: initial
+  feature_key: pipeline/manual-check-readiness-controls

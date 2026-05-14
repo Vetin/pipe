@@ -35,17 +35,26 @@ class PlanningReadinessTests(unittest.TestCase):
         run(["git", "commit", "-m", "initial"], repo)
         return repo
 
-    def test_full_planning_package_validates_but_readiness_requires_approval_or_delegation(self):
+    def test_planning_package_validates_with_drafted_gates_but_implementation_requires_approval(self):
         workspace = self.create_workspace()
         write_planning_artifacts(workspace)
         self.set_gates(workspace, feature_contract="drafted", architecture="drafted", tech_design="drafted", slicing_readiness="drafted")
 
         basic = run([sys.executable, str(SCRIPT), "validate", "--workspace", str(workspace)], self.repo)
-        readiness = run([sys.executable, str(SCRIPT), "validate", "--workspace", str(workspace), "--readiness"], self.repo, check=False)
+        planning = run(
+            [sys.executable, str(SCRIPT), "validate", "--workspace", str(workspace), "--planning-package"],
+            self.repo,
+        )
+        implementation = run(
+            [sys.executable, str(SCRIPT), "validate", "--workspace", str(workspace), "--implementation"],
+            self.repo,
+            check=False,
+        )
 
         self.assertIn("validation: pass", basic.stdout)
-        self.assertNotEqual(readiness.returncode, 0)
-        self.assertIn("readiness requires feature_contract gate approved or delegated", readiness.stdout)
+        self.assertIn("validation: pass", planning.stdout)
+        self.assertNotEqual(implementation.returncode, 0)
+        self.assertIn("implementation requires feature_contract gate approved or delegated", implementation.stdout)
         self.assertFalse((workspace / "src").exists())
 
     def test_readiness_passes_with_approved_or_delegated_gates(self):

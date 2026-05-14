@@ -75,6 +75,7 @@ def validate_workspace(
     root: Path,
     workspace: Path,
     *,
+    planning_package: bool = False,
     readiness: bool = False,
     implementation: bool = False,
     evidence: bool = False,
@@ -98,6 +99,8 @@ def validate_workspace(
     blockers.extend(validate_events_sidecar(workspace, feature))
     blockers.extend(validate_repository_source_truth(root, workspace, feature, state))
 
+    if planning_package:
+        blockers.extend(validate_planning_package(workspace, state))
     if readiness:
         blockers.extend(validate_readiness_minimum(workspace, state))
     if implementation:
@@ -209,6 +212,35 @@ def validate_docs_consulted(workspace: Path, step_label: str) -> list[str]:
     if marker not in execution:
         return [f"execution.md missing {marker}"]
     return []
+
+
+def validate_planning_package(workspace: Path, state: dict[str, Any]) -> list[str]:
+    blockers: list[str] = []
+    for artifact in ("feature.md", "architecture.md", "tech-design.md", "slices.yaml"):
+        if not (workspace / artifact).exists():
+            blockers.append(f"planning-package requires {artifact}")
+
+    planning_state = dict(state)
+    planning_state["gates"] = {
+        "feature_contract": "drafted",
+        "architecture": "drafted",
+        "tech_design": "drafted",
+        "slicing_readiness": "drafted",
+    }
+    if (workspace / "feature.md").exists():
+        blockers.extend(validate_feature_contract_if_started(workspace, planning_state))
+    if (workspace / "architecture.md").exists():
+        blockers.extend(validate_architecture_if_started(workspace, planning_state))
+    if (workspace / "tech-design.md").exists():
+        blockers.extend(validate_tech_design_if_started(workspace, planning_state))
+    if (workspace / "slices.yaml").exists():
+        blockers.extend(validate_slices_if_started(workspace, planning_state))
+
+    for artifact in ("feature", "architecture", "tech_design", "slices"):
+        if (state.get("stale") or {}).get(artifact):
+            blockers.append(f"planning-package blocked by stale {artifact}")
+    return blockers
+
 
 def validate_readiness_minimum(workspace: Path, state: dict[str, Any]) -> list[str]:
     blockers: list[str] = []

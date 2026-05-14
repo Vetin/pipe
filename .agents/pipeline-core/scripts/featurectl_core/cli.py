@@ -49,6 +49,7 @@ from .shared import (
     DEFAULT_STALE,
     FeatureCtlError,
     VALID_GATE_STATES,
+    VALID_STEPS,
     generate_run_id,
     git_branch_exists,
     normalize_domain,
@@ -90,6 +91,7 @@ def main(argv: list[str] | None = None) -> int:
 
     validate_parser = subparsers.add_parser("validate", help="validate pipeline workspace")
     validate_parser.add_argument("--workspace", required=True)
+    validate_parser.add_argument("--planning-package", action="store_true")
     validate_parser.add_argument("--readiness", action="store_true")
     validate_parser.add_argument("--implementation", action="store_true")
     validate_parser.add_argument("--evidence", action="store_true")
@@ -110,6 +112,15 @@ def main(argv: list[str] | None = None) -> int:
     gate_set_parser.add_argument("--by", dest="actor", required=True)
     gate_set_parser.add_argument("--note", default="")
     gate_set_parser.set_defaults(func=cmd_gate_set)
+
+    step_parser = subparsers.add_parser("step", help="manage current pipeline step")
+    step_subparsers = step_parser.add_subparsers(dest="step_command", required=True)
+    step_set_parser = step_subparsers.add_parser("set", help="set the current pipeline step")
+    step_set_parser.add_argument("--workspace", required=True)
+    step_set_parser.add_argument("--step", required=True)
+    step_set_parser.add_argument("--by", dest="actor", required=True)
+    step_set_parser.add_argument("--note", default="")
+    step_set_parser.set_defaults(func=cmd_step_set)
 
     mark_stale_parser = subparsers.add_parser("mark-stale", help="mark downstream artifacts stale")
     mark_stale_parser.add_argument("--workspace", required=True)
@@ -289,6 +300,7 @@ def cmd_validate(args: argparse.Namespace) -> None:
     blockers = validate_workspace(
         root,
         workspace,
+        planning_package=args.planning_package,
         readiness=args.readiness,
         implementation=args.implementation,
         evidence=args.evidence,
@@ -321,6 +333,40 @@ def cmd_load_docset(args: argparse.Namespace) -> None:
     else:
         print("  none")
     print_docs("suggested_related_files", root, docset.get("suggested_related_files", []), check_exists=False)
+
+
+def normalize_state_step(step: str) -> str:
+    normalized = step.strip().lower().replace("-", "_")
+    if normalized not in VALID_STEPS:
+        raise FeatureCtlError(f"invalid step: {step}")
+    if normalized == "promote":
+        raise FeatureCtlError("promote step is managed by featurectl.py promote")
+    return normalized
+
+
+def cmd_step_set(args: argparse.Namespace) -> None:
+    root = repo_root()
+    workspace = resolve_workspace(root, args.workspace)
+    state_path = workspace / "state.yaml"
+    state = read_yaml(state_path)
+    old_step = state.get("current_step")
+    new_step = normalize_state_step(args.step)
+    state["current_step"] = new_step
+    write_yaml(state_path, state)
+    append_execution_event(
+        workspace,
+        "Step Events",
+        render_execution_event(
+            "step_changed",
+            old_step=old_step or "none",
+            new_step=new_step,
+            by=args.actor,
+            note=args.note or "none",
+        ),
+    )
+    write_latest_status(workspace, new_step)
+    print(f"current_step: {new_step}")
+    print(f"next_step: {next_skill_for_step(new_step)}")
 
 
 def cmd_gate_set(args: argparse.Namespace) -> None:

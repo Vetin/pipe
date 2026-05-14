@@ -21,7 +21,7 @@ Planned steps:
 
 ## Run Plan Updates
 
-None currently recorded.
+- Implementation became allowed after planning gates were approved.
 
 ## Non-Delegable Checkpoints
 
@@ -114,6 +114,8 @@ None currently recorded.
 - Approved `architecture` gate.
 - Approved `tech_design` gate.
 - Approved `slicing_readiness` gate.
+- Approved `implementation` gate.
+- Completed slice `S-001`.
 
 ## History
 

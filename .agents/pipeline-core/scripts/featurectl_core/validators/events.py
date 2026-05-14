@@ -14,6 +14,7 @@ BASE_EVENT_FIELDS = {"timestamp", "event_type", "feature_key"}
 TOP_LEVEL_FIELDS = {"artifact_contract_version", "feature_key", "events"}
 EVENT_FIELDS = {
     "run_initialized": {"step", "next"},
+    "step_changed": {"old_step", "new_step", "by", "note"},
     "gate_status_changed": {"gate", "old_status", "new_status", "by", "note"},
     "slice_completed": {"slice", "attempt", "reason"},
     "slice_retry_completed": {"slice", "attempt", "reason", "supersedes"},
@@ -26,6 +27,7 @@ EVENT_FIELDS = {
 }
 REQUIRED_BY_TYPE = {
     "run_initialized": ("step", "next"),
+    "step_changed": ("old_step", "new_step"),
     "gate_status_changed": ("gate", "old_status", "new_status"),
     "slice_completed": ("slice", "attempt", "reason"),
     "slice_retry_completed": ("slice", "attempt", "reason", "supersedes"),

@@ -304,6 +304,84 @@ class FeatureCtlCoreTests(unittest.TestCase):
 
         self.assertIn("missing apex.md", result.stdout)
 
+    def test_step_set_updates_current_step_execution_and_events(self):
+        self.new_feature("run-step-set")
+        workspace = self.workspace("run-step-set")
+
+        result = run(
+            [
+                sys.executable,
+                str(SCRIPT),
+                "step",
+                "set",
+                "--workspace",
+                str(workspace),
+                "--step",
+                "architecture",
+                "--by",
+                "nfp-03-architecture",
+                "--note",
+                "feature contract drafted",
+            ],
+            self.repo,
+        )
+
+        state = yaml.safe_load((workspace / "state.yaml").read_text(encoding="utf-8"))
+        execution = (workspace / "execution.md").read_text(encoding="utf-8")
+        events = yaml.safe_load((workspace / "events.yaml").read_text(encoding="utf-8"))
+        self.assertIn("current_step: architecture", result.stdout)
+        self.assertIn("next_step: nfp-03-architecture", result.stdout)
+        self.assertEqual(state["current_step"], "architecture")
+        self.assertIn("Moved current step to `architecture`.", execution)
+        self.assertIn("Current step: architecture", execution)
+        self.assertEqual(events["events"][-1]["event_type"], "step_changed")
+        self.assertEqual(events["events"][-1]["old_step"], "context")
+        self.assertEqual(events["events"][-1]["new_step"], "architecture")
+
+    def test_step_set_rejects_invalid_or_promote_step(self):
+        self.new_feature("run-step-invalid")
+        workspace = self.workspace("run-step-invalid")
+
+        invalid = run(
+            [
+                sys.executable,
+                str(SCRIPT),
+                "step",
+                "set",
+                "--workspace",
+                str(workspace),
+                "--step",
+                "not-a-step",
+                "--by",
+                "test",
+            ],
+            self.repo,
+            check=False,
+        )
+        promote = run(
+            [
+                sys.executable,
+                str(SCRIPT),
+                "step",
+                "set",
+                "--workspace",
+                str(workspace),
+                "--step",
+                "promote",
+                "--by",
+                "test",
+            ],
+            self.repo,
+            check=False,
+        )
+
+        state = yaml.safe_load((workspace / "state.yaml").read_text(encoding="utf-8"))
+        self.assertNotEqual(invalid.returncode, 0)
+        self.assertIn("invalid step", invalid.stderr)
+        self.assertNotEqual(promote.returncode, 0)
+        self.assertIn("promote step is managed by featurectl.py promote", promote.stderr)
+        self.assertEqual(state["current_step"], "context")
+
     def new_feature(self, run_id, check=True):
         return run(
             [

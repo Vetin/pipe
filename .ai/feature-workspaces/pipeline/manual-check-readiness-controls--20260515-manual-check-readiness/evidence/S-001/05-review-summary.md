@@ -1,0 +1,1 @@
+Reviewed step set and planning-package mode. State transitions now mutate state.yaml through featurectl, and implementation validation remains strict. No critical findings.

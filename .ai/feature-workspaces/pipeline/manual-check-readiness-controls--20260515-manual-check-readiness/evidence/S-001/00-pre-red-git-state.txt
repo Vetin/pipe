@@ -1,0 +1,5 @@
+ M .ai/feature-workspaces/pipeline/manual-check-readiness-controls--20260515-manual-check-readiness/events.yaml
+ M .ai/feature-workspaces/pipeline/manual-check-readiness-controls--20260515-manual-check-readiness/execution.md
+ M .ai/feature-workspaces/pipeline/manual-check-readiness-controls--20260515-manual-check-readiness/state.yaml
+ M tests/feature_pipeline/test_featurectl_core.py
+ M tests/feature_pipeline/test_planning_readiness.py

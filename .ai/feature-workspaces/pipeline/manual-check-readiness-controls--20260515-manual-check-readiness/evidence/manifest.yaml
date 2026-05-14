@@ -1,0 +1,25 @@
+artifact_contract_version: 0.1.0
+feature_key: pipeline/manual-check-readiness-controls
+completion_identity_policy:
+  diff_hash: hexadecimal git diff or commit-derived hash when available
+  change_label: semantic completion label when a real diff hash is unavailable
+slices:
+  S-001:
+    red:
+      timestamp: '2026-05-14T22:22:32Z'
+      command_file: S-001/01-red-command.txt
+      output_file: S-001/01-red-output.log
+      git_state_file: S-001/00-pre-red-git-state.txt
+    green:
+      timestamp: '2026-05-14T22:23:43Z'
+      command_file: S-001/03-green-command.txt
+      output_file: S-001/03-green-output.log
+      git_state_file: S-001/02-pre-green-git-state.txt
+    verification:
+      timestamp: '2026-05-14T22:23:43Z'
+      command_file: S-001/04-verification-command.txt
+      output_file: S-001/04-verification-output.log
+    review:
+      timestamp: '2026-05-14T22:23:43Z'
+      summary_file: S-001/05-review-summary.md
+    diff_hash: 583c0faed4a4cc142278877578b1a54c47137ef1
