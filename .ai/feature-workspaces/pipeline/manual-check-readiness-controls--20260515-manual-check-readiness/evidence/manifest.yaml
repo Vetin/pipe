@@ -23,3 +23,27 @@ slices:
       timestamp: '2026-05-14T22:23:43Z'
       summary_file: S-001/05-review-summary.md
     diff_hash: 583c0faed4a4cc142278877578b1a54c47137ef1
+  S-002:
+    red:
+      timestamp: '2026-05-14T22:24:59Z'
+      command_file: S-002/01-red-command.txt
+      output_file: S-002/01-red-output.log
+      git_state_file: S-002/00-pre-red-git-state.txt
+    green:
+      timestamp: '2026-05-14T22:29:02Z'
+      command_file: S-002/03-green-command.txt
+      output_file: S-002/03-green-output.log
+      git_state_file: S-002/02-pre-green-git-state.txt
+    verification:
+      timestamp: '2026-05-14T22:29:02Z'
+      command_file: S-002/04-verification-command.txt
+      output_file: S-002/04-verification-output.log
+    review:
+      timestamp: '2026-05-14T22:29:02Z'
+      summary_file: S-002/05-review-summary.md
+    diff_hash: 701f457739dfedc4f3ee6d847858a916121a2a1ce32b64ff922b78bb8c620352
+    retries:
+    - timestamp: '2026-05-14T22:29:02Z'
+      attempt: 2
+      reason: explicit Docs Consulted path parsing fix
+      diff_hash: 38842582b0d26deb44bfe2f9c096283663b67a539e52e0132dc4bde27b2b901d

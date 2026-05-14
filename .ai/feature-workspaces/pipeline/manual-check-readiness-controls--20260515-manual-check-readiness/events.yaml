@@ -59,3 +59,16 @@ events:
   attempt: 1
   reason: initial
   feature_key: pipeline/manual-check-readiness-controls
+- timestamp: '2026-05-14T22:28:07Z'
+  event_type: slice_completed
+  slice: S-002
+  attempt: 1
+  reason: initial
+  feature_key: pipeline/manual-check-readiness-controls
+- timestamp: '2026-05-14T22:29:02Z'
+  event_type: slice_retry_completed
+  slice: S-002
+  attempt: 2
+  reason: explicit-Docs-Consulted-path-parsing-fix
+  supersedes: attempt-1
+  feature_key: pipeline/manual-check-readiness-controls

@@ -122,6 +122,14 @@ def main(argv: list[str] | None = None) -> int:
     step_set_parser.add_argument("--note", default="")
     step_set_parser.set_defaults(func=cmd_step_set)
 
+    scope_change_parser = subparsers.add_parser("scope-change", help="record a scope change and return to an earlier step")
+    scope_change_parser.add_argument("--workspace", required=True)
+    scope_change_parser.add_argument("--reason", required=True)
+    scope_change_parser.add_argument("--return-step", required=True)
+    scope_change_parser.add_argument("--stale", action="append", default=[])
+    scope_change_parser.add_argument("--by", dest="actor", required=True)
+    scope_change_parser.set_defaults(func=cmd_scope_change)
+
     mark_stale_parser = subparsers.add_parser("mark-stale", help="mark downstream artifacts stale")
     mark_stale_parser.add_argument("--workspace", required=True)
     mark_stale_parser.add_argument("--artifact", required=True)
@@ -367,6 +375,81 @@ def cmd_step_set(args: argparse.Namespace) -> None:
     write_latest_status(workspace, new_step)
     print(f"current_step: {new_step}")
     print(f"next_step: {next_skill_for_step(new_step)}")
+
+
+def cmd_scope_change(args: argparse.Namespace) -> None:
+    root = repo_root()
+    workspace = resolve_workspace(root, args.workspace)
+    state_path = workspace / "state.yaml"
+    state = read_yaml(state_path)
+    return_step = normalize_state_step(args.return_step)
+    stale = state.setdefault("stale", {})
+    stale_artifacts = resolve_scope_stale_artifacts(args.stale, stale)
+    for artifact in stale_artifacts:
+        stale[artifact] = True
+    old_step = state.get("current_step")
+    state["current_step"] = return_step
+    write_yaml(state_path, state)
+    append_scope_change(workspace, args.reason, return_step, stale_artifacts, args.actor)
+    append_execution_event(
+        workspace,
+        "Scope Changes",
+        render_execution_event(
+            "scope_changed",
+            old_step=old_step or "none",
+            return_step=return_step,
+            stale=stale_artifacts,
+            by=args.actor,
+            reason=args.reason,
+        ),
+    )
+    write_latest_status(workspace, return_step)
+    print("scope_change: recorded")
+    print(f"return_step: {return_step}")
+    print("stale:")
+    for artifact in stale_artifacts:
+        print(f"  - {artifact}")
+
+
+def resolve_scope_stale_artifacts(requested: list[str], stale: dict[str, Any]) -> list[str]:
+    if not requested:
+        raise FeatureCtlError("scope-change requires at least one --stale artifact")
+    resolved: list[str] = []
+    for artifact in requested:
+        normalized = artifact.strip().replace("-", "_")
+        if normalized in stale:
+            targets = [normalized]
+        else:
+            targets = staleness_targets(artifact)
+        if not targets:
+            raise FeatureCtlError(f"unknown artifact for scope-change staleness: {artifact}")
+        for target in targets:
+            if target not in resolved:
+                resolved.append(target)
+    return resolved
+
+
+def append_scope_change(
+    workspace: Path,
+    reason: str,
+    return_step: str,
+    stale_artifacts: list[str],
+    actor: str,
+) -> None:
+    path = workspace / "scope-change.md"
+    entry = (
+        f"## Scope Change: {utc_now()}\n\n"
+        f"- Actor: {actor}\n"
+        f"- Return step: {return_step}\n"
+        f"- Reason: {reason}\n"
+        "- Stale artifacts:\n"
+        + "\n".join(f"  - {artifact}" for artifact in stale_artifacts)
+        + "\n"
+    )
+    if path.exists():
+        write_text(path, path.read_text(encoding="utf-8").rstrip() + "\n\n" + entry)
+    else:
+        write_text(path, "# Scope Change Log\n\n" + entry)
 
 
 def cmd_gate_set(args: argparse.Namespace) -> None:

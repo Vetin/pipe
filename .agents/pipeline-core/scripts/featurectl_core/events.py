@@ -296,6 +296,8 @@ def summarize_event_record(event: dict[str, Any] | None) -> str:
         return f"- {verb} `{event.get('gate')}` gate."
     if event_type == "step_changed":
         return f"- Moved current step to `{event.get('new_step')}`."
+    if event_type == "scope_changed":
+        return f"- Recorded scope change and returned to `{event.get('return_step')}`."
     if event_type == "artifact_marked_stale":
         return f"- Marked `{event.get('artifact')}` stale."
     if event_type == "slice_completed":

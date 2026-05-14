@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import re
 from pathlib import Path
 from typing import Any
 
@@ -211,7 +212,52 @@ def validate_docs_consulted(workspace: Path, step_label: str) -> list[str]:
     marker = f"Docs Consulted: {step_label}"
     if marker not in execution:
         return [f"execution.md missing {marker}"]
-    return []
+    section = markdown_section(execution, marker)
+    blockers: list[str] = []
+    paths = referenced_doc_paths(section)
+    existing_paths = [path for path in paths if referenced_path_exists(workspace, path)]
+    if not existing_paths:
+        blockers.append(f"execution.md {marker} must reference at least one existing file path")
+    for path in paths:
+        if not referenced_path_exists(workspace, path):
+            blockers.append(f"execution.md {marker} missing referenced path: {path}")
+    if not re.search(r"(?im)^\s*-\s+Used for:\s*\S", section):
+        blockers.append(f"execution.md {marker} must include a non-empty Used for entry")
+    return blockers
+
+
+def markdown_section(markdown: str, heading_text: str) -> str:
+    match = re.search(rf"^## {re.escape(heading_text)}\s*$", markdown, flags=re.MULTILINE)
+    if not match:
+        return ""
+    rest = markdown[match.end() :]
+    next_heading = re.search(r"\n##\s+", rest)
+    return rest[: next_heading.start()] if next_heading else rest
+
+
+def referenced_doc_paths(section: str) -> list[str]:
+    candidates: list[str] = []
+    for line in section.splitlines():
+        bullet_path = re.match(r"\s*-\s+`([^`]+)`", line)
+        if bullet_path:
+            candidates.append(bullet_path.group(1))
+            continue
+        keyed_path = re.match(r"\s*-\s+path:\s+`?([^`]+?)`?\s*$", line)
+        if keyed_path:
+            candidates.append(keyed_path.group(1))
+    return [
+        item
+        for item in candidates
+        if "/" in item or item.endswith((".md", ".yaml", ".yml", ".json", ".py", ".txt"))
+    ]
+
+
+def referenced_path_exists(workspace: Path, rel_path: str) -> bool:
+    candidate = Path(rel_path)
+    if candidate.is_absolute():
+        return candidate.exists()
+    roots = [workspace, infer_worktree_path(workspace)]
+    return any((root / candidate).exists() for root in roots)
 
 
 def validate_planning_package(workspace: Path, state: dict[str, Any]) -> list[str]:
@@ -264,6 +310,9 @@ def validate_implementation_minimum(state: dict[str, Any]) -> list[str]:
     for gate in ("feature_contract", "architecture", "tech_design", "slicing_readiness"):
         if gates.get(gate) not in {"approved", "delegated"}:
             blockers.append(f"implementation requires {gate} gate approved or delegated")
+    for artifact in ("feature", "architecture", "tech_design", "slices", "evidence", "review"):
+        if (state.get("stale") or {}).get(artifact):
+            blockers.append(f"implementation blocked by stale {artifact}")
     return blockers
 
 

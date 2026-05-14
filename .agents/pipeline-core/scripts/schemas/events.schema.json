@@ -26,6 +26,7 @@
           "enum": [
             "run_initialized",
             "step_changed",
+            "scope_changed",
             "gate_status_changed",
             "slice_completed",
             "slice_retry_completed",
@@ -42,6 +43,11 @@
         "next": { "type": "string" },
         "old_step": { "type": ["string", "null"] },
         "new_step": { "type": "string" },
+        "return_step": { "type": "string" },
+        "stale": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
         "gate": { "type": "string" },
         "old_status": { "type": ["string", "null"] },
         "new_status": { "type": "string" },
@@ -79,6 +85,13 @@
             "required": ["event_type"]
           },
           "then": { "required": ["old_step", "new_step"] }
+        },
+        {
+          "if": {
+            "properties": { "event_type": { "const": "scope_changed" } },
+            "required": ["event_type"]
+          },
+          "then": { "required": ["return_step", "stale", "reason"] }
         },
         {
           "if": {

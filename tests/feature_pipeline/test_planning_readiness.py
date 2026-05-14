@@ -100,6 +100,102 @@ class PlanningReadinessTests(unittest.TestCase):
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("links unknown requirement FR-999", result.stdout)
 
+    def test_docs_consulted_marker_only_fails_planning_package(self):
+        workspace = self.create_workspace("run-docs-marker-only")
+        write_planning_artifacts(workspace)
+        execution_path = workspace / "execution.md"
+        execution = execution_path.read_text(encoding="utf-8")
+        execution = execution.split("## Docs Consulted: Architecture", 1)[0]
+        execution += "\n\n## Docs Consulted: Architecture\n\nMarker only.\n"
+        execution += "\n## Docs Consulted: Feature Contract\n\nMarker only.\n"
+        execution += "\n## Docs Consulted: Technical Design\n\nMarker only.\n"
+        execution += "\n## Docs Consulted: Slicing\n\nMarker only.\n"
+        execution_path.write_text(execution, encoding="utf-8")
+        self.set_gates(workspace, feature_contract="drafted", architecture="drafted", tech_design="drafted", slicing_readiness="drafted")
+
+        result = run(
+            [sys.executable, str(SCRIPT), "validate", "--workspace", str(workspace), "--planning-package"],
+            self.repo,
+            check=False,
+        )
+
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("execution.md Docs Consulted: Architecture must reference at least one existing file path", result.stdout)
+        self.assertIn("execution.md Docs Consulted: Feature Contract must include a non-empty Used for entry", result.stdout)
+
+    def test_docs_consulted_missing_file_fails_planning_package(self):
+        workspace = self.create_workspace("run-docs-missing-file")
+        write_planning_artifacts(workspace)
+        execution_path = workspace / "execution.md"
+        execution = execution_path.read_text(encoding="utf-8")
+        execution = execution.replace(
+            "`docs/context/architecture-overview.md`",
+            "`docs/context/missing-architecture-overview.md`",
+        )
+        execution_path.write_text(execution, encoding="utf-8")
+        self.set_gates(workspace, feature_contract="drafted", architecture="drafted", tech_design="drafted", slicing_readiness="drafted")
+
+        result = run(
+            [sys.executable, str(SCRIPT), "validate", "--workspace", str(workspace), "--planning-package"],
+            self.repo,
+            check=False,
+        )
+
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("execution.md Docs Consulted: Architecture missing referenced path", result.stdout)
+
+    def test_scope_change_marks_stale_return_step_and_blocks_implementation(self):
+        workspace = self.create_workspace("run-scope-change")
+        write_planning_artifacts(workspace)
+        self.set_gates(
+            workspace,
+            feature_contract="approved",
+            architecture="approved",
+            tech_design="approved",
+            slicing_readiness="approved",
+        )
+
+        result = run(
+            [
+                sys.executable,
+                str(SCRIPT),
+                "scope-change",
+                "--workspace",
+                str(workspace),
+                "--reason",
+                "Implementation found missing expiry behavior",
+                "--return-step",
+                "tech-design",
+                "--stale",
+                "tech_design",
+                "--stale",
+                "slices",
+                "--stale",
+                "evidence",
+                "--by",
+                "codex",
+            ],
+            self.repo,
+        )
+        implementation = run(
+            [sys.executable, str(SCRIPT), "validate", "--workspace", str(workspace), "--implementation"],
+            self.repo,
+            check=False,
+        )
+
+        state = yaml.safe_load((workspace / "state.yaml").read_text(encoding="utf-8"))
+        events = yaml.safe_load((workspace / "events.yaml").read_text(encoding="utf-8"))
+        scope_change = (workspace / "scope-change.md").read_text(encoding="utf-8")
+        self.assertIn("return_step: tech_design", result.stdout)
+        self.assertEqual(state["current_step"], "tech_design")
+        self.assertTrue(state["stale"]["tech_design"])
+        self.assertTrue(state["stale"]["slices"])
+        self.assertTrue(state["stale"]["evidence"])
+        self.assertIn("Implementation found missing expiry behavior", scope_change)
+        self.assertEqual(events["events"][-1]["event_type"], "scope_changed")
+        self.assertNotEqual(implementation.returncode, 0)
+        self.assertIn("implementation blocked by stale tech_design", implementation.stdout)
+
     def create_workspace(self, run_id="run-readiness"):
         run(
             [
@@ -129,6 +225,21 @@ class PlanningReadinessTests(unittest.TestCase):
 
 
 def write_planning_artifacts(workspace):
+    worktree = workspace
+    while worktree.name != ".ai":
+        worktree = worktree.parent
+    worktree = worktree.parent
+    docs = {
+        "docs/context/architecture-overview.md": "# Architecture Overview\n",
+        "docs/context/feature-template.md": "# Feature Template\n",
+        "docs/context/tech-design-overview.md": "# Tech Design Overview\n",
+        "docs/context/slice-template.yaml": "artifact_contract_version: 0.1.0\n",
+    }
+    for rel, content in docs.items():
+        path = worktree / rel
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(content, encoding="utf-8")
+
     (workspace / "feature.md").write_text(
         """# Feature: Reset Password
 
@@ -339,19 +450,27 @@ and completion tests.
 
 ## Docs Consulted: Architecture
 
-- `.ai/knowledge/architecture-overview.md`: reused known boundary.
+- `docs/context/architecture-overview.md`
+  - Used for: reused known architecture boundary.
+  - Confidence: high.
 
 ## Docs Consulted: Feature Contract
 
-- `.agents/pipeline-core/references/generated-templates/feature-template.md`: used required contract sections.
+- `docs/context/feature-template.md`
+  - Used for: used required contract sections.
+  - Confidence: high.
 
 ## Docs Consulted: Technical Design
 
-- `.ai/knowledge/tech-design-overview.md`: reused implementation artifact rules.
+- `docs/context/tech-design-overview.md`
+  - Used for: reused implementation artifact rules.
+  - Confidence: high.
 
 ## Docs Consulted: Slicing
 
-- `.agents/pipeline-core/references/generated-templates/slice-template.yaml`: used required TDD slice fields.
+- `docs/context/slice-template.yaml`
+  - Used for: used required TDD slice fields.
+  - Confidence: high.
 """
         )
 

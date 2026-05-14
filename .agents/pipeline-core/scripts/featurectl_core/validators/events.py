@@ -15,6 +15,7 @@ TOP_LEVEL_FIELDS = {"artifact_contract_version", "feature_key", "events"}
 EVENT_FIELDS = {
     "run_initialized": {"step", "next"},
     "step_changed": {"old_step", "new_step", "by", "note"},
+    "scope_changed": {"old_step", "return_step", "stale", "by", "reason"},
     "gate_status_changed": {"gate", "old_status", "new_status", "by", "note"},
     "slice_completed": {"slice", "attempt", "reason"},
     "slice_retry_completed": {"slice", "attempt", "reason", "supersedes"},
@@ -28,6 +29,7 @@ EVENT_FIELDS = {
 REQUIRED_BY_TYPE = {
     "run_initialized": ("step", "next"),
     "step_changed": ("old_step", "new_step"),
+    "scope_changed": ("return_step", "stale", "reason"),
     "gate_status_changed": ("gate", "old_status", "new_status"),
     "slice_completed": ("slice", "attempt", "reason"),
     "slice_retry_completed": ("slice", "attempt", "reason", "supersedes"),
@@ -105,4 +107,6 @@ def validate_event_record(index: int, event: Any, expected_feature_key: str) -> 
             blockers.append(f"{prefix} {event_type} attempt is invalid")
     if event_type == "artifact_marked_stale" and "marked_stale" in event and not isinstance(event.get("marked_stale"), list):
         blockers.append(f"{prefix} artifact_marked_stale marked_stale must be a list")
+    if event_type == "scope_changed" and "stale" in event and not isinstance(event.get("stale"), list):
+        blockers.append(f"{prefix} scope_changed stale must be a list")
     return blockers

@@ -93,8 +93,8 @@ slices:
   review_focus:
   - docs proof should use existing file paths
   - scope-change must not clear unrelated stale flags
-  evidence_status: pending
-  status: pending
+  evidence_status: complete
+  status: complete
   iteration_budget: 5
   rollback_point: pre-slice git state
   independent_verification: Run scope-change and validate implementation blockers.

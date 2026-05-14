@@ -92,6 +92,8 @@ class GatesAndEvidenceTests(unittest.TestCase):
             set(event_schema["properties"]["event_type"]["enum"]),
             {
                 "run_initialized",
+                "step_changed",
+                "scope_changed",
                 "gate_status_changed",
                 "slice_completed",
                 "slice_retry_completed",
