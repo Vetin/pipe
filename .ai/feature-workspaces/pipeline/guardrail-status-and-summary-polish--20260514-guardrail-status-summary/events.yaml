@@ -67,3 +67,39 @@ events:
   attempt: 1
   reason: initial
   feature_key: pipeline/guardrail-status-and-summary-polish
+- timestamp: '2026-05-14T19:22:09Z'
+  event_type: gate_status_changed
+  gate: implementation
+  old_status: approved
+  new_status: complete
+  by: codex
+  note: All-slices-complete
+  feature_key: pipeline/guardrail-status-and-summary-polish
+- timestamp: '2026-05-14T19:22:09Z'
+  event_type: gate_status_changed
+  gate: review
+  old_status: pending
+  new_status: complete
+  by: codex
+  note: Final-quality-review-has-no-blockers
+  feature_key: pipeline/guardrail-status-and-summary-polish
+- timestamp: '2026-05-14T19:22:09Z'
+  event_type: gate_status_changed
+  gate: verification
+  old_status: pending
+  new_status: complete
+  by: codex
+  note:
+  - Full-suite
+  - -raw-check
+  - -compileall
+  - -and-diff-check-passed
+  feature_key: pipeline/guardrail-status-and-summary-polish
+- timestamp: '2026-05-14T19:22:09Z'
+  event_type: gate_status_changed
+  gate: finish
+  old_status: pending
+  new_status: complete
+  by: codex
+  note: Feature-card-and-shared-knowledge-updates-completed
+  feature_key: pipeline/guardrail-status-and-summary-polish

@@ -1,0 +1,11 @@
+python -m pytest tests/feature_pipeline -q
+174 passed, 409 subtests passed in 55.08s
+
+python .agents/pipeline-core/scripts/pipelinebench.py check-public-raw --min-lines 5
+raw_check: pass
+
+python -m compileall .agents/pipeline-core/scripts
+compileall passed
+
+git diff --check
+passed
