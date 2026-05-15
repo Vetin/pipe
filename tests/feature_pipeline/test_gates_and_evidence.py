@@ -187,6 +187,81 @@ class GatesAndEvidenceTests(unittest.TestCase):
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("implementation requires slicing_readiness gate approved or delegated", result.stdout)
 
+    def test_gate_set_blocks_review_before_implementation(self):
+        workspace = self.create_workspace("run-gate-review-before-implementation")
+
+        result = run(
+            [
+                sys.executable,
+                str(SCRIPT),
+                "gate",
+                "set",
+                "--workspace",
+                str(workspace),
+                "--gate",
+                "review",
+                "--status",
+                "complete",
+                "--by",
+                "user",
+            ],
+            self.repo,
+            check=False,
+        )
+
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("review requires implementation gate approved or delegated", result.stdout)
+
+    def test_gate_set_blocks_verification_before_review(self):
+        workspace = self.create_workspace("run-gate-verification-before-review")
+
+        result = run(
+            [
+                sys.executable,
+                str(SCRIPT),
+                "gate",
+                "set",
+                "--workspace",
+                str(workspace),
+                "--gate",
+                "verification",
+                "--status",
+                "complete",
+                "--by",
+                "user",
+            ],
+            self.repo,
+            check=False,
+        )
+
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("verification requires review gate approved or delegated", result.stdout)
+
+    def test_gate_set_blocks_finish_before_verification(self):
+        workspace = self.create_workspace("run-gate-finish-before-verification")
+
+        result = run(
+            [
+                sys.executable,
+                str(SCRIPT),
+                "gate",
+                "set",
+                "--workspace",
+                str(workspace),
+                "--gate",
+                "finish",
+                "--status",
+                "complete",
+                "--by",
+                "user",
+            ],
+            self.repo,
+            check=False,
+        )
+
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("finish requires verification gate approved or delegated", result.stdout)
+
     def test_events_schema_exists_and_describes_required_event_shapes(self):
         schema_path = ROOT / ".agents/pipeline-core/scripts/schemas/events.schema.json"
 

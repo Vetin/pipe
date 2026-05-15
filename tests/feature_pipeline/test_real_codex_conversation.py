@@ -90,6 +90,7 @@ class RealCodexConversationTests(unittest.TestCase):
 
         workspace = workspaces[0]
         feature_worktree = self.feature_worktree_for(workspace)
+        diagnostics = self.capture_featurectl_diagnostics(workspace, feature_worktree)
         self.assert_product_files_unchanged(feature_worktree)
         self.assert_no_non_ai_changes(feature_worktree)
         execution = (workspace / "execution.md").read_text(encoding="utf-8")
@@ -100,7 +101,11 @@ class RealCodexConversationTests(unittest.TestCase):
         gates = state.get("gates", {})
         self.assertNotIn(gates.get("feature_contract"), {"approved", "delegated", "complete"})
         self.assertNotIn(gates.get("architecture"), {"approved", "delegated", "complete"})
+        self.assertNotIn(gates.get("tech_design"), {"approved", "delegated", "complete"})
         self.assertNotIn(gates.get("slicing_readiness"), {"approved", "delegated", "complete"})
+        self.assertIn(state.get("current_step"), {"context", "feature_contract"})
+        self.assert_downstream_artifacts_not_meaningfully_drafted(workspace)
+        self.assertNotEqual(diagnostics["planning-validation"].returncode, 0)
 
     def test_specified_reset_password_prompt_drafts_planning_package_without_code_changes(self):
         prompt = (
@@ -117,6 +122,7 @@ class RealCodexConversationTests(unittest.TestCase):
         self.assertTrue(workspaces, result.stdout)
         workspace = workspaces[0]
         feature_worktree = self.feature_worktree_for(workspace)
+        diagnostics = self.capture_featurectl_diagnostics(workspace, feature_worktree)
         self.assertTrue((feature_worktree / ".git").exists() or (feature_worktree / ".git").is_file())
         self.assert_product_files_unchanged(feature_worktree)
         self.assert_no_non_ai_changes(feature_worktree)
@@ -143,22 +149,16 @@ class RealCodexConversationTests(unittest.TestCase):
         state = yaml.safe_load((workspace / "state.yaml").read_text(encoding="utf-8"))
         feature = yaml.safe_load((workspace / "feature.yaml").read_text(encoding="utf-8"))
         events = yaml.safe_load((workspace / "events.yaml").read_text(encoding="utf-8"))
+        for gate in ("feature_contract", "architecture", "tech_design", "slicing_readiness"):
+            self.assertNotIn(state["gates"].get(gate), {"approved", "delegated", "complete"}, gate)
         self.assertNotIn(state["gates"].get("implementation"), {"approved", "delegated", "complete"})
         self.assertTrue(events["events"])
         self.assertEqual(events["feature_key"], feature["feature_key"])
 
-        planning = run(
-            [os.environ.get("PYTHON", "python"), str(FEATURECTL), "validate", "--workspace", str(workspace), "--planning-package"],
-            feature_worktree,
-            check=False,
-        )
+        planning = diagnostics["planning-validation"]
         self.assertEqual(planning.returncode, 0, planning.stdout)
 
-        implementation = run(
-            [os.environ.get("PYTHON", "python"), str(FEATURECTL), "validate", "--workspace", str(workspace), "--implementation"],
-            feature_worktree,
-            check=False,
-        )
+        implementation = diagnostics["implementation-validation"]
         self.assertNotEqual(implementation.returncode, 0)
 
     def run_codex_prompt(self, prompt):
@@ -189,6 +189,14 @@ class RealCodexConversationTests(unittest.TestCase):
         status = run(["git", "status", "--short", "--untracked-files=all", "--", ".", ":(exclude).ai/**"], checkout)
         self.assertEqual(diff.stdout.strip(), "", diff.stdout)
         self.assertEqual(status.stdout.strip(), "", status.stdout)
+
+    def assert_downstream_artifacts_not_meaningfully_drafted(self, workspace):
+        for artifact in ("architecture.md", "tech-design.md", "slices.yaml"):
+            path = workspace / artifact
+            if not path.exists():
+                continue
+            content = path.read_text(encoding="utf-8").strip()
+            self.assertLess(len(content), 500, f"{artifact} should not be meaningfully drafted")
 
     def assert_contains_clarification_signal(self, text):
         lower = text.lower()
@@ -221,6 +229,21 @@ class RealCodexConversationTests(unittest.TestCase):
         non_ai_diff = run(["git", "diff", "--", ".", ":(exclude).ai/**"], feature_worktree, check=False)
         (self.debug_dir / "git-status.txt").write_text(git_status.stdout, encoding="utf-8")
         (self.debug_dir / "non-ai-diff.txt").write_text(non_ai_diff.stdout, encoding="utf-8")
+
+    def capture_featurectl_diagnostics(self, workspace, feature_worktree):
+        python = os.environ.get("PYTHON", "python")
+        commands = {
+            "featurectl-status": [python, str(FEATURECTL), "status", "--workspace", str(workspace)],
+            "worktree-status": [python, str(FEATURECTL), "worktree-status", "--workspace", str(workspace)],
+            "planning-validation": [python, str(FEATURECTL), "validate", "--workspace", str(workspace), "--planning-package"],
+            "implementation-validation": [python, str(FEATURECTL), "validate", "--workspace", str(workspace), "--implementation"],
+        }
+        results = {}
+        for name, command in commands.items():
+            result = run(command, feature_worktree, check=False)
+            results[name] = result
+            (self.debug_dir / f"{name}.txt").write_text(result.stdout, encoding="utf-8")
+        return results
 
 
 if __name__ == "__main__":

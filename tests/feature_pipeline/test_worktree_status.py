@@ -87,6 +87,15 @@ class WorktreeStatusTests(unittest.TestCase):
         self.assertIn("implementation_ready: true", result.stdout)
         self.assertIn("branch: feature/auth-reset-password-run-implementation-ready-pass", result.stdout)
 
+    def test_implementation_ready_fails_when_current_checkout_is_not_feature_worktree(self):
+        workspace = self.ready_workspace("run-implementation-ready-wrong-checkout")
+
+        result = run([sys.executable, str(SCRIPT), "implementation-ready", "--workspace", str(workspace)], self.repo, check=False)
+
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("implementation_ready: false", result.stdout)
+        self.assertIn("current checkout is not configured feature worktree", result.stdout)
+
     def ready_workspace(self, run_id="run-worktree", approve=True):
         run(
             [
