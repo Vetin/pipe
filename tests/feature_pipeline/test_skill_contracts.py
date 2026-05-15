@@ -32,8 +32,12 @@ class SkillContractTests(unittest.TestCase):
 
     def test_official_artifact_model_documents_event_scope_and_review_boundaries(self):
         artifact_model = (REFERENCES / "artifact-model.md").read_text(encoding="utf-8")
+        gate_policy = (REFERENCES / "gate-policy.md").read_text(encoding="utf-8")
         workflow = (REFERENCES / "workflow-state-machine.md").read_text(encoding="utf-8")
         review = (REFERENCES / "review-and-verification.md").read_text(encoding="utf-8")
+        architecture_template = (REFERENCES / "generated-templates/architecture-template.md").read_text(encoding="utf-8")
+        tech_design_template = (REFERENCES / "generated-templates/tech-design-template.md").read_text(encoding="utf-8")
+        slice_template = (REFERENCES / "generated-templates/slice-template.yaml").read_text(encoding="utf-8")
         apex_template = (REFERENCES / "generated-templates/apex-template.md").read_text(encoding="utf-8")
         execution_template = (REFERENCES / "generated-templates/execution-template.md").read_text(encoding="utf-8")
 
@@ -54,6 +58,19 @@ class SkillContractTests(unittest.TestCase):
             "validate --implementation",
         ):
             self.assertIn(expected, workflow)
+
+        for expected in (
+            "Planning Versus Delivery Gates",
+            "`review` requires `implementation: complete`",
+            "`verification` requires `review: complete`",
+            "`finish` requires `verification: complete`",
+            "Status: scaffold-only",
+        ):
+            self.assertIn(expected, gate_policy)
+
+        self.assertIn("Status: scaffold-only", architecture_template)
+        self.assertIn("Status: scaffold-only", tech_design_template)
+        self.assertIn("artifact_state: scaffold-only", slice_template)
 
         for expected in (
             "reviews/*.yaml",

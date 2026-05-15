@@ -107,6 +107,7 @@ def validate_workspace(
     if readiness:
         blockers.extend(validate_readiness_minimum(workspace, state))
     if implementation:
+        blockers.extend(validate_planning_package(workspace, state))
         blockers.extend(validate_implementation_minimum(state))
         blockers.extend(validate_current_directory_is_worktree(workspace))
     if evidence:

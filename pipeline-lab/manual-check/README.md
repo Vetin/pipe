@@ -26,9 +26,51 @@ Manual pass criteria:
 - `featurectl.py worktree-status --workspace <workspace>` validates checkout
   isolation without requiring implementation gates.
 - `featurectl.py implementation-ready --workspace <workspace>` fails until
-  gates are approved or delegated.
+  planning artifacts are valid and gates are approved or delegated.
 - no implementation code changed before gates.
 - `approvals.yaml` and `handoff.md` do not exist.
+
+## Gate Semantics
+
+Planning gates use `approved` or `delegated` to grant permission:
+
+- `feature_contract`
+- `architecture`
+- `tech_design`
+- `slicing_readiness`
+
+Delivery gates use `complete` to prove finished work:
+
+- `implementation`
+- `review`
+- `verification`
+- `finish`
+
+`approved` or `delegated` on a delivery gate is permission to run that phase,
+not evidence that it is done. Manual checks should treat these as hard rules:
+
+- `review` does not start from pipeline state unless `implementation` is
+  `complete`.
+- `verification` does not start from pipeline state unless `review` is
+  `complete`.
+- `finish` does not start from pipeline state unless `verification` is
+  `complete`.
+
+`featurectl.py validate --workspace <workspace> --implementation` and
+`featurectl.py implementation-ready --workspace <workspace>` both revalidate
+the current planning package before implementation starts.
+
+## Scaffold-Only Planning Artifacts
+
+When an under-specified prompt needs a placeholder downstream artifact, the
+artifact must include:
+
+```text
+Status: scaffold-only
+```
+
+Scaffold-only artifacts are placeholders only. They should not pass
+planning-package validation and should not be used to approve planning gates.
 
 ## Behavioral Skill Matrix
 

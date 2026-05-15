@@ -39,6 +39,9 @@ class ManualCheckPreflightTests(unittest.TestCase):
             "feature worktree exists",
             "no implementation code changed before gates",
             "featurectl.py validate --workspace",
+            "Gate Semantics",
+            "Status: scaffold-only",
+            "implementation-ready",
         ):
             self.assertIn(expected, content)
 

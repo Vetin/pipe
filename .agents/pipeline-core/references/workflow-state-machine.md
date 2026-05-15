@@ -50,5 +50,12 @@ python .agents/pipeline-core/scripts/featurectl.py validate --workspace <workspa
 `validate --planning-package` checks artifact completeness, slice structure, and
 Docs Consulted proof without requiring approval gates.
 
-`validate --implementation` requires approved or delegated planning gates and
-blocks when relevant planning, evidence, or review artifacts are stale.
+`validate --implementation` revalidates the planning package, requires approved
+or delegated planning gates, verifies the current checkout is the configured
+feature worktree, and blocks when relevant planning, evidence, or review
+artifacts are stale.
+
+`featurectl.py implementation-ready --workspace <workspace>` is the
+operator-facing implementation-start check. It uses the same planning-package
+and gate validation as `validate --implementation` and prints readiness-oriented
+diagnostics.

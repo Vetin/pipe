@@ -101,6 +101,24 @@ class WorktreeStatusTests(unittest.TestCase):
         self.assertIn("implementation_ready: false", result.stdout)
         self.assertIn("links unknown requirement FR-999", result.stdout)
 
+    def test_validate_implementation_fails_if_slices_invalid_even_when_gates_approved(self):
+        workspace = self.ready_workspace("run-validate-implementation-invalid-slices")
+        worktree = self.worktree("run-validate-implementation-invalid-slices")
+        slices_path = workspace / "slices.yaml"
+        slices = yaml.safe_load(slices_path.read_text(encoding="utf-8"))
+        slices["slices"][0]["linked_requirements"] = ["FR-999"]
+        slices_path.write_text(yaml.safe_dump(slices, sort_keys=False), encoding="utf-8")
+
+        result = run(
+            [sys.executable, str(SCRIPT), "validate", "--workspace", str(workspace), "--implementation"],
+            worktree,
+            check=False,
+        )
+
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("validation: fail", result.stdout)
+        self.assertIn("links unknown requirement FR-999", result.stdout)
+
     def test_implementation_ready_fails_if_architecture_invalid_even_when_gates_approved(self):
         workspace = self.ready_workspace("run-implementation-ready-invalid-architecture")
         worktree = self.worktree("run-implementation-ready-invalid-architecture")
@@ -112,6 +130,23 @@ class WorktreeStatusTests(unittest.TestCase):
 
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("implementation_ready: false", result.stdout)
+        self.assertIn("architecture.md missing heading: ## Security Model", result.stdout)
+
+    def test_validate_implementation_fails_if_architecture_invalid_even_when_gates_approved(self):
+        workspace = self.ready_workspace("run-validate-implementation-invalid-architecture")
+        worktree = self.worktree("run-validate-implementation-invalid-architecture")
+        architecture_path = workspace / "architecture.md"
+        architecture = architecture_path.read_text(encoding="utf-8").replace("## Security Model", "## Security")
+        architecture_path.write_text(architecture, encoding="utf-8")
+
+        result = run(
+            [sys.executable, str(SCRIPT), "validate", "--workspace", str(workspace), "--implementation"],
+            worktree,
+            check=False,
+        )
+
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("validation: fail", result.stdout)
         self.assertIn("architecture.md missing heading: ## Security Model", result.stdout)
 
     def test_implementation_ready_fails_when_current_checkout_is_not_feature_worktree(self):

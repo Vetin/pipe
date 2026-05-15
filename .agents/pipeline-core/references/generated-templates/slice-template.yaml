@@ -1,4 +1,5 @@
 artifact_contract_version: '0.1.0'
+artifact_state: scaffold-only
 feature_key: <domain>/<slug>
 slices:
   - id: S-001

@@ -1,5 +1,7 @@
 # Architecture: <Title>
 
+Status: scaffold-only
+
 ## Change Delta
 ## System Context
 ## Component Interactions

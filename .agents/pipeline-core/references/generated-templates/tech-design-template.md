@@ -1,5 +1,7 @@
 # Technical Design: <Title>
 
+Status: scaffold-only
+
 ## Change Delta
 ## Implementation Summary
 ## Modules And Responsibilities
