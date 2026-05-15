@@ -5,7 +5,11 @@ from __future__ import annotations
 from pathlib import Path
 
 
-SCAFFOLD_ONLY_MARKERS = ("Status: scaffold-only", "artifact_state: scaffold-only")
+SCAFFOLD_ONLY_MARKERS = (
+    "Status: scaffold-only",
+    "artifact_state: scaffold-only",
+    "artifact_state: scaffold",
+)
 
 
 def scaffold_only_blocker(workspace: Path, artifact: str) -> list[str]:

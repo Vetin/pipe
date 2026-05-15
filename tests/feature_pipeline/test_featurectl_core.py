@@ -319,6 +319,19 @@ class FeatureCtlCoreTests(unittest.TestCase):
         self.assertIn("feature_key: auth/reset-password", result.stdout)
         self.assertTrue(self.workspace("run-bootstrap-dirty-allowed").exists())
 
+    def test_new_bootstrap_dirty_flag_does_not_hide_pipeline_changes_after_commit(self):
+        (self.repo / ".agents").mkdir()
+        (self.repo / ".agents/README.md").write_text("# Pipeline\n", encoding="utf-8")
+        run(["git", "add", ".agents/README.md"], self.repo)
+        run(["git", "commit", "-m", "commit pipeline files"], self.repo)
+        (self.repo / ".agents/new-tool.txt").write_text("dirty\n", encoding="utf-8")
+
+        result = self.new_feature("run-bootstrap-established-dirty", extra_args=["--allow-bootstrap-dirty"], check=False)
+
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("--allow-dirty", result.stderr)
+        self.assertFalse(self.workspace("run-bootstrap-established-dirty").exists())
+
     def test_new_bootstrap_dirty_flag_does_not_hide_product_dirty_files(self):
         (self.repo / ".ai/knowledge").mkdir(parents=True)
         (self.repo / ".ai/knowledge/project-index.yaml").write_text("artifact_contract_version: 0.1.0\n", encoding="utf-8")

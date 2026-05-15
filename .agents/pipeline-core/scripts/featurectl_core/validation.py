@@ -26,6 +26,8 @@ from .validators.review import validate_review_minimum
 from .validators.slices import validate_slices_file
 from .validators.worktree import validate_current_directory_is_worktree
 
+PLANNING_PACKAGE_ARTIFACTS = ("feature.md", "architecture.md", "tech-design.md", "slices.yaml")
+
 
 def status_blockers(root: Path, workspace: Path, feature: dict[str, Any], state: dict[str, Any]) -> list[str]:
     blockers: list[str] = []
@@ -305,24 +307,25 @@ def referenced_path_exists(workspace: Path, rel_path: str) -> bool:
 
 def validate_planning_package(workspace: Path, state: dict[str, Any]) -> list[str]:
     blockers: list[str] = []
-    for artifact in ("feature.md", "architecture.md", "tech-design.md", "slices.yaml"):
+    scaffold_only_artifacts: set[str] = set()
+    for artifact in PLANNING_PACKAGE_ARTIFACTS:
         if not (workspace / artifact).exists():
             blockers.append(f"planning-package requires {artifact}")
+            continue
+        scaffold_blockers = scaffold_only_blocker(workspace, artifact)
+        if scaffold_blockers:
+            blockers.extend(scaffold_blockers)
+            scaffold_only_artifacts.add(artifact)
 
     planning_state = dict(state)
-    planning_state["gates"] = {
-        "feature_contract": "drafted",
-        "architecture": "drafted",
-        "tech_design": "drafted",
-        "slicing_readiness": "drafted",
-    }
-    if (workspace / "feature.md").exists():
+    planning_state["gates"] = dict.fromkeys(("feature_contract", "architecture", "tech_design", "slicing_readiness"), "drafted")
+    if (workspace / "feature.md").exists() and "feature.md" not in scaffold_only_artifacts:
         blockers.extend(validate_feature_contract_if_started(workspace, planning_state))
-    if (workspace / "architecture.md").exists():
+    if (workspace / "architecture.md").exists() and "architecture.md" not in scaffold_only_artifacts:
         blockers.extend(validate_architecture_if_started(workspace, planning_state))
-    if (workspace / "tech-design.md").exists():
+    if (workspace / "tech-design.md").exists() and "tech-design.md" not in scaffold_only_artifacts:
         blockers.extend(validate_tech_design_if_started(workspace, planning_state))
-    if (workspace / "slices.yaml").exists():
+    if (workspace / "slices.yaml").exists() and "slices.yaml" not in scaffold_only_artifacts:
         blockers.extend(validate_slices_if_started(workspace, planning_state))
 
     for artifact in ("feature", "architecture", "tech_design", "slices"):

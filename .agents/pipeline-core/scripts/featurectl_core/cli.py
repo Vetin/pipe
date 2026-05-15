@@ -341,20 +341,39 @@ def cmd_new(args: argparse.Namespace) -> None:
 
 def require_clean_base_checkout(root: Path, *, allow_bootstrap_dirty: bool = False) -> None:
     status = run_git(root, "status", "--short", "--untracked-files=normal").strip()
+    pipeline_committed = pipeline_already_committed(root)
     blockers = [
         line
         for line in status.splitlines()
-        if not (allow_bootstrap_dirty and generated_pipeline_bootstrap_dirty(line))
+        if not (
+            allow_bootstrap_dirty
+            and generated_pipeline_bootstrap_dirty(line, allow_broad_bootstrap=not pipeline_committed)
+        )
     ]
     if blockers:
-        suggested_flag = "--allow-bootstrap-dirty" if all(generated_pipeline_bootstrap_dirty(line) for line in blockers) else "--allow-dirty"
+        suggested_flag = (
+            "--allow-bootstrap-dirty"
+            if not pipeline_committed and all(generated_pipeline_bootstrap_dirty(line, allow_broad_bootstrap=True) for line in blockers)
+            else "--allow-dirty"
+        )
         raise FeatureCtlError(
             "base checkout has uncommitted changes; inspect them before creating "
             f"a feature worktree or rerun with {suggested_flag}"
         )
 
 
-def generated_pipeline_bootstrap_dirty(status_line: str) -> bool:
+def pipeline_already_committed(root: Path) -> bool:
+    tracked = run_git(
+        root,
+        "ls-files",
+        "AGENTS.md",
+        ".agents",
+        "skills",
+    ).strip()
+    return bool(tracked)
+
+
+def generated_pipeline_bootstrap_dirty(status_line: str, *, allow_broad_bootstrap: bool = True) -> bool:
     if not status_line:
         return True
     status_code = status_line[:2]
@@ -362,11 +381,11 @@ def generated_pipeline_bootstrap_dirty(status_line: str) -> bool:
     if " -> " in path:
         path = path.rsplit(" -> ", 1)[-1]
     if status_code == "??" and path in {".agents/", ".ai/", "skills/", "methodology/"}:
-        return True
+        return allow_broad_bootstrap
     if status_code == "??" and path == ".gitignore":
         return True
     if status_code == "??" and path.startswith((".agents/", ".ai/", "skills/", "methodology/")):
-        return True
+        return allow_broad_bootstrap
     if path.startswith(".ai/knowledge/"):
         return True
     if path in {".ai/features/index.yaml", ".ai/features/overview.md"}:
