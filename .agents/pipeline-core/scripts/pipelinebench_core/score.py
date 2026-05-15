@@ -41,6 +41,8 @@ def parse_manual_soft_scores(path: Path) -> tuple[dict[str, Any], dict[str, Any]
     scores: dict[str, Any] = {}
     total_score = 0
     total_max = 0
+    thresholded_scores = 0
+    failing_scores: list[str] = []
     for key, value in data.items():
         if key == "comments":
             continue
@@ -55,6 +57,15 @@ def parse_manual_soft_scores(path: Path) -> tuple[dict[str, Any], dict[str, Any]
             if max_score <= 0:
                 raise BenchError(f"{key}.max must be positive")
             item = {"score": score, "max": max_score}
+            if "minimum" in value:
+                minimum = numeric_score(value.get("minimum"), f"{key}.minimum")
+                if minimum > max_score:
+                    raise BenchError(f"{key}.minimum must be less than or equal to {key}.max")
+                item["minimum"] = minimum
+                item["passed"] = score >= minimum
+                thresholded_scores += 1
+                if score < minimum:
+                    failing_scores.append(key)
             if value.get("comment"):
                 item["comment"] = str(value["comment"])
             scores[key] = item
@@ -68,6 +79,9 @@ def parse_manual_soft_scores(path: Path) -> tuple[dict[str, Any], dict[str, Any]
         "score": total_score,
         "max": total_max,
         "percent": round(total_score / total_max, 3) if total_max else 0,
+        "passed": not failing_scores,
+        "thresholded_scores": thresholded_scores,
+        "failing_scores": failing_scores,
         "comments": comments,
     }
 

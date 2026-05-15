@@ -62,6 +62,7 @@ def cmd_score_run(args: argparse.Namespace) -> None:
     if result.get("soft_score_summary"):
         summary = result["soft_score_summary"]
         print(f"soft_score: {summary['score']}/{summary['max']}")
+        print(f"soft_passed: {str(summary.get('passed', True)).lower()}")
 
 def cmd_compare_runs(args: argparse.Namespace) -> None:
     left = read_yaml(Path(args.left))
@@ -77,16 +78,17 @@ def cmd_generate_report(args: argparse.Namespace) -> None:
     lines = [
         "# Pipeline Benchmark Report",
         "",
-        "| Scenario | Hard Score | Hard Passed | Soft Score | Soft Scores | Comments |",
-        "| --- | ---: | --- | ---: | --- | --- |",
+        "| Scenario | Hard Score | Hard Passed | Soft Score | Soft Passed | Soft Scores | Comments |",
+        "| --- | ---: | --- | ---: | --- | --- | --- |",
     ]
     for row in rows:
         summary = row.get("soft_score_summary") or {}
         soft_total = f"{summary.get('score')}/{summary.get('max')}" if summary else "not scored"
+        soft_passed = str(summary.get("passed")) if summary else "not scored"
         comments = markdown_table_cell(str(summary.get("comments") or ""))
         soft = markdown_table_cell(format_soft_scores(row.get("soft_scores", {})))
         lines.append(
-            f"| {row.get('scenario')} | {row.get('hard_score')}/{row.get('hard_total')} | {row.get('hard_passed')} | {soft_total} | {soft} | {comments} |"
+            f"| {row.get('scenario')} | {row.get('hard_score')}/{row.get('hard_total')} | {row.get('hard_passed')} | {soft_total} | {soft_passed} | {soft} | {comments} |"
         )
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text("\n".join(lines) + "\n", encoding="utf-8")

@@ -141,6 +141,64 @@ class PipelineBenchTests(unittest.TestCase):
         self.assertIn("12/15", report_text)
         self.assertIn("Good module communication; rollback detail is thin.", report_text)
 
+    def test_score_run_can_fail_soft_quality_for_boilerplate_planning(self):
+        workspace = self.workspace("run-boilerplate-soft-fail")
+        output = self.repo / "pipeline-lab/runs/boilerplate-soft-score.yaml"
+        report = self.repo / "pipeline-lab/runs/boilerplate-soft-score-report.md"
+        manual_score = self.repo / "boilerplate-score.yaml"
+        manual_score.write_text(
+            yaml.safe_dump(
+                {
+                    "architecture_clarity": {
+                        "score": 1,
+                        "max": 5,
+                        "minimum": 3,
+                        "comment": "Required headings exist, but module communication is boilerplate.",
+                    },
+                    "module_communication_quality": {
+                        "score": 1,
+                        "max": 5,
+                        "minimum": 3,
+                        "comment": "No concrete caller, dependency, or data-flow explanation.",
+                    },
+                    "comments": "Hard structure passes; soft quality should fail.",
+                },
+                sort_keys=False,
+            ),
+            encoding="utf-8",
+        )
+
+        result = run(
+            [
+                sys.executable,
+                str(BENCH),
+                "score-run",
+                "--workspace",
+                str(workspace),
+                "--scenario",
+                "auth-reset-password",
+                "--soft-score-file",
+                str(manual_score),
+                "--output",
+                str(output),
+            ],
+            self.repo,
+        )
+        run([sys.executable, str(BENCH), "generate-report", "--scores", str(output), "--output", str(report)], self.repo)
+
+        score = yaml.safe_load(output.read_text(encoding="utf-8"))
+        report_text = report.read_text(encoding="utf-8")
+        self.assertTrue(score["hard_passed"])
+        self.assertIn("soft_passed: false", result.stdout)
+        self.assertFalse(score["soft_score_summary"]["passed"])
+        self.assertEqual(
+            score["soft_score_summary"]["failing_scores"],
+            ["architecture_clarity", "module_communication_quality"],
+        )
+        self.assertFalse(score["soft_scores"]["architecture_clarity"]["passed"])
+        self.assertIn("Required headings exist", report_text)
+        self.assertIn("False", report_text)
+
     def test_score_run_fails_hard_when_required_files_are_missing(self):
         workspace = self.workspace("run-missing")
         (workspace / "architecture.md").unlink()

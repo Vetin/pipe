@@ -30,6 +30,21 @@ Manual pass criteria:
 - no implementation code changed before gates.
 - `approvals.yaml` and `handoff.md` do not exist.
 
+## Behavioral Skill Matrix
+
+Manual and real-Codex checks should cover behavior, not only skill file shape.
+
+| Skill | Behavior to prove | Evidence source |
+| --- | --- | --- |
+| `nfp-00-intake` | Creates an isolated feature worktree and workspace from plain user intent. | Real Codex e2e or manual feature run. |
+| `nfp-01-context` | Records repo searches, source files, project knowledge, and reused patterns. | `execution.md` Context Discovery section. |
+| `nfp-02-feature-contract` | Stops for blocking questions when a security-sensitive request is underspecified. | Under-specified real Codex e2e. |
+| `nfp-03-architecture` | Uses existing architecture docs and maps module boundaries before design choices. | `architecture.md` and Docs Consulted entries. |
+| `nfp-04-tech-design` | Defines contracts, data behavior, error cases, and test strategy from the architecture. | `tech-design.md` and planning validation. |
+| `nfp-05-slicing` | Creates dependency-aware slices with TDD commands and evidence expectations. | `slices.yaml` and planning-package validation. |
+| `nfp-08-tdd-implementation` | Records red-before-green evidence and subagent use or fallback reason. | Evidence manifest, execution log, and reviews. |
+| `nfp-09-review` | Catches blocking findings before verification and requires fix evidence. | `reviews/*.yaml` plus review summary Markdown. |
+
 ## Preflight Behavior
 
 The preflight script prints the current branch, git status, feature status,

@@ -42,6 +42,26 @@ class ManualCheckPreflightTests(unittest.TestCase):
         ):
             self.assertIn(expected, content)
 
+    def test_manual_check_readme_documents_behavioral_skill_matrix(self):
+        self.assertTrue(README.exists())
+        content = README.read_text(encoding="utf-8")
+
+        for expected in (
+            "Behavioral Skill Matrix",
+            "nfp-00-intake",
+            "nfp-01-context",
+            "nfp-02-feature-contract",
+            "nfp-03-architecture",
+            "nfp-04-tech-design",
+            "nfp-05-slicing",
+            "nfp-08-tdd-implementation",
+            "nfp-09-review",
+            "Under-specified real Codex e2e",
+            "red-before-green evidence",
+            "reviews/*.yaml",
+        ):
+            self.assertIn(expected, content)
+
     def test_real_codex_conversation_test_is_opt_in_and_behavioral(self):
         self.assertTrue(REAL_CODEX_TEST.exists())
         content = REAL_CODEX_TEST.read_text(encoding="utf-8")

@@ -9,7 +9,8 @@ def format_soft_scores(scores: dict[str, Any]) -> str:
     for key, value in scores.items():
         if isinstance(value, dict) and "score" in value:
             comment = f" ({value['comment']})" if value.get("comment") else ""
-            parts.append(f"{key}: {value.get('score')}/{value.get('max')}{comment}")
+            threshold = f" minimum={value['minimum']} passed={value.get('passed')}" if "minimum" in value else ""
+            parts.append(f"{key}: {value.get('score')}/{value.get('max')}{threshold}{comment}")
         else:
             parts.append(f"{key}: {value}")
     return ", ".join(parts)
