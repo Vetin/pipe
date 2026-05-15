@@ -61,17 +61,24 @@ from .shared import (
 )
 from .validation import (
     status_blockers,
+    validate_all_slices_complete,
     validate_architecture_if_started,
     validate_current_directory_is_worktree,
+    validate_evidence_minimum,
     validate_feature_contract_if_started,
+    validate_finish_if_started,
     validate_finish_state,
     validate_implementation_minimum,
+    validate_planning_package,
     validate_slices_if_started,
     validate_tech_design_if_started,
+    validate_verification_if_started,
     validate_workspace,
 )
+from .validators.review import validate_review_minimum
 
 SATISFIED_GATE_STATES = {"approved", "delegated", "complete"}
+DELIVERY_GATES_REQUIRING_COMPLETION = {"review", "verification", "finish"}
 
 STEP_TRANSITIONS = {
     "intake": {"context"},
@@ -599,10 +606,23 @@ def gate_dependency_blockers(workspace: Path, state: dict[str, Any], gate: str, 
     gates = state.get("gates") or {}
     blockers: list[str] = []
     for dependency in GATE_DEPENDENCIES.get(gate, ()):
+        required_states = required_dependency_states(gate, status)
         dependency_status = gates.get(dependency)
-        if dependency_status not in SATISFIED_GATE_STATES:
-            blockers.append(f"{gate} requires {dependency} gate approved or delegated")
+        if dependency_status not in required_states:
+            blockers.append(f"{gate} requires {dependency} gate {required_dependency_label(required_states)}")
     return blockers
+
+
+def required_dependency_states(gate: str, status: str) -> set[str]:
+    if gate in DELIVERY_GATES_REQUIRING_COMPLETION and status in SATISFIED_GATE_STATES:
+        return {"complete"}
+    return set(SATISFIED_GATE_STATES)
+
+
+def required_dependency_label(states: set[str]) -> str:
+    if states == {"complete"}:
+        return "complete"
+    return "approved or delegated"
 
 
 def gate_content_blockers(workspace: Path, state: dict[str, Any], gate: str, status: str) -> list[str]:
@@ -618,6 +638,14 @@ def gate_content_blockers(workspace: Path, state: dict[str, Any], gate: str, sta
         return validate_tech_design_if_started(workspace, draft_state)
     if gate == "slicing_readiness":
         return validate_slices_if_started(workspace, draft_state)
+    if gate == "implementation" and status == "complete":
+        return validate_all_slices_complete(workspace, reason="implementation") + validate_evidence_minimum(workspace)
+    if gate == "review" and status == "complete":
+        return validate_review_minimum(workspace)
+    if gate == "verification" and status == "complete":
+        return validate_verification_if_started(workspace, draft_state)
+    if gate == "finish" and status == "complete":
+        return validate_finish_if_started(workspace, draft_state)
     return []
 
 
@@ -765,6 +793,7 @@ def cmd_implementation_ready(args: argparse.Namespace) -> None:
     worktree_path = infer_worktree_path(workspace)
     blockers = []
     blockers.extend(status_blockers(root, workspace, feature, state))
+    blockers.extend(validate_planning_package(workspace, state))
     blockers.extend(validate_implementation_minimum(state))
     blockers.extend(validate_current_directory_is_worktree(workspace))
 

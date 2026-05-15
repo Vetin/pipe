@@ -191,12 +191,43 @@ class RealCodexConversationTests(unittest.TestCase):
         self.assertEqual(status.stdout.strip(), "", status.stdout)
 
     def assert_downstream_artifacts_not_meaningfully_drafted(self, workspace):
-        for artifact in ("architecture.md", "tech-design.md", "slices.yaml"):
-            path = workspace / artifact
-            if not path.exists():
-                continue
-            content = path.read_text(encoding="utf-8").strip()
-            self.assertLess(len(content), 500, f"{artifact} should not be meaningfully drafted")
+        architecture = workspace / "architecture.md"
+        if architecture.exists():
+            content = architecture.read_text(encoding="utf-8")
+            lower = content.lower()
+            self.assertFalse(
+                "## system context" in lower and self.contains_reset_design_detail(lower),
+                "architecture.md should not contain source-grounded design from unsafe assumptions",
+            )
+
+        tech_design = workspace / "tech-design.md"
+        if tech_design.exists():
+            content = tech_design.read_text(encoding="utf-8")
+            lower = content.lower()
+            self.assertFalse(
+                "## modules" in lower and self.contains_reset_design_detail(lower),
+                "tech-design.md should not contain module design from unsafe assumptions",
+            )
+
+        slices = workspace / "slices.yaml"
+        if slices.exists():
+            content = slices.read_text(encoding="utf-8")
+            self.assertNotIn("S-001", content, "slices.yaml should not define implementation slices from unsafe assumptions")
+
+    def contains_reset_design_detail(self, text):
+        return any(
+            token in text
+            for token in (
+                "auth.py",
+                "test_auth.py",
+                "reset token",
+                "single-use",
+                "30 minutes",
+                "token service",
+                "email service",
+                "token store",
+            )
+        )
 
     def assert_contains_clarification_signal(self, text):
         lower = text.lower()

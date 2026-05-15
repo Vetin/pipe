@@ -412,10 +412,10 @@ def validate_finish_if_started(workspace: Path, state: dict[str, Any]) -> list[s
     return blockers
 
 
-def validate_all_slices_complete(workspace: Path) -> list[str]:
+def validate_all_slices_complete(workspace: Path, *, reason: str = "finish") -> list[str]:
     slices_path = workspace / "slices.yaml"
     if not slices_path.exists():
-        return ["finish requires slices.yaml"]
+        return [f"{reason} requires slices.yaml"]
     data = read_yaml(slices_path)
     slices = data.get("slices") or []
     if isinstance(slices, dict):
@@ -427,7 +427,7 @@ def validate_all_slices_complete(workspace: Path) -> list[str]:
         if not isinstance(item, dict):
             continue
         if item.get("status") != "complete":
-            blockers.append(f"finish requires slice complete: {item.get('id')}")
+            blockers.append(f"{reason} requires slice complete: {item.get('id')}")
     return blockers
 
 

@@ -210,7 +210,7 @@ class GatesAndEvidenceTests(unittest.TestCase):
         )
 
         self.assertNotEqual(result.returncode, 0)
-        self.assertIn("review requires implementation gate approved or delegated", result.stdout)
+        self.assertIn("review requires implementation gate complete", result.stdout)
 
     def test_gate_set_blocks_verification_before_review(self):
         workspace = self.create_workspace("run-gate-verification-before-review")
@@ -235,7 +235,7 @@ class GatesAndEvidenceTests(unittest.TestCase):
         )
 
         self.assertNotEqual(result.returncode, 0)
-        self.assertIn("verification requires review gate approved or delegated", result.stdout)
+        self.assertIn("verification requires review gate complete", result.stdout)
 
     def test_gate_set_blocks_finish_before_verification(self):
         workspace = self.create_workspace("run-gate-finish-before-verification")
@@ -260,7 +260,265 @@ class GatesAndEvidenceTests(unittest.TestCase):
         )
 
         self.assertNotEqual(result.returncode, 0)
-        self.assertIn("finish requires verification gate approved or delegated", result.stdout)
+        self.assertIn("finish requires verification gate complete", result.stdout)
+
+    def test_gate_set_blocks_review_when_implementation_only_approved(self):
+        workspace = self.ready_workspace("run-review-implementation-approved")
+        self.set_gate_state(workspace, implementation="approved")
+
+        result = run(
+            [
+                sys.executable,
+                str(SCRIPT),
+                "gate",
+                "set",
+                "--workspace",
+                str(workspace),
+                "--gate",
+                "review",
+                "--status",
+                "approved",
+                "--by",
+                "user",
+            ],
+            self.repo,
+            check=False,
+        )
+
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("review requires implementation gate complete", result.stdout)
+
+    def test_gate_set_allows_review_after_implementation_complete(self):
+        workspace = self.ready_workspace("run-review-after-implementation-complete")
+        self.record_full_evidence(workspace)
+        run(
+            [
+                sys.executable,
+                str(SCRIPT),
+                "complete-slice",
+                "--workspace",
+                str(workspace),
+                "--slice",
+                "S-001",
+                "--diff-hash",
+                "abc123",
+            ],
+            self.repo,
+        )
+        run(
+            [
+                sys.executable,
+                str(SCRIPT),
+                "gate",
+                "set",
+                "--workspace",
+                str(workspace),
+                "--gate",
+                "implementation",
+                "--status",
+                "complete",
+                "--by",
+                "codex",
+            ],
+            self.repo,
+        )
+
+        result = run(
+            [
+                sys.executable,
+                str(SCRIPT),
+                "gate",
+                "set",
+                "--workspace",
+                str(workspace),
+                "--gate",
+                "review",
+                "--status",
+                "approved",
+                "--by",
+                "user",
+            ],
+            self.repo,
+        )
+
+        self.assertIn("gate: review", result.stdout)
+        self.assertIn("status: approved", result.stdout)
+
+    def test_gate_set_blocks_verification_when_review_only_approved(self):
+        workspace = self.ready_workspace("run-verification-review-approved")
+        self.set_gate_state(workspace, implementation="complete", review="approved")
+
+        result = run(
+            [
+                sys.executable,
+                str(SCRIPT),
+                "gate",
+                "set",
+                "--workspace",
+                str(workspace),
+                "--gate",
+                "verification",
+                "--status",
+                "approved",
+                "--by",
+                "user",
+            ],
+            self.repo,
+            check=False,
+        )
+
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("verification requires review gate complete", result.stdout)
+
+    def test_gate_set_blocks_finish_when_verification_only_approved(self):
+        workspace = self.ready_workspace("run-finish-verification-approved")
+        self.set_gate_state(workspace, implementation="complete", review="complete", verification="approved")
+
+        result = run(
+            [
+                sys.executable,
+                str(SCRIPT),
+                "gate",
+                "set",
+                "--workspace",
+                str(workspace),
+                "--gate",
+                "finish",
+                "--status",
+                "approved",
+                "--by",
+                "user",
+            ],
+            self.repo,
+            check=False,
+        )
+
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("finish requires verification gate complete", result.stdout)
+
+    def test_gate_set_blocks_implementation_complete_before_slices_complete(self):
+        workspace = self.ready_workspace("run-implementation-complete-before-slices")
+
+        result = run(
+            [
+                sys.executable,
+                str(SCRIPT),
+                "gate",
+                "set",
+                "--workspace",
+                str(workspace),
+                "--gate",
+                "implementation",
+                "--status",
+                "complete",
+                "--by",
+                "codex",
+            ],
+            self.repo,
+            check=False,
+        )
+
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("implementation requires slice complete: S-001", result.stdout)
+        self.assertIn("evidence validation requires evidence/manifest.yaml", result.stdout)
+
+    def test_gate_set_blocks_review_complete_with_critical_findings(self):
+        workspace = self.ready_workspace("run-review-complete-critical")
+        self.set_gate_state(workspace, implementation="complete")
+        self.write_review(workspace, severity="critical", blocking=True)
+
+        result = run(
+            [
+                sys.executable,
+                str(SCRIPT),
+                "gate",
+                "set",
+                "--workspace",
+                str(workspace),
+                "--gate",
+                "review",
+                "--status",
+                "complete",
+                "--by",
+                "reviewer",
+            ],
+            self.repo,
+            check=False,
+        )
+
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("critical review finding blocks verification", result.stdout)
+
+    def test_gate_set_blocks_verification_complete_without_final_output(self):
+        workspace = self.ready_workspace("run-verification-complete-missing-output")
+        self.set_gate_state(workspace, implementation="complete", review="complete")
+        self.write_review(workspace)
+
+        result = run(
+            [
+                sys.executable,
+                str(SCRIPT),
+                "gate",
+                "set",
+                "--workspace",
+                str(workspace),
+                "--gate",
+                "verification",
+                "--status",
+                "complete",
+                "--by",
+                "verifier",
+            ],
+            self.repo,
+            check=False,
+        )
+
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("verification gate requires reviews/verification-review.md", result.stdout)
+        self.assertIn("verification gate requires evidence/final-verification-output.log", result.stdout)
+
+    def test_gate_set_blocks_finish_complete_without_feature_card(self):
+        workspace = self.ready_workspace("run-finish-complete-missing-card")
+        self.record_full_evidence(workspace)
+        run(
+            [
+                sys.executable,
+                str(SCRIPT),
+                "complete-slice",
+                "--workspace",
+                str(workspace),
+                "--slice",
+                "S-001",
+                "--diff-hash",
+                "abc123",
+            ],
+            self.repo,
+        )
+        self.write_review(workspace)
+        self.write_verification_artifacts(workspace)
+        self.set_gate_state(workspace, implementation="complete", review="complete", verification="complete")
+
+        result = run(
+            [
+                sys.executable,
+                str(SCRIPT),
+                "gate",
+                "set",
+                "--workspace",
+                str(workspace),
+                "--gate",
+                "finish",
+                "--status",
+                "complete",
+                "--by",
+                "finisher",
+            ],
+            self.repo,
+            check=False,
+        )
+
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("finish requires feature-card.md", result.stdout)
 
     def test_events_schema_exists_and_describes_required_event_shapes(self):
         schema_path = ROOT / ".agents/pipeline-core/scripts/schemas/events.schema.json"
@@ -657,6 +915,47 @@ class GatesAndEvidenceTests(unittest.TestCase):
 
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("S-001 diff_hash must be a hexadecimal hash; use change_label for semantic labels", result.stdout)
+
+    def set_gate_state(self, workspace, **gates):
+        state_path = workspace / "state.yaml"
+        state = yaml.safe_load(state_path.read_text(encoding="utf-8"))
+        state.setdefault("gates", {}).update(gates)
+        state_path.write_text(yaml.safe_dump(state, sort_keys=False), encoding="utf-8")
+
+    def write_review(self, workspace, *, severity="note", blocking=False):
+        (workspace / "reviews").mkdir(exist_ok=True)
+        (workspace / "reviews/security.yaml").write_text(
+            yaml.safe_dump(
+                {
+                    "artifact_contract_version": "0.1.0",
+                    "review_id": "REV-001",
+                    "tier": "strict_review",
+                    "severity": severity,
+                    "finding": "Blocking issue" if blocking else "No blocker",
+                    "artifact": "workspace",
+                    "evidence": "Manual review",
+                    "recommendation": "Fix before proceeding" if blocking else "Proceed",
+                    "blocking": blocking,
+                    "linked_requirement_ids": ["FR-001"],
+                    "linked_slice_ids": ["S-001"],
+                    "file_refs": ["feature.md", "slices.yaml"],
+                    "reproduction_or_reasoning": "Review finding is represented for gate validation.",
+                    "fix_verification_command": "python -m unittest discover -s tests",
+                    "re_review_required": blocking,
+                },
+                sort_keys=False,
+            ),
+            encoding="utf-8",
+        )
+
+    def write_verification_artifacts(self, workspace):
+        (workspace / "reviews").mkdir(exist_ok=True)
+        (workspace / "reviews/verification-review.md").write_text(
+            "# Verification Review\n\nPassed.\n\n## Manual Validation\n\nNot applicable.\n\n## Verification Debt\n\nNone.\n",
+            encoding="utf-8",
+        )
+        (workspace / "evidence").mkdir(exist_ok=True)
+        (workspace / "evidence/final-verification-output.log").write_text("tests passed\n", encoding="utf-8")
 
     def create_workspace(self, run_id="run-gates"):
         run(
