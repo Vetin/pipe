@@ -1,0 +1,1 @@
+Review: no critical findings. Outcome-smoke is now visibly partial and CI includes a deterministic full pipeline test job.

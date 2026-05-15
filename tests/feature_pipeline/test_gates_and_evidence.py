@@ -79,6 +79,87 @@ class GatesAndEvidenceTests(unittest.TestCase):
         self.assertFalse(list(workspace.rglob("approvals.yaml")))
         self.assertFalse(list(workspace.rglob("handoff.md")))
 
+    def test_gate_set_blocks_tech_design_before_architecture(self):
+        workspace = self.create_workspace("run-gate-tech-before-arch")
+
+        result = run(
+            [
+                sys.executable,
+                str(SCRIPT),
+                "gate",
+                "set",
+                "--workspace",
+                str(workspace),
+                "--gate",
+                "tech_design",
+                "--status",
+                "approved",
+                "--by",
+                "user",
+            ],
+            self.repo,
+            check=False,
+        )
+
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("tech_design requires architecture gate approved or delegated", result.stdout)
+
+    def test_gate_set_blocks_slicing_before_tech_design(self):
+        workspace = self.create_workspace("run-gate-slicing-before-tech")
+        write_planning_artifacts(workspace)
+        state_path = workspace / "state.yaml"
+        state = yaml.safe_load(state_path.read_text(encoding="utf-8"))
+        state["gates"]["feature_contract"] = "approved"
+        state["gates"]["architecture"] = "approved"
+        state_path.write_text(yaml.safe_dump(state, sort_keys=False), encoding="utf-8")
+
+        result = run(
+            [
+                sys.executable,
+                str(SCRIPT),
+                "gate",
+                "set",
+                "--workspace",
+                str(workspace),
+                "--gate",
+                "slicing_readiness",
+                "--status",
+                "approved",
+                "--by",
+                "user",
+            ],
+            self.repo,
+            check=False,
+        )
+
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("slicing_readiness requires tech_design gate approved or delegated", result.stdout)
+
+    def test_gate_set_blocks_implementation_before_readiness(self):
+        workspace = self.create_workspace("run-gate-implementation-before-readiness")
+
+        result = run(
+            [
+                sys.executable,
+                str(SCRIPT),
+                "gate",
+                "set",
+                "--workspace",
+                str(workspace),
+                "--gate",
+                "implementation",
+                "--status",
+                "approved",
+                "--by",
+                "user",
+            ],
+            self.repo,
+            check=False,
+        )
+
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("implementation requires slicing_readiness gate approved or delegated", result.stdout)
+
     def test_events_schema_exists_and_describes_required_event_shapes(self):
         schema_path = ROOT / ".agents/pipeline-core/scripts/schemas/events.schema.json"
 
@@ -392,7 +473,7 @@ class GatesAndEvidenceTests(unittest.TestCase):
         self.assertEqual(events["events"][-1]["supersedes"], "attempt-1")
 
     def test_implementation_gate_records_run_plan_transition(self):
-        workspace = self.create_workspace("run-plan-transition")
+        workspace = self.ready_workspace("run-plan-transition")
 
         run(
             [

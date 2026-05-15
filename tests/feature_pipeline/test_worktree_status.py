@@ -49,14 +49,23 @@ class WorktreeStatusTests(unittest.TestCase):
         self.assertIn("worktree_status: fail", result.stdout)
         self.assertIn("current checkout is not configured feature worktree", result.stdout)
 
-    def test_required_gate_blocks_from_feature_worktree(self):
+    def test_worktree_status_passes_for_planning_only_feature_worktree(self):
         workspace = self.ready_workspace("run-gate-block", approve=False)
         worktree = self.worktree("run-gate-block")
 
-        result = run([sys.executable, str(SCRIPT), "worktree-status", "--workspace", str(workspace)], worktree, check=False)
+        result = run([sys.executable, str(SCRIPT), "worktree-status", "--workspace", str(workspace)], worktree)
+
+        self.assertIn("worktree_status: pass", result.stdout)
+        self.assertIn("implementation_ready: not_checked", result.stdout)
+
+    def test_implementation_ready_blocks_from_feature_worktree_until_gates_pass(self):
+        workspace = self.ready_workspace("run-implementation-ready-block", approve=False)
+        worktree = self.worktree("run-implementation-ready-block")
+
+        result = run([sys.executable, str(SCRIPT), "implementation-ready", "--workspace", str(workspace)], worktree, check=False)
 
         self.assertNotEqual(result.returncode, 0)
-        self.assertIn("worktree_status: fail", result.stdout)
+        self.assertIn("implementation_ready: false", result.stdout)
         self.assertIn("implementation requires tech_design gate approved or delegated", result.stdout)
 
     def test_worktree_status_passes_when_checkout_branch_and_gates_match(self):
@@ -66,8 +75,17 @@ class WorktreeStatusTests(unittest.TestCase):
         result = run([sys.executable, str(SCRIPT), "worktree-status", "--workspace", str(workspace)], worktree)
 
         self.assertIn("worktree_status: pass", result.stdout)
-        self.assertIn("implementation_ready: true", result.stdout)
+        self.assertIn("implementation_ready: not_checked", result.stdout)
         self.assertIn("branch: feature/auth-reset-password-run-worktree-pass", result.stdout)
+
+    def test_implementation_ready_passes_when_checkout_branch_and_gates_match(self):
+        workspace = self.ready_workspace("run-implementation-ready-pass")
+        worktree = self.worktree("run-implementation-ready-pass")
+
+        result = run([sys.executable, str(SCRIPT), "implementation-ready", "--workspace", str(workspace)], worktree)
+
+        self.assertIn("implementation_ready: true", result.stdout)
+        self.assertIn("branch: feature/auth-reset-password-run-implementation-ready-pass", result.stdout)
 
     def ready_workspace(self, run_id="run-worktree", approve=True):
         run(

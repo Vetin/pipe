@@ -1,0 +1,1 @@
+Review: no critical findings. Active validation now enforces current run state without rejecting inactive legacy records.

@@ -1,0 +1,248 @@
+artifact_contract_version: 0.1.0
+feature_key: pipeline/execution-safety-guardrails
+slices:
+- id: S-001
+  title: Real Codex e2e planning safety
+  linked_requirements:
+  - FR-001
+  - FR-002
+  - FR-003
+  - FR-004
+  linked_acceptance_criteria:
+  - AC-001
+  - AC-002
+  - AC-003
+  linked_adrs:
+  - ADR-012
+  linked_contracts:
+  - tests/feature_pipeline/test_real_codex_conversation.py
+  dependencies: []
+  priority: 1
+  complexity: 7
+  critical_path: true
+  parallelizable: false
+  file_ownership:
+  - tests/feature_pipeline/test_real_codex_conversation.py
+  conflict_risk: medium
+  dependency_notes: 'This slice owns the opt-in behavioral e2e assertions and must complete before manual
+    checking claims are updated.
+
+    '
+  expected_touchpoints:
+  - tests/feature_pipeline/test_real_codex_conversation.py
+  scope_confidence: medium
+  test_strategy: 'Add assertions for feature worktree cwd, no product source/test changes, under-specified
+    stop behavior, state gates, and events.yaml.
+
+    '
+  tdd:
+    failing_test_file: tests/feature_pipeline/test_real_codex_conversation.py
+    red_command: python -m pytest tests/feature_pipeline/test_real_codex_conversation.py -q
+    expected_failure: current test lacks source-diff and under-specified prompt assertions
+    green_command: python -m pytest tests/feature_pipeline/test_real_codex_conversation.py -q
+  verification_commands:
+  - python -m pytest tests/feature_pipeline/test_real_codex_conversation.py -q
+  review_focus:
+  - Real e2e remains opt-in and robust to Codex wording variation.
+  - Planning-only assertions prove product files are unchanged.
+  evidence_status: complete
+  status: complete
+  iteration_budget: 8
+  rollback_point: pre-slice git state
+  independent_verification: RUN_REAL_CODEX_E2E=0 python -m pytest tests/feature_pipeline/test_real_codex_conversation.py
+    -q
+  failure_triage_notes: 'Classify failures as test_expected, implementation_bug, test_bug, design_gap,
+    scope_change, environment_failure, or flaky.
+
+    '
+- id: S-002
+  title: State transition and gate dependency enforcement
+  linked_requirements:
+  - FR-005
+  - FR-006
+  - FR-012
+  linked_acceptance_criteria:
+  - AC-004
+  - AC-005
+  - AC-011
+  linked_adrs:
+  - ADR-012
+  linked_contracts:
+  - .agents/pipeline-core/scripts/featurectl_core/cli.py
+  dependencies:
+  - S-001
+  priority: 1
+  complexity: 8
+  critical_path: true
+  parallelizable: false
+  file_ownership:
+  - .agents/pipeline-core/scripts/featurectl_core/cli.py
+  - tests/feature_pipeline/test_featurectl_core.py
+  - tests/feature_pipeline/test_gates_and_evidence.py
+  conflict_risk: high
+  dependency_notes: 'CLI mutation behavior is shared across feature creation, gate mutation, and repair
+    workflows.
+
+    '
+  expected_touchpoints:
+  - .agents/pipeline-core/scripts/featurectl_core/cli.py
+  - tests/feature_pipeline/test_featurectl_core.py
+  - tests/feature_pipeline/test_gates_and_evidence.py
+  scope_confidence: medium
+  test_strategy: 'Add blocked and allowed step transitions, gate dependency checks, and dirty base checkout
+    tests.
+
+    '
+  tdd:
+    failing_test_file: tests/feature_pipeline/test_featurectl_core.py
+    red_command: python -m pytest tests/feature_pipeline/test_featurectl_core.py tests/feature_pipeline/test_gates_and_evidence.py
+      -q
+    expected_failure: current CLI allows illegal transitions and dirty base worktree creation
+    green_command: python -m pytest tests/feature_pipeline/test_featurectl_core.py tests/feature_pipeline/test_gates_and_evidence.py
+      -q
+  verification_commands:
+  - python -m pytest tests/feature_pipeline/test_featurectl_core.py tests/feature_pipeline/test_gates_and_evidence.py
+    -q
+  review_focus:
+  - Dependency checks do not break valid sequential pipeline progression.
+  - Error messages are stable and actionable.
+  evidence_status: complete
+  status: complete
+  iteration_budget: 10
+  rollback_point: pre-slice git state
+  independent_verification: python -m pytest tests/feature_pipeline/test_featurectl_core.py tests/feature_pipeline/test_gates_and_evidence.py
+    -q
+  failure_triage_notes: 'Check whether fixtures need events.yaml or proper sequential gate setup before
+    weakening dependency checks.
+
+    '
+- id: S-003
+  title: Active validation, Docs Consulted, and readiness split
+  linked_requirements:
+  - FR-007
+  - FR-008
+  - FR-009
+  - FR-010
+  linked_acceptance_criteria:
+  - AC-006
+  - AC-007
+  - AC-008
+  - AC-009
+  linked_adrs:
+  - ADR-012
+  linked_contracts:
+  - .agents/pipeline-core/scripts/featurectl_core/validation.py
+  - .agents/pipeline-core/scripts/featurectl_core/validators/execution_log.py
+  dependencies:
+  - S-002
+  priority: 2
+  complexity: 8
+  critical_path: true
+  parallelizable: false
+  file_ownership:
+  - .agents/pipeline-core/scripts/featurectl_core/validation.py
+  - .agents/pipeline-core/scripts/featurectl_core/validators/execution_log.py
+  - .agents/pipeline-core/scripts/featurectl_core/validators/worktree.py
+  - tests/feature_pipeline/test_planning_readiness.py
+  - tests/feature_pipeline/test_worktree_status.py
+  conflict_risk: high
+  dependency_notes: 'Validation and worktree checks are shared by most tests and manual preflight flows.
+
+    '
+  expected_touchpoints:
+  - .agents/pipeline-core/scripts/featurectl_core/validation.py
+  - .agents/pipeline-core/scripts/featurectl_core/validators/execution_log.py
+  - .agents/pipeline-core/scripts/featurectl_core/validators/worktree.py
+  - tests/feature_pipeline/test_planning_readiness.py
+  - tests/feature_pipeline/test_worktree_status.py
+  scope_confidence: medium
+  test_strategy: 'Add active missing-events failure, execution current-step drift failure, per-path Docs
+    Consulted failure, worktree-status pass, and implementation-ready failure tests.
+
+    '
+  tdd:
+    failing_test_file: tests/feature_pipeline/test_planning_readiness.py
+    red_command: python -m pytest tests/feature_pipeline/test_planning_readiness.py tests/feature_pipeline/test_worktree_status.py
+      -q
+    expected_failure: current validation allows missing events.yaml and marker-level docs proof
+    green_command: python -m pytest tests/feature_pipeline/test_planning_readiness.py tests/feature_pipeline/test_worktree_status.py
+      -q
+  verification_commands:
+  - python -m pytest tests/feature_pipeline/test_planning_readiness.py tests/feature_pipeline/test_worktree_status.py
+    -q
+  review_focus:
+  - Active validation should not reject inactive legacy canonical records.
+  - Docs Consulted parser supports existing bullet format and keyed entries.
+  evidence_status: complete
+  status: complete
+  iteration_budget: 10
+  rollback_point: pre-slice git state
+  independent_verification: python -m pytest tests/feature_pipeline/test_planning_readiness.py tests/feature_pipeline/test_worktree_status.py
+    -q
+  failure_triage_notes: 'If many fixtures fail, add events.yaml to active fixtures instead of relaxing
+    active validation.
+
+    '
+- id: S-004
+  title: Runner fidelity labels and CI/manual readiness
+  linked_requirements:
+  - FR-011
+  - FR-013
+  linked_acceptance_criteria:
+  - AC-010
+  - AC-012
+  linked_adrs:
+  - ADR-012
+  linked_contracts:
+  - pipeline-lab/showcases/scripts/run_codex_e2e_case.py
+  - .github/workflows/pipeline-guardrails.yml
+  dependencies:
+  - S-003
+  priority: 3
+  complexity: 5
+  critical_path: false
+  parallelizable: true
+  file_ownership:
+  - pipeline-lab/showcases/scripts/run_codex_e2e_case.py
+  - tests/feature_pipeline/test_codex_e2e_runner.py
+  - .github/workflows/pipeline-guardrails.yml
+  - pipeline-lab/manual-check/README.md
+  - pipeline-lab/manual-check/preflight.sh
+  conflict_risk: medium
+  dependency_notes: 'Runner metadata and CI changes depend on the validated command contract from earlier
+    slices.
+
+    '
+  expected_touchpoints:
+  - pipeline-lab/showcases/scripts/run_codex_e2e_case.py
+  - tests/feature_pipeline/test_codex_e2e_runner.py
+  - .github/workflows/pipeline-guardrails.yml
+  - pipeline-lab/manual-check/README.md
+  - pipeline-lab/manual-check/preflight.sh
+  scope_confidence: high
+  test_strategy: 'Add runner manifest/report assertions, workflow assertions, and update manual preflight
+    documentation.
+
+    '
+  tdd:
+    failing_test_file: tests/feature_pipeline/test_codex_e2e_runner.py
+    red_command: python -m pytest tests/feature_pipeline/test_codex_e2e_runner.py tests/feature_pipeline/test_artifact_formatting.py
+      -q
+    expected_failure: current outcome-smoke output lacks partial fidelity labels and CI full-suite assertion
+    green_command: python -m pytest tests/feature_pipeline/test_codex_e2e_runner.py tests/feature_pipeline/test_artifact_formatting.py
+      -q
+  verification_commands:
+  - python -m pytest tests/feature_pipeline/test_codex_e2e_runner.py tests/feature_pipeline/test_artifact_formatting.py
+    -q
+  - python -m pytest tests/feature_pipeline -q
+  review_focus:
+  - Outcome-smoke cannot be mistaken for full native pipeline readiness.
+  - CI remains deterministic and does not require the real Codex opt-in test.
+  evidence_status: complete
+  status: complete
+  iteration_budget: 6
+  rollback_point: pre-slice git state
+  independent_verification: python -m pytest tests/feature_pipeline -q
+  failure_triage_notes: 'Separate CI dependency failures from pipeline behavior regressions.
+
+    '

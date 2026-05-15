@@ -1,0 +1,1 @@
+Review: no critical findings. Dirty guard tolerates generated bootstrap/profile files but still blocks unrelated product dirt unless --allow-dirty is explicit.

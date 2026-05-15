@@ -52,6 +52,13 @@ score artifacts.
 - CLI wrapper -> core module: top-level scripts stay small and stable while
   implementation details stay under focused `featurectl_core` and
   `pipelinebench_core` modules.
+- Worktree status -> implementation readiness: worktree isolation is checked by
+  `featurectl.py worktree-status`, while gate/stale readiness is checked by
+  `featurectl.py implementation-ready`.
+- Showcase runner -> readiness evidence: `outcome-smoke` reports are labeled
+  `pipeline_fidelity: partial` and are not valid as full pipeline readiness
+  evidence. Full readiness evidence must come from `full-native` or the opt-in
+  real Codex behavioral e2e.
 - Feature cards -> central backlog: accepted cross-feature debt is copied to
   `.ai/knowledge/pipeline-backlog.md` so it is retrievable without scanning
   every canonical feature.

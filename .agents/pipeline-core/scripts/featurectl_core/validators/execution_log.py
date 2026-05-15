@@ -10,7 +10,9 @@ from typing import Any
 def validate_execution_latest_status(workspace: Path, state: dict[str, Any]) -> list[str]:
     current_step = state.get("current_step")
     gates = state.get("gates") or {}
-    if current_step not in {"finish", "promote"} and gates.get("finish") != "complete":
+    lifecycle = state.get("lifecycle")
+    active = lifecycle in {None, "active"}
+    if not active and current_step not in {"finish", "promote"} and gates.get("finish") != "complete":
         return []
     execution_path = workspace / "execution.md"
     if not execution_path.exists():

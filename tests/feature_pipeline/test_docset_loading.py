@@ -298,6 +298,11 @@ None for this sample.
         state["gates"]["feature_contract"] = feature_contract
         state["gates"]["architecture"] = architecture
         state_path.write_text(yaml.safe_dump(state, sort_keys=False), encoding="utf-8")
+        execution_path = workspace / "execution.md"
+        execution = execution_path.read_text(encoding="utf-8")
+        execution = execution.replace("Current step: context", f"Current step: {current_step}")
+        execution = execution.replace("Next recommended skill: nfp-01-context", "Next recommended skill: nfp-04-tech-design")
+        execution_path.write_text(execution, encoding="utf-8")
 
 
 if __name__ == "__main__":

@@ -1,0 +1,1 @@
+2 skipped by default; specified and under-specified e2e test definitions include worktree cwd, source-diff, state, and events assertions.

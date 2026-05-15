@@ -26,7 +26,7 @@ echo "== planning package validation =="
 python "$FEATURECTL" validate --workspace "$WORKSPACE" --planning-package
 
 echo "== implementation readiness =="
-if python "$FEATURECTL" validate --workspace "$WORKSPACE" --implementation; then
+if python "$FEATURECTL" implementation-ready --workspace "$WORKSPACE"; then
   echo "implementation_readiness: pass"
 else
   echo "implementation_readiness: blocked"

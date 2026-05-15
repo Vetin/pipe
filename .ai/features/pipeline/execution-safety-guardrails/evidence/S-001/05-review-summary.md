@@ -1,0 +1,1 @@
+Review: no critical findings. The real Codex e2e remains opt-in and now separates under-specified blocking behavior from fully specified planning-package behavior.

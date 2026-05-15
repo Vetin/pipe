@@ -70,6 +70,7 @@ class ReviewVerificationTests(unittest.TestCase):
         state["current_step"] = "verification"
         state["gates"]["verification"] = "drafted"
         state_path.write_text(yaml.safe_dump(state, sort_keys=False), encoding="utf-8")
+        self.sync_execution_step(workspace, "verification")
 
         result = run([sys.executable, str(SCRIPT), "validate", "--workspace", str(workspace)], self.repo, check=False)
 
@@ -89,6 +90,7 @@ class ReviewVerificationTests(unittest.TestCase):
         state["current_step"] = "verification"
         state["gates"]["verification"] = "complete"
         state_path.write_text(yaml.safe_dump(state, sort_keys=False), encoding="utf-8")
+        self.sync_execution_step(workspace, "verification")
 
         result = run([sys.executable, str(SCRIPT), "validate", "--workspace", str(workspace)], self.repo)
 
@@ -103,6 +105,7 @@ class ReviewVerificationTests(unittest.TestCase):
         state["current_step"] = "verification"
         state["gates"]["verification"] = "complete"
         state_path.write_text(yaml.safe_dump(state, sort_keys=False), encoding="utf-8")
+        self.sync_execution_step(workspace, "verification")
 
         result = run([sys.executable, str(SCRIPT), "validate", "--workspace", str(workspace)], self.repo, check=False)
 
@@ -145,7 +148,23 @@ class ReviewVerificationTests(unittest.TestCase):
         state["gates"]["tech_design"] = "approved"
         state["gates"]["slicing_readiness"] = "approved"
         state_path.write_text(yaml.safe_dump(state, sort_keys=False), encoding="utf-8")
+        self.sync_execution_step(workspace, "review")
         return workspace
+
+    def sync_execution_step(self, workspace, step):
+        execution_path = workspace / "execution.md"
+        execution = execution_path.read_text(encoding="utf-8")
+        execution = execution.replace("Current step: context", f"Current step: {step}")
+        execution = execution.replace("Current step: review", f"Current step: {step}")
+        execution = execution.replace("Next recommended skill: nfp-01-context", f"Next recommended skill: {self.next_skill(step)}")
+        execution = execution.replace("Next recommended skill: nfp-09-review", f"Next recommended skill: {self.next_skill(step)}")
+        execution_path.write_text(execution, encoding="utf-8")
+
+    def next_skill(self, step):
+        return {
+            "review": "nfp-09-review",
+            "verification": "nfp-10-verification",
+        }[step]
 
     def create_workspace(self, run_id):
         run(

@@ -121,7 +121,7 @@ class PlanningReadinessTests(unittest.TestCase):
 
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("execution.md Docs Consulted: Architecture must reference at least one existing file path", result.stdout)
-        self.assertIn("execution.md Docs Consulted: Feature Contract must include a non-empty Used for entry", result.stdout)
+        self.assertIn("execution.md Docs Consulted: Feature Contract must reference at least one existing file path", result.stdout)
 
     def test_docs_consulted_missing_file_fails_planning_package(self):
         workspace = self.create_workspace("run-docs-missing-file")
@@ -143,6 +143,65 @@ class PlanningReadinessTests(unittest.TestCase):
 
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("execution.md Docs Consulted: Architecture missing referenced path", result.stdout)
+
+    def test_docs_consulted_each_path_requires_used_for_and_confidence(self):
+        workspace = self.create_workspace("run-docs-per-path")
+        write_planning_artifacts(workspace)
+        execution_path = workspace / "execution.md"
+        execution = execution_path.read_text(encoding="utf-8")
+        section_start = execution.index("## Docs Consulted: Architecture")
+        section_end = execution.index("## Docs Consulted: Feature Contract")
+        replacement = """## Docs Consulted: Architecture
+
+- `docs/context/architecture-overview.md`
+- `docs/context/feature-template.md`
+  - Used for: reused feature template as an architecture source.
+  - Confidence: high.
+
+"""
+        execution = execution[:section_start] + replacement + execution[section_end:]
+        execution_path.write_text(execution, encoding="utf-8")
+        self.set_gates(workspace, feature_contract="drafted", architecture="drafted", tech_design="drafted", slicing_readiness="drafted")
+
+        result = run(
+            [sys.executable, str(SCRIPT), "validate", "--workspace", str(workspace), "--planning-package"],
+            self.repo,
+            check=False,
+        )
+
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn(
+            "execution.md Docs Consulted: Architecture entry for docs/context/architecture-overview.md must include used_for",
+            result.stdout,
+        )
+        self.assertIn(
+            "execution.md Docs Consulted: Architecture entry for docs/context/architecture-overview.md must include confidence",
+            result.stdout,
+        )
+
+    def test_active_workspace_missing_events_yaml_fails_validation(self):
+        workspace = self.create_workspace("run-missing-events")
+        (workspace / "events.yaml").unlink()
+
+        result = run([sys.executable, str(SCRIPT), "validate", "--workspace", str(workspace)], self.repo, check=False)
+
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("missing events.yaml", result.stdout)
+
+    def test_active_execution_current_state_must_match_state_yaml(self):
+        workspace = self.create_workspace("run-execution-state-drift")
+        state_path = workspace / "state.yaml"
+        state = yaml.safe_load(state_path.read_text(encoding="utf-8"))
+        state["current_step"] = "architecture"
+        state_path.write_text(yaml.safe_dump(state, sort_keys=False), encoding="utf-8")
+
+        result = run([sys.executable, str(SCRIPT), "validate", "--workspace", str(workspace)], self.repo, check=False)
+
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn(
+            "execution.md Current Run State current step context does not match state.yaml current_step architecture",
+            result.stdout,
+        )
 
     def test_scope_change_marks_stale_return_step_and_blocks_implementation(self):
         workspace = self.create_workspace("run-scope-change")
@@ -222,6 +281,11 @@ class PlanningReadinessTests(unittest.TestCase):
         state["gates"]["tech_design"] = tech_design
         state["gates"]["slicing_readiness"] = slicing_readiness
         state_path.write_text(yaml.safe_dump(state, sort_keys=False), encoding="utf-8")
+        execution_path = workspace / "execution.md"
+        execution = execution_path.read_text(encoding="utf-8")
+        execution = execution.replace("Current step: context", "Current step: readiness")
+        execution = execution.replace("Next recommended skill: nfp-01-context", "Next recommended skill: nfp-06-readiness")
+        execution_path.write_text(execution, encoding="utf-8")
 
 
 def write_planning_artifacts(workspace):

@@ -135,6 +135,19 @@ implementation or review. Scope changes write `scope-change.md`, update stale
 flags, record `scope_changed` in `events.yaml`, and block implementation until
 the affected artifacts are refreshed.
 
+`featurectl.py step set` enforces legal forward transitions. Backward replanning
+must use `scope-change` so stale artifacts and event history stay explicit.
+`featurectl.py gate set` enforces dependency order for downstream planning and
+execution gates before those gates can be approved, delegated, or completed.
+
+`worktree-status` checks only branch/path isolation. Implementation readiness is
+checked separately with `implementation-ready`, which verifies planning gates,
+stale blockers, and current checkout alignment.
+
+Active workspaces must include `events.yaml`, and active `execution.md` current
+state must match `state.yaml.current_step` throughout the run, not only during
+finish or promotion.
+
 ## Pipeline Backlog
 
 Accepted verification debt that spans more than one feature is tracked in

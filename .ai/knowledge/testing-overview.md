@@ -31,3 +31,20 @@ No test scripts detected.
 - `tests/feature_pipeline/test_native_feature_emulation.py`
 - `tests/feature_pipeline/test_native_feature_judge.py`
 - `tests/feature_pipeline/test_native_feature_validation.py`
+
+## Pipeline Test Layers
+
+- Deterministic feature-pipeline suite:
+  `python -m pytest tests/feature_pipeline -q`
+- Mock Codex runner tests:
+  `python -m pytest tests/feature_pipeline/test_codex_e2e_runner.py -q`
+- Opt-in real Codex behavioral e2e:
+  `RUN_REAL_CODEX_E2E=1 CODEX_BIN=codex python -m pytest tests/feature_pipeline/test_real_codex_conversation.py -q`
+
+The real Codex e2e has separate under-specified and sufficiently specified
+reset-password prompts. The under-specified case must stop for blocking
+questions. The sufficiently specified case may draft planning artifacts, but it
+must prove product source and test files did not change before gates.
+
+`.github/workflows/pipeline-guardrails.yml` runs both fast public/raw guardrails
+and the full deterministic feature-pipeline suite.

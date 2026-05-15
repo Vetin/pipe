@@ -66,6 +66,34 @@ from .validation import (
     validate_implementation_minimum,
     validate_workspace,
 )
+from .validators.slices import validate_slices_file
+
+SATISFIED_GATE_STATES = {"approved", "delegated", "complete"}
+
+STEP_TRANSITIONS = {
+    "intake": {"context"},
+    "context": {"feature_contract"},
+    "feature_contract": {"architecture"},
+    "architecture": {"tech_design"},
+    "tech_design": {"slicing"},
+    "slicing": {"readiness"},
+    "readiness": {"worktree"},
+    "worktree": {"tdd_implementation"},
+    "tdd_implementation": {"review"},
+    "review": {"verification", "tdd_implementation"},
+    "verification": {"finish", "tdd_implementation"},
+    "finish": set(),
+}
+
+GATE_DEPENDENCIES = {
+    "architecture": ("feature_contract",),
+    "tech_design": ("architecture",),
+    "slicing_readiness": ("tech_design",),
+    "implementation": ("slicing_readiness",),
+    "review": ("implementation",),
+    "verification": ("review",),
+    "finish": ("verification",),
+}
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="featurectl.py")
@@ -83,6 +111,11 @@ def main(argv: list[str] | None = None) -> int:
     new_parser.add_argument("--worktree-root", default="../worktrees")
     new_parser.add_argument("--base-ref", default="HEAD")
     new_parser.add_argument("--stop-point", default="feature_contract")
+    new_parser.add_argument(
+        "--allow-dirty",
+        action="store_true",
+        help="allow creating a feature worktree from a dirty base checkout after inspection",
+    )
     new_parser.set_defaults(func=cmd_new)
 
     status_parser = subparsers.add_parser("status", help="print workspace status")
@@ -159,6 +192,13 @@ def main(argv: list[str] | None = None) -> int:
     worktree_status_parser.add_argument("--workspace")
     worktree_status_parser.set_defaults(func=cmd_worktree_status)
 
+    implementation_ready_parser = subparsers.add_parser(
+        "implementation-ready",
+        help="verify implementation may start from the configured feature worktree",
+    )
+    implementation_ready_parser.add_argument("--workspace")
+    implementation_ready_parser.set_defaults(func=cmd_implementation_ready)
+
     promote_parser = subparsers.add_parser("promote", help="promote feature workspace to canonical memory")
     promote_parser.add_argument("--workspace", required=True)
     promote_parser.add_argument(
@@ -195,8 +235,6 @@ def cmd_init(args: argparse.Namespace) -> None:
 
 def cmd_new(args: argparse.Namespace) -> None:
     root = repo_root()
-    ensure_init_tree(root)
-
     domain = normalize_domain(args.domain)
     slug = slugify(args.slug or args.title)
     run_id = args.run_id or generate_run_id()
@@ -211,6 +249,10 @@ def cmd_new(args: argparse.Namespace) -> None:
         raise FeatureCtlError(f"worktree path already exists: {worktree_path}")
     if git_branch_exists(root, branch):
         raise FeatureCtlError(f"branch already exists: {branch}")
+    if not args.allow_dirty:
+        require_clean_base_checkout(root)
+
+    ensure_init_tree(root)
 
     worktree_root.mkdir(parents=True, exist_ok=True)
     run_git(root, "worktree", "add", "-b", branch, str(worktree_path), args.base_ref)
@@ -275,6 +317,36 @@ def cmd_new(args: argparse.Namespace) -> None:
     print(f"worktree: {worktree_value}")
     print(f"workspace: {workspace_value}")
     print("next_step: nfp-01-context")
+
+
+def require_clean_base_checkout(root: Path) -> None:
+    status = run_git(root, "status", "--short", "--untracked-files=normal").strip()
+    blockers = [line for line in status.splitlines() if not generated_pipeline_bootstrap_dirty(line)]
+    if blockers:
+        raise FeatureCtlError(
+            "base checkout has uncommitted changes; inspect them before creating "
+            "a feature worktree or rerun with --allow-dirty"
+        )
+
+
+def generated_pipeline_bootstrap_dirty(status_line: str) -> bool:
+    if not status_line:
+        return True
+    status_code = status_line[:2]
+    path = status_line[3:]
+    if " -> " in path:
+        path = path.rsplit(" -> ", 1)[-1]
+    if status_code == "??" and path in {".agents/", ".ai/", "skills/", "methodology/"}:
+        return True
+    if status_code == "??" and path == ".gitignore":
+        return True
+    if status_code == "??" and path.startswith((".agents/", ".ai/", "skills/", "methodology/")):
+        return True
+    if path.startswith(".ai/knowledge/"):
+        return True
+    if path in {".ai/features/index.yaml", ".ai/features/overview.md"}:
+        return True
+    return False
 
 
 def cmd_status(args: argparse.Namespace) -> None:
@@ -352,6 +424,17 @@ def normalize_state_step(step: str) -> str:
     return normalized
 
 
+def validate_step_transition(old_step: str | None, new_step: str) -> None:
+    if not old_step or old_step == new_step:
+        return
+    allowed = STEP_TRANSITIONS.get(old_step, set())
+    if new_step not in allowed:
+        raise FeatureCtlError(
+            f"illegal step transition: {old_step} -> {new_step}; "
+            "use scope-change for backward replanning"
+        )
+
+
 def cmd_step_set(args: argparse.Namespace) -> None:
     root = repo_root()
     workspace = resolve_workspace(root, args.workspace)
@@ -359,6 +442,7 @@ def cmd_step_set(args: argparse.Namespace) -> None:
     state = read_yaml(state_path)
     old_step = state.get("current_step")
     new_step = normalize_state_step(args.step)
+    validate_step_transition(old_step, new_step)
     state["current_step"] = new_step
     write_yaml(state_path, state)
     append_execution_event(
@@ -461,6 +545,11 @@ def cmd_gate_set(args: argparse.Namespace) -> None:
         raise FeatureCtlError(f"invalid gate status: {args.status}")
     state_path = workspace / "state.yaml"
     state = read_yaml(state_path)
+    dependency_blockers = gate_dependency_blockers(workspace, state, args.gate, args.status)
+    if dependency_blockers:
+        for blocker in dependency_blockers:
+            print(f"- {blocker}")
+        raise FeatureCtlError("gate dependency validation failed")
     old_status = state.setdefault("gates", {}).get(args.gate)
     state["gates"][args.gate] = args.status
     write_yaml(state_path, state)
@@ -485,6 +574,24 @@ def cmd_gate_set(args: argparse.Namespace) -> None:
     )
     print(f"gate: {args.gate}")
     print(f"status: {args.status}")
+
+
+def gate_dependency_blockers(workspace: Path, state: dict[str, Any], gate: str, status: str) -> list[str]:
+    if status not in SATISFIED_GATE_STATES:
+        return []
+    gates = state.get("gates") or {}
+    blockers: list[str] = []
+    for dependency in GATE_DEPENDENCIES.get(gate, ()):
+        dependency_status = gates.get(dependency)
+        if dependency_status not in SATISFIED_GATE_STATES:
+            blockers.append(f"{gate} requires {dependency} gate approved or delegated")
+    if gate == "slicing_readiness":
+        slices_path = workspace / "slices.yaml"
+        if not slices_path.exists():
+            blockers.append("slicing_readiness requires slices.yaml")
+        else:
+            blockers.extend(validate_slices_file(slices_path, workspace=workspace))
+    return blockers
 
 
 def cmd_mark_stale(args: argparse.Namespace) -> None:
@@ -603,7 +710,6 @@ def cmd_worktree_status(args: argparse.Namespace) -> None:
     worktree_path = infer_worktree_path(workspace)
     blockers = []
     blockers.extend(status_blockers(root, workspace, feature, state))
-    blockers.extend(validate_implementation_minimum(state))
     blockers.extend(validate_current_directory_is_worktree(workspace))
 
     print("worktree_status: " + ("fail" if blockers else "pass"))
@@ -615,12 +721,40 @@ def cmd_worktree_status(args: argparse.Namespace) -> None:
     except FeatureCtlError as exc:
         blockers.append(str(exc))
         print("branch: unknown")
-    print("implementation_ready: " + ("true" if not blockers else "false"))
+    print("implementation_ready: not_checked")
     print("blocking_issues:")
     if blockers:
         for blocker in blockers:
             print(f"  - {blocker}")
         raise FeatureCtlError("worktree status failed")
+    print("  none")
+
+
+def cmd_implementation_ready(args: argparse.Namespace) -> None:
+    root = repo_root()
+    workspace = resolve_workspace(root, args.workspace)
+    feature = read_yaml(workspace / "feature.yaml")
+    state = read_yaml(workspace / "state.yaml")
+    worktree_path = infer_worktree_path(workspace)
+    blockers = []
+    blockers.extend(status_blockers(root, workspace, feature, state))
+    blockers.extend(validate_implementation_minimum(state))
+    blockers.extend(validate_current_directory_is_worktree(workspace))
+
+    print("implementation_ready: " + ("false" if blockers else "true"))
+    print(f"feature_key: {feature.get('feature_key')}")
+    print(f"worktree: {worktree_path}")
+    print(f"current_checkout: {repo_root()}")
+    try:
+        print(f"branch: {run_git(worktree_path, 'rev-parse', '--abbrev-ref', 'HEAD').strip()}")
+    except FeatureCtlError as exc:
+        blockers.append(str(exc))
+        print("branch: unknown")
+    print("blocking_issues:")
+    if blockers:
+        for blocker in blockers:
+            print(f"  - {blocker}")
+        raise FeatureCtlError("implementation readiness failed")
     print("  none")
 
 

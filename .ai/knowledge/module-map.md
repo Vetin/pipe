@@ -10,11 +10,14 @@ Last reviewed: 2026-05-13
 - `.agents/pipeline-core/scripts/featurectl.py`: stable command-line entrypoint
   for the deterministic pipeline control plane.
 - `.agents/pipeline-core/scripts/featurectl_core/cli.py`: argument parser and
-  command dispatch for the feature control plane.
+  command dispatch for the feature control plane. It also enforces legal step
+  transitions, gate dependency order, dirty-base worktree creation checks, and
+  the split between `worktree-status` and `implementation-ready`.
 - `.agents/pipeline-core/scripts/featurectl_core/profile.py`: init tree,
   project profile, knowledge rendering, and initial workspace prose.
 - `.agents/pipeline-core/scripts/featurectl_core/validation.py`: workspace and
-  artifact gate validation orchestration.
+  artifact gate validation orchestration, including active `events.yaml`
+  presence and per-path Docs Consulted use/confidence checks.
 - `.agents/pipeline-core/scripts/featurectl_core/validators/`: focused
   canonical memory, execution-log, event sidecar, gate, slice, and worktree
   validators.
@@ -25,7 +28,8 @@ Last reviewed: 2026-05-13
 - `.agents/pipeline-core/scripts/featurectl_core/validators/slices.py`: slice
   plan validation and feature requirement link checks.
 - `.agents/pipeline-core/scripts/featurectl_core/validators/worktree.py`:
-  current checkout and feature worktree alignment checks.
+  current checkout and feature worktree alignment checks used by both
+  `worktree-status` and `implementation-ready`.
 - `.agents/pipeline-core/scripts/featurectl_core/evidence.py`: evidence
   manifest, red/green order, slice completion, and retry metadata.
 - `.agents/pipeline-core/scripts/featurectl_core/events.py`: Markdown event

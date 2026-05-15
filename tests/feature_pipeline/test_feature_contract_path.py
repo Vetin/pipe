@@ -142,6 +142,11 @@ Users who forget passwords cannot regain access without support.
         state["current_step"] = "architecture"
         state["gates"]["feature_contract"] = "drafted"
         state_path.write_text(yaml.safe_dump(state, sort_keys=False), encoding="utf-8")
+        execution_path = workspace / "execution.md"
+        execution = execution_path.read_text(encoding="utf-8")
+        execution = execution.replace("Current step: context", "Current step: architecture")
+        execution = execution.replace("Next recommended skill: nfp-01-context", "Next recommended skill: nfp-03-architecture")
+        execution_path.write_text(execution, encoding="utf-8")
 
     def append_docs_consulted(self, workspace):
         with (workspace / "execution.md").open("a", encoding="utf-8") as handle:

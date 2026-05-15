@@ -20,7 +20,7 @@ class ManualCheckPreflightTests(unittest.TestCase):
             "status --workspace",
             "validate --workspace",
             "--planning-package",
-            "--implementation",
+            "implementation-ready --workspace",
             "worktree-status --workspace",
             "git status --short",
             "git branch --show-current",

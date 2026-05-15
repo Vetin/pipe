@@ -226,6 +226,12 @@ def selected_prompt_profile(case: dict[str, Any], override: str | None) -> str:
     return profile
 
 
+def pipeline_fidelity(prompt_profile: str) -> tuple[str, bool]:
+    if prompt_profile == "outcome-smoke":
+        return "partial", True
+    return "full", False
+
+
 def build_prompt(
     case_id: str,
     case: dict[str, Any],
@@ -464,6 +470,8 @@ def run_case(
         "source_repo": str(source_repo),
         "source_repo_kind": source_repo_kind,
         "prompt_profile": prompt_profile,
+        "pipeline_fidelity": pipeline_fidelity(prompt_profile)[0],
+        "not_valid_for_full_pipeline_readiness": pipeline_fidelity(prompt_profile)[1],
         "path_mode": "actual",
         "feature_request": case.get("feature_request", ""),
         "expected_result": case.get("expected_result", ""),
@@ -506,6 +514,9 @@ def render_report(manifest: dict[str, Any], final_text: str, stdout: str) -> str
         f"- Base ref: `{manifest.get('base_ref') or 'current HEAD'}`",
         f"- Run id: `{manifest['run_id']}`",
         f"- Execution mode: `{manifest['execution_mode']}`",
+        f"- Prompt profile: `{manifest.get('prompt_profile')}`",
+        f"- Pipeline fidelity: `{manifest.get('pipeline_fidelity')}`",
+        f"- Valid for full pipeline readiness: `{str(not manifest.get('not_valid_for_full_pipeline_readiness')).lower()}`",
         f"- Uses real Codex: `{str(manifest['uses_real_codex']).lower()}`",
         f"- Timeout seconds: `{manifest.get('timeout_seconds') or 'none'}`",
         f"- Timed out: `{str(manifest.get('timed_out')).lower()}`",

@@ -23,7 +23,10 @@ Manual pass criteria:
 - `feature.md`, `architecture.md`, `tech-design.md`, and `slices.yaml` exist.
 - `execution.md` records Docs Consulted sections with real paths and use notes.
 - `featurectl.py validate --workspace <workspace> --planning-package` passes.
-- Implementation readiness fails until gates are approved or delegated.
+- `featurectl.py worktree-status --workspace <workspace>` validates checkout
+  isolation without requiring implementation gates.
+- `featurectl.py implementation-ready --workspace <workspace>` fails until
+  gates are approved or delegated.
 - no implementation code changed before gates.
 - `approvals.yaml` and `handoff.md` do not exist.
 
@@ -31,5 +34,6 @@ Manual pass criteria:
 
 The preflight script prints the current branch, git status, feature status,
 base validation, planning package validation, implementation readiness, and
-worktree status. Implementation readiness and worktree status may be blocked for
+worktree status. Worktree status checks branch/path isolation only.
+Implementation readiness remains a separate check and may be blocked for
 planning-only workspaces; that is reported without hiding the result.

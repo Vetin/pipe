@@ -434,6 +434,7 @@ Last updated: 2026-05-12T12:00:00Z
                 "Reset Password",
                 "--run-id",
                 run_id,
+                "--allow-dirty",
             ],
             self.repo,
         )

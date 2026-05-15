@@ -1,0 +1,32 @@
+artifact_contract_version: 0.1.0
+feature_key: pipeline/execution-safety-guardrails
+run_id: 20260515-execution-safety
+current_step: promote
+lifecycle: promoted-readonly
+read_only: true
+worktree:
+  branch: feature/pipeline-execution-safety-guardrails-20260515-execution-safety
+  path: ../worktrees/pipeline-execution-safety-guardrails-20260515-execution-safety
+gates:
+  feature_contract: approved
+  architecture: approved
+  tech_design: approved
+  slicing_readiness: approved
+  implementation: complete
+  review: complete
+  verification: complete
+  finish: complete
+stale:
+  feature: false
+  architecture: false
+  tech_design: false
+  slices: false
+  evidence: false
+  review: false
+  feature_card: false
+  canonical_docs: false
+  index: false
+active_slice: null
+locks:
+  owner: null
+  acquired_at: null

@@ -1,7 +1,7 @@
 # Feature Overview
 
 Status: generated
-Generated at: 2026-05-14T22:48:58Z
+Generated at: 2026-05-15T11:47:51Z
 
 ## Canonical Features
 
@@ -10,6 +10,7 @@ Generated at: 2026-05-14T22:48:58Z
 - `pipeline/codex-e2e-runner-hardening` (complete) from `.ai/features/pipeline/codex-e2e-runner-hardening`; run `run-20260512-codex-e2e-hardening`
 - `pipeline/core-modularity-and-readable-events` (complete) from `.ai/features/pipeline/core-modularity-and-readable-events`; run `20260513-core-modularity-events`
 - `pipeline/event-schema-strictness-and-narrative-execution-logs` (complete) from `.ai/features/pipeline/event-schema-strictness-and-narrative-execution-logs`; run `20260513-event-schema-narrative`
+- `pipeline/execution-safety-guardrails` (complete) from `.ai/features/pipeline/execution-safety-guardrails`; run `20260515-execution-safety`
 - `pipeline/guardrail-polish-and-backlog-tracking` (complete) from `.ai/features/pipeline/guardrail-polish-and-backlog-tracking`; run `run-20260513-8vs4`
 - `pipeline/guardrail-status-and-summary-polish` (complete) from `.ai/features/pipeline/guardrail-status-and-summary-polish`; run `20260514-guardrail-status-summary`
 - `pipeline/lifecycle-hygiene-profile-noise` (complete) from `.ai/features/pipeline/lifecycle-hygiene-profile-noise`; run `20260512-lifecycle-hygiene`

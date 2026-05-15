@@ -1,0 +1,1 @@
+python -m pytest tests/feature_pipeline/test_planning_readiness.py tests/feature_pipeline/test_worktree_status.py -q

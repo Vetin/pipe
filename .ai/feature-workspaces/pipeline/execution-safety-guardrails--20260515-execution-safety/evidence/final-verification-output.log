@@ -1,0 +1,11 @@
+python -m pytest tests/feature_pipeline -q
+
+199 passed, 2 skipped, 472 subtests passed in 66.48s.
+
+git diff --check
+
+passed.
+
+python -m compileall .agents/pipeline-core/scripts
+
+passed.

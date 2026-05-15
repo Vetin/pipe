@@ -283,6 +283,22 @@ class FeatureCtlCoreTests(unittest.TestCase):
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("worktree path already exists", result.stderr)
 
+    def test_new_blocks_dirty_base_checkout_without_allow_dirty(self):
+        (self.repo / "scratch.txt").write_text("dirty\n", encoding="utf-8")
+
+        result = self.new_feature("run-dirty-base", check=False)
+
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("base checkout has uncommitted changes", result.stderr)
+
+    def test_new_allows_dirty_base_checkout_when_explicit(self):
+        (self.repo / "scratch.txt").write_text("dirty\n", encoding="utf-8")
+
+        result = self.new_feature("run-dirty-allowed", extra_args=["--allow-dirty"])
+
+        self.assertIn("feature_key: auth/reset-password", result.stdout)
+        self.assertTrue(self.workspace("run-dirty-allowed").exists())
+
     def test_status_reports_state_and_blockers(self):
         self.new_feature("run-20260511-stat")
         workspace = "../worktrees/auth-reset-password-run-20260511-stat/.ai/feature-workspaces/auth/reset-password--run-20260511-stat"
@@ -317,11 +333,11 @@ class FeatureCtlCoreTests(unittest.TestCase):
                 "--workspace",
                 str(workspace),
                 "--step",
-                "architecture",
+                "feature_contract",
                 "--by",
-                "nfp-03-architecture",
+                "nfp-02-feature-contract",
                 "--note",
-                "feature contract drafted",
+                "context complete",
             ],
             self.repo,
         )
@@ -329,14 +345,40 @@ class FeatureCtlCoreTests(unittest.TestCase):
         state = yaml.safe_load((workspace / "state.yaml").read_text(encoding="utf-8"))
         execution = (workspace / "execution.md").read_text(encoding="utf-8")
         events = yaml.safe_load((workspace / "events.yaml").read_text(encoding="utf-8"))
-        self.assertIn("current_step: architecture", result.stdout)
-        self.assertIn("next_step: nfp-03-architecture", result.stdout)
-        self.assertEqual(state["current_step"], "architecture")
-        self.assertIn("Moved current step to `architecture`.", execution)
-        self.assertIn("Current step: architecture", execution)
+        self.assertIn("current_step: feature_contract", result.stdout)
+        self.assertIn("next_step: nfp-02-feature-contract", result.stdout)
+        self.assertEqual(state["current_step"], "feature_contract")
+        self.assertIn("Moved current step to `feature_contract`.", execution)
+        self.assertIn("Current step: feature_contract", execution)
         self.assertEqual(events["events"][-1]["event_type"], "step_changed")
         self.assertEqual(events["events"][-1]["old_step"], "context")
-        self.assertEqual(events["events"][-1]["new_step"], "architecture")
+        self.assertEqual(events["events"][-1]["new_step"], "feature_contract")
+
+    def test_step_set_rejects_illegal_forward_jump(self):
+        self.new_feature("run-step-jump")
+        workspace = self.workspace("run-step-jump")
+
+        result = run(
+            [
+                sys.executable,
+                str(SCRIPT),
+                "step",
+                "set",
+                "--workspace",
+                str(workspace),
+                "--step",
+                "verification",
+                "--by",
+                "test",
+            ],
+            self.repo,
+            check=False,
+        )
+
+        state = yaml.safe_load((workspace / "state.yaml").read_text(encoding="utf-8"))
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("illegal step transition: context -> verification", result.stderr)
+        self.assertEqual(state["current_step"], "context")
 
     def test_step_set_rejects_invalid_or_promote_step(self):
         self.new_feature("run-step-invalid")
@@ -382,9 +424,8 @@ class FeatureCtlCoreTests(unittest.TestCase):
         self.assertIn("promote step is managed by featurectl.py promote", promote.stderr)
         self.assertEqual(state["current_step"], "context")
 
-    def new_feature(self, run_id, check=True):
-        return run(
-            [
+    def new_feature(self, run_id, check=True, extra_args=None):
+        cmd = [
                 sys.executable,
                 str(SCRIPT),
                 "new",
@@ -394,7 +435,11 @@ class FeatureCtlCoreTests(unittest.TestCase):
                 "Reset Password",
                 "--run-id",
                 run_id,
-            ],
+            ]
+        if extra_args:
+            cmd.extend(extra_args)
+        return run(
+            cmd,
             self.repo,
             check=check,
         )

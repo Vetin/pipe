@@ -90,6 +90,12 @@ def approve_planning(workspace, current_step="readiness"):
     state["gates"]["tech_design"] = "approved"
     state["gates"]["slicing_readiness"] = "delegated"
     state_path.write_text(yaml.safe_dump(state, sort_keys=False), encoding="utf-8")
+    execution_path = Path(workspace) / "execution.md"
+    if execution_path.exists():
+        execution = execution_path.read_text(encoding="utf-8")
+        execution = execution.replace("Current step: context", f"Current step: {current_step}")
+        execution = execution.replace("Next recommended skill: nfp-01-context", "Next recommended skill: nfp-06-readiness")
+        execution_path.write_text(execution, encoding="utf-8")
     return state
 
 

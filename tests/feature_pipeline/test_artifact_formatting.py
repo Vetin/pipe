@@ -157,6 +157,7 @@ class ArtifactFormattingTests(unittest.TestCase):
             "python -m compileall .agents/pipeline-core/scripts",
             "python .agents/pipeline-core/scripts/pipelinebench.py check-public-raw",
             "tests/feature_pipeline/test_artifact_formatting.py",
+            "python -m pytest tests/feature_pipeline -q",
         ):
             self.assertIn(expected, content)
 

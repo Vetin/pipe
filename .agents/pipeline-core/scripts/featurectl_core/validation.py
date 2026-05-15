@@ -46,6 +46,8 @@ def status_blockers(root: Path, workspace: Path, feature: dict[str, Any], state:
         is_canonical_memory = False
     if is_canonical_memory:
         return blockers
+    if not (workspace / "events.yaml").exists():
+        blockers.append("missing events.yaml")
     worktree_info = state.get("worktree") or {}
     worktree_value = worktree_info.get("path")
     branch_value = worktree_info.get("branch")
@@ -214,15 +216,20 @@ def validate_docs_consulted(workspace: Path, step_label: str) -> list[str]:
         return [f"execution.md missing {marker}"]
     section = markdown_section(execution, marker)
     blockers: list[str] = []
-    paths = referenced_doc_paths(section)
+    entries = referenced_doc_entries(section)
+    paths = [entry["path"] for entry in entries]
     existing_paths = [path for path in paths if referenced_path_exists(workspace, path)]
     if not existing_paths:
         blockers.append(f"execution.md {marker} must reference at least one existing file path")
-    for path in paths:
+    for entry in entries:
+        path = entry["path"]
         if not referenced_path_exists(workspace, path):
             blockers.append(f"execution.md {marker} missing referenced path: {path}")
-    if not re.search(r"(?im)^\s*-\s+Used for:\s*\S", section):
-        blockers.append(f"execution.md {marker} must include a non-empty Used for entry")
+        if not entry.get("used_for"):
+            blockers.append(f"execution.md {marker} entry for {path} must include used_for")
+        confidence = normalize_confidence(entry.get("confidence", ""))
+        if confidence not in {"low", "medium", "high"}:
+            blockers.append(f"execution.md {marker} entry for {path} must include confidence low, medium, or high")
     return blockers
 
 
@@ -236,20 +243,49 @@ def markdown_section(markdown: str, heading_text: str) -> str:
 
 
 def referenced_doc_paths(section: str) -> list[str]:
-    candidates: list[str] = []
+    return [entry["path"] for entry in referenced_doc_entries(section)]
+
+
+def referenced_doc_entries(section: str) -> list[dict[str, str]]:
+    entries: list[dict[str, str]] = []
+    current: dict[str, str] | None = None
     for line in section.splitlines():
         bullet_path = re.match(r"\s*-\s+`([^`]+)`", line)
-        if bullet_path:
-            candidates.append(bullet_path.group(1))
-            continue
         keyed_path = re.match(r"\s*-\s+path:\s+`?([^`]+?)`?\s*$", line)
-        if keyed_path:
-            candidates.append(keyed_path.group(1))
+        path_value = None
+        if bullet_path:
+            path_value = bullet_path.group(1)
+        elif keyed_path:
+            path_value = keyed_path.group(1)
+        if path_value is not None:
+            if current:
+                entries.append(current)
+            current = {
+                "path": path_value,
+                "used_for": "",
+                "confidence": "",
+            }
+            continue
+        if current is None:
+            continue
+        used_match = re.match(r"\s*(?:-\s+Used for:|used_for:)\s*(.+)", line, flags=re.IGNORECASE)
+        if used_match:
+            current["used_for"] = used_match.group(1).strip()
+            continue
+        confidence_match = re.match(r"\s*(?:-\s+Confidence:|confidence:)\s*(.+)", line, flags=re.IGNORECASE)
+        if confidence_match:
+            current["confidence"] = confidence_match.group(1).strip()
+    if current:
+        entries.append(current)
     return [
-        item
-        for item in candidates
-        if "/" in item or item.endswith((".md", ".yaml", ".yml", ".json", ".py", ".txt"))
+        entry
+        for entry in entries
+        if "/" in entry["path"] or entry["path"].endswith((".md", ".yaml", ".yml", ".json", ".py", ".txt"))
     ]
+
+
+def normalize_confidence(value: str) -> str:
+    return value.strip().lower().strip(".")
 
 
 def referenced_path_exists(workspace: Path, rel_path: str) -> bool:

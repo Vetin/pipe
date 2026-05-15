@@ -1,12 +1,12 @@
 artifact_contract_version: 0.1.0
 generated_by: featurectl.py promote canonical sync
-generated_at: '2026-05-14T22:48:58Z'
+generated_at: '2026-05-15T11:47:51Z'
 project:
   name: pipe
   root: .
   remote: git@github.com:Vetin/pipe.git
 counts:
-  tracked_files: 2520
+  tracked_files: 2572
   profiled_files: 224
   source_files: 30
   test_files: 40
@@ -37,6 +37,8 @@ canonical_features:
   path: .ai/features/pipeline/core-modularity-and-readable-events
 - feature_key: pipeline/event-schema-strictness-and-narrative-execution-logs
   path: .ai/features/pipeline/event-schema-strictness-and-narrative-execution-logs
+- feature_key: pipeline/execution-safety-guardrails
+  path: .ai/features/pipeline/execution-safety-guardrails
 - feature_key: pipeline/guardrail-polish-and-backlog-tracking
   path: .ai/features/pipeline/guardrail-polish-and-backlog-tracking
 - feature_key: pipeline/guardrail-status-and-summary-polish
