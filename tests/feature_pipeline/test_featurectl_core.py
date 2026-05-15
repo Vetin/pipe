@@ -337,6 +337,9 @@ class FeatureCtlCoreTests(unittest.TestCase):
 
         self.assertIn("feature_key: auth/reset-password", result.stdout)
         self.assertIn("current_step: context", result.stdout)
+        self.assertIn("planning_gates:", result.stdout)
+        self.assertIn("  feature_contract: pending", result.stdout)
+        self.assertIn("delivery_gates:", result.stdout)
         self.assertIn("implementation: blocked", result.stdout)
         self.assertIn("blocking_issues:\n  none", result.stdout)
         self.assertIn("next_step: nfp-01-context", result.stdout)

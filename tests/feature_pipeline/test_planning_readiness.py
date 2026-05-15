@@ -179,6 +179,78 @@ class PlanningReadinessTests(unittest.TestCase):
             result.stdout,
         )
 
+    def test_planning_package_rejects_scaffold_only_feature_contract(self):
+        workspace = self.create_workspace("run-scaffold-feature")
+        write_planning_artifacts(workspace)
+        feature_path = workspace / "feature.md"
+        feature_path.write_text(
+            feature_path.read_text(encoding="utf-8") + "\nStatus: scaffold-only\n",
+            encoding="utf-8",
+        )
+
+        result = run(
+            [sys.executable, str(SCRIPT), "validate", "--workspace", str(workspace), "--planning-package"],
+            self.repo,
+            check=False,
+        )
+
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("feature.md is scaffold-only and cannot satisfy planning-package validation", result.stdout)
+
+    def test_planning_package_rejects_scaffold_only_architecture(self):
+        workspace = self.create_workspace("run-scaffold-architecture")
+        write_planning_artifacts(workspace)
+        architecture_path = workspace / "architecture.md"
+        architecture_path.write_text(
+            architecture_path.read_text(encoding="utf-8") + "\nStatus: scaffold-only\n",
+            encoding="utf-8",
+        )
+
+        result = run(
+            [sys.executable, str(SCRIPT), "validate", "--workspace", str(workspace), "--planning-package"],
+            self.repo,
+            check=False,
+        )
+
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("architecture.md is scaffold-only and cannot satisfy planning-package validation", result.stdout)
+
+    def test_planning_package_rejects_scaffold_only_tech_design(self):
+        workspace = self.create_workspace("run-scaffold-tech-design")
+        write_planning_artifacts(workspace)
+        tech_design_path = workspace / "tech-design.md"
+        tech_design_path.write_text(
+            tech_design_path.read_text(encoding="utf-8") + "\nStatus: scaffold-only\n",
+            encoding="utf-8",
+        )
+
+        result = run(
+            [sys.executable, str(SCRIPT), "validate", "--workspace", str(workspace), "--planning-package"],
+            self.repo,
+            check=False,
+        )
+
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("tech-design.md is scaffold-only and cannot satisfy planning-package validation", result.stdout)
+
+    def test_planning_package_rejects_scaffold_only_slices(self):
+        workspace = self.create_workspace("run-scaffold-slices")
+        write_planning_artifacts(workspace)
+        slices_path = workspace / "slices.yaml"
+        slices_path.write_text(
+            "artifact_state: scaffold-only\n" + slices_path.read_text(encoding="utf-8"),
+            encoding="utf-8",
+        )
+
+        result = run(
+            [sys.executable, str(SCRIPT), "validate", "--workspace", str(workspace), "--planning-package"],
+            self.repo,
+            check=False,
+        )
+
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("slices.yaml is scaffold-only and cannot satisfy planning-package validation", result.stdout)
+
     def test_active_workspace_missing_events_yaml_fails_validation(self):
         workspace = self.create_workspace("run-missing-events")
         (workspace / "events.yaml").unlink()

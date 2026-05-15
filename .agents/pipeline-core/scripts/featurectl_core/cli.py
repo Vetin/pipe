@@ -78,6 +78,8 @@ from .validation import (
 from .validators.review import validate_review_minimum
 
 SATISFIED_GATE_STATES = {"approved", "delegated", "complete"}
+PLANNING_GATES = ("feature_contract", "architecture", "tech_design", "slicing_readiness")
+DELIVERY_GATES = ("implementation", "review", "verification", "finish")
 DELIVERY_GATES_REQUIRING_COMPLETION = {"review", "verification", "finish"}
 
 STEP_TRANSITIONS = {
@@ -382,8 +384,14 @@ def cmd_status(args: argparse.Namespace) -> None:
     print(f"feature_key: {feature.get('feature_key')}")
     print(f"worktree: {state.get('worktree', {}).get('path')}")
     print(f"current_step: {state.get('current_step')}")
-    print("gates:")
-    for gate, status in state.get("gates", {}).items():
+    gates = state.get("gates", {})
+    print("planning_gates:")
+    for gate in PLANNING_GATES:
+        status = gates.get(gate, "missing")
+        print(f"  {gate}: {status}")
+    print("delivery_gates:")
+    for gate in DELIVERY_GATES:
+        status = gates.get(gate, "missing")
         print(f"  {gate}: {status}")
     print("stale:")
     for artifact, stale in state.get("stale", {}).items():

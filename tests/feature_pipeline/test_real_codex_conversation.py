@@ -194,25 +194,31 @@ class RealCodexConversationTests(unittest.TestCase):
         architecture = workspace / "architecture.md"
         if architecture.exists():
             content = architecture.read_text(encoding="utf-8")
-            lower = content.lower()
-            self.assertFalse(
-                "## system context" in lower and self.contains_reset_design_detail(lower),
-                "architecture.md should not contain source-grounded design from unsafe assumptions",
-            )
+            if not self.is_scaffold_only(content):
+                lower = content.lower()
+                self.assertFalse(
+                    "## system context" in lower and self.contains_reset_design_detail(lower),
+                    "architecture.md should not contain source-grounded design from unsafe assumptions",
+                )
 
         tech_design = workspace / "tech-design.md"
         if tech_design.exists():
             content = tech_design.read_text(encoding="utf-8")
-            lower = content.lower()
-            self.assertFalse(
-                "## modules" in lower and self.contains_reset_design_detail(lower),
-                "tech-design.md should not contain module design from unsafe assumptions",
-            )
+            if not self.is_scaffold_only(content):
+                lower = content.lower()
+                self.assertFalse(
+                    "## modules" in lower and self.contains_reset_design_detail(lower),
+                    "tech-design.md should not contain module design from unsafe assumptions",
+                )
 
         slices = workspace / "slices.yaml"
         if slices.exists():
             content = slices.read_text(encoding="utf-8")
-            self.assertNotIn("S-001", content, "slices.yaml should not define implementation slices from unsafe assumptions")
+            if not self.is_scaffold_only(content):
+                self.assertNotIn("S-001", content, "slices.yaml should not define implementation slices from unsafe assumptions")
+
+    def is_scaffold_only(self, content):
+        return "Status: scaffold-only" in content or "artifact_state: scaffold-only" in content
 
     def contains_reset_design_detail(self, text):
         return any(

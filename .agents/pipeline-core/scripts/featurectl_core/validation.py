@@ -17,6 +17,7 @@ from .shared import (
     FeatureCtlError,
     run_git,
 )
+from .validators.artifacts import scaffold_only_blocker
 from .validators.canonical_memory import validate_repository_source_truth, workspace_inactive_lifecycle
 from .validators.events import validate_events_sidecar
 from .validators.execution_log import validate_execution_latest_status
@@ -24,6 +25,7 @@ from .validators.gates import validate_state_shape
 from .validators.review import validate_review_minimum
 from .validators.slices import validate_slices_file
 from .validators.worktree import validate_current_directory_is_worktree
+
 
 def status_blockers(root: Path, workspace: Path, feature: dict[str, Any], state: dict[str, Any]) -> list[str]:
     blockers: list[str] = []
@@ -138,7 +140,8 @@ def validate_feature_contract_if_started(workspace: Path, state: dict[str, Any])
     if not feature_path.exists():
         return ["feature_contract gate requires feature.md"]
     content = feature_path.read_text(encoding="utf-8")
-    blockers = [f"feature.md missing heading: {heading}" for heading in FEATURE_REQUIRED_HEADINGS if heading not in content]
+    blockers = scaffold_only_blocker(workspace, "feature.md")
+    blockers.extend(f"feature.md missing heading: {heading}" for heading in FEATURE_REQUIRED_HEADINGS if heading not in content)
     if "FR-" not in content:
         blockers.append("feature.md must include functional requirement IDs")
     if "AC-" not in content:
@@ -172,7 +175,8 @@ def validate_architecture_if_started(workspace: Path, state: dict[str, Any]) -> 
         "## Completeness Correctness Coherence",
         "## ADRs",
     )
-    blockers = [f"architecture.md missing heading: {heading}" for heading in required_headings if heading not in content]
+    blockers = scaffold_only_blocker(workspace, "architecture.md")
+    blockers.extend(f"architecture.md missing heading: {heading}" for heading in required_headings if heading not in content)
     lower = content.lower()
     if "```mermaid" not in lower or not any(token in lower for token in ("flowchart", "graph ", "sequencediagram")):
         blockers.append("architecture.md requires mermaid feature topology diagram")
@@ -192,7 +196,8 @@ def validate_tech_design_if_started(workspace: Path, state: dict[str, Any]) -> l
     if not tech_design_path.exists():
         return ["tech_design gate requires tech-design.md"]
     content = tech_design_path.read_text(encoding="utf-8")
-    blockers = [f"tech-design.md missing heading: {heading}" for heading in TECH_DESIGN_REQUIRED_HEADINGS if heading not in content]
+    blockers = scaffold_only_blocker(workspace, "tech-design.md")
+    blockers.extend(f"tech-design.md missing heading: {heading}" for heading in TECH_DESIGN_REQUIRED_HEADINGS if heading not in content)
     blockers.extend(validate_docs_consulted(workspace, "Technical Design"))
     return blockers
 
@@ -204,7 +209,8 @@ def validate_slices_if_started(workspace: Path, state: dict[str, Any]) -> list[s
     slices_path = workspace / "slices.yaml"
     if not slices_path.exists():
         return ["slicing_readiness gate requires slices.yaml"]
-    blockers = validate_slices_file(slices_path, workspace=workspace)
+    blockers = scaffold_only_blocker(workspace, "slices.yaml")
+    blockers.extend(validate_slices_file(slices_path, workspace=workspace))
     blockers.extend(validate_docs_consulted(workspace, "Slicing"))
     return blockers
 
