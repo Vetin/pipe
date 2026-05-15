@@ -58,6 +58,7 @@ class ArtifactFormattingTests(unittest.TestCase):
                 "Readable Reset Flow",
                 "--run-id",
                 "run-readable",
+                "--allow-bootstrap-dirty",
             ],
             self.repo,
         )

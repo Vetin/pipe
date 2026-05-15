@@ -299,6 +299,36 @@ class FeatureCtlCoreTests(unittest.TestCase):
         self.assertIn("feature_key: auth/reset-password", result.stdout)
         self.assertTrue(self.workspace("run-dirty-allowed").exists())
 
+    def test_new_blocks_bootstrap_dirty_without_explicit_bootstrap_flag(self):
+        knowledge = self.repo / ".ai/knowledge/project-index.yaml"
+        knowledge.parent.mkdir(parents=True)
+        knowledge.write_text("artifact_contract_version: 0.1.0\n", encoding="utf-8")
+
+        result = self.new_feature("run-bootstrap-dirty-blocked", check=False)
+
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("--allow-bootstrap-dirty", result.stderr)
+
+    def test_new_allows_only_bootstrap_dirty_when_explicit(self):
+        knowledge = self.repo / ".ai/knowledge/project-index.yaml"
+        knowledge.parent.mkdir(parents=True)
+        knowledge.write_text("artifact_contract_version: 0.1.0\n", encoding="utf-8")
+
+        result = self.new_feature("run-bootstrap-dirty-allowed", extra_args=["--allow-bootstrap-dirty"])
+
+        self.assertIn("feature_key: auth/reset-password", result.stdout)
+        self.assertTrue(self.workspace("run-bootstrap-dirty-allowed").exists())
+
+    def test_new_bootstrap_dirty_flag_does_not_hide_product_dirty_files(self):
+        (self.repo / ".ai/knowledge").mkdir(parents=True)
+        (self.repo / ".ai/knowledge/project-index.yaml").write_text("artifact_contract_version: 0.1.0\n", encoding="utf-8")
+        (self.repo / "scratch.txt").write_text("dirty\n", encoding="utf-8")
+
+        result = self.new_feature("run-bootstrap-plus-product-dirty", extra_args=["--allow-bootstrap-dirty"], check=False)
+
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("--allow-dirty", result.stderr)
+
     def test_status_reports_state_and_blockers(self):
         self.new_feature("run-20260511-stat")
         workspace = "../worktrees/auth-reset-password-run-20260511-stat/.ai/feature-workspaces/auth/reset-password--run-20260511-stat"
@@ -380,6 +410,48 @@ class FeatureCtlCoreTests(unittest.TestCase):
         self.assertIn("illegal step transition: context -> verification", result.stderr)
         self.assertEqual(state["current_step"], "context")
 
+    def test_step_set_allows_feature_contract_to_architecture(self):
+        self.new_feature("run-step-architecture")
+        workspace = self.workspace("run-step-architecture")
+        self.step_set(workspace, "feature_contract")
+
+        result = self.step_set(workspace, "architecture")
+
+        state = yaml.safe_load((workspace / "state.yaml").read_text(encoding="utf-8"))
+        self.assertIn("current_step: architecture", result.stdout)
+        self.assertIn("next_step: nfp-03-architecture", result.stdout)
+        self.assertEqual(state["current_step"], "architecture")
+
+    def test_step_set_blocks_architecture_to_slicing(self):
+        self.new_feature("run-step-skip-tech-design")
+        workspace = self.workspace("run-step-skip-tech-design")
+        self.step_set(workspace, "feature_contract")
+        self.step_set(workspace, "architecture")
+
+        result = self.step_set(workspace, "slicing", check=False)
+
+        state = yaml.safe_load((workspace / "state.yaml").read_text(encoding="utf-8"))
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("illegal step transition: architecture -> slicing", result.stderr)
+        self.assertEqual(state["current_step"], "architecture")
+
+    def test_step_set_allows_review_or_verification_return_to_tdd(self):
+        self.new_feature("run-step-return-to-tdd")
+        workspace = self.workspace("run-step-return-to-tdd")
+        state_path = workspace / "state.yaml"
+        state = yaml.safe_load(state_path.read_text(encoding="utf-8"))
+        state["current_step"] = "review"
+        state_path.write_text(yaml.safe_dump(state, sort_keys=False), encoding="utf-8")
+
+        review_return = self.step_set(workspace, "tdd_implementation")
+        state = yaml.safe_load(state_path.read_text(encoding="utf-8"))
+        state["current_step"] = "verification"
+        state_path.write_text(yaml.safe_dump(state, sort_keys=False), encoding="utf-8")
+        verification_return = self.step_set(workspace, "tdd_implementation")
+
+        self.assertIn("current_step: tdd_implementation", review_return.stdout)
+        self.assertIn("current_step: tdd_implementation", verification_return.stdout)
+
     def test_step_set_rejects_invalid_or_promote_step(self):
         self.new_feature("run-step-invalid")
         workspace = self.workspace("run-step-invalid")
@@ -423,6 +495,37 @@ class FeatureCtlCoreTests(unittest.TestCase):
         self.assertNotEqual(promote.returncode, 0)
         self.assertIn("promote step is managed by featurectl.py promote", promote.stderr)
         self.assertEqual(state["current_step"], "context")
+
+    def test_step_set_blocks_finish_to_promote_because_promote_command_owns_promotion(self):
+        self.new_feature("run-step-finish-promote")
+        workspace = self.workspace("run-step-finish-promote")
+        state_path = workspace / "state.yaml"
+        state = yaml.safe_load(state_path.read_text(encoding="utf-8"))
+        state["current_step"] = "finish"
+        state_path.write_text(yaml.safe_dump(state, sort_keys=False), encoding="utf-8")
+
+        result = self.step_set(workspace, "promote", check=False)
+
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("promote step is managed by featurectl.py promote", result.stderr)
+
+    def step_set(self, workspace, step, check=True):
+        return run(
+            [
+                sys.executable,
+                str(SCRIPT),
+                "step",
+                "set",
+                "--workspace",
+                str(workspace),
+                "--step",
+                step,
+                "--by",
+                "test",
+            ],
+            self.repo,
+            check=check,
+        )
 
     def new_feature(self, run_id, check=True, extra_args=None):
         cmd = [

@@ -46,6 +46,12 @@
 `execution.md` remains the human-readable run journal. Validators may require
 both, but agents should not maintain two competing machine logs.
 
+`events.yaml` is required for active workspaces. Legacy canonical features that
+do not yet have an event sidecar may remain read-only historical memory, but
+they must be migrated before being reopened for active work. A future
+`featurectl.py migrate-artifacts` command should handle historical conversion
+without asking agents to hand-edit machine event history.
+
 Review artifacts have two forms:
 
 - `reviews/*.yaml` are machine-readable findings.

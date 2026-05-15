@@ -155,6 +155,7 @@ class DocsetLoadingTests(unittest.TestCase):
                 "Reset Password",
                 "--run-id",
                 run_id,
+                "--allow-bootstrap-dirty",
             ],
             self.repo,
         )

@@ -77,6 +77,7 @@ class ShowcaseTests(unittest.TestCase):
                     scenario["title"],
                     "--run-id",
                     run_id,
+                    "--allow-bootstrap-dirty",
                 ],
                 self.repo,
             )

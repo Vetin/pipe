@@ -61,12 +61,15 @@ from .shared import (
 )
 from .validation import (
     status_blockers,
+    validate_architecture_if_started,
     validate_current_directory_is_worktree,
+    validate_feature_contract_if_started,
     validate_finish_state,
     validate_implementation_minimum,
+    validate_slices_if_started,
+    validate_tech_design_if_started,
     validate_workspace,
 )
-from .validators.slices import validate_slices_file
 
 SATISFIED_GATE_STATES = {"approved", "delegated", "complete"}
 
@@ -115,6 +118,11 @@ def main(argv: list[str] | None = None) -> int:
         "--allow-dirty",
         action="store_true",
         help="allow creating a feature worktree from a dirty base checkout after inspection",
+    )
+    new_parser.add_argument(
+        "--allow-bootstrap-dirty",
+        action="store_true",
+        help="allow only first-install generated pipeline files in an otherwise dirty base checkout",
     )
     new_parser.set_defaults(func=cmd_new)
 
@@ -188,7 +196,10 @@ def main(argv: list[str] | None = None) -> int:
     complete_slice_parser.add_argument("--retry-reason", help="required reason when --append-retry is used")
     complete_slice_parser.set_defaults(func=cmd_complete_slice)
 
-    worktree_status_parser = subparsers.add_parser("worktree-status", help="verify feature worktree readiness")
+    worktree_status_parser = subparsers.add_parser(
+        "worktree-status",
+        help="verify workspace core files and feature worktree isolation",
+    )
     worktree_status_parser.add_argument("--workspace")
     worktree_status_parser.set_defaults(func=cmd_worktree_status)
 
@@ -250,7 +261,7 @@ def cmd_new(args: argparse.Namespace) -> None:
     if git_branch_exists(root, branch):
         raise FeatureCtlError(f"branch already exists: {branch}")
     if not args.allow_dirty:
-        require_clean_base_checkout(root)
+        require_clean_base_checkout(root, allow_bootstrap_dirty=args.allow_bootstrap_dirty)
 
     ensure_init_tree(root)
 
@@ -319,13 +330,18 @@ def cmd_new(args: argparse.Namespace) -> None:
     print("next_step: nfp-01-context")
 
 
-def require_clean_base_checkout(root: Path) -> None:
+def require_clean_base_checkout(root: Path, *, allow_bootstrap_dirty: bool = False) -> None:
     status = run_git(root, "status", "--short", "--untracked-files=normal").strip()
-    blockers = [line for line in status.splitlines() if not generated_pipeline_bootstrap_dirty(line)]
+    blockers = [
+        line
+        for line in status.splitlines()
+        if not (allow_bootstrap_dirty and generated_pipeline_bootstrap_dirty(line))
+    ]
     if blockers:
+        suggested_flag = "--allow-bootstrap-dirty" if all(generated_pipeline_bootstrap_dirty(line) for line in blockers) else "--allow-dirty"
         raise FeatureCtlError(
             "base checkout has uncommitted changes; inspect them before creating "
-            "a feature worktree or rerun with --allow-dirty"
+            f"a feature worktree or rerun with {suggested_flag}"
         )
 
 
@@ -545,11 +561,12 @@ def cmd_gate_set(args: argparse.Namespace) -> None:
         raise FeatureCtlError(f"invalid gate status: {args.status}")
     state_path = workspace / "state.yaml"
     state = read_yaml(state_path)
-    dependency_blockers = gate_dependency_blockers(workspace, state, args.gate, args.status)
-    if dependency_blockers:
-        for blocker in dependency_blockers:
+    gate_blockers = gate_dependency_blockers(workspace, state, args.gate, args.status)
+    gate_blockers.extend(gate_content_blockers(workspace, state, args.gate, args.status))
+    if gate_blockers:
+        for blocker in gate_blockers:
             print(f"- {blocker}")
-        raise FeatureCtlError("gate dependency validation failed")
+        raise FeatureCtlError("gate validation failed")
     old_status = state.setdefault("gates", {}).get(args.gate)
     state["gates"][args.gate] = args.status
     write_yaml(state_path, state)
@@ -585,13 +602,23 @@ def gate_dependency_blockers(workspace: Path, state: dict[str, Any], gate: str, 
         dependency_status = gates.get(dependency)
         if dependency_status not in SATISFIED_GATE_STATES:
             blockers.append(f"{gate} requires {dependency} gate approved or delegated")
-    if gate == "slicing_readiness":
-        slices_path = workspace / "slices.yaml"
-        if not slices_path.exists():
-            blockers.append("slicing_readiness requires slices.yaml")
-        else:
-            blockers.extend(validate_slices_file(slices_path, workspace=workspace))
     return blockers
+
+
+def gate_content_blockers(workspace: Path, state: dict[str, Any], gate: str, status: str) -> list[str]:
+    if status not in SATISFIED_GATE_STATES:
+        return []
+    draft_state = copy.deepcopy(state)
+    draft_state.setdefault("gates", {})[gate] = "drafted"
+    if gate == "feature_contract":
+        return validate_feature_contract_if_started(workspace, draft_state)
+    if gate == "architecture":
+        return validate_architecture_if_started(workspace, draft_state)
+    if gate == "tech_design":
+        return validate_tech_design_if_started(workspace, draft_state)
+    if gate == "slicing_readiness":
+        return validate_slices_if_started(workspace, draft_state)
+    return []
 
 
 def cmd_mark_stale(args: argparse.Namespace) -> None:

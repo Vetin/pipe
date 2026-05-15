@@ -42,6 +42,7 @@ class GatesAndEvidenceTests(unittest.TestCase):
 
     def test_gate_set_updates_state_and_execution_without_approvals_file(self):
         workspace = self.create_workspace()
+        write_planning_artifacts(workspace)
 
         result = run(
             [
@@ -78,6 +79,32 @@ class GatesAndEvidenceTests(unittest.TestCase):
         self.assertEqual(events["events"][-1]["new_status"], "approved")
         self.assertFalse(list(workspace.rglob("approvals.yaml")))
         self.assertFalse(list(workspace.rglob("handoff.md")))
+
+    def test_gate_set_blocks_architecture_before_feature_contract(self):
+        workspace = self.create_workspace("run-gate-arch-before-feature")
+        write_planning_artifacts(workspace)
+
+        result = run(
+            [
+                sys.executable,
+                str(SCRIPT),
+                "gate",
+                "set",
+                "--workspace",
+                str(workspace),
+                "--gate",
+                "architecture",
+                "--status",
+                "approved",
+                "--by",
+                "user",
+            ],
+            self.repo,
+            check=False,
+        )
+
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("architecture requires feature_contract gate approved or delegated", result.stdout)
 
     def test_gate_set_blocks_tech_design_before_architecture(self):
         workspace = self.create_workspace("run-gate-tech-before-arch")

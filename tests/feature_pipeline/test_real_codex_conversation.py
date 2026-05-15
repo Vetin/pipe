@@ -32,6 +32,8 @@ def run(cmd, cwd, check=True, timeout=None):
 class RealCodexConversationTests(unittest.TestCase):
     def setUp(self):
         self.tempdir = Path(tempfile.mkdtemp(prefix="real-codex-e2e-"))
+        self.debug_dir = self.tempdir / "real-codex-run"
+        self.debug_dir.mkdir()
         self.repo = self.tempdir / "repo"
         self.repo.mkdir()
         run(["git", "init", "-b", "main"], self.repo)
@@ -81,16 +83,15 @@ class RealCodexConversationTests(unittest.TestCase):
         self.assertEqual(result.returncode, 0, result.stdout)
 
         workspaces = sorted((self.tempdir / "worktrees").glob("*/.ai/feature-workspaces/*/*"))
-        if not workspaces:
-            final_text = final_path.read_text(encoding="utf-8") if final_path.exists() else result.stdout
-            self.assert_contains_clarification_signal(final_text)
-            self.assert_product_files_unchanged(self.repo)
-            return
+        self.assertTrue(
+            workspaces,
+            "Real Codex should create a feature workspace and record blocking questions in execution.md",
+        )
 
         workspace = workspaces[0]
         feature_worktree = self.feature_worktree_for(workspace)
         self.assert_product_files_unchanged(feature_worktree)
-        self.assert_no_product_diff(feature_worktree)
+        self.assert_no_non_ai_changes(feature_worktree)
         execution = (workspace / "execution.md").read_text(encoding="utf-8")
         state = yaml.safe_load((workspace / "state.yaml").read_text(encoding="utf-8"))
         final_text = final_path.read_text(encoding="utf-8") if final_path.exists() else ""
@@ -118,7 +119,7 @@ class RealCodexConversationTests(unittest.TestCase):
         feature_worktree = self.feature_worktree_for(workspace)
         self.assertTrue((feature_worktree / ".git").exists() or (feature_worktree / ".git").is_file())
         self.assert_product_files_unchanged(feature_worktree)
-        self.assert_no_product_diff(feature_worktree)
+        self.assert_no_non_ai_changes(feature_worktree)
 
         for artifact in (
             "apex.md",
@@ -164,12 +165,14 @@ class RealCodexConversationTests(unittest.TestCase):
         codex_bin = os.environ.get("CODEX_BIN", "codex")
         timeout = int(os.environ.get("CODEX_E2E_TIMEOUT_SECONDS", "1800"))
         final_path = self.tempdir / "codex-final.txt"
+        (self.debug_dir / "prompt.txt").write_text(prompt, encoding="utf-8")
         result = run(
             [codex_bin, "exec", "-C", str(self.repo), "-o", str(final_path), prompt],
             self.repo,
             check=False,
             timeout=timeout,
         )
+        self.write_debug_artifacts(result, final_path)
         return result, final_path
 
     def feature_worktree_for(self, workspace):
@@ -181,9 +184,11 @@ class RealCodexConversationTests(unittest.TestCase):
         for rel_path, before in self.product_snapshots.items():
             self.assertEqual((checkout / rel_path).read_text(encoding="utf-8"), before, rel_path)
 
-    def assert_no_product_diff(self, checkout):
-        status = run(["git", "status", "--short", "--untracked-files=all", "--", *PRODUCT_PATHS], checkout)
-        self.assertEqual(status.stdout.strip(), "")
+    def assert_no_non_ai_changes(self, checkout):
+        diff = run(["git", "diff", "--name-only", "--", ".", ":(exclude).ai/**"], checkout)
+        status = run(["git", "status", "--short", "--untracked-files=all", "--", ".", ":(exclude).ai/**"], checkout)
+        self.assertEqual(diff.stdout.strip(), "", diff.stdout)
+        self.assertEqual(status.stdout.strip(), "", status.stdout)
 
     def assert_contains_clarification_signal(self, text):
         lower = text.lower()
@@ -191,6 +196,31 @@ class RealCodexConversationTests(unittest.TestCase):
             any(token in lower for token in ("clarifying", "blocking question", "open question", "token expiry", "single-use")),
             text,
         )
+
+    def write_debug_artifacts(self, result, final_path):
+        (self.debug_dir / "stdout.log").write_text(result.stdout or "", encoding="utf-8")
+        if final_path.exists():
+            shutil.copy2(final_path, self.debug_dir / "final.txt")
+        worktree_root = self.tempdir / "worktrees"
+        tree_lines = []
+        if worktree_root.exists():
+            for path in sorted(worktree_root.rglob("*")):
+                tree_lines.append(str(path.relative_to(self.tempdir)))
+        (self.debug_dir / "workspace-tree.txt").write_text("\n".join(tree_lines) + "\n", encoding="utf-8")
+
+        workspaces = sorted(worktree_root.glob("*/.ai/feature-workspaces/*/*")) if worktree_root.exists() else []
+        if not workspaces:
+            return
+        workspace = workspaces[0]
+        feature_worktree = workspace.parents[3]
+        for name in ("state.yaml", "execution.md", "events.yaml"):
+            path = workspace / name
+            if path.exists():
+                shutil.copy2(path, self.debug_dir / name)
+        git_status = run(["git", "status", "--short", "--untracked-files=all"], feature_worktree, check=False)
+        non_ai_diff = run(["git", "diff", "--", ".", ":(exclude).ai/**"], feature_worktree, check=False)
+        (self.debug_dir / "git-status.txt").write_text(git_status.stdout, encoding="utf-8")
+        (self.debug_dir / "non-ai-diff.txt").write_text(non_ai_diff.stdout, encoding="utf-8")
 
 
 if __name__ == "__main__":
